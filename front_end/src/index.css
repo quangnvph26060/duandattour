@@ -1,0 +1,35 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*detail*/
+.img-container {
+    position: relative;
+    display: inline-block;
+  }
+  .icon-overlay {
+    position: absolute;
+    top: 15%;
+    left:10%;
+    transform: translate(-50%, -50%);
+    color: white; 
+    font-size: 30px; 
+  }  
+
+  /*book*/
+  
+  .hh{
+    border-radius: 10px 0 0 10px; /* Tạo hình tròn cho ảnh */
+  }
+  .rounded-image {
+    width: 100%; /* Điều chỉnh kích thước ảnh theo ý muốn */
+    height: 100%; /* Điều chỉnh kích thước ảnh theo ý muốn */
+    border-radius: 10px 0 0 10px; /* Tạo hình tròn cho ảnh */
+  }
+
+  
+  
+  
+  
+  
