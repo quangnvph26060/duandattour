@@ -207,6 +207,7 @@ const HomePage = () => {
   ];
 
   return (
+
     <div className="bg-white rounded-lg shadow p-4">
       <div className="banner">
         <h1 className="text-2xl text-center font-bold mb-4">Welcome to PolyTour</h1>
