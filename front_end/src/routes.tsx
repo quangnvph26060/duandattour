@@ -8,6 +8,7 @@ import SignIn from "./auth/signin";
 import DetailPage from "./pages/Client/detail";
 import BookTour from "./pages/Client/Book_tour";
 import Contact from "./pages/Client/contact";
+import PayPage from "./pages/Client/Thanh_toan";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -23,5 +24,6 @@ export const router = createBrowserRouter([
    {path:"/:id/tour",element:<DetailPage/>},
    {path:"/booktour",element:<BookTour/>},
    {path:"/contact",element:<Contact/>},
+   {path:"/pay",element:<PayPage/>},
   { path: "*", element: "Not Found Page" },
 ]);
