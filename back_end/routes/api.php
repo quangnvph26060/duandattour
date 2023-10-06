@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ApiLoaiTourController;
+use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +21,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //api phương tiện
-Route::prefix('phuongtien')->group(function () {
-    Route::get('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
-    Route::post('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
-    Route::get('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'show']); // lấy ra  id muốn sửa
-    Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
-    Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
+Route::prefix('admin')->group(function () {
+    Route::prefix('phuongtien')->group(function () {
+        Route::get('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
+    });
+    Route::prefix('loaitour')->group(function () {
+        Route::get('/', [ApiLoaiTourController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiLoaiTourController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [ApiLoaiTourController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiLoaiTourController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']); // xóa theo id
+    });
 });
+
+
