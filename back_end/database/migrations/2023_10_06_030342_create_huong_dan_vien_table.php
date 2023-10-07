@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ten_hd');
             $table->string('email')->unique();
             $table->string('dia_chi');
-            $table->tinyInteger('sdt');
+            $table->string('sdt');
             $table->timestamps();
             $table->softDeletes();
         });
