@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
-use App\Http\Controllers\ApiDiaDiemController;
+use App\Http\Controllers\Api\ApiDiaDiemController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
