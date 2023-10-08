@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
   },
 // ,
 //     {path: "/tour",element:<TourPage/>},
-{path: "/New",element:<News/>},
+{path: "/News",element:<News/>},
 //     {path: "/title",element:<TitelPage/>},
 //     {path: "/tour",element:<TourPage/>},
 {path: "/tour",element:<TourPage/>},
