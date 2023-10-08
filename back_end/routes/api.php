@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
 use App\Http\Controllers\Api\ApiDiaDiemController;
+use App\Http\Controllers\ApiTourController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiDiaDiemController::class, 'show']); 
         Route::put('/{id}', [ApiDiaDiemController::class, 'update']); 
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']); 
+    });
+    Route::prefix('tour')->group(function () {
+        Route::get('/', [ApiTourController::class, 'index']); 
+        Route::post('/', [ApiTourController::class, 'store']); 
+        Route::get('/{id}', [ApiTourController::class, 'show']); 
+        Route::put('/{id}', [ApiTourController::class, 'update']); 
+        Route::delete('/{id}', [ApiTourController::class, 'destroy']); 
     });
 });
 
