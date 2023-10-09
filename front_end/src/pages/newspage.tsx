@@ -4,6 +4,9 @@ import anh16 from "../img/anh16.png"
 import anh5 from "../img/anh5.png"
 import anh18 from "../img/anh18.png"
 import anh6 from "../img/anh6.png"
+import anh20 from "../img/anh20.jpg"
+import anh21 from "../img/anh21.jpg"
+import anh22 from "../img/anh22.jpg"
 
 const rounded = {
     borderRadius: '25px',
@@ -49,6 +52,7 @@ const News = () => {
                             <img src={anh16} alt="anh16" className='w-auto rounded-xl' />
                             <p className='py-4 px-3 text-red-500 font-medium'>Tin tức dữ liệu</p>
                             <h2 className='px-3 font-semibold text-4xl'>Tận hưởng kỳ nghỉ trọn vẹn tại những khách sạn <br /> sang chảnh ở Đà Nẵng</h2>
+                            <p className='text-sm px-3 py-4'>10/10/2023</p>
                         </div>
                         <div className='w-2/5'>
                             <div className='flex gap-3'>
@@ -76,6 +80,17 @@ const News = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className='container'>
+                      <div className='container flex mb-3 px-5 justify-between align-items-center'>
+                        <h2 className='py-4 text-xl font-semibold'>Cẩm nang du lịch</h2>
+                        <a href="" className='fw-bold py-4 font-medium'>Xem tất cả</a>
+                      </div>
+                      <div className='grid grid-cols-3 gap-10'>
+                        <img src={anh20} alt="anh20" className='rounded-xl w-auto'/>
+                        <img src={anh21} alt="anh21" className='rounded-xl w-auto'/>
+                        <img src={anh22} alt="anh22" className='rounded-xl w-auto'/>
+                      </div>
                     </div>
                 </article>
             </div>
