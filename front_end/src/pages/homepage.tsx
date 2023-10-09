@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import logo from '../img/logo.jpg';
 import bner from '../img/banner.png';
-import bnr from '../img/bnnn.png';
+import bnr from '../img/huy.webp';
 import bh from '../img/bh.webp';
 import hh from '../img/hh.webp';
 import sl from '../img/sl.webp';
