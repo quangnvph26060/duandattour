@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/back_end/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/back_end/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/back_end/tests/Unit" isTestSource="true" />
+<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/dflydev/dot-access-data" />
@@ -119,6 +120,8 @@
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/webmozart/assert" />
+=======
+>>>>>>> quangnvph26060
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
