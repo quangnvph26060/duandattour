@@ -26,3 +26,12 @@ Route::prefix('phuongtien')->group(function () {
     Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
     Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
 });
+
+//api khách sạn
+Route::prefix('khachsan')->group(function () {
+    Route::get('/', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'index']); // lấy ra danh sách
+    Route::post('/', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'store']); //  thêm 1 khách sạn mới
+    Route::get('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'show']); // lấy ra  id muốn sửa
+    Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'update']); // sủa theo id
+    Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'destroy']); // xóa theo id
+});
