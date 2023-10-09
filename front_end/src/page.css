@@ -1,0 +1,44 @@
+.product-list {
+  max-width: 100%;
+  margin: 0 auto;
+}
+.product-listb {
+  max-width: 100%;
+ 
+}
+.content{
+  margin: 40px;
+  
+
+}
+.product-list .slick-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.product-list .slick-dots {
+  bottom: 10px;
+}
+
+.product-list .slick-dots li button:before {
+  font-size: 12px;
+}
+
+
+.product-lista img {
+  width: 100%;
+  height: 310px;
+  margin: auto ;
+  object-fit: cover;
+}
+
+.product-list1 img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+.product-list img {
+
+  height: 40%;
+  object-fit: cover;
+}
