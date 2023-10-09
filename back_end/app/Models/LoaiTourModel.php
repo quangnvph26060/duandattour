@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class LoaiTourModel extends Model
 {
     use HasFactory,SoftDeletes;
+
+    protected $table="loai_tour";
+    protected $fillable = [
+        'ten_loai_tour'
+     ];
 }

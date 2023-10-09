@@ -9,4 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HuongDanVienModel extends Model
 {
     use HasFactory,SoftDeletes;
+
+    protected $table ="huong_dan_vien";
+    protected $fillable = [
+        'ten_hd',
+        'email',
+        'dia_chi',
+        'sdt'
+    ];
 }

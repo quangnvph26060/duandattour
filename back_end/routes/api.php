@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\ApiHuongDanVienController;
+use App\Http\Controllers\Api\ApiLoaiTourController;
+use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
+use App\Http\Controllers\Api\ApiDiaDiemController;
+use App\Http\Controllers\Api\ApiTourController;
+use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,19 +25,48 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //api phương tiện
-Route::prefix('phuongtien')->group(function () {
-    Route::get('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
-    Route::post('/', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
-    Route::get('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'show']); // lấy ra  id muốn sửa
-    Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
-    Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
-});
-
-//api khách sạn
-Route::prefix('khachsan')->group(function () {
-    Route::get('/', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'index']); // lấy ra danh sách
-    Route::post('/', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'store']); //  thêm 1 khách sạn mới
-    Route::get('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'show']); // lấy ra  id muốn sửa
-    Route::put('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'update']); // sủa theo id
-    Route::delete('/{id}', [\App\Http\Controllers\api\ApiLoaiKhachSanController::class, 'destroy']); // xóa theo id
+Route::prefix('admin')->group(function () {
+    Route::prefix('phuongtien')->group(function () {
+        Route::get('/', [ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [ApiLoaiPhuongTienController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
+    });
+    Route::prefix('loaitour')->group(function () {
+        Route::get('/', [ApiLoaiTourController::class, 'index']);
+        Route::post('/', [ApiLoaiTourController::class, 'store']);
+        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
+    });
+    Route::prefix('huongdanvien')->group(function () {
+        Route::get('/', [ApiHuongDanVienController::class, 'index']);
+        Route::post('/', [ApiHuongDanVienController::class, 'store']);
+        Route::get('/{id}', [ApiHuongDanVienController::class, 'show']);
+        Route::put('/{id}', [ApiHuongDanVienController::class, 'update']);
+        Route::delete('/{id}', [ApiHuongDanVienController::class, 'destroy']);
+    });
+    Route::prefix('diadiem')->group(function () {
+        Route::get('/', [ApiDiaDiemController::class, 'index']);
+        Route::post('/', [ApiDiaDiemController::class, 'store']);
+        Route::get('/{id}', [ApiDiaDiemController::class, 'show']);
+        Route::put('/{id}', [ApiDiaDiemController::class, 'update']);
+        Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
+    });
+    Route::prefix('tour')->group(function () {
+        Route::get('/', [ApiTourController::class, 'index']);
+        Route::post('/', [ApiTourController::class, 'store']);
+        Route::get('/{id}', [ApiTourController::class, 'show']);
+        Route::put('/{id}', [ApiTourController::class, 'update']);
+        Route::delete('/{id}', [ApiTourController::class, 'destroy']);
+    });
+    //api khách sạn
+    Route::prefix('khachsan')->group(function () {
+        Route::get('/', [ApiLoaiKhachSanController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiLoaiKhachSanController::class, 'store']); //  thêm 1 khách sạn mới
+        Route::get('/{id}', [ApiLoaiKhachSanController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiLoaiKhachSanController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiLoaiKhachSanController::class, 'destroy']); // xóa theo id
+    });
 });
