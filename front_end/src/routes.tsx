@@ -18,16 +18,11 @@ export const router = createBrowserRouter([
     path: "/",
     element: <div><HomePage /></div>,
   },
-<<<<<<< HEAD
-
-
-=======
 // ,
 //     {path: "/tour",element:<TourPage/>},
     {path: "/News",element:<News/>},
 //     {path: "/title",element:<TitelPage/>},
 //     {path: "/tour",element:<TourPage/>},
->>>>>>> 618e7888f0c894e5ad38542c797fe4f5a06bb31d
 {path: "/tour",element:<TourPage/>},
 
     {path: "/signin",element:<SignIn/>},
