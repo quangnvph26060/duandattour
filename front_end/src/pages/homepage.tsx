@@ -256,31 +256,31 @@ const HomePage = () => {
       <div className='mt-5 mb-5'>
         <img src={bnr} alt="" />
       </div>
-      <div className="bg-white rounded-lg shadow p-4 mx-auto" style={{ width: '1100px' }}>
-      <div className="tour-form mt-2 flex items-center">
+      <div  className="bg-white rounded-lg shadow p-4 mx-auto" style={{ width: '1100px' }}>
+      <div  className="tour-form mt-2 flex items-center">
   <div className="flex items-center mr-4">
     <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
-    <input type="date" id="arrivalDate" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
+    <input style={{borderColor:'red '}} type="date" id="arrivalDate" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
   </div>
 
   <div className="flex items-center mr-4">
     <label htmlFor="departureDate" className="mr-2 text-gray-600">Ngày đi:</label>
-    <input type="date" id="departureDate" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
+    <input style={{borderColor:'red '}} type="date" id="departureDate" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
   </div>
 
   <div className="flex items-center mr-4">
     <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>
-    <input type="text" id="destination" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
+    <input style={{borderColor:'red '}} type="text" id="destination" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
   </div>
 
   <div className="flex items-center mr-4">
     <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label>
-    <input type="text" id="departure" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
+    <input style={{borderColor:'red '}} type="text" id="departure" className="border rounded px-2 py-1 focus:outline-none focus:border-blue-500 transition-colors duration-300" />
   </div>
-  <button className="bg-blue-500 text-white py-1 px-3 rounded ml-2">Search</button>
+  <button  className="bg-blue-500 text-white py-1 px-3 rounded ml-2">Search</button>
   </div>
 </div>
-      <h2 className='mt-5 mb-5 '>CHƯƠNG TRÌNH ƯU ĐÃI!</h2>
+      <h2 className='mt-5 mb-5 '>CHƯƠNG TRÌNH ƯU ĐÃI!!!</h2>
       <div className="content">
         <div className="content">
           <Slider
@@ -328,7 +328,7 @@ const HomePage = () => {
             dots={true}
             infinite={true}
             speed={500}
-            slidesToShow={6}
+            slidesToShow={5}
             slidesToScroll={1}
             responsive={[
               {

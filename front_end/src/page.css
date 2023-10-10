@@ -9,8 +9,10 @@
 .content{
   margin: 40px;
   
-
+border: burlywood;
 }
+
+
 .product-list .slick-slide {
   display: flex;
   justify-content: center;
