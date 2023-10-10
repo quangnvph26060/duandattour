@@ -43,15 +43,18 @@ const Signup = () => {
             className="border border-gray-400 px-2 py-1 rounded"
           />
           <button className="bg-blue-500 text-white py-1 px-3 rounded ml-2">Search</button>
-
+        
          <a href="/signup"> <div className="ml-2">
-            <button className="bg-green-500 text-white py-1 px-3 rounded">
+            <button className="bg-green-500 text-white py-1   px-3 rounded">
               <i className="fas fa-user"></i>
             </button>
           </div></a>
         </div>
       </div>
-
+      <div className="banner">
+        <h2 style={{color:'blue'}} className="text-2xl text-center mt-20 font-bold mb-4">Đăng Ký Hội Viên</h2>
+      </div>
+      <div style={{marginLeft:'133px',}}>Để hoàn tất đăng ký Hội viên VietravelPlus, quý khách vui lòng điền đầy đủ thông tin vào mẫu dưới đây và nhấn vào nút đăng ký. Xin chân thành cảm ơn quý khách hàng.</div>
       <form className="mt-8 " style={{width:"80%" ,marginLeft:'135px'}}>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -107,16 +110,7 @@ const Signup = () => {
               className="border border-gray-400 px-3 py-2 rounded w-full"
             />
           </div>
-          <div>
-            <label htmlFor="idCardDate" className="block font-bold mb-2">
-              Ngày cấp
-            </label>
-            <input
-              type="text"
-              id="idCardDate"
-              className="border border-gray-400 px-3 py-2 rounded w-full"
-            />
-          </div>
+          
           <div>
             <label htmlFor="passport" className="block font-bold mb-2">
               Passport
@@ -152,13 +146,26 @@ const Signup = () => {
             <label htmlFor="city" className="block font-bold mb-2">
               Tỉnh/TP
             </label>
-            <input
-              type="text"
+            <select
               id="city"
-              defaultValue="Tp. HCM"
               className="border border-gray-400 px-3 py-2 rounded w-full"
-              readOnly
-            />
+            >
+              <option value="">Hà Nội</option>
+              <option value="">Hà Nam</option>
+              <option value="">TP HCM</option>
+              <option value="">Quảng Bình</option>
+              <option value="">Nam Định</option>
+              <option value="">Nghệ An</option>
+              <option value="">Hà Tĩnh</option>
+              <option value="">Đà Lạt</option>
+              <option value="">Quảng Nam </option>
+              <option value="">Bình Định</option>
+              <option value="">Bình Phước </option>
+              <option value="">Bình Dương</option>
+              <option value="">Thanh Hóa</option>
+              <option value="">Bà Rịa Vũng tàu</option>
+       
+            </select>
           </div>
           
           <div>
@@ -195,18 +202,18 @@ const Signup = () => {
             <label htmlFor="confirmPassword" className="block font-bold mb-2">
               Nhập lại (*)
             </label>
-            <input
+            <input style={{minWidth:"1190px",}}
               type="password"
               id="confirmPassword"
-              className="border border-gray-400 px-3 py-2 rounded w-full"
+              className="border border-gray-400 px-3 py-2 rounded "
             />
           </div>
         </div>
 
         <div className="text-center mt-6">
-          <button className="bg-red-500 mt-10 mb-10 text-white py-2 px-4 rounded">
-            Đăng ký
-          </button>
+        <button className="bg-red-500 text-white mb-10 py-1 px-3 rounded mt-7  " style={{ width: '300px' }}>
+          Đăng Ký
+        </button>  
           <div style={{textAlign:'left'}}>
   - Hội viên đăng ký chương trình cung cấp đúng các thông tin về số điện thoại, địa chỉ liên hệ, địa chỉ email của Hội viên. Khi có thay đổi, Hội viên có thể tự cập nhật vào tài khoản tại VietravelPlus.com hoặc liên hệ thông báo trực tiếp với nhân viên Vietravel và yêu cầu cập nhật. <br />
 
