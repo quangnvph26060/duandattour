@@ -84,9 +84,11 @@ const Signup = () => {
         <button className="bg-blue-500 text-white py-1 px-3 rounded mt-7 " style={{ width: '300px' }}>
           Đăng Nhập
         </button>
+        <a href="/signin">
         <button className="bg-red-500 text-white py-1 px-3 rounded mt-7 " style={{ width: '300px' }}>
           Đăng Ký
         </button>
+        </a>
       </div>
       <div className="flex justify-center mt-10">
   <button className="flex items-center bg-blue-500 text-white py-2 px-4 rounded mr-2">
