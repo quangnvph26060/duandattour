@@ -20,7 +20,6 @@ class ApiHuongDanVienController extends Controller
             'data'=> $huongdanvien
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */

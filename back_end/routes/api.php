@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
 use App\Http\Controllers\Api\ApiDiaDiemController;
+use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
+use App\Http\Controllers\api\ApiTourPhuongTienController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +62,20 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiTourController::class, 'show']); 
         Route::put('/{id}', [ApiTourController::class, 'update']); 
         Route::delete('/{id}', [ApiTourController::class, 'destroy']); 
+    });
+    Route::prefix('lichtrinh')->group(function () {
+        Route::get('/', [ApiLichTrinhController::class, 'index']); 
+        Route::post('/', [ApiLichTrinhController::class, 'store']); 
+        Route::get('/{id}', [ApiLichTrinhController::class, 'show']); 
+        Route::put('/{id}', [ApiLichTrinhController::class, 'update']); 
+        Route::delete('/{id}', [ApiLichTrinhController::class, 'destroy']); 
+    });
+    Route::prefix('tourphuongtien')->group(function () {
+        Route::get('/', [ApiTourPhuongTienController::class, 'index']); 
+        Route::post('/', [ApiTourPhuongTienController::class, 'store']); 
+        Route::get('/{id}', [ApiTourPhuongTienController::class, 'show']); 
+        Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']); 
+        Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']); 
     });
     
 });
