@@ -126,6 +126,15 @@
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+=======
+>>>>>>> quangnvph26060
+>>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
+>>>>>>> 778a326cdc72498c9d843a3bc4ead4336dac0f2c
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
