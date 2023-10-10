@@ -121,6 +121,10 @@
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/webmozart/assert" />
+<<<<<<< HEAD
+>>>>>>> main
+=======
+>>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
 >>>>>>> main
     </content>
     <orderEntry type="inheritedJdk" />

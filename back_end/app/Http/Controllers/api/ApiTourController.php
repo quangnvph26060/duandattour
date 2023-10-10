@@ -1,23 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LoaiPhuongTienResoure;
-use App\Models\LoaiPhuongTienModel;
+use App\Http\Resources\TourResoure;
+use App\Models\TourModel;
 use Illuminate\Http\Request;
 
-class ApiLoaiPhuongTienController extends Controller
+class ApiTourController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // lấy ra toàn bộ danh sách
-        $phuongtien = LoaiPhuongTienModel::all();
-        // trả về danh sách dưới dạng json
-        return LoaiPhuongTienResoure::collection($phuongtien);
+        $tour = TourModel::all();
+        return  TourResoure::collection($tour); 
     }
 
     /**
@@ -25,21 +23,19 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function store(Request $request)
     {
-        // tạo loại phương tiện mới
-        $student = LoaiPhuongTienModel::create($request->all());
+        $tour =TourModel::create($request->all());
         // trả về thông tin vừa thêm
-        return new LoaiPhuongTienResoure($student);
+        return new TourResoure($tour);
     }
 
     /**
      * Display the specified resource.
      */
-    //sửa
     public function show(string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            return new LoaiPhuongTienResoure($phuongtien);
+        $tour = TourModel::find($id);
+        if ($tour) {
+            return new TourResoure($tour);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thong tin'
@@ -52,15 +48,14 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            $phuongtien->update($request->all());
-            return new LoaiPhuongTienResoure($phuongtien);
+        $tour = TourModel::find($id);
+        if ($tour) {
+          $tour->update($request->all());
         } else {
             return  response()->json([
-                'message' => 'Không tìm thấy thông tin'
+                'message' => 'Không tìm thấy thong tin'
             ], 404);
-        }
+        } 
     }
 
     /**
@@ -68,13 +63,13 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function destroy(string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            $phuongtien->delete();
+        $tour = TourModel::find($id);
+        if($tour){
+            $tour->delete();
             return  response()->json([
                 'message' => 'Xóa Thành Công'
             ], 201);
-        } else {
+        }else{
             return  response()->json([
                 'message' => 'Không tìm thấy thông tin'
             ], 404);

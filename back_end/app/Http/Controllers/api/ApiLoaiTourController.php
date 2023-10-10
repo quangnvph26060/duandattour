@@ -5,7 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
-
+// {
+        
+//     "ten_tour": "tour 1",
+//     "diem_di":"ha noi",
+//     "diem_den":"ho chi minh",
+//     "lich_khoi_hanh":"2023-10-08",
+//     "thoi_gian":"6 ngày",
+//     "diem_khoi_hanh":"ha noi",
+//     "anh":"hinh/1.jpg",
+//     "soluong":"1",
+//     "trang_thai":0,
+//     "ma_loai_tour":1,
+//     "ma_hdv":1
+// }
 class ApiLoaiTourController extends Controller
 {
     /**

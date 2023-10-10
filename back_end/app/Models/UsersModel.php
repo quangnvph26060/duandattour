@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TourModel extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $table ="tour";
+    use HasFactory, SoftDeletes;
+    protected $table = "user";
     protected $fillable = [
         'ten_tour',
         'diem_di',
