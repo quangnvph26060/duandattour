@@ -125,7 +125,14 @@
       <path value="$PROJECT_DIR$/back_end/vendor/laravel/prompts" />
     </include_path>
   </component>
+<<<<<<< HEAD
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+=======
+<<<<<<< HEAD
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+=======
+>>>>>>> quangnvph26060
+>>>>>>> main
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
