@@ -65,7 +65,7 @@ const Signup = () => {
     id="phoneNumber"
     placeholder="Tài khoản"
     className="border border-gray-400 px-2 py-1 rounded mt-2"
-    style={{ width: '1000px' }}
+    style={{ width: '400px' }}
   />
 </div>
 <div className="flex flex-col mt-10">
@@ -75,7 +75,7 @@ const Signup = () => {
     id="password"
     placeholder="Mật khẩu"
     className="border border-gray-400 px-2 py-1 rounded mt-2"
-    style={{ width: '1000px' }}
+    style={{ width: '400px' }}
     
 
   />

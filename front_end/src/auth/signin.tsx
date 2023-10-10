@@ -164,7 +164,7 @@ const Signup = () => {
               <option value="">Bình Dương</option>
               <option value="">Thanh Hóa</option>
               <option value="">Bà Rịa Vũng tàu</option>
-       
+              <option value="">Bà Rịa Vũng tàu</option>
             </select>
           </div>
           
