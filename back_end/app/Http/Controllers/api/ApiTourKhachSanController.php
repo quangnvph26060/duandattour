@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LoaiKhachSanResoure;
-use App\Models\LoaiKhachSanModel;
+use App\Http\Resources\TourKhachSanResoure;
+use App\Models\TourKhachSanModel;
 
 use Illuminate\Http\Request;
 
-class ApiLoaiKhachSanController extends Controller
+class ApiTourKhachSanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +16,10 @@ class ApiLoaiKhachSanController extends Controller
     public function index()
     {
         // lấy ra toàn bộ danh sách
-        $khachsan = LoaiKhachSanModel::all();
+        $tourkhachsan = TourKhachSanModel::all();
         // trả về danh sách dưới dạng json
 
-        return LoaiKhachSanResoure::collection($khachsan);
+        return TourKhachSanResoure::collection($tourkhachsan);
     }
 
     /**
@@ -28,9 +28,9 @@ class ApiLoaiKhachSanController extends Controller
     public function store(Request $request)
     {
         // tạo loại phương tiện mới
-        $khachsans = LoaiKhachSanModel::create($request->all());
+        $tourkhachsan = TourKhachSanModel::create($request->all());
         // trả về thông tin vừa thêm
-        return new LoaiKhachSanResoure($khachsans);
+        return new TourKhachSanResoure($tourkhachsan);
     }
 
     /**
@@ -39,9 +39,9 @@ class ApiLoaiKhachSanController extends Controller
     //sửa
     public function show(string $id)
     {
-        $khachsan = LoaiKhachSanModel::find($id);
-        if ($khachsan) {
-            return new LoaiKhachSanResoure($khachsan);
+        $tourkhachsan = TourKhachSanModel::find($id);
+        if ($tourkhachsan) {
+            return new TourKhachSanResoure($tourkhachsan);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thong tin'
@@ -54,10 +54,10 @@ class ApiLoaiKhachSanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $khachsan = LoaiKhachSanModel::find($id);
-        if ($khachsan) {
-            $khachsan->update($request->all());
-            return new LoaiKhachSanResoure($khachsan);
+        $tourkhachsan = TourKhachSanModel::find($id);
+        if ($tourkhachsan) {
+            $tourkhachsan->update($request->all());
+            return new TourKhachSanResoure($tourkhachsan);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thông tin'
@@ -70,9 +70,9 @@ class ApiLoaiKhachSanController extends Controller
      */
     public function destroy(string $id)
     {
-        $khachsan = LoaiKhachSanModel::find($id);
-        if ($khachsan) {
-            $khachsan->delete();
+        $tourkhachsan = TourKhachSanModel::find($id);
+        if ($tourkhachsan) {
+            $tourkhachsan->delete();
             return  response()->json([
                 'message' => 'Xóa Thành Công'
             ], 201);

@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
 use App\Http\Controllers\Api\ApiDiaDiemController;
 use App\Http\Controllers\Api\ApiTourController;
+use App\Http\Controllers\Api\ApiLoaiKhachSanController;
+use App\Http\Controllers\Api\ApiTourKhachSanController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -68,5 +70,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiLoaiKhachSanController::class, 'show']); // lấy ra  id muốn sửa
         Route::put('/{id}', [ApiLoaiKhachSanController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiKhachSanController::class, 'destroy']); // xóa theo id
+    });
+    //api Tour khách sạn
+    Route::prefix('tourkhachsan')->group(function () {
+        Route::get('/', [ApiTourKhachSanController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiTourKhachSanController::class, 'store']); //  thêm 1 tour khách sạn mới
+        Route::get('/{id}', [ApiTourKhachSanController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiTourKhachSanController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiTourKhachSanController::class, 'destroy']); // xóa theo id
     });
 });

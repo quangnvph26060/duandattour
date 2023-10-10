@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tieu_de')->unique();
             $table->text('noi_dung');
-            $table->string('thoi_gian');
+            $table->date('thoi_gian');
             $table->foreignId('id_tour')->constrained('tour');
             $table->timestamps();
             $table->softDeletes();
