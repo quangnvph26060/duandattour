@@ -1,56 +1,64 @@
 type Props = {};
-// import { useGetProductsQuery, useRemoveProductMutation } from "@/api/product";
+
 // import { IProduct } from "@/interfaces/product";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
+import { ITour } from "../../../interface/tour";
+import { useGetProductsQuery } from "../../../api/TourApi";
 
 const AdminProduct = (props: Props) => {
-    // const { data: productData, error, isLoading } = useGetProductsQuery();
+    const { data: tourdata, error, isLoading } = useGetProductsQuery();
     // const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     //     useRemoveProductMutation();
 
     // const confirm = (_id: number) => {
     //     removeProduct(_id);
     // };
-    // const dataSource = productData?.map(({ _id, name, price,desc,quantily }: IProduct) => ({
-    //     key: _id,
-    //     name,
-    //     price,
-    //     desc,
-    // quantily
-
-    // }));
+    console.log(tourdata);
+    const tourArray = tourdata?.data || [];
+    
+    const dataSource = tourArray.map(({ id, ten_tour, soluong, anh, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour) => ({
+        key: id,
+        soluong,
+        ten_tour,
+        anh,
+        diem_khoi_hanh,
+        diem_den,
+        diem_di,
+        lich_khoi_hanh,
+        thoi_gian,
+        trang_thai,
+        ma_loai_tour,
+        ma_hdv
+    }));
+    
     const columns = [
         {
-            title: "Tên sản phẩm",
-            dataIndex: "name",
-            key: "name",
+            title: "Tour du lịch",
+            dataIndex: "ten_tour",
+            key: "ten_tour",
         },
         {
-            title: "Giá",
-            dataIndex: "price",
-            key: "price",
+            title: "Ảnh minh họa",
+            dataIndex:"anh",
+            key: "anh",
         },
         {
-            title: "Miêu tả",
-            dataIndex: "desc",
-            key: "desc",
+            title: "Danh mục tour",
+            dataIndex:"ma_loai_tour",
+            key: "ma_loai_tour",
         },
-        {
-            title: "Số lượng",
-            dataIndex: "quantily",
-            key: "quantily",
-        },
+
         {
             title: "Action",
-            render: ({ key: _id }: any) => {
+            render: ({ key: id }: any) => {
                 return (
                     <>
                         <div className="flex space-x-2">
                             <Popconfirm
-                                title="Are you fucking sure?"
-                                onConfirm={() => confirm(_id)}
+                                title="Bạn có muốn xóa?"
+                                onConfirm={() => confirm(id)}
                                 okText="Yes"
                                 cancelText="No"
                             >
@@ -60,7 +68,7 @@ const AdminProduct = (props: Props) => {
                             </Popconfirm>
 
                             <Button type="primary" danger>
-                                <Link to={`/admin/products/${_id}`}>Sửa</Link>
+                                <Link to={`/admin/tour/edit/${id}`}>Sửa</Link>
                             </Button>
                         </div>
                     </>
@@ -72,16 +80,16 @@ const AdminProduct = (props: Props) => {
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-2xl">Quản lý sản phẩm</h2>
+                <h2 className="font-bold text-2xl">Quản lý tour</h2>
                 <Button type="primary" danger>
-                    <Link to="/admin/product/add" className="flex items-center space-x-2">
+                    <Link to="/admin/tour/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-                        Thêm sản phẩm
+                        Tạo mới tour
                     </Link>
                 </Button>
             </header>
-            {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />}
-            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />} */}
+            {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />} */}
+            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>
     );
 };

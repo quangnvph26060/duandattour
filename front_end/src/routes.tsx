@@ -13,6 +13,8 @@ import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
 import AdminProduct from "./pages/Admin/products";
+import AdminTourAdd from "./pages/Admin/products/add";
+import AdminTourEdit from "./pages/Admin/products/edi";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -40,17 +42,18 @@ export const router = createBrowserRouter([
             element: <Dashboard />,
         },
         {
-            path: "product",
+            path: "tour",
             element: <AdminProduct />,
         },
         {
-          path: "product",
-          element: <AdminProduct />,
+          path: "tour/add",
+          element: <AdminTourAdd />,
       },
       {
-        path: "product",
-        element: <AdminProduct />,
+        path: "tour/edit/:id",
+        element: <AdminTourEdit />,
     },
+   
     ],
 },
 ]);
