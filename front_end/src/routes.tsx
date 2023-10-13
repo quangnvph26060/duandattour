@@ -30,6 +30,10 @@ import ADmin_KhachsanEdit from "./pages/Admin/products/Khach_san/edit";
 import ADmin_Phuontien from "./pages/Admin/products/Phuong_tien";
 import ADmin_PhuontiengADD from "./pages/Admin/products/Phuong_tien/add";
 import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
+import Admin_Khachhang from "./pages/Admin/user/khach_hang";
+import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
+import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
+import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/add";
 
 export const router = createBrowserRouter([
   {
@@ -131,6 +135,26 @@ export const router = createBrowserRouter([
       {
         path: "tour/loai_phuong_tien/edit/:id",
         element: <ADmin_Phuongtienedit />,
+      },
+      {
+        path: "customer_account",
+        element: <Admin_Khachhang />,
+      },
+      {
+        path: "customer_account/add",
+        element: <Admin_Khachhang />,
+      },
+      {
+        path: "customer_account/edit/:id",
+        element: <ADmin_ACcountkhachhang_edit />,
+      },
+      {
+        path: "account_huongdanvien",
+        element: <Admin_Account_huongdanvien />,
+      },
+      {
+        path: "account_huongdanvien/edit/:id",
+        element: <Admin_Account_huongdanvienEdit />,
       },
     ],
   },

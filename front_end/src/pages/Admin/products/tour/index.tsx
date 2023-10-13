@@ -40,14 +40,19 @@ const AdminProduct = (props: Props) => {
             key: "ten_tour",
         },
         {
-            title: "Ảnh minh họa",
-            dataIndex:"anh",
-            key: "anh",
+            title: "Điểm đến",
+            dataIndex: "diem_den",
+            key: "diem_den",
         },
         {
-            title: "Danh mục tour",
-            dataIndex:"ma_loai_tour",
-            key: "ma_loai_tour",
+            title: "Điểm đi",
+            dataIndex:"diem_di",
+            key: "diem_di",
+        },
+        {
+            title: "Điểm đi",
+            dataIndex:"diem_di",
+            key: "diem_di",
         },
 
         {

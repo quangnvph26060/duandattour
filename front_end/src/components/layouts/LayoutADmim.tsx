@@ -39,9 +39,9 @@ const LayoutAdmin = () => {
             </Menu.Item>
             <Menu.SubMenu key="2" icon={<FaLuggageCart />}  title="Tour du lịch">
                 <Menu.Item key="2-1">
-                    <Link to="/admin/tour">Tất cả các tour</Link>
+                    <Link  to="/admin/tour">Tất cả các tour</Link>
                 </Menu.Item>
-                <Menu.Item   key="2-2">
+                <Menu.Item    key="2-2">
                     <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
                 </Menu.Item>
                 <Menu.Item key="2-3">
@@ -57,9 +57,16 @@ const LayoutAdmin = () => {
                     <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
                 </Menu.Item>
             </Menu.SubMenu>
-            <Menu.Item key="3" icon={<AiOutlineUser />}>
-                <Link to="/admin/tour">Tài khoản</Link>
-            </Menu.Item>
+            <Menu.SubMenu key="3" icon={<AiOutlineUser />}  title="Tài khoản">
+                <Menu.Item key="3-2">
+                    <Link to="/admin/customer_account">Tài khoản khách</Link>
+                </Menu.Item>
+                <Menu.Item key="3-3">
+                    <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
+                </Menu.Item>
+           
+            </Menu.SubMenu>
+     
         </Menu>
       
        </Sider>

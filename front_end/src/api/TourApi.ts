@@ -17,6 +17,7 @@ const TourApi = createApi({
             query: () => `/tour`,
             providesTags: ['Tour']
         }),
+       
 
     })
 });
