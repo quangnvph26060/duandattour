@@ -34,12 +34,12 @@ const TourPage = () => {
         <div className='flex'>
           <img style={rounded} src={logo} alt="logo" width="100px" />
           <nav className='p-4 pt-6 pl-20'>
-            <ul className='flex gap-12'>
-              <a href="">Du lịch</a>
-              <a href="">Vận chuyển</a>
-              <a href="">Tin tức</a>
+          <ul className='flex text-[#2D4271] gap-12'>
+              <a href="/">PolyTour</a>
+              <a href="/tour">Tour</a>
+              <a href="/">Tin tức</a>
               <a href="">Khuyến mãi</a>
-              <a href="">Liên hệ</a>
+              <a href="/contact">Liên hệ</a>
             </ul>
           </nav>
           <div className='p-4 pt-6 ml-auto'>
