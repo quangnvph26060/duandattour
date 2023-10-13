@@ -47,6 +47,7 @@ const AdminProduct = (props: Props) => {
             render: ({ key: _id }: any) => {
                 return (
                     <>
+                        <h2>quang gánhtemea</h2>
                         <div className="flex space-x-2">
                             <Popconfirm
                                 title="Are you fucking sure?"
@@ -71,17 +72,20 @@ const AdminProduct = (props: Props) => {
 
     return (
         <div>
+           
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý sản phẩm</h2>
+                
                 <Button type="primary" danger>
                     <Link to="/admin/product/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-                        Thêm sản phẩm
+                    Thêm sản phẩm
                     </Link>
                 </Button>
             </header>
             {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />}
             {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />} */}
+             <Table dataSource={columns} columns={columns} />;
         </div>
     );
 };
