@@ -126,16 +126,28 @@
     </include_path>
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
 =======
+=======
+>>>>>>> khanvvph27281
 <<<<<<< HEAD
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
 =======
 >>>>>>> quangnvph26060
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> main
 =======
 >>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
+>>>>>>> main
+=======
+>>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
+=======
+=======
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+>>>>>>> quangnvph26060
+>>>>>>> khanvvph27281
 >>>>>>> main
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
