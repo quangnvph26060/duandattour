@@ -4,8 +4,8 @@ type Props = {};
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { ITour } from "../../../interface/tour";
-import { useGetProductsQuery } from "../../../api/TourApi";
+import { ITour } from "../../../../interface/tour";
+import { useGetProductsQuery } from "../../../../api/TourApi";
 
 const AdminProduct = (props: Props) => {
     const { data: tourdata, error, isLoading } = useGetProductsQuery();

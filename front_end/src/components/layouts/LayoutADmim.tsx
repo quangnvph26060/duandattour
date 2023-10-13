@@ -28,23 +28,40 @@ const LayoutAdmin = () => {
        
        <Sider trigger={null} collapsible collapsed={collapsed}>
            <div className="demo-logo-vertical" />
-           <Menu
-               theme="dark"
-               mode="inline"
-               defaultSelectedKeys={["1"]}
-               items={[
-                   {
-                       key: "1",
-                       icon: <AiFillFund />,
-                       label: <Link to="/admin/dashboard">Thống kê</Link>,
-                   },
-                   {
-                       key: "2",
-                       icon: <FaLuggageCart />,
-                       label: <Link to="/admin/tour">Tour du lịch</Link>,
-                   },
-               ]}
-           />
+         
+            <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+        >
+            <Menu.Item key="1" icon={<AiFillFund />}>
+                <Link to="/admin/dashboard">Thống kê</Link>
+            </Menu.Item>
+            <Menu.SubMenu key="2" icon={<FaLuggageCart />}  title="Tour du lịch">
+                <Menu.Item key="2-1">
+                    <Link to="/admin/tour">Tất cả các tour</Link>
+                </Menu.Item>
+                <Menu.Item   key="2-2">
+                    <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
+                </Menu.Item>
+                <Menu.Item key="2-3">
+                    <Link to="/admin/tour/dia_diem">Địa điểm tour</Link>
+                </Menu.Item>
+                <Menu.Item key="2-4">
+                    <Link to="/admin/tour/lich_trinh">Lịch trình tour</Link>
+                </Menu.Item>
+                <Menu.Item key="2-5">
+                    <Link to="/admin/tour/loai_khach_san">Khách sạn tour</Link>
+                </Menu.Item>
+                <Menu.Item key="2-6">
+                    <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
+                </Menu.Item>
+            </Menu.SubMenu>
+            <Menu.Item key="3" icon={<AiOutlineUser />}>
+                <Link to="/admin/tour">Tài khoản</Link>
+            </Menu.Item>
+        </Menu>
+      
        </Sider>
        <Layout>
            <Header style={{ padding: 0, background: colorBgContainer }}>
