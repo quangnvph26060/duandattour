@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LoaiPhuongTienResoure;
-use App\Models\LoaiPhuongTienModel;
+use App\Http\Resources\LoaiKhachSanResoure;
+use App\Models\LoaiKhachSanModel;
+
 use Illuminate\Http\Request;
 
-class ApiLoaiPhuongTienController extends Controller
+class ApiLoaiKhachSanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,10 @@ class ApiLoaiPhuongTienController extends Controller
     public function index()
     {
         // lấy ra toàn bộ danh sách
-        $phuongtien = LoaiPhuongTienModel::all();
+        $khachsan = LoaiKhachSanModel::all();
         // trả về danh sách dưới dạng json
-        return LoaiPhuongTienResoure::collection($phuongtien);
+
+        return LoaiKhachSanResoure::collection($khachsan);
     }
 
     /**
@@ -26,9 +28,9 @@ class ApiLoaiPhuongTienController extends Controller
     public function store(Request $request)
     {
         // tạo loại phương tiện mới
-        $student = LoaiPhuongTienModel::create($request->all());
+        $khachsans = LoaiKhachSanModel::create($request->all());
         // trả về thông tin vừa thêm
-        return new LoaiPhuongTienResoure($student);
+        return new LoaiKhachSanResoure($khachsans);
     }
 
     /**
@@ -37,9 +39,9 @@ class ApiLoaiPhuongTienController extends Controller
     //sửa
     public function show(string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            return new LoaiPhuongTienResoure($phuongtien);
+        $khachsan = LoaiKhachSanModel::find($id);
+        if ($khachsan) {
+            return new LoaiKhachSanResoure($khachsan);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thong tin'
@@ -52,10 +54,10 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            $phuongtien->update($request->all());
-            return new LoaiPhuongTienResoure($phuongtien);
+        $khachsan = LoaiKhachSanModel::find($id);
+        if ($khachsan) {
+            $khachsan->update($request->all());
+            return new LoaiKhachSanResoure($khachsan);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thông tin'
@@ -68,9 +70,9 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function destroy(string $id)
     {
-        $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            $phuongtien->delete();
+        $khachsan = LoaiKhachSanModel::find($id);
+        if ($khachsan) {
+            $khachsan->delete();
             return  response()->json([
                 'message' => 'Xóa Thành Công'
             ], 201);
