@@ -44,7 +44,6 @@ export const router = createBrowserRouter([
       </div>
     ),
   },
-<<<<<<< HEAD
 // ,
 //     {path: "/tour",element:<TourPage/>},
     {path: "/News",element:<News/>},
@@ -58,17 +57,6 @@ export const router = createBrowserRouter([
    {path:"/booktour",element:<BookTour/>},
    {path:"/contact",element:<Contact/>},
    {path:"/booking/:id",element:<Info_tour_bocking/>},
-=======
-
-  { path: "/tour", element: <TourPage /> },
-
-  { path: "/signin", element: <SignIn /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/:id/tour", element: <DetailPage /> },
-  { path: "/booktour", element: <BookTour /> },
-  { path: "/contact", element: <Contact /> },
-  { path: "/booking/:id", element: <Info_tour_bocking /> },
->>>>>>> main
   { path: "*", element: "Not Found Page" },
 
   {
