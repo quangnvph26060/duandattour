@@ -21,6 +21,8 @@ class TourSeeder extends Seeder
             'thoi_gian' => '4 ngày',
             'diem_khoi_hanh' => 'Đà Nẵng',
             'anh' => 'Abc.jpg',
+            'gia_tour'=>'100000',
+            'mo_ta'=>'tour ok chưa bro',
             'soluong' => ' 3',
             'trang_thai' => '0',
             'ma_loai_tour' => '1',

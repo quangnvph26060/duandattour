@@ -1,4 +1,6 @@
 import TourApi, {tourRedeucer } from "../api/TourApi";
+import LoaiTourApi, {LoaiTourRedeucer } from "../api/LoaiTourApi";
+import LoaiPhuongTienApi, {LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -20,6 +22,8 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     [TourApi.reducerPath]: tourRedeucer,
+    [LoaiTourApi.reducerPath]: LoaiTourRedeucer,
+    [LoaiPhuongTienApi.reducerPath]: LoaiPhuongTienRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -30,7 +34,7 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(TourApi.middleware),
+        }).concat(TourApi.middleware, LoaiTourApi.middleware, LoaiPhuongTienApi.middleware),
 })
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>

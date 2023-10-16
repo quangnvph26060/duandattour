@@ -1,21 +1,39 @@
-import React from 'react';
+import React , { useEffect, useState }from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
+import {useEditLoaiPhuongTienMutation,useGetLoaiPhuongTienByIdQuery} from "../../../../api/LoaiPhuongTienApi";
+import { ILoaiPhuongTien  } from "../../../../interface/loaiphuongtien";
 
-const { Option } = Select;
 
-type FieldType = {
-  id: number;
-  loai_phuont_tien: string;
-};
+
 
 const ADmin_Phuongtienedit: React.FC = () => {
+  const { idPhuongTien } = useParams<{ idPhuongTien: any }>();
+  const { data: LoaiPhuongTienData } = useGetLoaiPhuongTienByIdQuery(idPhuongTien || "");
+  const LoaiPhuongTien = LoaiPhuongTienData || {};
+  const [updateLoaiPhuongTien] = useEditLoaiPhuongTienMutation();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if (LoaiPhuongTien.data && LoaiPhuongTien.data.loai_phuong_tien) {
+      form.setFieldsValue({
+        loai_phuong_tien: LoaiPhuongTien.data.loai_phuong_tien,
+      });
+    }
+  }, [LoaiPhuongTien]);
+
   const navigate = useNavigate();
 
-  const onFinish = (values: FieldType) => {
-  
-    console.log('Form values:', values);
+  const onFinish = (values: ILoaiPhuongTien) => {
+    updateLoaiPhuongTien({ ...values, id: idPhuongTien })
+      .unwrap()
+      .then(() => navigate("/admin/tour/loai_phuong_tien"))
+      .catch((error) => {
+        setErrors(error.data.message);
+        setLoading(false);
+        
+      });
   };
 
   return (
@@ -31,6 +49,7 @@ const ADmin_Phuongtienedit: React.FC = () => {
         style={{ maxWidth: 600 }}
         onFinish={onFinish}
         autoComplete="off"
+        form={form}
       >
         <Form.Item
           label="Phương tiện"
@@ -39,6 +58,8 @@ const ADmin_Phuongtienedit: React.FC = () => {
             { required: true, message: 'Vui lòng nhập loại phương tiện!' },
             { min: 3, message: ' Phương tiện ít nhất 3 ký tự' },
           ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
         >
           <Input />
         </Form.Item>
@@ -51,7 +72,7 @@ const ADmin_Phuongtienedit: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/loai_phuong_tien')}
           >
             Quay lại
           </Button>

@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
         element: <AdminLoai_tourADD />,
       },
       {
-        path: "tour/loai_tour/edit/:id",
+        path: "tour/loai_tour/edit/:idLoaiTour",
         element: <AdminLoai_tourEdit />,
       },
       {
@@ -130,14 +130,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "tour/loai_phuong_tien",
-        element: <ADmin_Phuontien />,
+        element: <ADmin_Phuontien  />,
       },
       {
         path: "tour/loai_phuong_tien/add",
         element: <ADmin_PhuontiengADD />,
       },
       {
-        path: "tour/loai_phuong_tien/edit/:id",
+        path: "tour/loai_phuong_tien/edit/:idPhuongTien",
         element: <ADmin_Phuongtienedit />,
       },
       {

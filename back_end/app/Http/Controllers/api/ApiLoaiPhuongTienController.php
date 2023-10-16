@@ -26,9 +26,17 @@ class ApiLoaiPhuongTienController extends Controller
     public function store(Request $request)
     {
         // tạo loại phương tiện mới
-        $student = LoaiPhuongTienModel::create($request->all());
+        $result = LoaiPhuongTienModel::where('loai_phuong_tien', $request->loai_phuong_tien)->first();
+        if($result){
+            return  response()->json([
+                'message' => 'Phương tiện đã tồn tại'
+            ], 404);
+        } else{
+            $student = LoaiPhuongTienModel::create($request->all());
         // trả về thông tin vừa thêm
         return new LoaiPhuongTienResoure($student);
+        }
+        
     }
 
     /**
@@ -53,14 +61,27 @@ class ApiLoaiPhuongTienController extends Controller
     public function update(Request $request, string $id)
     {
         $phuongtien = LoaiPhuongTienModel::find($id);
-        if ($phuongtien) {
-            $phuongtien->update($request->all());
-            return new LoaiPhuongTienResoure($phuongtien);
-        } else {
-            return  response()->json([
-                'message' => 'Không tìm thấy thông tin'
+    if ($phuongtien) {
+        $result = LoaiPhuongTienModel::where('loai_phuong_tien', $request->loai_phuong_tien)->first();
+        if ($result && $result->id !== $phuongtien->id) {
+            return response()->json([
+                'message' => 'Phương tiện đã tồn tại trong bảng'
             ], 404);
+        } else {
+            // Thực hiện cập nhật giá trị ban đầu nếu không có sự thay đổi
+            if ($phuongtien->loai_phuong_tien === $request->loai_phuong_tien) {
+                $phuongtien->update(['loai_phuong_tien' => $phuongtien->loai_phuong_tien]);
+            } else {
+                $phuongtien->update($request->all());
+            }
+
+            return new LoaiPhuongTienResoure($phuongtien);
         }
+    } else {
+        return response()->json([
+            'message' => 'Không tìm thấy thông tin'
+        ], 404);
+    }
     }
 
     /**
