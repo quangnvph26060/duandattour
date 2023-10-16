@@ -25,18 +25,25 @@ class ApiLoaiPhuongTienController extends Controller
      */
     public function store(Request $request)
     {
-        // tạo loại phương tiện mới
-        $result = LoaiPhuongTienModel::where('loai_phuong_tien', $request->loai_phuong_tien)->first();
-        if($result){
-            return  response()->json([
-                'message' => 'Phương tiện đã tồn tại'
-            ], 404);
-        } else{
-            $student = LoaiPhuongTienModel::create($request->all());
-        // trả về thông tin vừa thêm
-        return new LoaiPhuongTienResoure($student);
-        }
         
+        $result = LoaiPhuongTienModel::withTrashed()->where('loai_phuong_tien', $request->loai_phuong_tien)->first();
+    
+        if ($result) {
+           
+            if ($result->trashed()) {
+                $result->restore();
+                return new LoaiPhuongTienResoure($result);
+            }
+    
+            return response()->json([
+                'message' => 'Phương tiện đã tồn tại'
+            ], 404);
+        } else {
+            $loaiPhuongTien = LoaiPhuongTienModel::create($request->all());
+    
+            // Trả về thông tin vừa thêm
+            return new LoaiPhuongTienResoure($loaiPhuongTien);
+        }
     }
 
     /**

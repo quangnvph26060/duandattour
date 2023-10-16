@@ -4,8 +4,10 @@ use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
 use App\Http\Controllers\Api\ApiDiaDiemController;
+use App\Http\Controllers\api\ApiImagesController;
 use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
+use App\Http\Controllers\api\ApiTourImageController;
 use App\Http\Controllers\api\ApiTourPhuongTienController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
@@ -28,6 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //api phương tiện
 Route::prefix('admin')->group(function () {
+    Route::apiResource('/images', ApiImagesController::class);
+    Route::apiResource('/tour-images', ApiTourImageController::class);
+   
     Route::prefix('phuongtien')->group(function () {
         Route::get('/', [ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
