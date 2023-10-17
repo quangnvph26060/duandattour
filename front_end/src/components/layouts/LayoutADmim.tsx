@@ -45,7 +45,7 @@ const LayoutAdmin = () => {
                     <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
                 </Menu.Item>
                 <Menu.Item key="2-3">
-                    <Link to="/admin/tour/dia_diem">Địa điểm tour</Link>
+                    <Link to="/admin/tour/diadiem">Địa điểm tour</Link>
                 </Menu.Item>
                 <Menu.Item key="2-4">
                     <Link to="/admin/tour/lich_trinh">Lịch trình tour</Link>
