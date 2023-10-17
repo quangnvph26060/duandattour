@@ -2,28 +2,45 @@ import React, { useEffect } from 'react';
 import { Form, Button, Input, DatePicker, Select,Upload } from 'antd';
 import { AiOutlineLoading3Quarters,AiOutlineUpload } from 'react-icons/ai';
 import { useNavigate,useParams } from 'react-router-dom';
-import { useAddHuongDanVienMutation } from '../../../../api/HuongDanVienApi';
+import { useEditHuongDanVienMutation, useGetHuongDanVienByIdQuery } from '../../../../api/HuongDanVienApi';
 import { IHuongDanVien } from '../../../../interface/huongDanVien';
 
-const { Option } = Select;
+// const { Option } = Select;
 
-type FieldType = {
-    id: number;
-    ten_hd: string;
-    email: string;
-    dia_chi: string;
-    sdt: string;
-    // image:File | null
-};
+// type FieldType = {
+//     id: number;
+//     ten_hd: string;
+//     email: string;
+//     dia_chi: string;
+//     sdt: string;
+//     // image:File | null
+// };
 
-const Admin_Account_huongdanvienAdd: React.FC = () => {
-    const [addHuongDanVien] = useAddHuongDanVienMutation();
-    const navigate = useNavigate();
+const Admin_Account_huongdanvienEdit: React.FC = () => {
+  const { idhdv } = useParams<{ idhdv: any }>();
+  const { data: HuongDanVienData } = useGetHuongDanVienByIdQuery(idhdv || "");
+  const HuongDanVien = HuongDanVienData || {};
+  const [updateHuongDanVien] = useEditHuongDanVienMutation();
+  console.log(idhdv);
   
-    const onFinish = (values: IHuongDanVien) => {
-      addHuongDanVien(values)
-          .unwrap()
-          .then(() => navigate("/admin/account_huongdanvien"));
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ten_hd: HuongDanVien.ten_hd,
+      email: HuongDanVien.email,
+      dia_chi: HuongDanVien.dia_chi,
+      sdt: HuongDanVien.sdt
+    
+    });
+  }, [HuongDanVien]);
+
+  const navigate = useNavigate();
+
+  const onFinish = (values: IHuongDanVien) => {
+    updateHuongDanVien({ ...values, id: idhdv })
+      .unwrap()
+      .then(() => navigate("/admin/account_huongdanvien"));
   };
 
   return (
@@ -39,6 +56,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
         style={{ maxWidth: 600 }}
         onFinish={onFinish}
         autoComplete="off"
+        form={form}
       >
      <Form.Item
   label="Hướng dẫn viên" 
@@ -96,7 +114,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
 </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Thêm hướng dẫn viên
+            Sửa thông tin
           </Button>
           <Button
             type="default"
@@ -111,4 +129,4 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
   );
 };
 
-export default Admin_Account_huongdanvienAdd;
+export default Admin_Account_huongdanvienEdit;

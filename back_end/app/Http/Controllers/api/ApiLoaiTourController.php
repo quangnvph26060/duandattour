@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoaiTourRequest;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 // {
-        
+
 //     "ten_tour": "tour 1",
 //     "diem_di":"ha noi",
 //     "diem_den":"ho chi minh",
@@ -39,9 +42,25 @@ class ApiLoaiTourController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $loaiTour = $request->all();
-        return LoaiTourModel::create($loaiTour);
+
+        // Kiểm tra trước khi thêm
+        $existingRecord = DB::table('loai_tour')
+            ->where('ten_loai_tour', $loaiTour['ten_loai_tour'])
+            ->whereNotNull('deleted_at')
+            ->first();
+
+        if ($existingRecord) {
+            // Bản ghi đã tồn tại và đã bị xóa, bạn có thể khôi phục nó
+            DB::table('loai_tour')
+                ->where('id', $existingRecord->id)
+                ->update(['deleted_at' => null]);
+
+            return response()->json(['message' => 'Khôi phục bản ghi thành công']);
+        } else {
+            // Bản ghi không tồn tại hoặc chưa bị xóa, bạn có thể tạo một bản ghi mới
+            return LoaiTourModel::create($loaiTour);
+        }
     }
 
     /**
@@ -62,7 +81,7 @@ class ApiLoaiTourController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,string $id)
+    public function update(Request $request, string $id)
     {
         //
         $loaiTourModel = LoaiTourModel::find($id);
