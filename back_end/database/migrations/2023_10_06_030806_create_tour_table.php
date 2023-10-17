@@ -19,7 +19,9 @@ return new class extends Migration
             $table->date('lich_khoi_hanh');
             $table->string('thoi_gian');
             $table->string('diem_khoi_hanh');
-            $table->string('anh');
+            
+            $table->string('gia_tour');
+            $table->text('mo_ta');
             $table->tinyInteger('soluong');
             $table->tinyInteger('trang_thai')->default(0);
             $table->foreignId('ma_loai_tour')->constrained('loai_tour');
