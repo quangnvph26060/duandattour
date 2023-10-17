@@ -60,7 +60,6 @@ const AdminProduct = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <h2>quang gánhtemea</h2>
                         <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
