@@ -40,7 +40,8 @@ export const store = configureStore({
             },
         }).concat(TourApi.middleware, LoaiTourApi.middleware, 
             LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,HuongDanVienApi.middleware),
-        })
+        
+})
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
 export type AppThunk<ReturnType = void> = ThunkAction<
