@@ -5,26 +5,33 @@ import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
-import { useGetProductsQuery } from "../../../../api/TourApi";
+import { useGetTourQuery } from "../../../../api/TourApi";
+import { useGetLoaiTourQuery} from "../../../../api/LoaiTourApi";
+import { useEffect ,useState} from "react";
+import { Select } from 'antd';
 
 const AdminProduct = (props: Props) => {
-    const { data: tourdata, error, isLoading } = useGetProductsQuery();
+    const { Option } = Select;
+    const { data: loaitourdata } = useGetLoaiTourQuery();
+    const { data: tourdata, error, isLoading } = useGetTourQuery();
+    const currentDate = new Date(); // Ngày hiện tại
     // const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     //     useRemoveProductMutation();
 
     // const confirm = (_id: number) => {
     //     removeProduct(_id);
     // };
-    console.log(tourdata);
+
     const tourArray = tourdata?.data || [];
-    
-    const dataSource = tourArray.map(({ id, ten_tour, soluong, anh, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour) => ({
+    const loaitourArrary = loaitourdata?.data || [];
+    const dataSource = tourArray.map(({ id, ten_tour, gia_tour,mo_ta,soluong, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour) => ({
         key: id,
         soluong,
         ten_tour,
-        anh,
         diem_khoi_hanh,
         diem_den,
+        gia_tour,
+        mo_ta,
         diem_di,
         lich_khoi_hanh,
         thoi_gian,
@@ -34,6 +41,11 @@ const AdminProduct = (props: Props) => {
     }));
     
     const columns = [
+        {
+            title: "ID",
+            dataIndex: "key",
+            key: "key",
+        },
         {
             title: "Tour du lịch",
             dataIndex: "ten_tour",
@@ -50,17 +62,77 @@ const AdminProduct = (props: Props) => {
             key: "diem_di",
         },
         {
-            title: "Điểm đi",
-            dataIndex:"diem_di",
-            key: "diem_di",
+            title: "Lịch Khởi Hành",
+            dataIndex:"lich_khoi_hanh",
+            key: "lich_khoi_hanh",
+            render: (lich_khoi_hanh) => {
+                const departureDate = new Date(lich_khoi_hanh);
+                return departureDate.toLocaleDateString('en-GB');
+              },
         },
-
+      
+        {
+            title: "Điểm Khởi Hành",
+            dataIndex:"diem_khoi_hanh",
+            key: "diem_khoi_hanh",
+        },
+         {
+            title: "Thời Gian",
+            dataIndex:"thoi_gian",
+            key: "thoi_gian",
+        },
+        {
+            title: "Giá Tour",
+            dataIndex:"gia_tour",
+            key: "gia_tour",
+        },
+         {
+            title: "Số Lượng Còn Nhận ",
+            dataIndex:"soluong",
+            key: "soluong",
+        },
+        {
+            title: 'Trạng Thái',
+            dataIndex: 'trang_thai',
+            key: 'trang_thai',
+            render: (trang_thai, record) => {
+              const departureDate = new Date(record.lich_khoi_hanh); // Ngày khởi hành từ dữ liệu
+        
+              if (departureDate < currentDate) {
+                return <span style={{ }}>Đã Hết Hạn</span>;
+              } else {
+                return <span>Vẫn Hoạt Động</span>;
+              }
+            },
+          },
+        {
+            title: "Người hướng dẫn viên",
+            dataIndex:"ma_hdv",
+            key: "ma_hdv",
+            
+        },
+        {
+            title: "Khu Vực",
+            dataIndex:"ma_loai_tour",
+            key: "ma_loai_tour",
+            render: (ma_loai_tour: number) => {
+                const loaiTour = loaitourArrary.find((item) => item.id === ma_loai_tour);
+                return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
+                
+              }
+        },
+        {
+            title: "Mô Tả",
+            dataIndex:"mo_ta",
+            key: "mo_ta",
+        },
         {
             title: "Action",
+            key:'action',
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <h2>quang gánhtemea</h2>
+                        
                         <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
@@ -82,7 +154,16 @@ const AdminProduct = (props: Props) => {
             },
         },
     ];
-
+    const [visibleColumns, setVisibleColumns] = useState(columns.map(column => column.key));
+    const handleColumnToggle = (columnKey) => {
+        if (visibleColumns.includes(columnKey)) {
+          setVisibleColumns(visibleColumns.filter(key => key !== columnKey));
+        } else {
+          setVisibleColumns([...visibleColumns, columnKey]);
+        }
+      };
+      
+    const visibleColumnsData = columns.filter(column => visibleColumns.includes(column.key));
     return (
         <div>
            
@@ -96,7 +177,27 @@ const AdminProduct = (props: Props) => {
                 </Button>
             </header>
             {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />} */}
-            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
+            {isLoading ? <Skeleton /> : (
+        <>
+          <div>
+            <h3>Hiển thị cột</h3>
+            <Select
+                mode="multiple"
+                placeholder="Chọn cột hiển thị"
+                // value={visibleColumns}
+                onChange={setVisibleColumns}
+                style={{ width: '100%' }}
+            >
+                {columns.map(column => (
+                <Option key={column.key} value={column.key}>
+                    {column.title}
+                </Option>
+                ))}
+      </Select>
+          </div>
+          <Table dataSource={dataSource} columns={visibleColumnsData} />
+        </>
+      )}
         </div>
     );
 };

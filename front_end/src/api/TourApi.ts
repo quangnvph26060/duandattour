@@ -3,7 +3,7 @@ import { ITour } from '../interface/tour';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const TourApi = createApi({
-    reducerPath: 'tour',
+    reducerPath: 'Tour',
     tagTypes: ['Tour'],
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000/api/admin",
@@ -13,8 +13,36 @@ const TourApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getProducts: builder.query<ITour[], void>({
+        getTour: builder.query<ITour[], void>({
             query: () => `/tour`,
+            providesTags: ['Tour']
+        }),
+        addTour:builder.mutation<ITour,ITour>({
+            query:(Tour)=>({
+                url:'/tour',
+                method: "POST",
+                body:Tour
+        }),
+        invalidatesTags: ['Tour']
+        }),
+        editTour:builder.mutation<ITour,ITour>({
+            query:(Tour)=>({
+                url:`/tour/${Tour.id}`,
+                method: "PUT",
+                body:Tour
+        }),
+        invalidatesTags: ['Tour']
+        }),
+        removeTour:builder.mutation<ITour,ITour>({
+            query:(id)=>({
+                url:`/tour/${id}`,
+                method: "DELETE",
+              
+            })
+            
+        }),
+        getTourById: builder.query<ITour, number >({
+            query: (id) => `/tour/${id}` ,
             providesTags: ['Tour']
         }),
        
@@ -23,7 +51,11 @@ const TourApi = createApi({
 });
 
 export const {
-    useGetProductsQuery,
+    useGetTourQuery,
+    useAddTourMutation,
+    useEditTourMutation,
+    useGetTourByIdQuery,
+    useRemoveTourMutation
 
 } = TourApi;
 export const tourRedeucer = TourApi.reducer;

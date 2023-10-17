@@ -15,6 +15,7 @@ const ADmin_Phuongtienedit: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
+
   useEffect(() => {
     if (LoaiPhuongTien.data && LoaiPhuongTien.data.loai_phuong_tien) {
       form.setFieldsValue({
