@@ -19,9 +19,8 @@ class UserSeeder extends Seeder
             'dia_chi' => 'Hà Nội',
             'email' => 'Anh@gmail.com',
             'sdt' => '09876543',
-            'cccd' => '0009820948',
-            'email_verified_at' => '1',
-            'password' => '12345'
+            'cccd' => '00098209',
+            'password' => 'abc1234'
 
         ]);
     }

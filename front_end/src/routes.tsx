@@ -33,8 +33,8 @@ import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
 import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
-import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/add";
-
+import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
+import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -157,7 +157,11 @@ export const router = createBrowserRouter([
         element: <Admin_Account_huongdanvien />,
       },
       {
-        path: "account_huongdanvien/edit/:id",
+        path: "account_huongdanvien/add",
+        element: <Admin_Account_huongdanvienAdd />,
+      },
+      {
+        path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
       },
     ],
