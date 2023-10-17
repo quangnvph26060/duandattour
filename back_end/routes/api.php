@@ -53,6 +53,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiHuongDanVienController::class, 'show']);
         Route::put('/{id}', [ApiHuongDanVienController::class, 'update']);
         Route::delete('/{id}', [ApiHuongDanVienController::class, 'destroy']);
+        // Route::post('testmail',[ApiHuongDanVienController::class,'testMail']);
     });
     Route::prefix('diadiem')->group(function () {
         Route::get('/', [ApiDiaDiemController::class, 'index']);
