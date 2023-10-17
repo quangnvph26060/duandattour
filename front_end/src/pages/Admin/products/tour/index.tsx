@@ -132,10 +132,7 @@ const AdminProduct = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-<<<<<<< HEAD
-=======
                         
->>>>>>> quangnvph26060
                         <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
