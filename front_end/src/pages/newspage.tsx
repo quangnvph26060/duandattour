@@ -119,7 +119,7 @@ const News = () => {
       </div>
 
       {/* footer */}
-      <footer className='text-center py-5'>Footer</footer>
+      <footer className='text-center py-5'></footer>
     </div>
   )
 }
