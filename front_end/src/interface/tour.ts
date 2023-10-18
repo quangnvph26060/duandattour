@@ -18,7 +18,8 @@ export interface ITour {
     lich_khoi_hanh: string;
     thoi_gian: string;
     diem_khoi_hanh: string;
-    anh: string;
+    gia_tour:number;
+    mo_ta:string;
     soluong: number;
     trang_thai: number;
     ma_loai_tour: number;

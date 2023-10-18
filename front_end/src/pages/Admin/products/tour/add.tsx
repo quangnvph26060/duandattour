@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-
+import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 const { Option } = Select;
 
 type FieldType = {
@@ -21,8 +21,16 @@ type FieldType = {
 };
 
 const AdminTourAdd: React.FC = () => {
+  const { data: loaitourdata } = useGetLoaiTourQuery();
+  const loaitourArrary = loaitourdata?.data || [];
   const navigate = useNavigate();
-
+  const disabledDate = (current) => {
+    // Get the current date
+    const currentDate = new Date();
+  
+    // Disable dates before the current date
+    return current && current < currentDate.setHours(0, 0, 0, 0);
+  };
   const onFinish = (values: FieldType) => {
     // Handle form submission logic here
     console.log('Form values:', values);
@@ -87,7 +95,7 @@ const AdminTourAdd: React.FC = () => {
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
           label="Thời gian"
@@ -97,25 +105,28 @@ const AdminTourAdd: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Trạng thái"
-          name="trang_thai"
-          rules={[{ required: true, message: 'Vui lòng nhập trạng thái!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Mã loại tour"
+          label="Loại Tour"
           name="ma_loai_tour"
-          rules={[{ required: true, message: 'Vui lòng nhập mã loại tour!' }]}
+          rules={[
+            { required: true, message: 'Vui lòng Chọn Mã Loại Tour' },
+          ]}
         >
-          <Input />
+        <Select defaultValue="Chọn" style={{ width: 400,}}>
+          {loaitourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
+          ))}
+        </Select>
         </Form.Item>
         <Form.Item
           label="Mã hướng dẫn viên"
           name="ma_hdv"
           rules={[{ required: true, message: 'Vui lòng nhập mã hướng dẫn viên!' }]}
         >
-          <Input />
+           <Select defaultValue="Chọn" style={{ width: 400,}}>
+          {loaitourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
+          ))}
+        </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
@@ -124,7 +135,7 @@ const AdminTourAdd: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/product')}
+            onClick={() => navigate('/admin/tour')}
           >
             Quay lại
           </Button>

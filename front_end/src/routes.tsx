@@ -93,15 +93,15 @@ export const router = createBrowserRouter([
         element: <AdminLoai_tourEdit />,
       },
       {
-        path: "tour/dia_diem/",
+        path: "tour/diadiem/",
         element: <AdminDiadiem />,
       },
       {
-        path: "tour/dia_diem/add",
+        path: "tour/diadiem/add",
         element: <AdminDiadiem_ADD />,
       },
       {
-        path: "tour/dia_diem/edit/:id",
+        path: "tour/diadiem/edit/:iddiadiem",
         element: <AdminDiadiem_Edit />,
       },
       {

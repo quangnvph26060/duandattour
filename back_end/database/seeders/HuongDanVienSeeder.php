@@ -17,6 +17,7 @@ class HuongDanVienSeeder extends Seeder
             'ten_hd' => "Nguyễn Văn A",
             'email' => 'ABC@gmail.com',
             'password' => 'abc1234',
+            'password' => '123',
             'dia_chi' => 'Hà Nội',
             'sdt' => '098765432'
         ]);
