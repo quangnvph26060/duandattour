@@ -32,7 +32,7 @@ const TourPage = () => {
     <div className=''>
       <header>
         <div className='flex'>
-          <img style={rounded} src={logo} alt="logo" width="100px" />
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
           <nav className='p-4 pt-6 pl-20'>
 
             <ul className='flex gap-12'>
