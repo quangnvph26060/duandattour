@@ -87,31 +87,16 @@ const AdminProduct = (props: Props) => {
         <div>
            
             <header className="mb-4 flex justify-between items-center">
-<<<<<<< HEAD:front_end/src/pages/Admin/products/index.tsx
-                <h2 className="font-bold text-2xl">Quản lý sản phẩm</h2>
-                
-=======
                 <h2 className="font-bold text-2xl">Quản lý tour</h2>
->>>>>>> 31125e6a23a1cf83a79ad56a9235a54995f2c8a7:front_end/src/pages/Admin/products/tour/index.tsx
                 <Button type="primary" danger>
                     <Link to="/admin/tour/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-<<<<<<< HEAD:front_end/src/pages/Admin/products/index.tsx
-                    Thêm sản phẩm
-                    </Link>
-                </Button>
-            </header>
-            {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />}
-            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />} */}
-             <Table dataSource={columns} columns={columns} />;
-=======
                         Tạo mới tour
                     </Link>
                 </Button>
             </header>
             {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />} */}
             {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
->>>>>>> 31125e6a23a1cf83a79ad56a9235a54995f2c8a7:front_end/src/pages/Admin/products/tour/index.tsx
         </div>
     );
 };

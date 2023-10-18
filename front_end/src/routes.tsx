@@ -1,11 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
-<<<<<<< HEAD
-import News from "./pages/news";
-=======
 import News from "./pages/newspage";
->>>>>>> main
 // import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
@@ -51,11 +47,7 @@ export const router = createBrowserRouter([
 
 // ,
 //     {path: "/tour",element:<TourPage/>},
-<<<<<<< HEAD
-    {path: "/News",element:<News/>},
-=======
-{path: "/News",element:<News/>},
->>>>>>> main
+    {path: "/news",element:<News/>},
 //     {path: "/title",element:<TitelPage/>},
 //     {path: "/tour",element:<TourPage/>},
 {path: "/tour",element:<TourPage/>},
