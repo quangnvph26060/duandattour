@@ -35,6 +35,8 @@ import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
+import AdminImage from "./pages/Admin/products/Img";
+import AdmidImageADD from "./pages/Admin/products/Img/add";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -163,6 +165,14 @@ export const router = createBrowserRouter([
       {
         path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
+      },
+      {
+        path: "tour/image_tour",
+        element: <AdminImage />,
+      },
+      {
+        path: "tour/image_tour/add",
+        element: <AdmidImageADD />,
       },
     ],
   },
