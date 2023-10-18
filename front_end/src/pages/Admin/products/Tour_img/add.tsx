@@ -15,7 +15,7 @@ type FieldType = {
 
 
 
-const AdminDiadiem_ADD: React.FC = () => {
+const Admin_TourImgADD: React.FC = () => {
 
   const navigate = useNavigate();
   const { data: loaitourdata } = useGetLoaiTourQuery();
@@ -94,4 +94,4 @@ const AdminDiadiem_ADD: React.FC = () => {
   );
 };
 
-export default AdminDiadiem_ADD;
+export default Admin_TourImgADD;

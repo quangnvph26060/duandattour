@@ -9,7 +9,7 @@ const { Option } = Select;
 
 
 
-const AdminDiadiem_Edit: React.FC = () => {
+const Admin_TourImgEDit: React.FC = () => {
   const navigate = useNavigate();
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -44,7 +44,7 @@ const AdminDiadiem_Edit: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Chỉnh sửa đại điểm </h2>
+        <h2 className="font-bold text-2xl">Chỉnh sửa img </h2>
       </header>
       <Form
         className="tour-form"
@@ -56,41 +56,33 @@ const AdminDiadiem_Edit: React.FC = () => {
         autoComplete="off"
         form={form}
       >
-        <Form.Item
-          label="Tên Địa Điểm"
-          name="ten_dia_diem"
+      <Form.Item
+          label="Image_id"
+          name="image_id"
           rules={[
-            { required: true, message: 'Vui lòng nhập tên địa điểm!' },
-            { min: 3, message: 'Đại điểm tour ít nhất 3 ký tự' },
-          ]}
-          validateStatus={errors ? 'error' : ''}
-          help={errors}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Mô tả"
-          name="mo_ta"
-          rules={[
-            { required: true, message: 'Vui lòng mô tả' },
-            { min: 3, message: 'Mô tả ít nhất 3 ký tự' },
-          ]}
-        >
-        <Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} />
-        </Form.Item>
-        <Form.Item
-          label="Loại Tour"
-          name="ma_loai_tour"
-          rules={[
-            { required: true, message: 'Vui lòng Chọn Mã Loại Tour' },
+            { required: true, message: 'Vui lòng chọn image_id' },
           ]}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
           {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
+              <Option key={option.id} value={option.id}>{option.image_id}</Option>
           ))}
         </Select>
         </Form.Item>
+        <Form.Item
+          label="Tour_id"
+          name="tour_id"
+          rules={[
+            { required: true, message: 'Vui lòng tour id' },
+          ]}
+        >
+        <Select defaultValue="Chọn" style={{ width: 400,}}>
+          {loaitourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.tour_id}</Option>
+          ))}
+        </Select>
+        </Form.Item>
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Thêm
@@ -108,4 +100,4 @@ const AdminDiadiem_Edit: React.FC = () => {
   );
 };
 
-export default AdminDiadiem_Edit;
+export default Admin_TourImgEDit;
