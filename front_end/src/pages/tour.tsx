@@ -30,7 +30,6 @@ const TourPage = () => {
   // ]
   return (
     <div className=''>
-      ksjhdksahdksajh
       <header>
         <div className='flex'>
           <img style={rounded} src={logo} alt="logo" width="100px" />
