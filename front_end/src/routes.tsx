@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
-// import NewPage from "./pages/NewPage";
+import News from "./pages/newspage";
 // import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
@@ -45,14 +45,17 @@ export const router = createBrowserRouter([
     ),
   },
 
-  { path: "/tour", element: <TourPage /> },
-
-  { path: "/signin", element: <SignIn /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/:id/tour", element: <DetailPage /> },
-  { path: "/booktour", element: <BookTour /> },
-  { path: "/contact", element: <Contact /> },
-  { path: "/booking/:id", element: <Info_tour_bocking /> },
+// ,
+//     {path: "/tour",element:<TourPage/>},
+{path: "/News",element:<News/>},
+//     {path: "/title",element:<TitelPage/>},
+//     {path: "/tour",element:<TourPage/>},
+{path: "/tour",element:<TourPage/>},
+    {path: "/signin",element:<SignIn/>},
+    {path: "/signup",element:<Signup/>},
+   {path:"/:id/tour",element:<DetailPage/>},
+   {path:"/booktour",element:<BookTour/>},
+   {path:"/contact",element:<Contact/>},
   { path: "*", element: "Not Found Page" },
 
   {
