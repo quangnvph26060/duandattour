@@ -35,6 +35,12 @@ import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
+import AdminImage from "./pages/Admin/products/Img";
+import AdmidImageADD from "./pages/Admin/products/Img/add";
+import Admin_ImageEDit from "./pages/Admin/products/Img/edit";
+import Admin_TourImg from "./pages/Admin/products/Tour_img";
+import Admin_TourImgADD from "./pages/Admin/products/Tour_img/add";
+import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -164,6 +170,32 @@ export const router = createBrowserRouter([
       {
         path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
+      },
+      {
+        path: "tour/image_tour",
+        element: <AdminImage />,
+      },
+      {
+        path: "tour/image/add",
+        element: <AdmidImageADD />,
+      },
+      {
+        path: "tour/image/add",
+        element: <AdmidImageADD />,
+      },  {
+        path: "tour/image/edit/:id",
+        element: <Admin_ImageEDit />,
+      },
+      {
+        path: "tour/image_tour/",
+        element: <Admin_TourImg />,
+      },
+      {
+        path: "tour/image_tour/add",
+        element: <Admin_TourImgADD />,
+      },  {
+        path: "tour/image_tour/edit/:id",
+        element: <Admin_TourImgEDit />,
       },
     ],
   },
