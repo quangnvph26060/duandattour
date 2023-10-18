@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
-import News from "./pages/news";
+import News from "./pages/newspage";
 // import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
@@ -44,9 +44,10 @@ export const router = createBrowserRouter([
       </div>
     ),
   },
+
 // ,
 //     {path: "/tour",element:<TourPage/>},
-    {path: "/News",element:<News/>},
+    {path: "/news",element:<News/>},
 //     {path: "/title",element:<TitelPage/>},
 //     {path: "/tour",element:<TourPage/>},
 {path: "/tour",element:<TourPage/>},

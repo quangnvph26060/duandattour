@@ -212,6 +212,7 @@ const confirm = (id: any) => {
           {isLoading ? <Skeleton /> :  <Table dataSource={dataSource} columns={visibleColumnsData} />}
         </>
       )}
+           
         </div>
     );
 };
