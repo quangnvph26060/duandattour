@@ -1,44 +1,50 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert} from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
-import { useGetTourQuery } from "../../../../api/TourApi";
+import { useGetTourQuery ,useRemoveTourMutation} from "../../../../api/TourApi";
 import { useGetLoaiTourQuery} from "../../../../api/LoaiTourApi";
-import { useEffect ,useState} from "react";
+import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
+
+import {  useState} from "react";
 import { Select } from 'antd';
 
 const AdminProduct = (props: Props) => {
     const { Option } = Select;
-    const { data: loaitourdata } = useGetLoaiTourQuery();
-    const { data: tourdata, error, isLoading } = useGetTourQuery();
+    const { data: loaitourdata  } = useGetLoaiTourQuery();
+    const { data: huongdanviendata } = useGetHuongDanVienQuery();
+    const { data: tourdata , error, isLoading} = useGetTourQuery();
     const currentDate = new Date(); // Ngày hiện tại
-    // const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-    //     useRemoveProductMutation();
+    const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+    useRemoveTourMutation();
 
-    // const confirm = (_id: number) => {
-    //     removeProduct(_id);
-    // };
+const confirm = (id: any) => {
+    removeTour(id);
+};
 
     const tourArray = tourdata?.data || [];
     const loaitourArrary = loaitourdata?.data || [];
-    const dataSource = tourArray.map(({ id, ten_tour, gia_tour,mo_ta,soluong, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour) => ({
-        key: id,
-        soluong,
-        ten_tour,
-        diem_khoi_hanh,
-        diem_den,
-        gia_tour,
-        mo_ta,
-        diem_di,
-        lich_khoi_hanh,
-        thoi_gian,
-        trang_thai,
-        ma_loai_tour,
-        ma_hdv
-    }));
+    const huongdanvienArrary = huongdanviendata?.data || [];
+    const dataSource = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: any; mo_ta: any; diem_di: string; lich_khoi_hanh: string; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
+        return ({
+            key: id,
+            soluong,
+            ten_tour,
+            diem_khoi_hanh,
+            diem_den,
+            gia_tour,
+            mo_ta,
+            diem_di,
+            lich_khoi_hanh,
+            thoi_gian,
+            trang_thai,
+            ma_loai_tour,
+            ma_hdv
+        });
+    });
     
     const columns = [
         {
@@ -52,20 +58,21 @@ const AdminProduct = (props: Props) => {
             key: "ten_tour",
         },
         {
-            title: "Điểm đến",
-            dataIndex: "diem_den",
-            key: "diem_den",
-        },
-        {
             title: "Điểm đi",
             dataIndex:"diem_di",
             key: "diem_di",
         },
         {
+            title: "Điểm đến",
+            dataIndex: "diem_den",
+            key: "diem_den",
+        },
+       
+        {
             title: "Lịch Khởi Hành",
             dataIndex:"lich_khoi_hanh",
             key: "lich_khoi_hanh",
-            render: (lich_khoi_hanh) => {
+            render: (lich_khoi_hanh: string | number | Date) => {
                 const departureDate = new Date(lich_khoi_hanh);
                 return departureDate.toLocaleDateString('en-GB');
               },
@@ -95,7 +102,7 @@ const AdminProduct = (props: Props) => {
             title: 'Trạng Thái',
             dataIndex: 'trang_thai',
             key: 'trang_thai',
-            render: (trang_thai, record) => {
+            render: (trang_thai: any, record: { lich_khoi_hanh: string | number | Date; }) => {
               const departureDate = new Date(record.lich_khoi_hanh); // Ngày khởi hành từ dữ liệu
         
               if (departureDate < currentDate) {
@@ -109,6 +116,11 @@ const AdminProduct = (props: Props) => {
             title: "Người hướng dẫn viên",
             dataIndex:"ma_hdv",
             key: "ma_hdv",
+            render: (ma_hdv: number) => {
+                const hdv = huongdanvienArrary.find((item: { id: number; }) => item.id === ma_hdv);
+                return hdv ? hdv.ten_hd : "Không xác định";
+                
+              }
             
         },
         {
@@ -116,7 +128,7 @@ const AdminProduct = (props: Props) => {
             dataIndex:"ma_loai_tour",
             key: "ma_loai_tour",
             render: (ma_loai_tour: number) => {
-                const loaiTour = loaitourArrary.find((item) => item.id === ma_loai_tour);
+                const loaiTour = loaitourArrary.find((item: { id: number; }) => item.id === ma_loai_tour);
                 return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
                 
               }
@@ -155,7 +167,7 @@ const AdminProduct = (props: Props) => {
         },
     ];
     const [visibleColumns, setVisibleColumns] = useState(columns.map(column => column.key));
-    const handleColumnToggle = (columnKey) => {
+    const handleColumnToggle = (columnKey: string) => {
         if (visibleColumns.includes(columnKey)) {
           setVisibleColumns(visibleColumns.filter(key => key !== columnKey));
         } else {
@@ -195,7 +207,9 @@ const AdminProduct = (props: Props) => {
                 ))}
       </Select>
           </div>
-          <Table dataSource={dataSource} columns={visibleColumnsData} />
+          {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+         
+          {isLoading ? <Skeleton /> :  <Table dataSource={dataSource} columns={visibleColumnsData} />}
         </>
       )}
         </div>

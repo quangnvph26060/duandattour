@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
         element: <AdminTourAdd />,
       },
       {
-        path: "tour/edit/:id",
+        path: "tour/edit/:idtour",
         element: <AdminTourEdit />,
       },
       {
