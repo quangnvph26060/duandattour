@@ -51,19 +51,19 @@ export const router = createBrowserRouter([
     ),
   },
 
-// ,
-//     {path: "/tour",element:<TourPage/>},
-    {path: "/news",element:<News/>},
-//     {path: "/title",element:<TitelPage/>},
-//     {path: "/tour",element:<TourPage/>},
-{path: "/tour",element:<TourPage/>},
+  // ,
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/news", element: <News /> },
+  //     {path: "/title",element:<TitelPage/>},
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/tour", element: <TourPage /> },
 
-    {path: "/signin",element:<SignIn/>},
-    {path: "/signup",element:<Signup/>},
-   {path:"/:id/tour",element:<DetailPage/>},
-   {path:"/booktour",element:<BookTour/>},
-   {path:"/contact",element:<Contact/>},
-   {path:"/booking/:id",element:<Info_tour_bocking/>},
+  { path: "/signin", element: <SignIn /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/:id/tour", element: <DetailPage /> },
+  { path: "/booktour", element: <BookTour /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/booking/:id", element: <Info_tour_bocking /> },
   { path: "*", element: "Not Found Page" },
 
   {
@@ -137,7 +137,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "tour/loai_phuong_tien",
-        element: <ADmin_Phuontien  />,
+        element: <ADmin_Phuontien />,
       },
       {
         path: "tour/loai_phuong_tien/add",
@@ -171,31 +171,30 @@ export const router = createBrowserRouter([
         path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
       },
+      // {
+      //   path: "tour/image_tour",
+      //   element: <AdminImage />,
+      // },
+      //  {
+      //   path: "tour/image/add",
+      //   element: <AdmidImageADD />,
+      // },
+      //  {
+      //   path: "tour/image/edit/:id",
+      //   element: <Admin_ImageEDit />,
+      // },
+
+      // images
       {
-        path: "tour/image_tour",
+        path: "tour/image/",
         element: <AdminImage />,
       },
       {
         path: "tour/image/add",
         element: <AdmidImageADD />,
-      },
-      {
-        path: "tour/image/add",
-        element: <AdmidImageADD />,
-      },  {
+      }, {
         path: "tour/image/edit/:id",
         element: <Admin_ImageEDit />,
-      },
-      {
-        path: "tour/image_tour/",
-        element: <Admin_TourImg />,
-      },
-      {
-        path: "tour/image_tour/add",
-        element: <Admin_TourImgADD />,
-      },  {
-        path: "tour/image_tour/edit/:id",
-        element: <Admin_TourImgEDit />,
       },
     ],
   },

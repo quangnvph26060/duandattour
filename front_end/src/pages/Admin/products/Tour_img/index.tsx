@@ -4,9 +4,6 @@ type Props = {};
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-
-
-
 import { useGetLoaiTourQuery} from "../../../../api/LoaiTourApi";
 import { useEffect } from "react";
 const Admin_TourImg = (props: Props) => {
@@ -15,11 +12,11 @@ const Admin_TourImg = (props: Props) => {
   
    
     
-    const dataSource = tourArray.map(({ id, tour_id	, image_id }: I?) => ({
-        key: id,
-        tour_id	, image_id
+    // const dataSource = tourArray.map(({ id, tour_id	, image_id }: I?) => ({
+    //     key: id,
+    //     tour_id	, image_id
 
-    }));
+    // }));
     const columns = [
         {
             title: "ID ",
@@ -68,11 +65,11 @@ const Admin_TourImg = (props: Props) => {
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-2xl">Quản lý địa điểm</h2>
+                <h2 className="font-bold text-2xl">Quản lý hình ảnh </h2>
                 <Button type="primary" danger>
-                    <Link to="/admin/tour/diadiem/add" className="flex items-center space-x-2">
+                    <Link to="tour/image_tour/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-                        Tạo mới địa điểm
+                        Thêm ảnh mới 
                     </Link>
                 </Button>
             </header>

@@ -14,20 +14,20 @@ const Admin_ImageEDit: React.FC = () => {
  
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    form.setFieldsValue({
-      ten_loai_tour: LoaiTour.ten_loai_tour,
+  // useEffect(() => {
+  //   form.setFieldsValue({
+  //     ten_loai_tour: LoaiTour.ten_loai_tour,
    
-    });
-  }, [LoaiTour]);
+  //   });
+  // }, [LoaiTour]);
 
   const navigate = useNavigate();
 
-  const onFinish = (values: ILoaiTour) => {
-    updateLoaiTour({ ...values, id: idLoaiTour })
-      .unwrap()
-      .then(() => navigate("/admin/tour/loai_tour"));
-  };
+  // const onFinish = (values: ILoaiTour) => {
+  //   updateLoaiTour({ ...values, id: idLoaiTour })
+  //     .unwrap()
+  //     .then(() => navigate("/admin/tour/loai_tour"));
+  // };
 
   return (
     <div className="container">

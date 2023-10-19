@@ -13,8 +13,21 @@ class ApiImagesController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function getImage()
+    {
+        $files = Storage::files('public/hinh'); // Lấy danh sách tệp tin hình ảnh từ thư mục storage/app/public/
+
+        $imageUrls = [];
+        foreach ($files as $file) {
+            $url = Storage::url($file); // Lấy URL truy cập tới tệp tin
+            $imageUrls[] = $url;
+        }
+
+        return response()->json($imageUrls);
+    }
     public function index()
     {
+
         $images = ImageModel::all();
         return ImageResource::collection($images);
     }
@@ -53,25 +66,25 @@ class ApiImagesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, string $id)
-{
-    
-    $image = ImageModel::find($id);
+    public function update(Request $request, string $id)
+    {
 
-    if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
-        if ($image->image_path) {
-            Storage::delete('/public/' . $image->image_path);
+        $image = ImageModel::find($id);
+
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            if ($image->image_path) {
+                Storage::delete('/public/' . $image->image_path);
+            }
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+            $request->merge(['image_path' => $imagePath]);
+            // Cập nhật đường dẫn ảnh mới
+            $image->image_path = $imagePath;
         }
-        $imagePath = uploadFile('hinh', $request->file('hinh'));
-        $request->merge(['image_path' => $imagePath]);
-        // Cập nhật đường dẫn ảnh mới
-        $image->image_path = $imagePath;
+
+        $image->fill($request->except('hinh'))->save();
+
+        return response()->json($image);
     }
-
-    $image->fill($request->except('hinh'))->save();
-
-    return response()->json($image);
-}
 
     /**
      * Remove the specified resource from storage.
@@ -80,11 +93,11 @@ class ApiImagesController extends Controller
     {
         $image = ImageModel::find($id);
         if ($image) {
-          $image->delete();
-          Storage::delete('/public/' . $image->image_path);
-          return  response()->json([
-            'message' => 'Xóa Thành Công '
-        ], 201);
+            $image->delete();
+            Storage::delete('/public/' . $image->image_path);
+            return  response()->json([
+                'message' => 'Xóa Thành Công '
+            ], 201);
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thong tin'

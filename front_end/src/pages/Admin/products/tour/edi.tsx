@@ -43,8 +43,6 @@ const AdminTourEdit = () => {
       .catch((error) => {
         console.error(error);
       });
-
-
     if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
       && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.thoi_gian &&
       Tour.data.ma_hdv && Tour.data.lich_khoi_hanh  && Tour.data.soluong
@@ -82,7 +80,7 @@ const AdminTourEdit = () => {
   const onFinish = (values: ITour) => {
     updateTour({ ...values, id: idtour })
       .unwrap()
-      .then(() => navigate("/admin/tour/diadiem"))
+      .then(() => navigate("/admin/tour/"))
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);

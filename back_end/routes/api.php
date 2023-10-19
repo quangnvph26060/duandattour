@@ -13,6 +13,7 @@ use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,7 +31,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //api phương tiện
 Route::prefix('admin')->group(function () {
-    Route::apiResource('/images', ApiImagesController::class);
+   
+    Route::prefix('images')->group(function(){
+        Route::get('/images', [ApiImagesController::class, 'getImage']);
+        Route::get('/', [ApiImagesController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiImagesController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [ApiImagesController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiImagesController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiImagesController::class, 'destroy']); // xóa theo id
+    });
     Route::apiResource('/tour-images', ApiTourImageController::class);
    
     Route::prefix('phuongtien')->group(function () {
