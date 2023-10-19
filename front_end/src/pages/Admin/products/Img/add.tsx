@@ -17,7 +17,7 @@ type FieldType = {
 const AdmidImageADD: React.FC = () => {
   const [addimages] = useAddImagesMutation();
   const navigate = useNavigate();
-
+  const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const onFinish = (values: Iimages) => {
@@ -29,7 +29,28 @@ const AdmidImageADD: React.FC = () => {
           setLoading(false);
           
         });
+    console.log('Form values:', values);
+    console.log('Uploaded file:', fileList[0]);
   };
+  const customRequest = ({ file, onSuccess, onError }) => {
+    setTimeout(() => {
+      if (file.type === 'image/jpeg' || file.type === 'image/png') {
+        // Tải lên thành công
+        onSuccess(file);
+      } else {
+        // Lỗi tải lên
+        onError(new Error('Chỉ cho phép tải lên các tệp ảnh JPEG hoặc PNG.'));
+      }
+    }, 1000);
+  };
+  const onChange = (info) => {
+    setFileList(info.fileList);
+  };
+
+  const onRemove = (file) => {
+    setFileList([]);
+  };
+  
   return (
     <div className="container">
       <header className="mb-4">
@@ -44,19 +65,22 @@ const AdmidImageADD: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.Item
-          name="hinh"
-          label="Upload Image"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e.fileList}
-          rules={[
-            { required: true, message: 'Hãy chọn ảnh' },
-          ]}
+  <Form.Item
+        name="image"
+        label="Tải lên ảnh"
+        valuePropName="fileList"
+        getValueFromEvent={(e) => e.fileList}
+      >
+        <Upload
+          customRequest={customRequest}
+          fileList={fileList}
+          onChange={onChange}
+          onRemove={onRemove}
+          accept="image/jpeg, image/png"
         >
-          <Upload maxCount={1} accept="image/*">
-            <Button icon={<UploadOutlined />}>Select Image</Button>
-          </Upload>
-        </Form.Item>
+          <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+        </Upload>
+      </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
