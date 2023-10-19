@@ -37,7 +37,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [ApiImagesController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiImagesController::class, 'store']); //  thêm 1 phương tiện mới
         Route::get('/{id}', [ApiImagesController::class, 'show']); // lấy ra  id muốn sửa
-        Route::put('/{id}', [ApiImagesController::class, 'update']); // sủa theo id
+        Route::put('/upload/{id}', [ApiImagesController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiImagesController::class, 'destroy']); // xóa theo id
     });
     Route::apiResource('/tour-images', ApiTourImageController::class);

@@ -27,7 +27,7 @@ const ImagesApi = createApi({
         }),
         editImages:builder.mutation<Iimages,Iimages>({
             query:(images)=>({
-                url:`/images/${images.id}`,
+                url:`/images/upload/${images.id}`,
                 method: "PUT",
                 body:images
         }),

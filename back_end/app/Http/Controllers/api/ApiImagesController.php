@@ -87,7 +87,7 @@ class ApiImagesController extends Controller
     public function update(Request $request, string $id)
     {
         $image = ImageModel::find($id);
-    
+      
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             if ($image->image_path) {
                 Storage::delete('public/' . $image->image_path);

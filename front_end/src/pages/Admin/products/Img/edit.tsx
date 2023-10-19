@@ -1,89 +1,82 @@
 import React, { useEffect, useState } from 'react';
+import { Form, Input, Button } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetImagesByIdQuery, useEditImagesMutation } from '../../../../api/ImagesApi';
+import { useEditImagesMutation, useGetImagesByIdQuery } from '../../../../api/ImagesApi';
 import { Iimages } from '../../../../interface/images';
+import { Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 const Admin_ImageEdit: React.FC = () => {
-  const { idimage } = useParams<{ idimage: string }>();
-  const { data: ImageData } = useGetImagesByIdQuery(idimage || "");
-  const Image = ImageData || {};
-  const [updateImage] = useEditImagesMutation();
-  
-  const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  useEffect(() => {
-    if (Image.data && Image.data.image_path) {
-      setSelectedImage(null);
-    }
-  }, [Image]);
+  const { idimage } = useParams<{ idimage: any }>();
+  const { data: LoaiPhuongTienData } = useGetImagesByIdQuery(idimage || "");
+  const LoaiPhuongTien = LoaiPhuongTienData || {};
+  const [updateLoaiPhuongTien] = useEditImagesMutation();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [form] = Form.useForm();
+  console.log(LoaiPhuongTien.data?.image_path);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedImage(file);
-  };
+  useEffect(() => {
+    if (LoaiPhuongTien.data?.image_path) {
+      form.setFieldsValue({
+        image_path: LoaiPhuongTien.data.image_path,
+      });
+    }
+  }, [LoaiPhuongTien]);
+
+  const navigate = useNavigate();
 
   const onFinish = (values: Iimages) => {
-    if (selectedImage) {
-      const formData = new FormData();
-      formData.append('hinh', selectedImage);
-      formData.append('id', idimage);
-
-      updateImage(formData)
-        .unwrap()
-        .then(() => {
-          navigate('/admin/tour/image');
-        });
-    } else {
-      updateImage({ ...values, id: idimage })
-        .unwrap()
-        .then(() => {
-          navigate('/admin/tour/image');
-        });
-    }
+    updateLoaiPhuongTien({ ...values, id: idimage })
+      .unwrap()
+      .then(() => navigate("/admin/tour/image"))
+      .catch((error) => {
+        setErrors(error.data.message);
+        setLoading(false);
+      });
   };
 
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Chỉnh sửa ảnh tour</h2>
+        <h2 className="font-bold text-2xl">Sửa phương tiện </h2>
       </header>
-
-      {/* Hiển thị hình ảnh */}
-      {Image.data && Image.data.image_path && (
-        <img src={`http://localhost:8000/storage/${Image.data.image_path}`} alt="Hình ảnh" />
-      )}
-
-      <form
+      <Form
         className="tour-form"
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        onSubmit={onFinish}
+        onFinish={onFinish}
         autoComplete="off"
-        
+        form={form}
       >
-        <div>
-          <label htmlFor="hinh">Upload Image</label>
-          <input
-            type="file"
-           
-            name="hinh"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
+        <Form.Item
+          label="Upload Image"
+          name="hinh"
+        >
+          <Upload>
+            <Button icon={<UploadOutlined />}>Chọn tệp</Button>
+          </Upload>
+        </Form.Item>
 
-        <div>
-          <button type="submit">
-            Cập nhật
-          </button>
-          <button
-            type="button"
+        {LoaiPhuongTien.data?.image_path && (
+          <img  src={`http://localhost:8000/storage/${LoaiPhuongTien.data.image_path}`} alt="Hình ảnh" style={{ width: '100%', marginTop: '10px' }} />
+        )}
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Sửa
+          </Button>
+          <Button
+            type="default"
             className="ml-2"
             onClick={() => navigate('/admin/tour/image')}
           >
             Quay lại
-          </button>
-        </div>
-      </form>
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
