@@ -3,7 +3,7 @@ import { Iimages } from '../interface/images';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const ImagesApi = createApi({
-    reducerPath: 'Images',
+    reducerPath: 'images',
     tagTypes: ['Images'],
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000/api/admin",
@@ -18,18 +18,18 @@ const ImagesApi = createApi({
             providesTags: ['Images']
         }),
         addImages:builder.mutation<Iimages,Iimages>({
-            query:(Tour)=>({
+            query:(images)=>({
                 url:'/images',
                 method: "POST",
-                body:Tour
+                body:images
         }),
         invalidatesTags: ['Images']
         }),
         editImages:builder.mutation<Iimages,Iimages>({
-            query:(Tour)=>({
-                url:`/images/${Tour.id}`,
+            query:(images)=>({
+                url:`/images/${images.id}`,
                 method: "PUT",
-                body:Tour
+                body:images
         }),
         invalidatesTags: ['Images']
         }),

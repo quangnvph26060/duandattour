@@ -7,7 +7,7 @@ use App\Http\Resources\ImageResource;
 use App\Models\ImageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\DB;
 class ApiImagesController extends Controller
 {
     /**
@@ -15,15 +15,26 @@ class ApiImagesController extends Controller
      */
     public function getImage()
     {
-        $files = Storage::files('public/hinh'); // Lấy danh sách tệp tin hình ảnh từ thư mục storage/app/public/
-
-        $imageUrls = [];
+        $files = Storage::files('public/hinh'); 
+        $imageData = [];
         foreach ($files as $file) {
             $url = Storage::url($file); // Lấy URL truy cập tới tệp tin
-            $imageUrls[] = $url;
+            // Kiểm tra URL có tồn tại trong cơ sở dữ liệu hay không
+            $data = DB::table('images')
+            ->whereRaw("CONCAT('/storage/', image_path) = ?", [$url])->first();
+    
+            if ($data) {
+                // Nếu URL tồn tại, lấy ID từ cơ sở dữ liệu
+                $id = $data->id;
+                // Lưu ID và URL vào mảng
+                $imageData[] = [
+                    'id' => $id,
+                    'url' => $url
+                ];
+            }
         }
-
-        return response()->json($imageUrls);
+    
+        return response()->json($imageData);
     }
     public function index()
     {
@@ -37,15 +48,22 @@ class ApiImagesController extends Controller
      */
     public function store(Request $request)
     {
-
+         $image = []; // Initialize the $image variable
+    
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
-            $imagePath =   uploadFile('hinh', $request->file('hinh'));
-            $request->merge(['image_path' => $imagePath]);
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+            $image['image_path'] = $imagePath;
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
         }
-
-        $image = $request->all();
-        // trả về thông tin vừa thêm
-        return ImageModel::create($image);
+    
+        $createdImage = ImageModel::create($image);
+    
+        if (!$createdImage) {
+            return response()->json(['error' => 'Không thể thêm ảnh'], 500);
+        }
+    
+        return $createdImage;
     }
 
     /**
@@ -58,7 +76,7 @@ class ApiImagesController extends Controller
             return new ImageResource($image);
         } else {
             return  response()->json([
-                'message' => 'Không tìm thấy thong tin'
+                'message' => 'Không tìm thấy thông tin'
             ], 404);
         }
     }
@@ -68,21 +86,20 @@ class ApiImagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         $image = ImageModel::find($id);
-
+    
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             if ($image->image_path) {
-                Storage::delete('/public/' . $image->image_path);
+                Storage::delete('public/' . $image->image_path);
             }
-            $imagePath = uploadFile('hinh', $request->file('hinh'));
+            $imagePath = $request->file('hinh')->store('public');
             $request->merge(['image_path' => $imagePath]);
             // Cập nhật đường dẫn ảnh mới
             $image->image_path = $imagePath;
         }
-
+    
         $image->fill($request->except('hinh'))->save();
-
+    
         return response()->json($image);
     }
 
