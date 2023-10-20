@@ -125,11 +125,18 @@
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/back_end/vendor/webmozart/assert" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> main
+=======
+>>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
+>>>>>>> main
+=======
 >>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
 =======
 =======
 >>>>>>> quangnvph26060
 >>>>>>> khanvvph27281
+>>>>>>> main
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

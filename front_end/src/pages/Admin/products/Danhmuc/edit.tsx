@@ -1,28 +1,37 @@
-import React from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
-
-const { Option } = Select;
-
-type FieldType = {
-  id: number;
-  ten_loai_tour: string;
-
-};
+import React, { useEffect } from 'react';
+import { Form, Button, Input } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
+import { ILoaiTour } from '../../../../interface/loaiTour';
 
 const AdminLoai_tourEdit: React.FC = () => {
+  const { idLoaiTour } = useParams<{ idLoaiTour: any }>();
+  const { data: LoaiTourData } = useGetLoaiTourByIdQuery(idLoaiTour || "");
+  const LoaiTour = LoaiTourData || {};
+  const [updateLoaiTour] = useEditLoaiTourMutation();
+
+ 
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ten_loai_tour: LoaiTour.ten_loai_tour,
+   
+    });
+  }, [LoaiTour]);
+
   const navigate = useNavigate();
 
-  const onFinish = (values: FieldType) => {
-    // Handle form submission logic here
-    console.log('Form values:', values);
+  const onFinish = (values: ILoaiTour) => {
+    updateLoaiTour({ ...values, id: idLoaiTour })
+      .unwrap()
+      .then(() => navigate("/admin/tour/loai_tour"));
   };
 
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Tạo mới tour</h2>
+        <h2 className="font-bold text-2xl">Chỉnh sửa loại tour</h2>
       </header>
       <Form
         className="tour-form"
@@ -32,10 +41,11 @@ const AdminLoai_tourEdit: React.FC = () => {
         style={{ maxWidth: 600 }}
         onFinish={onFinish}
         autoComplete="off"
+        form={form}
       >
         <Form.Item
           label="Tên loại tour"
-          name="ten_loai tour"
+          name="ten_loai_tour"
           rules={[
             { required: true, message: 'Vui lòng nhập tên loại tour!' },
             { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
@@ -43,7 +53,7 @@ const AdminLoai_tourEdit: React.FC = () => {
         >
           <Input />
         </Form.Item>
-       
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Sửa

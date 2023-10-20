@@ -4,12 +4,15 @@ use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
 use App\Http\Controllers\Api\ApiDiaDiemController;
+use App\Http\Controllers\api\ApiImagesController;
 use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
+use App\Http\Controllers\api\ApiTourImageController;
 use App\Http\Controllers\api\ApiTourPhuongTienController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +31,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //api phương tiện
 Route::prefix('admin')->group(function () {
+   
+    Route::prefix('images')->group(function(){
+        Route::get('/images', [ApiImagesController::class, 'getImage']);
+        Route::get('/', [ApiImagesController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiImagesController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [ApiImagesController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiImagesController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiImagesController::class, 'destroy']); // xóa theo id
+    });
+    Route::apiResource('/tour-images', ApiTourImageController::class);
+   
     Route::prefix('phuongtien')->group(function () {
         Route::get('/', [ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
@@ -48,6 +62,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiHuongDanVienController::class, 'show']);
         Route::put('/{id}', [ApiHuongDanVienController::class, 'update']);
         Route::delete('/{id}', [ApiHuongDanVienController::class, 'destroy']);
+        // Route::post('testmail',[ApiHuongDanVienController::class,'testMail']);
     });
     Route::prefix('diadiem')->group(function () {
         Route::get('/', [ApiDiaDiemController::class, 'index']);

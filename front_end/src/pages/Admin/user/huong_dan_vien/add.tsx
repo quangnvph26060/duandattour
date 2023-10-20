@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button, Input, DatePicker, Select,Upload } from 'antd';
 import { AiOutlineLoading3Quarters,AiOutlineUpload } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
+import { useAddHuongDanVienMutation } from '../../../../api/HuongDanVienApi';
+import { IHuongDanVien } from '../../../../interface/huongDanVien';
 
 const { Option } = Select;
 
@@ -11,21 +13,23 @@ type FieldType = {
     email: string;
     dia_chi: string;
     sdt: string;
-    image:File | null
+    // image:File | null
 };
 
-const Admin_Account_huongdanvienEdit: React.FC = () => {
-  const navigate = useNavigate();
-
-  const onFinish = (values: FieldType) => {
- 
-    console.log('Form values:', values);
+const Admin_Account_huongdanvienAdd: React.FC = () => {
+    const [addHuongDanVien] = useAddHuongDanVienMutation();
+    const navigate = useNavigate();
+  
+    const onFinish = (values: IHuongDanVien) => {
+      addHuongDanVien(values)
+          .unwrap()
+          .then(() => navigate("/admin/account_huongdanvien"));
   };
 
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Tạo mới tour</h2>
+        <h2 className="font-bold text-2xl">Update hướng dẫn viên</h2>
       </header>
       <Form
         className="tour-form"
@@ -53,7 +57,7 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
 >
   <Input />
 </Form.Item>
-<Form.Item
+{/* <Form.Item
   label="Ảnh"
   name="image"
   rules={[{ required: true, message: 'Vui lòng chọn ảnh!' }]}
@@ -72,7 +76,7 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
   >
     <Button icon={<AiOutlineUpload />}>Chọn ảnh</Button>
   </Upload>
-</Form.Item>
+</Form.Item> */}
 <Form.Item
   label="Địa chỉ"
   name="dia_chi"
@@ -92,7 +96,7 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
 </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Sửa thông tin
+            Thêm hướng dẫn viên
           </Button>
           <Button
             type="default"
@@ -107,4 +111,4 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
   );
 };
 
-export default Admin_Account_huongdanvienEdit;
+export default Admin_Account_huongdanvienAdd;

@@ -45,7 +45,7 @@ const LayoutAdmin = () => {
                     <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
                 </Menu.Item>
                 <Menu.Item key="2-3">
-                    <Link to="/admin/tour/dia_diem">Địa điểm tour</Link>
+                    <Link to="/admin/tour/diadiem">Địa điểm tour</Link>
                 </Menu.Item>
                 <Menu.Item key="2-4">
                     <Link to="/admin/tour/lich_trinh">Lịch trình tour</Link>
@@ -56,6 +56,11 @@ const LayoutAdmin = () => {
                 <Menu.Item key="2-6">
                     <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
                 </Menu.Item>
+                <Menu.Item key="2-7">
+                    <Link to="/admin/tour/image/">Images Tour</Link>
+                </Menu.Item>
+               
+              
             </Menu.SubMenu>
             <Menu.SubMenu key="3" icon={<AiOutlineUser />}  title="Tài khoản">
                 <Menu.Item key="3-2">

@@ -14,7 +14,7 @@ class ApiDiaDiemController extends Controller
      */
     public function index()
     {
-      $diadiem = DiaDiemModel::all();
+      $diadiem = DiaDiemModel::orderBy('created_at', 'desc')->get();
       return DiaDiemResoure::collection($diadiem);
     }
 
@@ -23,9 +23,25 @@ class ApiDiaDiemController extends Controller
      */
     public function store(Request $request)
     {
-        $diadiem = DiaDiemModel::create($request->all());
-        // trả về thông tin vừa thêm
-        return new DiaDiemResoure($diadiem);
+        $result = DiaDiemModel::withTrashed()->where('ten_dia_diem', $request->ten_dia_diem)->first();
+        if ($result) {
+            if ($result->trashed()) {
+                $result->restore();
+                 $result->update($request->all());
+                return new DiaDiemResoure($result); 
+            }
+            return response()->json([
+                'message' => 'Địa Điểm đã tồn tại'
+            ], 404);
+        } else {
+            $diadiem = DiaDiemModel::create($request->all());
+    
+            $diadiemList = DiaDiemModel::orderBy('created_at', 'desc')->get();
+             $diadiemList->prepend($diadiem);
+
+        // Trả về danh sách địa điểm đã cập nhật
+        return DiaDiemResoure::collection($diadiemList);
+        }
     }   
 
     /**
@@ -48,15 +64,23 @@ class ApiDiaDiemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $diadiem = DiaDiemModel::find($id);
-        if ($diadiem) {
-          $diadiem->update($request->all());
-          return new DiaDiemResoure($diadiem);
-        } else {
-            return  response()->json([
-                'message' => 'Không tìm thấy thong tin'
+
+    $diadiem = DiaDiemModel::find($id);
+    if ($diadiem) {
+        $result = DiaDiemModel::where('ten_dia_diem', $request->ten_dia_diem)->first();
+        if ($result && $result->id !== $diadiem->id) {
+            return response()->json([
+                'message' => 'Địa Điểm đã tồn tại trong bảng'
             ], 404);
+        } else {
+            $diadiem->update($request->all());
+            return new DiaDiemResoure($diadiem);
         }
+    } else {
+        return response()->json([
+            'message' => 'Không tìm thấy thông tin'
+        ], 404);
+    }
     }
 
     /**

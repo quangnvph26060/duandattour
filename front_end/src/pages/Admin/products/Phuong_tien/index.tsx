@@ -1,14 +1,39 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
+
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-
-
+import { useGetLoaiPhuongTienQuery ,useRemoveLoaiPhuongTienMutation} from "../../../../api/LoaiPhuongTienApi";
+import { ILoaiPhuongTien  } from "../../../../interface/loaiphuongtien";
+import { useEffect } from "react";
 const ADmin_Phuontien = (props: Props) => {
 
+    const { data: phuongtiendata, error, isLoading } = useGetLoaiPhuongTienQuery();
    
+    const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+    useRemoveLoaiPhuongTienMutation();
+
+    const confirm = (id: any) => {
+        if(!window.confirm('bạn có muốn xóa không ')){
+            return 
+        }
+        removeProduct(id);
+        
+    };
+    const navigate = useNavigate();
+    useEffect(()=>{
+       
+    },[navigate])
+   
+    const tourArray = phuongtiendata?.data || [];
+    
+    const dataSource = tourArray.map(({ id,loai_phuong_tien}: ILoaiPhuongTien) => ({
+        key: id,
+        loai_phuong_tien
+    }));
+    
    
     
  
@@ -16,8 +41,8 @@ const ADmin_Phuontien = (props: Props) => {
     const columns = [
         {
             title: "ID",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "key",
+            key: "key",
         },
         {
             title: "Loại phương tiện",
@@ -64,7 +89,8 @@ const ADmin_Phuontien = (props: Props) => {
                     </Link>
                 </Button>
             </header>
-         
+            {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>
     );
 };

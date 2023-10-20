@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { useAddLoaiTourMutation } from '../../../../api/LoaiTourApi';
+import { ILoaiTour } from '../../../../interface/loaiTour';
 
 const { Option } = Select;
 
@@ -12,13 +14,14 @@ type FieldType = {
 };
 
 const AdminLoai_tourADD: React.FC = () => {
+  const [addLoaiTour] = useAddLoaiTourMutation();
   const navigate = useNavigate();
 
-  const onFinish = (values: FieldType) => {
-    // Handle form submission logic here
-    console.log('Form values:', values);
-  };
-
+  const onFinish = (values: ILoaiTour) => {
+    addLoaiTour(values)
+        .unwrap()
+        .then(() => navigate("/admin/tour/loai_tour"));
+};
   return (
     <div className="container">
       <header className="mb-4">
@@ -35,7 +38,7 @@ const AdminLoai_tourADD: React.FC = () => {
       >
         <Form.Item
           label="Tên loại tour"
-          name="ten_loai tour"
+          name="ten_loai_tour"
           rules={[
             { required: true, message: 'Vui lòng nhập tên loại tour!' },
             { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
@@ -51,7 +54,7 @@ const AdminLoai_tourADD: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/loai_tour')}
           >
             Quay lại
           </Button>

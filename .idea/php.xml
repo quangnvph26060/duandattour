@@ -125,38 +125,13 @@
       <path value="$PROJECT_DIR$/back_end/vendor/laravel/prompts" />
     </include_path>
   </component>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 2366e2f4046812ed7e1169c0fba6051c8e9eb903
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> khanvvph27281
-<<<<<<< HEAD
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
-=======
->>>>>>> quangnvph26060
-<<<<<<< HEAD
->>>>>>> d61c0fbf276cbbd1ba3f72a382b89aba74040e9d
-<<<<<<< HEAD
->>>>>>> 778a326cdc72498c9d843a3bc4ead4336dac0f2c
-=======
-=======
-=======
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
->>>>>>> quangnvph26060
->>>>>>> khanvvph27281
->>>>>>> 2366e2f4046812ed7e1169c0fba6051c8e9eb903
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/back_end/phpunit.xml" custom_loader_path="$PROJECT_DIR$/back_end/vendor/autoload.php" use_configuration_file="true" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/back_end/vendor/autoload.php" />
     </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
