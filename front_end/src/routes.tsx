@@ -196,6 +196,10 @@ export const router = createBrowserRouter([
         path: "tour/image/edit/:id",
         element: <Admin_ImageEDit />,
       },
+      {
+        path: "tour/image/edit/:id",
+        element: <Admin_ImageEDit />,
+      },
     ],
   },
 ]);
