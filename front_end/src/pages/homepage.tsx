@@ -181,7 +181,7 @@ const names =[
   const products = [
     {
       id: 1,
-      name: 'Vịnh Hạ Long',
+      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: sl,
       price: 99.99,
       details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
@@ -190,16 +190,16 @@ const names =[
     },
     {
       id: 2,
-      name: 'Đảo Cát Bà',
+      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: bb,
       price: 149.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách     Mã tour:vNNSGN192-037-051023QH-V Nơi khởi hành: TP. Hồ Chí Minh',
+      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách  ',
       code:'  Mã tour:vNNSGN192-037-051023QH-V ',
-      start:'Nơi khởi hành: TP. Hồ Chí Minh'
+      start:'Nơi khởi hành: Hà Nội'
     },
     {
       id: 3,
-      name: 'Quảng Bình',
+      name: 'Trung Quốc: Côn Minh - Đại Lý - Shangrila - Lệ Giang - Thạch Lâm - Côn Minh',
       image: aa,
       price: 199.99,
       details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
@@ -390,51 +390,68 @@ border-[3px] px-2 py-2  rounded" />
       
       <div className="content">
       <h2 className='mt-5 mb-5 home-page__title'>ƯU ĐÃI TPUR GIỜ CHÓT!</h2>
-        <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <div key={product.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
-
-              <img
-                className="mt-4 rounded-lg w-full h-40 object-cover"
-                src={product.image}
-                alt={product.name}
-              />
-              <div className="product-details mt-4">
-          <Link to="/:id/tour"> <h3 className="text-lg font-bold">{product.name}</h3></Link>
-                <p className="text-gray-600">${product.price.toFixed(2)}</p>
-                <p>{product.details}</p>
-                <p>{product.code}</p>
-                <button className="mt-4 text-center bg-blue-500 text-white py-2 px-4 rounded ">
-                còn 00 ngày 1:50:40
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  {products.map((product) => (
+    <div key={product.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
+      <img
+        className="mt-4 rounded-lg w-full h-60 object-cover"
+        src={product.image}
+        alt={product.name}
+      />
+      <div className="product-details mt-4">
+        <Link to="/:id/tour">
+          <h3 className="text-lg font-bold">{product.name}</h3>
+        </Link>
+        <p className="text-gray-600">${product.price.toFixed(2)}</p>
+        <p>{product.details}</p>
+        <p>{product.code}</p>
+        <p>{product.start}</p>
+        <button  style={{backgroundColor:'red',float:"right",borderRadius:'5px'}} className='py-2 px-2 text-white mt-5' >Giảm 6%</button>
+        <button className="mt-4 w-full text-center bg-blue-400 text-white py-2 px-4 rounded">
+          còn 00 ngày 1:50:40
+        </button>
+        
+    
+      </div>
+    </div>
+  ))}
+</div>
       </div>
 {/*  */}
 
-<div className="content"><h2 className='mt-5 mb-5 home-page__title'>ƯU ĐÃI TPUR GIỜ CHÓT!</h2>
-  <div className="product-list overflow-x-auto">
-    {sales.map((sale) => (
-      <div key={sale.id} className="bg-gray-100 p-4 mt-5 rounded-lg flex items-center mx-4">
-        <img
-          className="rounded-lg w-40 h-40 object-cover"
-          src={sale.image}
-          alt={sale.name}
-        />
-        <div className="ml-4">
-          <h3 className="text-lg font-bold">{sale.name}</h3>
-          <p className="text-gray-600">${sale.price.toFixed(2)}</p>
-          <p>{sale.details}</p>
-          <p>{sale.code}</p>
-          <button className="mt-4 text-center bg-red-500 text-white py-2 px-4 rounded">
-            Xem Thêm Về Thông Tin Vé
+<div className="content"><h2 className='mt-5 mb-5 home-page__title'>ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
+<div className="product-list overflow-x-auto">
+  {sales.map((sale) => (
+    <div key={sale.id} className="bg-gray-100 p-4 mt-5 rounded-lg flex items-center mx-4">
+      <img
+        className="rounded-lg w-60 h-80 object-cover"
+        src={sale.image}
+        alt={sale.name}
+      />
+      <div className="ml-4 flex-grow">
+        <button style={{backgroundColor:'#2d4271'}} className="ml-2 text-center  text-white py-2 mb-3 px-4 rounded">
+          Vé máy bay + Khách sạn
+        </button>
+        <h3 className="text-lg font-bold">{sale.name}</h3>
+        <p className="text-gray-600">${sale.price.toFixed(2)}</p>
+        <p>{sale.details}</p>
+        <p>{sale.code}</p>
+        <div className="flex justify-between mt-4">
+          <button className="mr-2 text-center bg-white text-blue-500 py-2 px-4 rounded">
+            Ngày Khác
           </button>
+          <div className="flex">
+           
+            <button className="text-center bg-blue-500 text-white py-2 px-4 rounded">
+              Đặt Ngay
+            </button>
+            
+          </div>
         </div>
       </div>
-    ))}
-  </div>
+    </div>
+  ))}
+</div>
 </div>
 
 {/*  */}
@@ -450,7 +467,7 @@ border-[3px] px-2 py-2  rounded" />
                 
               />
               <div className="product-details mt-4">
-                <h3 className="text-lg font-bold">{destination.name}</h3>
+                <h3 style={{color:'#2d4271'}} className="text-lg font-bold">{destination.name}</h3>
                 
                 <p>{destination.details}</p>
           
