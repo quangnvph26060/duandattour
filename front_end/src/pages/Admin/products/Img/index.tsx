@@ -25,6 +25,7 @@ const AdminImage = () => {
   };
 
   const tourArray = imagesdata || [];
+
   
   
   const dataSource = tourArray.map(({ id, url }) => ({
@@ -82,7 +83,7 @@ const AdminImage = () => {
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
-        <h2 className="font-bold text-2xl">Quản lý ảnh tour</h2>
+        <h2 className="font-bold text-2xl">Danh Sách Ảnh</h2>
         <Button type="primary" danger>
           <Link to="/admin/tour/image/add" className="flex items-center space-x-2">
             <AiOutlinePlus />

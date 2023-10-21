@@ -13,6 +13,8 @@ const AdmidImageADD: React.FC = () => {
     const form = event.currentTarget;
     const fileInput = form.elements.namedItem('hinh') as HTMLInputElement;
     const selectedFile = fileInput.files[0];
+    console.log(selectedFile);
+    
     setLoading(true);
     try {
       const formData = new FormData();

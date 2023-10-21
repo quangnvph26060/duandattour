@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\TourImagesModel;
 class ImageModel extends Model
 {
     use HasFactory , SoftDeletes;
@@ -13,4 +14,8 @@ class ImageModel extends Model
         'image_path',
        
     ];
+    public function tourImages()
+    {
+        return $this->hasMany(TourImagesModel::class);
+    }
 }

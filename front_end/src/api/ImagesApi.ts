@@ -27,8 +27,8 @@ const ImagesApi = createApi({
         }),
         editImages:builder.mutation<Iimages,Iimages>({
             query:(images)=>({
-                url:`/images/upload/${images.id}`,
-                method: "PUT",
+                url:`images/edit/${images.id}`,
+                method: "POST",
                 body:images
         }),
         invalidatesTags: ['Images']

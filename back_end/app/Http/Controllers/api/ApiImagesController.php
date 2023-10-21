@@ -8,6 +8,7 @@ use App\Models\ImageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+
 class ApiImagesController extends Controller
 {
     /**
@@ -15,14 +16,14 @@ class ApiImagesController extends Controller
      */
     public function getImage()
     {
-        $files = Storage::files('public/hinh'); 
+        $files = Storage::files('public/hinh');
         $imageData = [];
         foreach ($files as $file) {
             $url = Storage::url($file); // Lấy URL truy cập tới tệp tin
             // Kiểm tra URL có tồn tại trong cơ sở dữ liệu hay không
             $data = DB::table('images')
-            ->whereRaw("CONCAT('/storage/', image_path) = ?", [$url])->first();
-    
+                ->whereRaw("CONCAT('/storage/', image_path) = ?", [$url])->first();
+
             if ($data) {
                 // Nếu URL tồn tại, lấy ID từ cơ sở dữ liệu
                 $id = $data->id;
@@ -33,7 +34,7 @@ class ApiImagesController extends Controller
                 ];
             }
         }
-    
+
         return response()->json($imageData);
     }
     public function index()
@@ -48,21 +49,21 @@ class ApiImagesController extends Controller
      */
     public function store(Request $request)
     {
-         $image = []; // Initialize the $image variable
-    
+        $image = []; // Initialize the $image variable
+
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             $imagePath = uploadFile('hinh', $request->file('hinh'));
             $image['image_path'] = $imagePath;
         } else {
             return response()->json(['error' => 'Invalid file or file upload failed'], 500);
         }
-    
+
         $createdImage = ImageModel::create($image);
-    
+
         if (!$createdImage) {
             return response()->json(['error' => 'Không thể thêm ảnh'], 500);
         }
-    
+
         return $createdImage;
     }
 
@@ -86,21 +87,17 @@ class ApiImagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $image = ImageModel::find($id);
-      
-        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
-            if ($image->image_path) {
-                Storage::delete('public/' . $image->image_path);
-            }
-            $imagePath = $request->file('hinh')->store('public');
-            $request->merge(['image_path' => $imagePath]);
-            // Cập nhật đường dẫn ảnh mới
+        $image = ImageModel::findOrFail($id);
+    
+        if ($request->hasFile('hinh')) {
+            $uploadedImage = $request->file('hinh');
+            $imagePath = uploadFile('hinh', $uploadedImage);
             $image->image_path = $imagePath;
         }
     
-        $image->fill($request->except('hinh'))->save();
+        $image->save();
     
-        return response()->json($image);
+        return response()->json(['message' => 'Ảnh đã được cập nhật thành công', 'image' => $image]);
     }
 
     /**

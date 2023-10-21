@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('soluong');
             $table->tinyInteger('trang_thai')->default(0);
             $table->foreignId('ma_loai_tour')->constrained('loai_tour');
-            $table->foreignId('ma_hdv')->constrained('huong_dan_vien');
+          
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,10 +4,21 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TourImagesModel;
+use App\Models\TourModel;
 use Illuminate\Http\Request;
 
 class ApiTourImageController extends Controller
 {
+    public function showOneTour($id)
+    {
+        $tour = TourModel::with('tourImages.image')->find($id);
+
+        if (!$tour) {
+            return response()->json(['message' => 'Tour not found'], 404);
+        }
+
+        return response()->json($tour);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +37,12 @@ class ApiTourImageController extends Controller
         //     'tour_id' => 'required|exists:tour,id',
         //     'image_path' => 'required|string',
         // ]);
-
+        $existingRecord = TourImagesModel::where('tour_id', $request->tour_id)
+            ->where('image_id', $request->image_id)
+            ->first();
+        if ($existingRecord) {
+            return response()->json(['message' => 'Ảnh đã có trong tour này'], 404);
+        }
         $tourImage = TourImagesModel::create($request->all());
         return response()->json($tourImage, 201);
     }
@@ -49,18 +65,24 @@ class ApiTourImageController extends Controller
     public function update(Request $request, string $id)
     {
         $tourImage = TourImagesModel::find($id);
-        
-        if (!$tourImage) {
-            return response()->json(['message' => 'Tour image not found'], 404);
+        if ($tourImage) {
+            $existingRecord = TourImagesModel::where('tour_id', $request->tour_id)
+                ->where('image_id', $request->image_id)
+                ->first();
+            if ($existingRecord) {
+                return response()->json([
+                    'message' => 'Ảnh Tour đã tồn tại'
+                ], 404);
+            } else {
+                $tourImage->update($request->all());
+                return response()->json($tourImage);
+            }
+        }else{
+            return response()->json([
+                'message' => 'Không tìm thấy thông tin'
+            ], 404);
         }
 
-        // $request->validate([
-        //     'tour_id' => 'required|exists:tours,id',
-        //     'image_path' => 'required|string',
-        // ]);
-
-        $tourImage->update($request->all());
-        return response()->json($tourImage);
     }
 
     /**
@@ -72,7 +94,7 @@ class ApiTourImageController extends Controller
         if (!$tourImage) {
             return response()->json(['message' => 'Tour image not found'], 404);
         }
-        
+
         $tourImage->delete();
         return response()->json(['message' => 'Tour image deleted']);
     }

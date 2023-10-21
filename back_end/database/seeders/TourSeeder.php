@@ -26,7 +26,7 @@ class TourSeeder extends Seeder
             'soluong' =>  3,
             'trang_thai' => '0',
             'ma_loai_tour' => '1',
-            'ma_hdv' => '1',
+         
         ]);
     }
 }

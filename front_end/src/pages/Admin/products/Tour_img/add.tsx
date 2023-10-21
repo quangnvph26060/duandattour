@@ -2,9 +2,11 @@ import React ,{useState}from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
-import { useAddDiaDiemMutation, useRemoveDiaDiemMutation } from "../../../../api/DiaDiemApi";
-import { IDiaDiem } from "../../../../interface/diadiem";
+
+import { useGetTourQuery } from "../../../../api/TourApi";
+import { useGetImagesQuery } from '../../../../api/ImagesApi';
+import { useAddTourImagesMutation } from '../../../../api/TourImagesApi';
+import { ITourImages } from '../../../../interface/tourimages';
 const { Option } = Select;
 
 type FieldType = {
@@ -18,17 +20,18 @@ type FieldType = {
 const Admin_TourImgADD: React.FC = () => {
 
   const navigate = useNavigate();
-  const { data: loaitourdata } = useGetLoaiTourQuery();
-  const loaitourArrary = loaitourdata?.data || [];
- 
+  const { data: tourdata } = useGetTourQuery();
+  const tourArrary = tourdata?.data || [];
+  const { data: imgdata } = useGetImagesQuery();
+  const imgArrary = imgdata || [];
 
-  const [addDiaDiem] = useAddDiaDiemMutation();
+  const [addTourImage] = useAddTourImagesMutation();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
-  const onFinish = (values: IDiaDiem) => {
-    addDiaDiem(values)
+  const onFinish = (values: ITourImages) => {
+    addTourImage(values)
         .unwrap()
-        .then(() => navigate("/admin/tour/diadiem"))
+        .then(() => navigate("/admin/tour/image_tour"))
         .catch((error) => {
           setErrors(error.data.message);
           setLoading(false);
@@ -39,7 +42,7 @@ const Admin_TourImgADD: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Tạo mới tour_img </h2>
+        <h2 className="font-bold text-2xl">Thêm ảnh cho một tour </h2>
       </header>
       <Form
         className="tour-form"
@@ -51,28 +54,30 @@ const Admin_TourImgADD: React.FC = () => {
         autoComplete="off"
       >
        <Form.Item
-          label="Image_id"
+          label="Image"
           name="image_id"
           rules={[
-            { required: true, message: 'Vui lòng chọn image_id' },
+            { required: true, message: 'Vui lòng chọn ảnh' },
           ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.image_id}</Option>
+          {imgArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.id}</Option>
           ))}
         </Select>
         </Form.Item>
         <Form.Item
-          label="Tour_id"
+          label="Tour"
           name="tour_id"
           rules={[
-            { required: true, message: 'Vui lòng tour id' },
+            { required: true, message: 'Vui lòng chọn tour ' },
           ]}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.tour_id}</Option>
+          {tourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
           ))}
         </Select>
         </Form.Item>
@@ -84,7 +89,7 @@ const Admin_TourImgADD: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/image_tour')}
           >
             Quay lại
           </Button>

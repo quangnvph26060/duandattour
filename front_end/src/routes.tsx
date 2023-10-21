@@ -171,18 +171,18 @@ export const router = createBrowserRouter([
         path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
       },
-      // {
-      //   path: "tour/image_tour",
-      //   element: <AdminImage />,
-      // },
-      //  {
-      //   path: "tour/image/add",
-      //   element: <AdmidImageADD />,
-      // },
-      //  {
-      //   path: "tour/image/edit/:id",
-      //   element: <Admin_ImageEDit />,
-      // },
+      {
+        path: "tour/image_tour",
+        element: <Admin_TourImg />,
+      },
+       {
+        path: "tour/image_tour/add",
+        element: <Admin_TourImgADD />,
+      },
+       {
+        path: "tour/image_tour/edit/:idtourimage",
+        element: <Admin_TourImgEDit />,
+      },
 
       // images
       {
