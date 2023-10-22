@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('loai_phuong_tien', function (Blueprint $table) {
             $table->id();
-            $table->string('loai_phuong_tien');
+            $table->string('loai_phuong_tien')->unique();
             $table->softDeletes();
             $table->timestamps();
         });

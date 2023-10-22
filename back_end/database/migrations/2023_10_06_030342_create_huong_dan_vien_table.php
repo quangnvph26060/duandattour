@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ten_hd');
             $table->string('email')->unique();
+            $table->string('password');
             $table->string('dia_chi');
             $table->string('sdt');
             $table->timestamps();

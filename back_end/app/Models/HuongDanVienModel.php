@@ -14,6 +14,7 @@ class HuongDanVienModel extends Model
     protected $fillable = [
         'ten_hd',
         'email',
+        'password',
         'dia_chi',
         'sdt'
     ];
