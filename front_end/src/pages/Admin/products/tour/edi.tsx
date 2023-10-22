@@ -45,7 +45,7 @@ const AdminTourEdit = () => {
       });
     if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
       && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.thoi_gian &&
-      Tour.data.ma_hdv && Tour.data.lich_khoi_hanh  && Tour.data.soluong
+      Tour.data.lich_khoi_hanh  && Tour.data.soluong
 
     ) {
       form.setFieldsValue({
@@ -57,7 +57,7 @@ const AdminTourEdit = () => {
         ten_tour: Tour.data.ten_tour,
         diem_khoi_hanh: Tour.data.diem_khoi_hanh,
         thoi_gian: Tour.data.thoi_gian,
-        ma_hdv: Tour.data.ma_hdv,
+     
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
         soluong: Tour.data.soluong,
 
@@ -208,18 +208,7 @@ const AdminTourEdit = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="Mã hướng dẫn viên"
-          name="ma_hdv"
-          rules={[{ required: true, message: "Vui lòng nhập mã hướng dẫn viên!" }]}
-        >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
-            {huongdanvienArrary.map((option: { id: React.Key | null | undefined; ten_hd: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-              <Option key={option.id} value={option.id}>{option.ten_hd}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-
+        
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" danger htmlType="submit"
