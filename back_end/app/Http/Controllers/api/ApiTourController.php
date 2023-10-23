@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TourResoure;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class ApiTourController extends Controller
 {
     /**
@@ -22,9 +22,12 @@ class ApiTourController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $tour =TourModel::create($request->all());
-        // trả về thông tin vừa thêm
+    {  
+        $lich_khoi_hanh = Carbon::parse($request->lich_khoi_hanh)->format('Y-m-d');
+        $requestData = $request->all();
+        $requestData['lich_khoi_hanh'] = $lich_khoi_hanh;
+        $tour = TourModel::create($requestData);
+        // Trả về thông tin vừa thêm
         return new TourResoure($tour);
     }
 

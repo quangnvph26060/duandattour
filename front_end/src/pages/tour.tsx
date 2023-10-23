@@ -36,7 +36,7 @@ const TourPage = () => {
           <nav className='p-4 pt-6 pl-20'>
 
             <ul className='flex gap-12'>
-              <a href="">Du lịch hgjhgjh</a>
+              <a href="">Du lịch</a>
               <a href="">Vận chuyển</a>
               <a href="">Tin tức</a>
               <a href="">Khuyến mãi</a>
@@ -91,7 +91,8 @@ const TourPage = () => {
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
-          <div className='flex gap-2 py-2 px-11'>
+          
+          <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
             </div>
@@ -99,7 +100,7 @@ const TourPage = () => {
               <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>4 đến 7 ngày</button>
             </div>
           </div>
-          <div className='flex gap-2 py-2 px-11'>
+          <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>8 đến 14 ngày</button>
             </div>
@@ -112,7 +113,7 @@ const TourPage = () => {
             <input className='pl-7 pr-12 w-56 h-10 rounded-lg' type="date" name="date" id="" />
           </div>
           <p className='px-3 text-lg font-medium py-1'>Số người</p>
-          <div className='flex gap-2 py-2 px-14'>
+          <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>1 người</button>
             </div>
@@ -120,7 +121,7 @@ const TourPage = () => {
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>2 người</button>
             </div>
           </div>
-          <div className='flex gap-2 px-14'>
+          <div className='flex gap-2 container justify-center'>
             <div className=''>
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>3 - 5 người</button>
             </div>
@@ -129,7 +130,7 @@ const TourPage = () => {
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Dòng Tour</p>
-          <div className='flex gap-2 py-2 px-14'>
+          <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Cao cấp</button>
             </div>
@@ -137,7 +138,7 @@ const TourPage = () => {
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiêu chuẩn</button>
             </div>
           </div>
-          <div className='flex gap-2 px-14'>
+          <div className='flex gap-2 container justify-center'>
             <div className=''>
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiết kiệm</button>
             </div>
@@ -152,7 +153,7 @@ const TourPage = () => {
           </div>
           <p className='px-3'>0đ - 200.000.000đ</p>
           <p className='px-3 text-lg font-medium py-1'>Thông tin vận chuyển</p>
-          <div className='flex gap-3 py-1 pt-2 px-14'>
+          <div className='flex gap-3 py-1 pt-2 container justify-center'>
             <div className=''>
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Máy bay</button>
             </div>

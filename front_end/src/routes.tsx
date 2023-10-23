@@ -33,8 +33,14 @@ import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
 import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
-import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/add";
-
+import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
+import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
+import AdminImage from "./pages/Admin/products/Img";
+import AdmidImageADD from "./pages/Admin/products/Img/add";
+import Admin_ImageEDit from "./pages/Admin/products/Img/edit";
+import Admin_TourImg from "./pages/Admin/products/Tour_img";
+import Admin_TourImgADD from "./pages/Admin/products/Tour_img/add";
+import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,17 +51,19 @@ export const router = createBrowserRouter([
     ),
   },
 
-// ,
-//     {path: "/tour",element:<TourPage/>},
-{path: "/News",element:<News/>},
-//     {path: "/title",element:<TitelPage/>},
-//     {path: "/tour",element:<TourPage/>},
-{path: "/tour",element:<TourPage/>},
-    {path: "/signin",element:<SignIn/>},
-    {path: "/signup",element:<Signup/>},
-   {path:"/:id/tour",element:<DetailPage/>},
-   {path:"/booktour",element:<BookTour/>},
-   {path:"/contact",element:<Contact/>},
+  // ,
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/news", element: <News /> },
+  //     {path: "/title",element:<TitelPage/>},
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/tour", element: <TourPage /> },
+
+  { path: "/signin", element: <SignIn /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/:id/tour", element: <DetailPage /> },
+  { path: "/booktour", element: <BookTour /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/booking/:id", element: <Info_tour_bocking /> },
   { path: "*", element: "Not Found Page" },
 
   {
@@ -73,7 +81,7 @@ export const router = createBrowserRouter([
         element: <AdminTourAdd />,
       },
       {
-        path: "tour/edit/:id",
+        path: "tour/edit/:idtour",
         element: <AdminTourEdit />,
       },
       {
@@ -85,19 +93,19 @@ export const router = createBrowserRouter([
         element: <AdminLoai_tourADD />,
       },
       {
-        path: "tour/loai_tour/edit/:id",
+        path: "tour/loai_tour/edit/:idLoaiTour",
         element: <AdminLoai_tourEdit />,
       },
       {
-        path: "tour/dia_diem/",
+        path: "tour/diadiem/",
         element: <AdminDiadiem />,
       },
       {
-        path: "tour/dia_diem/add",
+        path: "tour/diadiem/add",
         element: <AdminDiadiem_ADD />,
       },
       {
-        path: "tour/dia_diem/edit/:id",
+        path: "tour/diadiem/edit/:iddiadiem",
         element: <AdminDiadiem_Edit />,
       },
       {
@@ -133,7 +141,7 @@ export const router = createBrowserRouter([
         element: <ADmin_PhuontiengADD />,
       },
       {
-        path: "tour/loai_phuong_tien/edit/:id",
+        path: "tour/loai_phuong_tien/edit/:idPhuongTien",
         element: <ADmin_Phuongtienedit />,
       },
       {
@@ -153,8 +161,37 @@ export const router = createBrowserRouter([
         element: <Admin_Account_huongdanvien />,
       },
       {
-        path: "account_huongdanvien/edit/:id",
+        path: "account_huongdanvien/add",
+        element: <Admin_Account_huongdanvienAdd />,
+      },
+      {
+        path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
+      },
+      // {
+      //   path: "tour/image_tour",
+      //   element: <AdminImage />,
+      // },
+      //  {
+      //   path: "tour/image/add",
+      //   element: <AdmidImageADD />,
+      // },
+      //  {
+      //   path: "tour/image/edit/:id",
+      //   element: <Admin_ImageEDit />,
+      // },
+
+      // images
+      {
+        path: "tour/image/",
+        element: <AdminImage />,
+      },
+      {
+        path: "tour/image/add",
+        element: <AdmidImageADD />,
+      }, {
+        path: "tour/image/edit/:id",
+        element: <Admin_ImageEDit />,
       },
     ],
   },
