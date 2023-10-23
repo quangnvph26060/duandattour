@@ -42,7 +42,6 @@ Route::prefix('admin')->group(function () {
     });
    
     Route::prefix('tour-images')->group(function(){
-        Route::get('/show/{id}', [ApiTourImageController::class, 'showOneTour']);
         Route::get('/', [ApiTourImageController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiTourImageController::class, 'store']); //  thêm 1 phương tiện mới
         Route::get('/{id}', [ApiTourImageController::class, 'show']); // lấy ra  id muốn sửa
@@ -50,9 +49,6 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiTourImageController::class, 'destroy']); // xóa theo id
        
     });
-
-
-
     Route::prefix('phuongtien')->group(function () {
         Route::get('/', [ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
@@ -83,6 +79,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
+        Route::get('/show', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         Route::get('/{id}', [ApiTourController::class, 'show']);

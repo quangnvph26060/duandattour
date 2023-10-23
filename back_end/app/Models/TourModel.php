@@ -28,4 +28,8 @@ class TourModel extends Model
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
     }
+    public function images()
+    {
+        return $this->belongsToMany(ImageModel::class, 'tour_images', 'tour_id', 'image_id');
+    }
 }

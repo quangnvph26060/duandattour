@@ -4,21 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TourImagesModel;
-use App\Models\TourModel;
+
 use Illuminate\Http\Request;
 
 class ApiTourImageController extends Controller
 {
-    public function showOneTour($id)
-    {
-        $tour = TourModel::with('tourImages.image')->find($id);
-
-        if (!$tour) {
-            return response()->json(['message' => 'Tour not found'], 404);
-        }
-
-        return response()->json($tour);
-    }
+   
     /**
      * Display a listing of the resource.
      */
