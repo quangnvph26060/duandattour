@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
     });
     Route::prefix('loaitour')->group(function () {
+        Route::get('/show', [ApiLoaiTourController::class, 'ShowLoaiTour']);
         Route::get('/', [ApiLoaiTourController::class, 'index']);
         Route::post('/', [ApiLoaiTourController::class, 'store']);
         Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
