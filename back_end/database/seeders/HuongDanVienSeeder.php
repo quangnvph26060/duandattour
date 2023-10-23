@@ -16,7 +16,7 @@ class HuongDanVienSeeder extends Seeder
         DB::table('huong_dan_vien')->insert([
             'ten_hd' => "Nguyễn Văn A",
             'email' => 'ABC@gmail.com',
-            'password' => '123',
+            'password' => bcrypt("12345"),
             'dia_chi' => 'Hà Nội',
             'sdt' => '098765432'
         ]);

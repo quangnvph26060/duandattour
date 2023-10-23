@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAuthLoginController;
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
@@ -24,9 +25,23 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function () { 
+   Route::prefix('admin')->group(function () {
+        Route::prefix('loaitour')->group(function () {
+            Route::get('/', [ApiLoaiTourController::class, 'index']);
+            Route::post('/', [ApiLoaiTourController::class, 'store']);
+            Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+            Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+            Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
+        });
+   }); 
+    Route::delete('logout', [ApiAuthLoginController::class, 'logout']);
 });
 
 //api phương tiện
@@ -49,13 +64,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
     });
-    Route::prefix('loaitour')->group(function () {
-        Route::get('/', [ApiLoaiTourController::class, 'index']);
-        Route::post('/', [ApiLoaiTourController::class, 'store']);
-        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
-        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
-        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
-    });
+
     Route::prefix('huongdanvien')->group(function () {
         Route::get('/', [ApiHuongDanVienController::class, 'index']);
         Route::post('/', [ApiHuongDanVienController::class, 'store']);
