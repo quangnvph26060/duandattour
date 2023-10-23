@@ -41,6 +41,8 @@ import Admin_ImageEDit from "./pages/Admin/products/Img/edit";
 import Admin_TourImg from "./pages/Admin/products/Tour_img";
 import Admin_TourImgADD from "./pages/Admin/products/Tour_img/add";
 import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
+import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
+import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -196,6 +198,14 @@ export const router = createBrowserRouter([
       {
         path: "tour/image/edit/:id",
         element: <Admin_ImageEDit />,
+      },
+      {
+        path: "tour/hoa_don",
+        element: <ADmin_Hoadon />,
+      },
+      {
+        path: "tour/dat_tour",
+        element: <ADmin_DatTour />,
       },
     ],
   },
