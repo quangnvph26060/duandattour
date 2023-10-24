@@ -8,5 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class HuongDanVienHoaDon extends Model
 {
     use HasFactory;
-    
 }

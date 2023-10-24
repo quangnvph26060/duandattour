@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('hoa_dons', function (Blueprint $table) {
             $table->id();
             $table->string('ma_hoa_don');
-            $table->integer('tong tien');
+            $table->integer('tong_tien');
             $table->date('ngay_tao_hoa_don');
-            $table->string('ma_khuyen_mai');
             $table->foreignId('id_dat_tour')->constrained('dat_tours');
+            $table->foreignId('ma_khuyen_mai')->constrained('khuyen_mais');
             $table->timestamps();
         });
     }

@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tour_hdv', function (Blueprint $table) {
+        Schema::create('huong_dan_vien', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tour_id');
-            $table->unsignedBigInteger('hdv_id');
+            $table->string('ten_hd');
+            $table->string('email')->unique();
+            $table->string('password'); 
+            $table->string('sdt');
+            $table->string('dia_chi');
+            $table->string('avatar');
             $table->tinyInteger('trang_thai')->default(0);
-            $table->foreign('tour_id')->references('id')->on('tour')->onDelete('cascade');
-            $table->foreign('hdv_id')->references('id')->on('huong_dan_vien')->onDelete('cascade');
+         
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tour_hdv');
+        Schema::dropIfExists('huong_dan_vien');
     }
 };
