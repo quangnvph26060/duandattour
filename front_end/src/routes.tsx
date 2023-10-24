@@ -34,6 +34,7 @@ import Admin_Khachhang from "./pages/Admin/user/khach_hang";
 import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/add";
+import QLuser from "./pages/qluser";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
    {path:"/:id/tour",element:<DetailPage/>},
    {path:"/booktour",element:<BookTour/>},
    {path:"/contact",element:<Contact/>},
+   {path:"/profile",element:<QLuser/>},
   { path: "*", element: "Not Found Page" },
 
   {
