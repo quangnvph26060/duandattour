@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/home',[Demo::class,'home'])->name('home');
 
 Route::get('/',[Demo::class,'show']);
 Route::post('/',[Demo::class,'demo']);

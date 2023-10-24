@@ -1,7 +1,7 @@
-<form action="/" method="post" enctype="multipart/form-data">
+<form action="{{route('login')}}" method="post" enctype="multipart/form-data">
     @csrf
    
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label class="col-md-3 col-sm-4 control-label">Image</label>
         <div class="col-md-9 col-sm-8">
             <div class="row">
@@ -14,7 +14,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+    <input type="email" name="email" id="" placeholder="email">
+    <br><br>
+    
+    <input type="password" name="password" id="" placeholder="pass">
+    <br><br>
     <button class="btn btn-success" type="submit">Save</button>
    
 </form>

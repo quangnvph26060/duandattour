@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('tour_id');
             $table->unsignedBigInteger('hdv_id');
-            
-    
+            $table->tinyInteger('trang_thai')->default(0);
             $table->foreign('tour_id')->references('id')->on('tour')->onDelete('cascade');
             $table->foreign('hdv_id')->references('id')->on('huong_dan_vien')->onDelete('cascade');
             $table->timestamps();

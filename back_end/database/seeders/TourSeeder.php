@@ -18,9 +18,8 @@ class TourSeeder extends Seeder
             'diem_di' => 'Đà Nẵng',
             'diem_den' => 'Hà Nội',
             'lich_khoi_hanh' => '2023/12/10',
-            'thoi_gian' => '4 ngày',
+            'ngay_ket_thuc' => '2023/12/15',
             'diem_khoi_hanh' => 'Đà Nẵng',
-          
             'gia_tour'=>1000,
             'mo_ta'=>'tour ok chưa bro',
             'soluong' =>  3,
