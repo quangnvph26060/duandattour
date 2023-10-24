@@ -12,7 +12,6 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
-import AdminProduct from "./pages/Admin/products/tour";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edi";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -77,9 +76,6 @@ export const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
-      },{
-        path: "tour",
-        element: <AdminProduct />,
       },
       {
         path: "tour",
@@ -203,10 +199,7 @@ export const router = createBrowserRouter([
         path: "tour/image/edit/:idimage",
         element: <Admin_ImageEdit />,
       },
-      {
-        path: "tour/image/edit/:id",
-        element: <Admin_ImageEDit />,
-      },
+      
       {
         path: "tour/hoa_don",
         element: <ADmin_Hoadon />,
