@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom'; 
 import {
   FaBeer,
   FaFlag,
@@ -9,6 +10,7 @@ import {
   FaStar,
 } from "react-icons/fa";
 import logo from "./img/logo.jpg"
+import { useGetTourByIdQuery } from "../../api/TourApi";
 type Props = {};
 
 const DetailPage = (props: Props) => {
@@ -32,7 +34,10 @@ const DetailPage = (props: Props) => {
     height: "210px",
     width: "309px  ",
   };
-
+  const { idTour } = useParams<{ idTour: any }>();
+  const { data: Tourdata } = useGetTourByIdQuery(idTour || "");
+  const tourDetail = Tourdata?.data || [];
+  console.log(tourDetail);
   return (
     <div className="container mx-auto ">
       <div className="menu flex items-center justify-between">
@@ -69,12 +74,12 @@ border-[3px] px-2 py-2  rounded" />
           <div className="Title flex ml-[120px] justify-between py-10">
             <div className="title">
               <p className="text-[26px] text-[#2D4271] font-bold">
-                Combo 3N2Đ Wyndham Grand Phú Quốc (Vinoasis) 5 sao
+              {tourDetail?.ten_tour}
               </p>
             </div>
 
             <div className="price buy mr-40 flex gap-5 ">
-              <p className="text-[26px] text-red-500 font-bold">1,990,000₫</p>
+              <p className="text-[26px] text-red-500 font-bold">{tourDetail?.gia_tour}</p>
               <p className="mt-2">/khách</p>
               <button
                 type="button"
@@ -143,37 +148,32 @@ border-[3px] px-2 py-2  rounded" />
               </div>
             </div>
           </div>
-          <div className="Description gap-28 flex ml-[120px] mt-5 py-4">
+          <div className="Description justify-between flex ml-[120px] mt-5 py-4">
             <div className="Desc text-[#2D4271] text-[15px]">
-              <p>
-                Đà Lạt tinh khôi, trong lành giữa rừng thông cùng muôn <br />{" "}
-                hoa đua nở dưới nắng xuân dịu dàng và những cảnh đẹp nao <br />{" "}
-                lòng luôn hấp dẫn du khách thập phương. Đà Lạt luôn không ngừng
-                đổi mới <br />
-                và khiến người ta say đắm quên lối về với một sắc thái, một nét
-                đẹp riêng vốn có.
+              <p className="max-w-[500px]">
+            {tourDetail?.mo_ta}
               </p>
               <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Khởi hành 04/10/2023 - Giờ đi: 06:00
+                  Khởi hành {tourDetail?.lich_khoi_hanh}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Tập trung 05:30 ngày 04/10/2023
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Thời gian 3 ngày
+                  Thời gian {tourDetail?.thoi_gian}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  {" "}
-                  Nơi khởi hành TP. Hồ Chí Minh
+                
+                  Nơi khởi hành {tourDetail?.diem_khoi_hanh}
                 </p>
                 <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
-                  {" "}
-                  Số chỗ còn nhận 4
+             
+                  Số lượng {tourDetail?.soluong  }
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid mr-[120px] grid-cols-4 gap-5">
               <div className="">
                 <h2 className="text-blue-600">
                   <FaFlag />
