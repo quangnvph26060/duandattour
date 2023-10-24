@@ -7,7 +7,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useGetDiaDiemQuery, useRemoveDiaDiemMutation } from "../../../../api/DiaDiemApi";
 import { IDiaDiem } from "../../../../interface/diadiem";
 import { ILoaiTour } from "../../../../interface/loaitour";
-import { useGetLoaiTourQuery} from "../../../../api/LoaiTourApi";
+import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useEffect } from "react";
 const AdminDiadiem = (props: Props) => {
 
@@ -25,8 +25,8 @@ const AdminDiadiem = (props: Props) => {
     const tourArray = diadiemdata?.data || [];
 
     const loaitourArrary = loaitourdata?.data || [];
-   
-    
+
+
     const dataSource = tourArray.map(({ id, ten_dia_diem, mo_ta, ma_loai_tour }: IDiaDiem) => ({
         key: id,
         ten_dia_diem,
@@ -57,8 +57,8 @@ const AdminDiadiem = (props: Props) => {
             render: (ma_loai_tour: number) => {
                 const loaiTour = loaitourArrary.find((item) => item.id === ma_loai_tour);
                 return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
-                
-              }
+
+            }
         },
 
         {

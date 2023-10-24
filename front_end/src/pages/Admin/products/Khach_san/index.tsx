@@ -8,11 +8,11 @@ import { AiOutlinePlus } from "react-icons/ai";
 
 const ADmin_khachsan = (props: Props) => {
 
-   
-   
-    
- 
-    
+
+
+
+
+
     const columns = [
         {
             title: "ID",
@@ -21,11 +21,11 @@ const ADmin_khachsan = (props: Props) => {
         },
         {
             title: "Loại khách sạn",
-            dataIndex:"loai_khach_san",
+            dataIndex: "loai_khach_san",
             key: "loai_khach_san",
         },
-       
-        
+
+
         {
             title: "Action",
             render: ({ key: id }: any) => {
@@ -60,11 +60,11 @@ const ADmin_khachsan = (props: Props) => {
                 <Button type="primary" danger>
                     <Link to="/admin/tour/loai_khach_san/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-                      Tạo mới loại khách sạn
+                        Tạo mới loại khách sạn
                     </Link>
                 </Button>
             </header>
-         
+
         </div>
     );
 };

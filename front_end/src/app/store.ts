@@ -1,9 +1,15 @@
-import TourApi, {tourRedeucer } from "../api/TourApi";
-import LoaiTourApi, {LoaiTourRedeucer } from "../api/LoaiTourApi";
-import LoaiPhuongTienApi, {LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
-import DiaDiemApi, {DiaDiemRedeucer } from "../api/DiaDiemApi";
-import ImagesApi, {imagesRedeucer } from "../api/ImagesApi";
-import HuongDanVienApi, {HuongDanVienRedeucer } from "../api/HuongDanVienApi";
+import TourApi, { tourRedeucer } from "../api/TourApi";
+import LoaiTourApi, { LoaiTourRedeucer } from "../api/LoaiTourApi";
+import LoaiPhuongTienApi, { LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
+import DiaDiemApi, { DiaDiemRedeucer } from "../api/DiaDiemApi";
+import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
+import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
+import TourApi, { tourRedeucer } from "../api/TourApi";
+import LoaiTourApi, { LoaiTourRedeucer } from "../api/LoaiTourApi";
+import LoaiPhuongTienApi, { LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
+import DiaDiemApi, { DiaDiemRedeucer } from "../api/DiaDiemApi";
+import ImagesApi, { imagesRedeucer } from "../api/ImagesApi";
+import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -29,6 +35,7 @@ const rootReducer = combineReducers({
     [LoaiPhuongTienApi.reducerPath]: LoaiPhuongTienRedeucer,
     [DiaDiemApi.reducerPath]: DiaDiemRedeucer,
     [HuongDanVienApi.reducerPath]: HuongDanVienRedeucer,
+    [LichTrinhApi.reducerPath]: LichTrinhRedeucer,
     [ImagesApi.reducerPath]: imagesRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -40,10 +47,14 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(TourApi.middleware, LoaiTourApi.middleware, 
-            LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,HuongDanVienApi.middleware,ImagesApi.middleware),
-        
+        }).concat(TourApi.middleware, LoaiTourApi.middleware,
+            LoaiPhuongTienApi.middleware, DiaDiemApi.middleware, HuongDanVienApi.middleware, LichTrinhApi.middleware),
+
 })
+// .concat(TourApi.middleware, LoaiTourApi.middleware,
+//     LoaiPhuongTienApi.middleware, DiaDiemApi.middleware, HuongDanVienApi.middleware, ImagesApi.middleware),
+
+// })
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
 export type AppThunk<ReturnType = void> = ThunkAction<

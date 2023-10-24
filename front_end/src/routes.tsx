@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
 import News from "./pages/newspage";
@@ -75,7 +76,7 @@ export const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard />,
       },
-     
+
       {
         path: "tour/add",
         element: <AdminTourAdd />,

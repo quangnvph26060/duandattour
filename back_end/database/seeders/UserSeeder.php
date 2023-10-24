@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'Anh@gmail.com',
             'sdt' => '09876543',
             'cccd' => '0009820948',
-           
+
             'password' => '12345'
 
         ]);
