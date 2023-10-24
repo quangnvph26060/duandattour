@@ -4,7 +4,6 @@
 }
 .product-listb {
   max-width: 100%;
- 
 }
 .content{
   margin: 40px;
@@ -21,7 +20,10 @@ border: burlywood;
   display: flex;
   justify-content: center;
 }
-
+.box-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  
+}
 .product-list .slick-dots {
   bottom: 10px;
 }
@@ -29,7 +31,9 @@ border: burlywood;
 .product-list .slick-dots li button:before {
   font-size: 12px;
 }
-
+.custum{
+  border: 3.5px solid black;
+}
 
 .product-lista img {
   width: 100%;
@@ -37,7 +41,10 @@ border: burlywood;
   margin: auto ;
   object-fit: cover;
 }
-
+.hoem{
+  color: #555;
+  border: #2d4271;
+}
 .product-list1 img {
   width: 100%;
   height: 210px;
@@ -47,4 +54,25 @@ border: burlywood;
 
   height: 40%;
   object-fit: cover;
+}.text-lg {
+  font-size: 1.125rem; /* Tăng kích thước chữ lên 1.125rem */
+  color: #333; /* Đổi màu chữ thành màu đen */
+}
+.font-semibold {
+  
+  font-weight: 600; /* Đặt độ đậm cho phông chữ */
+  color: #555; /* Đổi màu chữ thành màu xám đậm */
+}.pl-4 li {
+  
+  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi mục danh sách */
+}
+  p {
+  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi đoạn văn */
+}.text-sm {
+  text-align: center; /* Căn giữa nội dung */
+  color: #888; /* Đổi màu chữ thành màu xám nhẹt */
+}
+ul li{
+  
+  display: block;
 }

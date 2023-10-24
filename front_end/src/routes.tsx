@@ -41,6 +41,9 @@ import Admin_ImageEdit from "./pages/Admin/products/Img/edit";
 import Admin_TourImg from "./pages/Admin/products/Tour_img";
 import Admin_TourImgADD from "./pages/Admin/products/Tour_img/add";
 import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
+import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
+import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
+import AdminProduct from "./pages/Admin/products/tour";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -60,7 +63,7 @@ export const router = createBrowserRouter([
 
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/:id/tour", element: <DetailPage /> },
+  { path: "/tour/:idTour", element: <DetailPage /> },
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
@@ -74,6 +77,9 @@ export const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },{
+        path: "tour",
+        element: <AdminProduct />,
       },
       {
         path: "tour",
@@ -196,6 +202,18 @@ export const router = createBrowserRouter([
       {
         path: "tour/image/edit/:idimage",
         element: <Admin_ImageEdit />,
+      },
+      {
+        path: "tour/image/edit/:id",
+        element: <Admin_ImageEDit />,
+      },
+      {
+        path: "tour/hoa_don",
+        element: <ADmin_Hoadon />,
+      },
+      {
+        path: "tour/dat_tour",
+        element: <ADmin_DatTour />,
       },
     ],
   },
