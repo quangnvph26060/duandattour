@@ -14,7 +14,7 @@ class ApiAuthLoginController extends Controller
     public function login(Request $request){
         $user = User::where('email', $request->email)
        -> orwhere('sdt', $request->sdt)->first();
-
+          
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => "Sai tài khoản hoặc mật khẩu"

@@ -13,6 +13,7 @@ class Demo extends Controller
         return view('test');
     }
     public function demo(Request $request) {
+        
         if($request->isMethod('POST')){
             if($request->hasFile('hinh') && $request->file('hinh')->isValid()){
               uploadFile('hinh',$request->file('hinh'));
