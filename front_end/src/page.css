@@ -20,7 +20,10 @@ border: burlywood;
   display: flex;
   justify-content: center;
 }
-
+.box-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  
+}
 .product-list .slick-dots {
   bottom: 10px;
 }
@@ -28,7 +31,9 @@ border: burlywood;
 .product-list .slick-dots li button:before {
   font-size: 12px;
 }
-
+.custum{
+  border: 3.5px solid black;
+}
 
 .product-lista img {
   width: 100%;
@@ -36,7 +41,10 @@ border: burlywood;
   margin: auto ;
   object-fit: cover;
 }
-
+.hoem{
+  color: #555;
+  border: #2d4271;
+}
 .product-list1 img {
   width: 100%;
   height: 210px;
