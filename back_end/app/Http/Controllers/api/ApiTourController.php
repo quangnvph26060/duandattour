@@ -12,6 +12,15 @@ class ApiTourController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function ShowTour()
+    {
+        $tour = TourModel::with('images')->get();
+        if (!$tour) {
+            return response()->json(['message' => 'Tour not found'], 404);
+        }
+
+        return response()->json($tour);
+    }
     public function index()
     {
         $tour = TourModel::all();

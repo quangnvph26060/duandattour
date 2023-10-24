@@ -12,15 +12,11 @@ import { ILoaiTour } from "../../../../interface/loaiTour";
 
 
 const AdminLoai_tour = (props: Props) => {
-
-   
     const { data: tourdata, error, isLoading } = useGetLoaiTourQuery();
     const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
         useRemoveLoaiTourMutation();
-
     const confirm = (id: any) => {
-        removeProduct(id);
-        
+        removeProduct(id);   
     };
     // const navigate = useNavigate();
     const tourArray = tourdata?.data || [];

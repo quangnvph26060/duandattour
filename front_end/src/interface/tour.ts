@@ -12,6 +12,5 @@ export interface ITour {
     soluong: number;
     trang_thai: number;
     ma_loai_tour: number;
-    ma_hdv: number;
     data:any
 }

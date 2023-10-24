@@ -12,7 +12,7 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
-
+import AdminProduct from "./pages/Admin/products/tour";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edi";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -37,7 +37,7 @@ import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/ed
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
 import AdminImage from "./pages/Admin/products/Img";
 import AdmidImageADD from "./pages/Admin/products/Img/add";
-import Admin_ImageEDit from "./pages/Admin/products/Img/edit";
+import Admin_ImageEdit from "./pages/Admin/products/Img/edit";
 import Admin_TourImg from "./pages/Admin/products/Tour_img";
 import Admin_TourImgADD from "./pages/Admin/products/Tour_img/add";
 import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
@@ -81,7 +81,10 @@ export const router = createBrowserRouter([
         path: "tour",
         element: <AdminProduct />,
       },
-     
+      {
+        path: "tour",
+        element: <AdminProduct />,
+      },
       {
         path: "tour/add",
         element: <AdminTourAdd />,
@@ -174,18 +177,18 @@ export const router = createBrowserRouter([
         path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
       },
-      // {
-      //   path: "tour/image_tour",
-      //   element: <AdminImage />,
-      // },
-      //  {
-      //   path: "tour/image/add",
-      //   element: <AdmidImageADD />,
-      // },
-      //  {
-      //   path: "tour/image/edit/:id",
-      //   element: <Admin_ImageEDit />,
-      // },
+      {
+        path: "tour/image_tour",
+        element: <Admin_TourImg />,
+      },
+       {
+        path: "tour/image_tour/add",
+        element: <Admin_TourImgADD />,
+      },
+       {
+        path: "tour/image_tour/edit/:idtourimage",
+        element: <Admin_TourImgEDit />,
+      },
 
       // images
       {
@@ -195,9 +198,10 @@ export const router = createBrowserRouter([
       {
         path: "tour/image/add",
         element: <AdmidImageADD />,
-      }, {
-        path: "tour/image/edit/:id",
-        element: <Admin_ImageEDit />,
+      }, 
+      {
+        path: "tour/image/edit/:idimage",
+        element: <Admin_ImageEdit />,
       },
       {
         path: "tour/image/edit/:id",

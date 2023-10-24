@@ -207,17 +207,7 @@ const AdminTourAdd: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Mã hướng dẫn viên"
-          name="ma_hdv"
-          rules={[{ required: true, message: 'Vui lòng nhập mã hướng dẫn viên!' }]}
-        >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
-            {huongdanvienArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.ten_hd}</Option>
-            ))}
-          </Select>
-        </Form.Item>
+      
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Thêm

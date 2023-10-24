@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAuthLoginController;
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
 use App\Http\Controllers\api\ApiTourImageController;
 use App\Http\Controllers\api\ApiTourPhuongTienController;
+use App\Http\Controllers\api\ApiPermissionsController;
+
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,9 +27,37 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::group(['middleware' => ['auth:sanctum']], function () { 
+     Route::delete('logout', [ApiAuthLoginController::class, 'logout']);
+});
+//permission && role
+
+    Route::get('/', [ApiPermissionsController::class, 'index']);
+    Route::get('/phanvaitro/{id}',[ApiPermissionsController::class, 'PhanVaiTro']);
+    Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
+    Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
+    Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
+    Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
+    Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+// end  permission && role
+
+
+Route::group(['middleware' => ['auth:sanctum','role:admin|nhan_vien']], function () { 
+   Route::prefix('admin')->group(function () {
+        Route::prefix('loaitour')->group(function () {
+            Route::get('/', [ApiLoaiTourController::class, 'index']);
+            Route::post('/', [ApiLoaiTourController::class, 'store']);
+            Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+            Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+            Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
+        });
+   }); 
+  
 });
 
 //api phương tiện
@@ -37,24 +68,24 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [ApiImagesController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiImagesController::class, 'store']); //  thêm 1 phương tiện mới
         Route::get('/{id}', [ApiImagesController::class, 'show']); // lấy ra  id muốn sửa
-        Route::put('/{id}', [ApiImagesController::class, 'update']); // sủa theo id
+        Route::post('edit/{id}', [ApiImagesController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiImagesController::class, 'destroy']); // xóa theo id
     });
-    Route::apiResource('/tour-images', ApiTourImageController::class);
    
+    Route::prefix('tour-images')->group(function(){
+        Route::get('/', [ApiTourImageController::class, 'index']); // lấy ra danh sách
+        Route::post('/', [ApiTourImageController::class, 'store']); //  thêm 1 phương tiện mới
+        Route::get('/{id}', [ApiTourImageController::class, 'show']); // lấy ra  id muốn sửa
+        Route::put('/{id}', [ApiTourImageController::class, 'update']); // sủa theo id
+        Route::delete('/{id}', [ApiTourImageController::class, 'destroy']); // xóa theo id
+       
+    });
     Route::prefix('phuongtien')->group(function () {
         Route::get('/', [ApiLoaiPhuongTienController::class, 'index']); // lấy ra danh sách
         Route::post('/', [ApiLoaiPhuongTienController::class, 'store']); //  thêm 1 phương tiện mới
         Route::get('/{id}', [ApiLoaiPhuongTienController::class, 'show']); // lấy ra  id muốn sửa
         Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
-    });
-    Route::prefix('loaitour')->group(function () {
-        Route::get('/', [ApiLoaiTourController::class, 'index']);
-        Route::post('/', [ApiLoaiTourController::class, 'store']);
-        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
-        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
-        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
     });
     Route::prefix('huongdanvien')->group(function () {
         Route::get('/', [ApiHuongDanVienController::class, 'index']);
@@ -72,6 +103,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
+        Route::get('/show', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         Route::get('/{id}', [ApiTourController::class, 'show']);

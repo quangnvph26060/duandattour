@@ -2,39 +2,43 @@ import React,{useState,useEffect} from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate ,useParams} from 'react-router-dom';
-import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
-import { useGetDiaDiemByIdQuery, useEditDiaDiemMutation } from "../../../../api/DiaDiemApi";
-import { IDiaDiem } from "../../../../interface/diadiem";
+import { useGetTourQuery } from "../../../../api/TourApi";
+import { useGetImagesQuery } from '../../../../api/ImagesApi';
+import { useGetTourImagesByIdQuery,useEditTourImagesMutation } from '../../../../api/TourImagesApi';
+import { ITourImages } from '../../../../interface/tourimages';
+
+
 const { Option } = Select;
-
-
 
 const Admin_TourImgEDit: React.FC = () => {
   const navigate = useNavigate();
-  const { data: loaitourdata } = useGetLoaiTourQuery();
-  const loaitourArrary = loaitourdata?.data || [];
-
-  const { iddiadiem } = useParams<{ iddiadiem: any }>();
-  const { data: DiaDiemData } = useGetDiaDiemByIdQuery(iddiadiem || "");
-  const DiaDiem = DiaDiemData || {};
-  const [updateDiaDiem] = useEditDiaDiemMutation();
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState(null);
-  const [form] = Form.useForm();
-  useEffect(() => {
-    if (DiaDiem.data && DiaDiem.data.ten_dia_diem && DiaDiem.data.mo_ta && DiaDiem.data.ma_loai_tour) {
+  const { data: tourdata } = useGetTourQuery();
+  const tourArrary = tourdata?.data || [];
+  const { data: imgdata } = useGetImagesQuery();
+  const imgArrary = imgdata || [];
+  const { idtourimage } = useParams<{ idtourimage: any }>();
+   const { data: TourImageData } = useGetTourImagesByIdQuery(idtourimage || "");
+   const TourImg = TourImageData || {};
+  
+   
+   const [updateTourImage] = useEditTourImagesMutation();
+   const [loading, setLoading] = useState(false);
+   const [errors, setErrors] = useState(null);
+   const [form] = Form.useForm();
+   useEffect(() => {
+    if (TourImg && TourImg.tour_id &&  TourImg.image_id) {
     form.setFieldsValue({
-      ten_dia_diem: DiaDiem.data.ten_dia_diem,
-      mo_ta: DiaDiem.data.mo_ta,
-      ma_loai_tour: DiaDiem.data.ma_loai_tour,
+      tour_id: TourImg.tour_id,
+      image_id: TourImg.image_id,
+     
     });
   }
-  }, [DiaDiem]);
+  }, [TourImg]);
 
-  const onFinish = (values: IDiaDiem) => {
-    updateDiaDiem({ ...values, id: iddiadiem })
+  const onFinish = (values: ITourImages) => {
+    updateTourImage({ ...values, id: idtourimage })
       .unwrap()
-      .then(() => navigate("/admin/tour/diadiem"))
+      .then(() => navigate("/admin/tour/image_tour"))
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);
@@ -44,7 +48,7 @@ const Admin_TourImgEDit: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Chỉnh sửa img </h2>
+        <h2 className="font-bold text-2xl">Chỉnh sửa Ảnh Tour </h2>
       </header>
       <Form
         className="tour-form"
@@ -56,29 +60,31 @@ const Admin_TourImgEDit: React.FC = () => {
         autoComplete="off"
         form={form}
       >
-      <Form.Item
-          label="Image_id"
+       <Form.Item
+          label="Image"
           name="image_id"
           rules={[
-            { required: true, message: 'Vui lòng chọn image_id' },
+            { required: true, message: 'Vui lòng chọn ảnh' },
           ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.image_id}</Option>
+          {imgArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.id}</Option>
           ))}
         </Select>
         </Form.Item>
         <Form.Item
-          label="Tour_id"
+          label="Tour"
           name="tour_id"
           rules={[
-            { required: true, message: 'Vui lòng tour id' },
+            { required: true, message: 'Vui lòng chọn tour ' },
           ]}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.tour_id}</Option>
+          {tourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
           ))}
         </Select>
         </Form.Item>
@@ -90,7 +96,7 @@ const Admin_TourImgEDit: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour/diadiem')}
+            onClick={() => navigate('/admin/tour/image_tour')}
           >
             Quay lại
           </Button>
