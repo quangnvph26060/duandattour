@@ -1,3 +1,4 @@
+
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
@@ -208,3 +209,4 @@ const AdminProduct = (props: Props) => {
 };
 
 export default AdminProduct;
+
