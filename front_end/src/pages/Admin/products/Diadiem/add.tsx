@@ -33,7 +33,7 @@ const AdminDiadiem_ADD: React.FC = () => {
         .catch((error) => {
           setErrors(error.data.message);
           setLoading(false);
-          
+         
         });
   };
 
@@ -58,6 +58,8 @@ const AdminDiadiem_ADD: React.FC = () => {
             { required: true, message: 'Vui lòng nhập tên địa điểm!' },
             { min: 3, message: 'Đại điểm tour ít nhất 3 ký tự' },
           ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
         >
           <Input />
         </Form.Item>
@@ -92,7 +94,7 @@ const AdminDiadiem_ADD: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/diadiem')}
           >
             Quay lại
           </Button>

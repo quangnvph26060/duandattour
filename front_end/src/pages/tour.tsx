@@ -34,12 +34,13 @@ const TourPage = () => {
         <div className='flex'>
           <img style={rounded} src={logo} alt="logo" width="100px" />
           <nav className='p-4 pt-6 pl-20'>
-          <ul className='flex text-[#2D4271] gap-12'>
-              <a href="/">PolyTour</a>
-              <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
+
+            <ul className='flex gap-12'>
+              <a href="">Du lịch</a>
+              <a href="">Vận chuyển</a>
+              <a href="">Tin tức</a>
               <a href="">Khuyến mãi</a>
-              <a href="/contact">Liên hệ</a>
+              <a href="">Liên hệ</a>
             </ul>
           </nav>
           <div className='p-4 pt-6 ml-auto'>
@@ -53,9 +54,10 @@ const TourPage = () => {
       </header>
       <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
 
-      {/* Conten left*/}
+      
       <div className='flex container mx-auto gap-11 pt-5'>
-        <aside className='w-1/3 bg-gray-100 h-[1300px]'>
+        {/* Conten left*/}
+        <aside className='w-1/4 bg-gray-100 h-[1300px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
           <div className='text-center p-2 py-4 '>
@@ -168,30 +170,32 @@ const TourPage = () => {
         </aside>
 
         {/*conten-right*/}
-        <article className='w-2/3'>
+
+        <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5'><hr className='bg-black h-[1.5px]'/></div>
           <div className='grid grid-cols-3 gap-7'>
             <div className='py-4 bg-neutral-100 rounded-lg'>
-              <img src={anh1} alt="anh1" className='h-[270px] w-max rounded-lg' />
-              <p>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
-              <p>MÃ TOUR :</p>
-              <div className='flex gap-3'>
+
+              <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
+              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
+              <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
+              <p className='px-4'>MÃ TOUR :</p>
+              <div className='flex gap-3 px-4'>
                 <img src={ticket} className='w-10' alt="ticket" />
                 <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
               </div>
-              <div className='flex gap-2 py-2'>
+              <div className='flex gap-2 py-2 px-4'>
                 <p className='text-sm'>Nơi khởi hành: </p>
                 <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
               </div>
-              <p className='text-base font-medium pt-1'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 pb-1'>
+              <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
+              <div className='flex gap-16 justify-between px-4 p-1'>
                 <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
                 <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
               </div>
-              <div className='flex gap-10 pt-3'>
-                <button className=' flex gap-2 bg-red-400 py-2 px-3 rounded-xl'>
+              <div className='flex justify-between px-4 gap-10 pt-3'>
+                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
                   <img src={shopping} alt="shopping" className='w-5' />
                   <p className='text-white text-sm'>Đặt ngay</p>
                 </button>
@@ -201,26 +205,27 @@ const TourPage = () => {
               </div>
             </div>
             <div className='py-4 bg-neutral-100 rounded-lg'>
-              <img src={anh2} alt="anh2" className='h-[270px] w-max rounded-lg' />
-              <p>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2'>Huế - La Vang - Động Thiên Đường -
+
+              <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
+              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
+              <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -
                 KDL Bà Nà - Cầu Vàng - Hội An - Đà Nẵng - Thưởng Thức Ca Hò Huế trên...</p>
-              <p>MÃ TOUR :</p>
-              <div className='flex gap-3'>
+              <p className='px-4'>MÃ TOUR :</p>
+              <div className='flex gap-3 px-4'>
                 <img src={ticket} className='w-10' alt="ticket" />
                 <p className='text-sm pt-3 font-medium'>NDSGN3398-140-225423VU-V</p>
               </div>
-              <div className='flex gap-2 py-2'>
+              <div className='flex gap-2 py-2 px-4'>
                 <p className='text-sm'>Nơi khởi hành: </p>
                 <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
               </div>
-              <p className='text-base font-medium pt-1'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 pb-1'>
+              <p className='text-base font-medium px-4 pt-1'>Giá cũ: 7,990,000₫</p>
+              <div className='flex gap-16 justify-between px-4 pb-1'>
                 <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
                 <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
               </div>
-              <div className='flex gap-10 pt-3'>
-                <button className=' flex gap-2 bg-red-400 py-2 px-3 rounded-xl'>
+              <div className='flex justify-between px-4 gap-10 pt-3'>
+                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
                   <img src={shopping} alt="shopping" className='w-5' />
                   <p className='text-white text-sm'>Đặt ngay</p>
                 </button>
@@ -230,25 +235,27 @@ const TourPage = () => {
               </div>
             </div>
             <div className='py-4 bg-neutral-100 rounded-lg'>
-              <img src={anh3} alt="anh3" className='h-[270px] w-max rounded-lg' />
-              <p>23/09/2023 - Trong ngày - Giờ đi: 16:00</p>
-              <p className='font-bold py-2'>Trải nghiệm đặc sản: Tour xuyên rừng - KDL Đất Mũi Cà Mau - Áp dụng cho nhóm 6 khách trở lên </p>
-              <p>MÃ TOUR :</p>
-              <div className='flex gap-3'>
+
+              <img src={anh3} alt="anh3" className='h-[315px] w-max rounded-lg' />
+              <p className='px-1'>23/09/2023 - Trong ngày - Giờ đi: 16:00</p>
+              <p className='font-bold py-2 px-1'>Trải nghiệm đặc sản: Tour xuyên rừng - KDL Đất Mũi Cà Mau - Áp dụng cho nhóm 6 khách trở lên </p>
+              <p className='px-4'>MÃ TOUR :</p>
+              <div className='flex gap-3 px-4'>
                 <img src={ticket} className='w-10' alt="ticket" />
                 <p className='text-sm pt-3 font-medium'>NDSGN4568-140-220923VU-V</p>
               </div>
-              <div className='flex gap-2 py-2'>
+              <div className='flex gap-2 py-2 px-4'>
                 <p className='text-sm'>Nơi khởi hành: </p>
                 <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
               </div>
               {/* <p className='text-base font-medium pt-1'>Giá cũ: 7,990,000₫</p> */}
               {/* <div className='flex gap-16 pb-1'> */}
-              <p className='text-lg font-semibold text-red-500'>1,190,000₫</p>
+
+              <p className='text-lg font-semibold text-red-500 px-4'>1,190,000₫</p>
               {/* <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div> */}
               {/* </div> */}
-              <div className='flex gap-10 pt-3'>
-                <button className=' flex gap-2 bg-red-400 py-2 px-3 rounded-xl'>
+              <div className='flex justify-between px-4 gap-10 pt-3'>
+                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
                   <img src={shopping} alt="shopping" className='w-5' />
                   <p className='text-white text-sm'>Đặt ngay</p>
                 </button>

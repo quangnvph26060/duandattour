@@ -86,7 +86,7 @@ const AdminDiadiem_Edit: React.FC = () => {
           ]}
         >
         <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {loaitourArrary.map((option) => (
+          {loaitourArrary.map((option: { id: React.Key | null | undefined; ten_loai_tour: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
               <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
           ))}
         </Select>

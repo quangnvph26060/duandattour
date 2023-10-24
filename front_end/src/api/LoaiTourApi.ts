@@ -12,7 +12,9 @@ const LoaiTourApi = createApi({
             return fetch(...args);
         }
     }),
-    endpoints: (builder) => ({
+    endpoints: (builder) =>
+    // laytour
+     ({
         getLoaiTour: builder.query<ILoaiTour[], void>({
             query: () => `/loaitour`,
             providesTags: ['loaitour']
