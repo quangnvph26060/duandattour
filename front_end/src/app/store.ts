@@ -17,7 +17,9 @@ import {
     persistReducer,
     persistStore,
 } from 'redux-persist';
+import DangNhapApi,{DangNhapReducer} from "../api/dangnhap";
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 
 // Cấu hình persist ( lưu localStorage )
 const persistConfig = {
@@ -32,7 +34,7 @@ const rootReducer = combineReducers({
     [DiaDiemApi.reducerPath]: DiaDiemRedeucer,
     [HuongDanVienApi.reducerPath]: HuongDanVienRedeucer,
     [ImagesApi.reducerPath]: imagesRedeucer,
-
+[DangNhapApi.reducerPath]: DangNhapReducer,
     [TourImagesApi.reducerPath]: TourImagesRedeucer,
 
     [LichTrinhApi.reducerPath]:LichTrinhRedeucer
@@ -48,9 +50,9 @@ export const store = configureStore({
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
         }).concat(TourApi.middleware, LoaiTourApi.middleware, 
-
+ 
             LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,
-            HuongDanVienApi.middleware,ImagesApi.middleware,TourImagesApi.middleware,LichTrinhApi.middleware),
+            HuongDanVienApi.middleware,ImagesApi.middleware,TourImagesApi.middleware,LichTrinhApi.middleware,DangNhapApi.middleware),
 
            
 
