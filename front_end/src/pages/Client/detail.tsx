@@ -30,6 +30,7 @@ const DetailPage = (props: Props) => {
     width: "580px  ",
   };
   const img1 = {
+   
     borderRadius: "5px",
     height: "210px",
     width: "309px  ",
