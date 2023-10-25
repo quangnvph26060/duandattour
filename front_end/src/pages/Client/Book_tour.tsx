@@ -1,4 +1,9 @@
-import {  useState } from "react";
+import { useState } from "react";
+import { Link } from 'react-router-dom';
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import {
   FaStar,
   FaPhoneAlt,
@@ -18,7 +23,7 @@ const img = {
 };
 
 const BookTour = () => {
- 
+
 
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(false);
@@ -35,13 +40,13 @@ const BookTour = () => {
     setIsChecked1(true);
     setIsChecked(false)
   };
-    // check điều khoản
+  // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleAgreeToggle = () => {
     setIsAgreed(!isAgreed);
   };
-// số lượng hành khách
+  // số lượng hành khách
   const [count, setCount] = useState(0);
 
   const increment = () => {
@@ -212,146 +217,146 @@ const BookTour = () => {
                 </div>
               </div>
             </div>
-            <div className="thanhstoan mt-10"> 
-               <p className="mt-5 text-[#2D4271] text-[28px] font-bold">
+            <div className="thanhstoan mt-10">
+              <p className="mt-5 text-[#2D4271] text-[28px] font-bold">
                 Thanh toán
               </p>
               <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
-              Các hình thức thanh toán
+                Các hình thức thanh toán
               </p>
               <div className="grid grid-cols-2 gap-10">
                 <div className="py-5 flex items-center px-6 w-[400px] max-h-[300px] rounded bg-[#f9f9f9]">
-                <label>
-               <div className="flex items-center gap-2">  <h2 className="text-[40px] text-[#2D4271]"><FaMoneyBill/></h2>  <p className="text-[#2D4271] text-[15px]">Tiền mặt</p>   <input className="r-0"
-          type="radio"
-          checked={isChecked}
-          onChange={handleRadioChange}
-        /></div> 
-     
-      <span  onClick={handleRadioChange}>{isChecked ? 'Quý khách vui lòng thanh toán tại bất kỳ văn phòng Vietravel trên toàn quốc và các chi nhánh tại nước ngoài. Xem chi tiết.' : ''}</span>  
-     
-      </label> 
-      
+                  <label>
+                    <div className="flex items-center gap-2">  <h2 className="text-[40px] text-[#2D4271]"><FaMoneyBill /></h2>  <p className="text-[#2D4271] text-[15px]">Tiền mặt</p>   <input className="r-0"
+                      type="radio"
+                      checked={isChecked}
+                      onChange={handleRadioChange}
+                    /></div>
+
+                    <span onClick={handleRadioChange}>{isChecked ? 'Quý khách vui lòng thanh toán tại bất kỳ văn phòng Vietravel trên toàn quốc và các chi nhánh tại nước ngoài. Xem chi tiết.' : ''}</span>
+
+                  </label>
+
                 </div>
                 <div className="py-5 flex items-center px-6 w-[400px] max-h-[300px] rounded bg-[#f9f9f9]">
-                <label>
-               <div className="flex items-center gap-2">  <h2 className="text-[40px] text-[#2D4271]"><FaMoneyCheckAlt/></h2>  <p className="text-[#2D4271] text-[15px]">Chuyền khoản</p>   <input className="r-0"
-          type="radio"
-          checked={isChecked1}
-          onChange={handleRadioChange1}
-        /></div> 
-     
-      <span  onClick={handleRadioChange1}>{isChecked1 ? 'Quý khách sau khi thực hiện việc chuyển khoản vui lòng gửi email đến contactcenter@vietravel.com hoặc gọi tổng đài 19001839 để được xác nhận từ công ty chúng tôi. Tên Tài Khoản : Công ty CP Du lịch và Tiếp thị GTVT Việt Nam – VietravelTên tài khoản viết tắt : VIETRAVELSố Tài khoản : 111 6977 27979Ngân hàng : Vietinbank - Chi nhánh 7' : ''}</span>  
-     
-      </label> 
-      
+                  <label>
+                    <div className="flex items-center gap-2">  <h2 className="text-[40px] text-[#2D4271]"><FaMoneyCheckAlt /></h2>  <p className="text-[#2D4271] text-[15px]">Chuyền khoản</p>   <input className="r-0"
+                      type="radio"
+                      checked={isChecked1}
+                      onChange={handleRadioChange1}
+                    /></div>
+
+                    <span onClick={handleRadioChange1}>{isChecked1 ? 'Quý khách sau khi thực hiện việc chuyển khoản vui lòng gửi email đến contactcenter@vietravel.com hoặc gọi tổng đài 19001839 để được xác nhận từ công ty chúng tôi. Tên Tài Khoản : Công ty CP Du lịch và Tiếp thị GTVT Việt Nam – VietravelTên tài khoản viết tắt : VIETRAVELSố Tài khoản : 111 6977 27979Ngân hàng : Vietinbank - Chi nhánh 7' : ''}</span>
+
+                  </label>
+
                 </div>
               </div>
 
             </div>
             <div className="dieukhoan scroll-text ">
-            <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
-            Điều khoản bắt buộc khi đăng ký online
-        </p>
-        <div className="w-full mt-5 max-h-[200px] overflow-y-auto border rounded"> 
-        <div className="scrollingText ">
-        <p>
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-          This is a long piece of text that will scroll within a fixed height
-          container. This is a long piece of text that will scroll within a
-          fixed height container. This is a long piece of text that will scroll
-          within a fixed height container.
-        </p>
-      </div>
-        </div>
-        <div>
-        <label className="flex mt-5">
-        <input
-          type="checkbox"
-          checked={isAgreed}
-          onChange={handleAgreeToggle}
-        />
-   <p className="text-[#2D4271] text-[16px] font-medium"> Tôi đồng ý với các điều kiện trên</p>  
-      </label>
-        </div>
+              <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
+                Điều khoản bắt buộc khi đăng ký online
+              </p>
+              <div className="w-full mt-5 max-h-[200px] overflow-y-auto border rounded">
+                <div className="scrollingText ">
+                  <p>
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                    This is a long piece of text that will scroll within a fixed height
+                    container. This is a long piece of text that will scroll within a
+                    fixed height container. This is a long piece of text that will scroll
+                    within a fixed height container.
+                  </p>
+                </div>
+              </div>
+              <div>
+                <label className="flex mt-5">
+                  <input
+                    type="checkbox"
+                    checked={isAgreed}
+                    onChange={handleAgreeToggle}
+                  />
+                  <p className="text-[#2D4271] text-[16px] font-medium"> Tôi đồng ý với các điều kiện trên</p>
+                </label>
+              </div>
             </div>
           </div>
           <div className="h-[950px] w-1/3 border py-6 px-4 ">

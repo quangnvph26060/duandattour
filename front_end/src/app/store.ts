@@ -1,11 +1,12 @@
-import TourApi, {tourRedeucer } from "../api/TourApi";
-import LoaiTourApi, {LoaiTourRedeucer } from "../api/LoaiTourApi";
-import LoaiPhuongTienApi, {LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
-import DiaDiemApi, {DiaDiemRedeucer } from "../api/DiaDiemApi";
-import ImagesApi, {imagesRedeucer } from "../api/ImagesApi";
-import TourImagesApi, {TourImagesRedeucer } from "../api/TourImagesApi";
-import HuongDanVienApi, {HuongDanVienRedeucer } from "../api/HuongDanVienApi";
-import LichTrinhApi,{LichTrinhRedeucer} from "../api/LichTrinhApi";
+import TourApi, { tourRedeucer } from "../api/TourApi";
+import LoaiTourApi, { LoaiTourRedeucer } from "../api/LoaiTourApi";
+import LoaiPhuongTienApi, { LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienApi";
+import DiaDiemApi, { DiaDiemRedeucer } from "../api/DiaDiemApi";
+import ImagesApi, { imagesRedeucer } from "../api/ImagesApi";
+import TourImagesApi, { TourImagesRedeucer } from "../api/TourImagesApi";
+import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
+import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
+import KhachSanApi, { KhachSanRedeucer } from "../api/KhachSanApi";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -18,6 +19,7 @@ import {
     persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 
 // Cấu hình persist ( lưu localStorage )
 const persistConfig = {
@@ -35,8 +37,9 @@ const rootReducer = combineReducers({
 
     [TourImagesApi.reducerPath]: TourImagesRedeucer,
 
-    [LichTrinhApi.reducerPath]:LichTrinhRedeucer
+    [LichTrinhApi.reducerPath]: LichTrinhRedeucer,
 
+    [KhachSanApi.reducerPath]: KhachSanRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -47,14 +50,15 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(TourApi.middleware, LoaiTourApi.middleware, 
+        }).concat(TourApi.middleware, LoaiTourApi.middleware,
 
-            LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,
-            HuongDanVienApi.middleware,ImagesApi.middleware,TourImagesApi.middleware,LichTrinhApi.middleware),
+            LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
+            HuongDanVienApi.middleware, ImagesApi.middleware, TourImagesApi.middleware, LichTrinhApi.middleware,
 
-           
 
-        
+
+            LoaiPhuongTienApi.middleware, DiaDiemApi.middleware, HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware),
+
 })
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>

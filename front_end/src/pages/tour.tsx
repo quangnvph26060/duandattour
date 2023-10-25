@@ -1,4 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import AiOutlineShoppingCart from 'react-icons'
 import logo from '../img/logo.jpg'
 import anh1 from '../img/anh1.jpg'
@@ -31,30 +36,40 @@ const TourPage = () => {
   return (
     <div className=''>
       <header>
-        <div className='flex'>
-          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
-          <nav className='p-4 pt-6 pl-20'>
+        <div className="menu flex items-center justify-between">
+          <div className='flex'>
+            <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
 
-            <ul className='flex gap-12'>
-              <a href="/tour">Du lịch</a>
-              <a href="">Vận chuyển</a>
-              <a href="/news">Tin tức</a>
-              <a href="">Khuyến mãi</a>
-              <a href="">Liên hệ</a>
-            </ul>
-          </nav>
-          <div className='p-4 pt-6 ml-auto'>
-            <input className='border border-blue-400 rounded-md w-64' type="text" placeholder='Bắt đầu tìm kiếm...' name="" id="" />
+            <nav className='font-semibold p-4 pt-6 pl-18'>
+              <ul className='flex text-[#2D4271] gap-12'>
+                <a href="/">PolyTour</a>
+                <a href="/tour">Tour</a>
+                <a href="/news">Tin tức</a>
+                <a href="">Khuyến mãi</a>
+                <a href="/contact">Liên hệ</a>
+              </ul>
+            </nav>
           </div>
-          <button className='pr-5'>
-            <svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
-            </svg>
-          </button>
+          <div className="search flex items-center">
+            <input type="text" placeholder="Search..." className="border-yellow-300
+border-[3px] px-2 py-2  rounded" />
+            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
+
+
+            <div className="ml-2">
+              <Link to="/signup">
+                <button className="bg-green-500 text-white py-1 px-3 rounded">
+                  <i className="fas fa-user"></i>
+                </button>
+              </Link>
+            </div>
+
+          </div>
         </div>
       </header>
       <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
 
-      
+
       <div className='flex container mx-auto gap-11 pt-5'>
         {/* Conten left*/}
         <aside className='w-1/4 bg-gray-100 h-[1300px]'>
@@ -91,7 +106,7 @@ const TourPage = () => {
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
-          
+
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
@@ -173,7 +188,7 @@ const TourPage = () => {
 
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]'/></div>
+          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
           <div className='grid grid-cols-3 gap-7'>
             <div className='py-4 bg-neutral-100 rounded-lg'>
 
@@ -268,7 +283,7 @@ const TourPage = () => {
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
           </div>
-          <div className='py-5'><hr className='bg-black h-[2px]'/></div>
+          <div className='py-5'><hr className='bg-black h-[2px]' /></div>
 
           <div className='py-3'>
             <div className='w-[860px] bg-gray-100 rounded-lg flex'>
@@ -416,10 +431,10 @@ const TourPage = () => {
           </div>
           <p className='text-xl font-medium pb-4'>Các điểm đến ưa chuộng</p>
           <div className='grid grid-cols-4 gap-8 py-5'>
-            <img src={anh5} alt="anh5" className='w-max rounded-lg'/>
-            <img src={anh6} alt="anh6" className='w-max rounded-lg'/>
-            <img src={anh7} alt="anh7" className='w-max rounded-lg'/>
-            <img src={anh8} alt="anh8" className='w-max rounded-lg'/>
+            <img src={anh5} alt="anh5" className='w-max rounded-lg' />
+            <img src={anh6} alt="anh6" className='w-max rounded-lg' />
+            <img src={anh7} alt="anh7" className='w-max rounded-lg' />
+            <img src={anh8} alt="anh8" className='w-max rounded-lg' />
           </div>
         </article>
       </div>

@@ -1,5 +1,10 @@
 import React from 'react'
 import logo from '../img/logo.jpg'
+import { Link } from 'react-router-dom';
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const rounded = {
     borderRadius: '25px',
@@ -60,7 +65,7 @@ const QLuser = () => {
                     </aside>
                     <article className='w-3/4'>
                         <div>
-                            
+
                         </div>
                     </article>
                 </div>

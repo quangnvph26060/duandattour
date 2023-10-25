@@ -69,11 +69,7 @@ export const router = createBrowserRouter([
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
-  // ,
-  //     {path: "/tour",element:<TourPage/>},
-  { path: "/news", element: <News /> },
-  //     {path: "/title",element:<TitelPage/>},
-  //     {path: "/tour",element:<TourPage/>},
+
   { path: "/tour", element: <TourPage /> },
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
@@ -149,7 +145,7 @@ export const router = createBrowserRouter([
         element: <ADmin_KhachsanADD />,
       },
       {
-        path: "tour/loai_khach_san/edit/:id",
+        path: "tour/loai_khach_san/edit/:idkhachsan",
         element: <ADmin_KhachsanEdit />,
       },
       {
