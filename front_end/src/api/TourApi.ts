@@ -1,3 +1,4 @@
+import { Itourdetail } from '../interface/Itourdetail';
 import { ITour } from '../interface/tour';
 // import { pause } from '../';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -45,6 +46,10 @@ const TourApi = createApi({
             query: (id) => `/tour/${id}` ,
             providesTags: ['Tour']
         }),
+        getdetailTourById: builder.query<Itourdetail, number >({
+            query: (id) => `/tour/show/${id}` ,
+            providesTags: ['Tour']
+        }),
        
 
     })
@@ -55,7 +60,8 @@ export const {
     useAddTourMutation,
     useEditTourMutation,
     useGetTourByIdQuery,
-    useRemoveTourMutation
+    useRemoveTourMutation,
+    useGetdetailTourByIdQuery
 
 } = TourApi;
 export const tourRedeucer = TourApi.reducer;
