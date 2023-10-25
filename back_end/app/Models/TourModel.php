@@ -15,7 +15,7 @@ class TourModel extends Model
         'diem_di',
         'diem_den',
         'lich_khoi_hanh',
-        'thoi_gian',
+        'ngay_ket_thuc',
         'diem_khoi_hanh',
         'gia_tour',
         'mo_ta',
