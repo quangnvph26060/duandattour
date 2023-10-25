@@ -33,10 +33,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:sanctum']], function () { 
-     Route::delete('logout', [ApiAuthLoginController::class, 'logout']);
+     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 //permission && role
-
     Route::get('/', [ApiPermissionsController::class, 'index']);
     Route::get('/phanvaitro/{id}',[ApiPermissionsController::class, 'PhanVaiTro']);
     Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);

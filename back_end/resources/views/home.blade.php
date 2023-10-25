@@ -12,6 +12,7 @@
     <p>admin</p>
     <p>nhan vien</p>
     <p>khach hàng</p>
+    <a href="{{route('logout')}}"> đăng xuất</a>
 </center>
 </body>
 </html>
