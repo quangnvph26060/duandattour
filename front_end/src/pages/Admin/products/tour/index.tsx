@@ -6,25 +6,12 @@ import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
-import { useGetTourQuery, useRemoveTourMutation } from "../../../../api/TourApi";
-import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
-import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
-
-import { useState } from "react";
-import { Select } from 'antd';
+import { useGetTourQuery } from "../../../../api/TourApi";
 
 const AdminProduct = (props: Props) => {
-    const { Option } = Select;
-    const { data: loaitourdata } = useGetLoaiTourQuery();
-    const { data: huongdanviendata } = useGetHuongDanVienQuery();
     const { data: tourdata, error, isLoading } = useGetTourQuery();
-    const currentDate = new Date(); // Ngày hiện tại
-    const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-        useRemoveTourMutation();
-
-    const confirm = (id: any) => {
-        removeTour(id);
-    };
+    // const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+    //     useRemoveProductMutation();
 
     const tourArray = tourdata?.data || [];
     const loaitourArrary = loaitourdata?.data || [];
