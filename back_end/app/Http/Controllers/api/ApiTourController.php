@@ -7,31 +7,35 @@ use App\Http\Resources\TourResoure;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+
 class ApiTourController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function ShowTour()
+    public function ShowTour(string $id)
     {
-        $tour = TourModel::with('images')->get();
+        $tour = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->find($id);
+
         if (!$tour) {
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
         return response()->json($tour);
     }
+
+
     public function index()
     {
         $tour = TourModel::all();
-        return  TourResoure::collection($tour); 
+        return  TourResoure::collection($tour);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {  
+    {
         $lich_khoi_hanh = Carbon::parse($request->lich_khoi_hanh)->format('Y-m-d');
         $requestData = $request->all();
         $requestData['lich_khoi_hanh'] = $lich_khoi_hanh;
@@ -62,12 +66,12 @@ class ApiTourController extends Controller
     {
         $tour = TourModel::find($id);
         if ($tour) {
-          $tour->update($request->all());
+            $tour->update($request->all());
         } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thong tin'
             ], 404);
-        } 
+        }
     }
 
     /**
@@ -76,12 +80,12 @@ class ApiTourController extends Controller
     public function destroy(string $id)
     {
         $tour = TourModel::find($id);
-        if($tour){
+        if ($tour) {
             $tour->delete();
             return  response()->json([
                 'message' => 'Xóa Thành Công'
             ], 201);
-        }else{
+        } else {
             return  response()->json([
                 'message' => 'Không tìm thấy thông tin'
             ], 404);

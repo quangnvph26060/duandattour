@@ -43,6 +43,9 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+
+import QLuser from "./pages/qluser";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -66,6 +69,14 @@ export const router = createBrowserRouter([
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
+
+  { path: "/tour", element: <TourPage /> },
+  { path: "/signin", element: <SignIn /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/:id/tour", element: <DetailPage /> },
+  { path: "/booktour", element: <BookTour /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/profile", element: <QLuser /> },
   { path: "*", element: "Not Found Page" },
 
   {
@@ -134,7 +145,7 @@ export const router = createBrowserRouter([
         element: <ADmin_KhachsanADD />,
       },
       {
-        path: "tour/loai_khach_san/edit/:id",
+        path: "tour/loai_khach_san/edit/:idkhachsan",
         element: <ADmin_KhachsanEdit />,
       },
       {
@@ -177,11 +188,11 @@ export const router = createBrowserRouter([
         path: "tour/image_tour",
         element: <Admin_TourImg />,
       },
-       {
+      {
         path: "tour/image_tour/add",
         element: <Admin_TourImgADD />,
       },
-       {
+      {
         path: "tour/image_tour/edit/:idtourimage",
         element: <Admin_TourImgEDit />,
       },
@@ -194,12 +205,11 @@ export const router = createBrowserRouter([
       {
         path: "tour/image/add",
         element: <AdmidImageADD />,
-      }, 
+      },
       {
         path: "tour/image/edit/:idimage",
         element: <Admin_ImageEdit />,
       },
-      
       {
         path: "tour/hoa_don",
         element: <ADmin_Hoadon />,

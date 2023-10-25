@@ -20,8 +20,7 @@ class ImageModel extends Model
         return $this->hasMany(TourImagesModel::class);
     }
     public function tours()
-{
-    return $this->belongsToMany(TourModel::class, 'tour_images', 'image_id', 'tour_id');
-}
-  
+    {
+        return $this->belongsToMany(TourModel::class, 'tour_images', 'image_id', 'tour_id');
+    }
 }

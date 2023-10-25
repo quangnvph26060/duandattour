@@ -1,8 +1,9 @@
-import React from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
+import React,{useState} from 'react';
+import { Form, Button, Input, DatePicker, Select,message,Alert } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-
+import { useAddKhachSanMutation,useRemoveKhachSanMutation } from '../../../../api/KhachSanApi';
+import { IKhachSan } from '../../../../interface/khachsan';
 const { Option } = Select;
 
 type FieldType = {
@@ -11,11 +12,21 @@ type FieldType = {
 };
 
 const ADmin_KhachsanADD: React.FC = () => {
+  const [addKhachsan]=useAddKhachSanMutation();
   const navigate = useNavigate();
-
-  const onFinish = (values: FieldType) => {
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const onFinish = (values: IKhachSan) => {
+    addKhachsan(values)
+    .unwrap()
+    .then(()=>navigate("/admin/tour/loai_khach_san"))
     // Handle form submission logic here
-    console.log('Form values:', values);
+    .catch((error)=>{
+        setErrors(error.data.message);
+        setLoading(false);
+    });
+   
+    
   };
 
   return (
@@ -39,6 +50,8 @@ const ADmin_KhachsanADD: React.FC = () => {
             { required: true, message: 'Vui lòng nhập loại khách sạn!' },
             { min: 3, message: ' Khách sạn ít nhất 3 ký tự' },
           ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
         >
           <Input />
         </Form.Item>
@@ -51,7 +64,7 @@ const ADmin_KhachsanADD: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/loai_khach_san')}
           >
             Quay lại
           </Button>

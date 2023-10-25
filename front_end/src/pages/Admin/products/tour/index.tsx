@@ -209,4 +209,3 @@ const AdminProduct = (props: Props) => {
 };
 
 export default AdminProduct;
-

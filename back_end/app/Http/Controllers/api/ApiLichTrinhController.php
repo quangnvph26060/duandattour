@@ -18,7 +18,7 @@ class ApiLichTrinhController extends Controller
     } 
     public function store(Request $request){
         $lichtrinh=$request->all();
-        return LichTrinhModel::created($lichtrinh);
+        return LichTrinhModel::create($lichtrinh);
     }
     public function show(string $id){
         $lichtrinh=LichTrinhModel::find($id);
