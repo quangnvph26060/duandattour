@@ -129,7 +129,7 @@ export const router = createBrowserRouter([
         element: <ADmin_KhachsanADD />,
       },
       {
-        path: "tour/loai_khach_san/edit/:id",
+        path: "tour/loai_khach_san/edit/:idkhachsan",
         element: <ADmin_KhachsanEdit />,
       },
       {

@@ -4,6 +4,7 @@ import LoaiPhuongTienApi, {LoaiPhuongTienRedeucer } from "../api/LoaiPhuongTienA
 import DiaDiemApi, {DiaDiemRedeucer } from "../api/DiaDiemApi";
 import ImagesApi, {imagesRedeucer } from "../api/ImagesApi";
 import HuongDanVienApi, {HuongDanVienRedeucer } from "../api/HuongDanVienApi";
+import KhachSanApi, {KhachSanRedeucer} from "../api/KhachSanApi";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -16,6 +17,7 @@ import {
     persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 
 // Cấu hình persist ( lưu localStorage )
 const persistConfig = {
@@ -30,6 +32,7 @@ const rootReducer = combineReducers({
     [DiaDiemApi.reducerPath]: DiaDiemRedeucer,
     [HuongDanVienApi.reducerPath]: HuongDanVienRedeucer,
     [ImagesApi.reducerPath]: imagesRedeucer,
+    [KhachSanApi.reducerPath]:KhachSanRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -41,7 +44,7 @@ export const store = configureStore({
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
         }).concat(TourApi.middleware, LoaiTourApi.middleware, 
-            LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,HuongDanVienApi.middleware,ImagesApi.middleware),
+            LoaiPhuongTienApi.middleware,DiaDiemApi.middleware,HuongDanVienApi.middleware,ImagesApi.middleware,KhachSanApi.middleware),
         
 })
 export type AppDispatch = typeof store.dispatch
