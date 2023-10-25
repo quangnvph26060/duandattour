@@ -10,6 +10,8 @@ use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
 use App\Http\Controllers\api\ApiTourImageController;
 use App\Http\Controllers\api\ApiTourPhuongTienController;
+use App\Http\Controllers\api\ApiLoaiKhachSanController;
+use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 
 use App\Models\LoaiTourModel;
@@ -103,10 +105,10 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
-        Route::get('/show/{id}  ', [ApiTourController::class, 'ShowTour']);
+        Route::get('/{id}  ', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
-        Route::get('/{id}', [ApiTourController::class, 'show']);
+        // Route::get('/{id}', [ApiTourController::class, 'show']);
         Route::put('/{id}', [ApiTourController::class, 'update']);
         Route::delete('/{id}', [ApiTourController::class, 'destroy']);
     });
