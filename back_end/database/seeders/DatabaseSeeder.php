@@ -31,11 +31,12 @@ class DatabaseSeeder extends Seeder
             TourKhachSanSeeder::class,
             TourPhuongTienSeeder::class,
             UserSeeder::class,
+            KhuyenMaiSeeder::class,
             DatTourSeeder::class,
             HoaDonSeeder::class,
             HuongDanVienHoaDonSeeder::class,
-            KhuyenMaiSeeder::class,
-            
+
+
         ]);
     }
 }
