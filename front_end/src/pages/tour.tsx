@@ -15,12 +15,17 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
+import { useGetTourQuery } from '../api/TourApi'
 
 
 const rounded = {
   borderRadius: '25px',
 };
-const TourPage = () => {
+
+type Props = {};
+
+const TourPage = (props: Props) => {
+  const { data: Tourdata, error, } = useGetTourQuery()
   // const images = [
   //     {
   //         id: 1,
@@ -54,7 +59,7 @@ const TourPage = () => {
       </header>
       <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
 
-      
+
       <div className='flex container mx-auto gap-11 pt-5'>
         {/* Conten left*/}
         <aside className='w-1/4 bg-gray-100 h-[1300px]'>
@@ -91,7 +96,7 @@ const TourPage = () => {
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
-          
+
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
               <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
@@ -173,39 +178,45 @@ const TourPage = () => {
 
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]'/></div>
+          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
+
           <div className='grid grid-cols-3 gap-7'>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
+            {/* {Tourdata?.map((item: any) => {
+              return (
+                <div key={item.id}> */}
+                  <div className='py-4 bg-neutral-100 rounded-lg'>
+                    <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
+                    <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
+                    <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
+                    <p className='px-4'>MÃ TOUR :</p>
+                    <div className='flex gap-3 px-4'>
+                      <img src={ticket} className='w-10' alt="ticket" />
+                      <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
+                    </div>
+                    <div className='flex gap-2 py-2 px-4'>
+                      <p className='text-sm'>Nơi khởi hành: </p>
+                      <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
+                    </div>
+                    <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
+                    <div className='flex gap-16 justify-between px-4 p-1'>
+                      <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
+                      <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
+                    </div>
+                    <div className='flex justify-between px-4 gap-10 pt-3'>
+                      <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
+                        <img src={shopping} alt="shopping" className='w-5' />
+                        <p className='text-white text-sm'>Đặt ngay</p>
+                      </button>
+                      <button className='border border-sky-500 py-2 px-5 rounded-xl'>
+                        <p className='text-sm'>Xem chi tiết</p>
+                      </button>
+                    </div>
+                  </div>
+                {/* </div>
+              )
+            })} */}
 
-              <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 p-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
             <div className='py-4 bg-neutral-100 rounded-lg'>
-
               <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
               <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
               <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -
@@ -268,7 +279,7 @@ const TourPage = () => {
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
           </div>
-          <div className='py-5'><hr className='bg-black h-[2px]'/></div>
+          <div className='py-5'><hr className='bg-black h-[2px]' /></div>
 
           <div className='py-3'>
             <div className='w-[860px] bg-gray-100 rounded-lg flex'>
@@ -416,10 +427,10 @@ const TourPage = () => {
           </div>
           <p className='text-xl font-medium pb-4'>Các điểm đến ưa chuộng</p>
           <div className='grid grid-cols-4 gap-8 py-5'>
-            <img src={anh5} alt="anh5" className='w-max rounded-lg'/>
-            <img src={anh6} alt="anh6" className='w-max rounded-lg'/>
-            <img src={anh7} alt="anh7" className='w-max rounded-lg'/>
-            <img src={anh8} alt="anh8" className='w-max rounded-lg'/>
+            <img src={anh5} alt="anh5" className='w-max rounded-lg' />
+            <img src={anh6} alt="anh6" className='w-max rounded-lg' />
+            <img src={anh7} alt="anh7" className='w-max rounded-lg' />
+            <img src={anh8} alt="anh8" className='w-max rounded-lg' />
           </div>
         </article>
       </div>
