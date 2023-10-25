@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 //api phương tiện
 Route::prefix('admin')->group(function () {
 
+
+
     Route::prefix('images')->group(function () {
         Route::get('/images', [ApiImagesController::class, 'getImage']);
         Route::get('/', [ApiImagesController::class, 'index']); // lấy ra danh sách

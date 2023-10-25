@@ -20,17 +20,12 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
-import { useGetTourQuery } from '../api/TourApi'
 
 
 const rounded = {
   borderRadius: '25px',
 };
-
-type Props = {};
-
-const TourPage = (props: Props) => {
-  const { data: Tourdata, error, } = useGetTourQuery()
+const TourPage = () => {
   // const images = [
   //     {
   //         id: 1,
@@ -194,12 +189,9 @@ border-[3px] px-2 py-2  rounded" />
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
-
           <div className='grid grid-cols-3 gap-7'>
-            {/* {Tourdata?.map((item: any) => {
-              return (
-                <div key={item.id}> */}
             <div className='py-4 bg-neutral-100 rounded-lg'>
+
               <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
               <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
               <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
@@ -227,11 +219,8 @@ border-[3px] px-2 py-2  rounded" />
                 </button>
               </div>
             </div>
-            {/* </div>
-              )
-            })} */}
-
             <div className='py-4 bg-neutral-100 rounded-lg'>
+
               <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
               <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
               <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -
@@ -447,12 +436,12 @@ border-[3px] px-2 py-2  rounded" />
             <img src={anh7} alt="anh7" className='w-max rounded-lg' />
             <img src={anh8} alt="anh8" className='w-max rounded-lg' />
           </div>
-        </article >
-      </div >
+        </article>
+      </div>
 
       {/* Footer */}
-      <footer></footer >
-    </div >
+      <footer></footer>
+    </div>
   )
 }
 

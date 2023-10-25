@@ -45,16 +45,28 @@ class UserSeeder extends Seeder
         $role = Role::findByName('admin');
         $permissions = Permission::pluck('id')->all();
         $role->syncPermissions($permissions);
-       
-        DB::table('users')->insert([
-            'name' => "Nguyễn Văn A",
-            'image' => 'A.jpg',
-            'dia_chi' => 'Hà Nội',
-            'email' => 'Anh@gmail.com',
-            'sdt' => '09876543',
-            'cccd' => '0009820948',
-            'password' => bcrypt('12345')
 
+        DB::table('users')->insert([
+            [
+                'name' => "Nguyễn Văn A",
+                'image' => 'A.jpg',
+                'dia_chi' => 'Hà Nội',
+                'email' => 'Anh@gmail.com',
+                'sdt' => '09876543',
+                'cccd' => '0009820948',
+                'password' => bcrypt('12345')
+
+            ],
+            [
+                'name' => "Nguyễn Văn c",
+                'image' => 'A.jpg',
+                'dia_chi' => 'Hà Nội',
+                'email' => 'ccuong@gmail.com',
+                'sdt' => '12345678',
+                'cccd' => '9876543',
+                'password' => bcrypt('12345')
+
+            ]
         ]);
         $user = User::find(1);
         $role = Role::where('name', 'admin')->first();

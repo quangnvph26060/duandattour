@@ -6,12 +6,25 @@ import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
-import { useGetTourQuery } from "../../../../api/TourApi";
+import { useGetTourQuery, useRemoveTourMutation } from "../../../../api/TourApi";
+import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
+import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
+
+import { useState } from "react";
+import { Select } from 'antd';
 
 const AdminProduct = (props: Props) => {
+    const { Option } = Select;
+    const { data: loaitourdata } = useGetLoaiTourQuery();
+    const { data: huongdanviendata } = useGetHuongDanVienQuery();
     const { data: tourdata, error, isLoading } = useGetTourQuery();
-    // const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-    //     useRemoveProductMutation();
+    const currentDate = new Date(); // Ngày hiện tại
+    const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+        useRemoveTourMutation();
+
+    const confirm = (id: any) => {
+        removeTour(id);
+    };
 
     const tourArray = tourdata?.data || [];
     const loaitourArrary = loaitourdata?.data || [];
@@ -196,4 +209,3 @@ const AdminProduct = (props: Props) => {
 };
 
 export default AdminProduct;
-
