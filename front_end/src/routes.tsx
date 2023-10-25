@@ -12,7 +12,6 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
-
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edi";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -44,6 +43,9 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+
+import QLuser from "./pages/qluser";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -67,6 +69,18 @@ export const router = createBrowserRouter([
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
+  // ,
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/news", element: <News /> },
+  //     {path: "/title",element:<TitelPage/>},
+  //     {path: "/tour",element:<TourPage/>},
+  { path: "/tour", element: <TourPage /> },
+  { path: "/signin", element: <SignIn /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/:id/tour", element: <DetailPage /> },
+  { path: "/booktour", element: <BookTour /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/profile", element: <QLuser /> },
   { path: "*", element: "Not Found Page" },
 
   {
