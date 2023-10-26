@@ -22,7 +22,6 @@ class ApiAuthLoginController extends Controller
         }
     
         $token = $user->createToken('authToken')->plainTextToken;
-       // return redirect()->route('/home'); // add
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
