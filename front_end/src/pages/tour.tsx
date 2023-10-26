@@ -16,6 +16,8 @@ import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
 import { useGetTourQuery } from '../api/TourApi'
+import { useGetTourImagesQuery } from '../api/TourImagesApi'
+import { useGetHuongDanVienQuery } from '../api/HuongDanVienApi'
 
 
 const rounded = {
@@ -25,14 +27,28 @@ const rounded = {
 type Props = {};
 
 const TourPage = (props: Props) => {
-  const { data: Tourdata, error, } = useGetTourQuery()
-  // const images = [
-  //     {
-  //         id: 1,
-  //         name:'product-1',
-  //         imagePath: qq
-  //     }
-  // ]
+  const { data: Tourdata } = useGetTourQuery()
+  const currentDate = new Date();
+  // const { data: imagesdata, error, isLoading } = useGetTourImagesQuery();
+  const tourArray = Tourdata?.data || [];
+  const data = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, anh, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: number; mo_ta: any; anh:string, diem_di: string; lich_khoi_hanh: string; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
+    return ({
+        key: id,
+        soluong,
+        ten_tour,
+        anh,
+        diem_khoi_hanh,
+        diem_den,
+        gia_tour,
+        mo_ta,
+        diem_di,
+        lich_khoi_hanh,
+        thoi_gian,
+        trang_thai,
+        ma_loai_tour,
+        ma_hdv
+    });
+});
   return (
     <div className=''>
       <header>
@@ -181,13 +197,13 @@ const TourPage = (props: Props) => {
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
 
           <div className='grid grid-cols-3 gap-7'>
-            {/* {Tourdata?.map((item: any) => {
+            {tourArray?.map((item: any) => {
               return (
-                <div key={item.id}> */}
+                <div key={item.id}>
                   <div className='py-4 bg-neutral-100 rounded-lg'>
-                    <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
-                    <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-                    <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
+                    <img src={item.anh} alt="anh1" className='h-[315px] w-max rounded-lg' />
+                    <p className='px-1'>{item.lich_khoi_hanh} - {item.thoi_gian} - Giờ đi: 05:20</p>
+                    <p className='font-bold py-2 px-1'>{item.ten_tour}</p>
                     <p className='px-4'>MÃ TOUR :</p>
                     <div className='flex gap-3 px-4'>
                       <img src={ticket} className='w-10' alt="ticket" />
@@ -195,7 +211,7 @@ const TourPage = (props: Props) => {
                     </div>
                     <div className='flex gap-2 py-2 px-4'>
                       <p className='text-sm'>Nơi khởi hành: </p>
-                      <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
+                      <p className='font-medium text-sm'>{item.diem_khoi_hanh}</p>
                     </div>
                     <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
                     <div className='flex gap-16 justify-between px-4 p-1'>
@@ -212,9 +228,9 @@ const TourPage = (props: Props) => {
                       </button>
                     </div>
                   </div>
-                {/* </div>
+                </div>
               )
-            })} */}
+            })}
 
             <div className='py-4 bg-neutral-100 rounded-lg'>
               <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
