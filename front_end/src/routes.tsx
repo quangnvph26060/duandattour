@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element: localStorage.getItem("role") ? <LayoutAdmin /> : <Navigate to="/"/>,
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {

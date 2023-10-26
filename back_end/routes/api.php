@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAuthLoginController;
+use App\Http\Controllers\Api\ApiDatTourController;
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
@@ -32,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-
+Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
