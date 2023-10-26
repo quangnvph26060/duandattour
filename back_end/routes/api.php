@@ -108,6 +108,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
+
         Route::get('/{id}  ', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);

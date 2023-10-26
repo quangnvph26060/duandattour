@@ -27,9 +27,15 @@ class ApiTourController extends Controller
 
     public function index()
     {
-        $tour = TourModel::all();
-        return  TourResoure::collection($tour);
+        $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
+
+        if ($tours->isEmpty()) {
+            return response()->json(['message' => 'No tours found'], 404);
+        }
+
+        return response()->json($tours);
     }
+
 
     /**
      * Store a newly created resource in storage.
