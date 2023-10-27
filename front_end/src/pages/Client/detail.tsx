@@ -15,7 +15,7 @@ import {
   FaStar,
 } from "react-icons/fa";
 import logo from "./img/logo.jpg"
-import { useGetTourByIdQuery } from "../../api/TourApi";
+import { useGetTourByIdQuery, useGetdetailTourByIdQuery } from "../../api/TourApi";
 type Props = {};
 
 const DetailPage = (props: Props) => {
@@ -35,14 +35,19 @@ const DetailPage = (props: Props) => {
     width: "580px  ",
   };
   const img1 = {
+
     borderRadius: "5px",
     height: "210px",
     width: "309px  ",
   };
   const { idTour } = useParams<{ idTour: any }>();
-  const { data: Tourdata } = useGetTourByIdQuery(idTour || "");
-  const tourDetail = Tourdata?.data || [];
-  console.log(tourDetail);
+  const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
+
+
+
+
+  console.log(idTour);
+
   return (
     <div className="container mx-auto ">
       <div className="menu flex items-center justify-between">
@@ -80,11 +85,12 @@ border-[3px] px-2 py-2  rounded" />
             <div className="title">
               <p className="text-[26px] text-[#2D4271] font-bold">
                 {tourDetail?.ten_tour}
+                {Tourdata?.ten_tour}
               </p>
             </div>
 
             <div className="price buy mr-40 flex gap-5 ">
-              <p className="text-[26px] text-red-500 font-bold">{tourDetail?.gia_tour}</p>
+              <p className="text-[26px] text-red-500 font-bold">{Tourdata?.gia_tour}</p>
               <p className="mt-2">/khách</p>
               <button
                 type="button"
@@ -157,16 +163,17 @@ border-[3px] px-2 py-2  rounded" />
             <div className="Desc text-[#2D4271] text-[15px]">
               <p className="max-w-[500px]">
                 {tourDetail?.mo_ta}
+                {Tourdata?.mo_ta}
               </p>
               <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Khởi hành {tourDetail?.lich_khoi_hanh}
+                  Khởi hành {Tourdata?.lich_khoi_hanh}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Tập trung 05:30 ngày 04/10/2023
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Thời gian {tourDetail?.thoi_gian}
+                  Thời gian {Tourdata?.thoi_gian}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
 
@@ -175,6 +182,12 @@ border-[3px] px-2 py-2  rounded" />
                 <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
 
                   Số lượng {tourDetail?.soluong}
+
+                  Nơi khởi hành {Tourdata?.diem_khoi_hanh}
+                </p>
+                <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
+
+                  Số lượng {Tourdata?.soluong}
                 </p>
               </div>
             </div>
@@ -288,6 +301,32 @@ border-[3px] px-2 py-2  rounded" />
 
 
                     (*) Thứ tự các điểm thăm quan có thể thay đổi theo tình hình thực tế tại thời điểm xuất phát nhưng vẫn đảm bảo đầy đủ các quyền lợi và các điểm thăm quan theo chương trình.</p>
+                </div>
+              </div>
+              <div className="w-1/3 bg-[#f9f9f9]">
+                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+
+                  {Tourdata?.lich_t_rinh.map((tieude) => (
+                    <p key={tieude.id}>{tieude.tieu_de}</p>
+                  ))}
+                </h2>
+                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+
+                </h2>
+
+
+                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+                  Ngày 3 - SA PA - CÔC LẾU - HẢI PHÒNG (Ăn sáng, trưa) (// '$name')
+                </h2>
+              </div>
+              <div className="w-2/3 ">
+                <div className="max-w-full">
+                  <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+                    {Tourdata?.lich_t_rinh.map((tieude) => (
+                      <p key={tieude.id}>{tieude.noi_dung}</p>
+                    ))}
+                  </h2>
+
                 </div>
               </div>
             </div>
