@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('ngay_ket_thuc');
             $table->string('diem_khoi_hanh');
             $table->integer('gia_tour');
+            $table->integer('gia_khuyen_mai');
             $table->text('mo_ta');
             $table->integer('soluong');
             $table->tinyInteger('trang_thai')->default(0);

@@ -14,7 +14,7 @@ class KhuyenMaiSeeder extends Seeder
     {
        
         DB::table('khuyen_mais')->insert([
-            'ten_Khuyen_mai' => "IEUHGIJ",
+            'ten_Khuyen_mai' => "IEUHGgfIJ",
             'ngay_batdau'=>'2023/10/10',
             'ngay_ketthuc'=>'2023/11/10',
             'giam_gia'=>100,

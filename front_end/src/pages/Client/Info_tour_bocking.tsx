@@ -3,6 +3,10 @@ import { FaQrcode, FaRegCalendarAlt, FaRegCalendarTimes } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import logo from "./img/logo.jpg"
 
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 type Props = {};
 
 const Info_tour_bocking = (props: Props) => {
@@ -13,20 +17,20 @@ const Info_tour_bocking = (props: Props) => {
   };
   const data = [
     { id: 1, name: 'Name', dob: '1990-01-01', gender: 'Nam', address: 'Hà Nội', age: 31, room: '101' },
-   
+
     // Add more data as needed
   ];
 
   return (
-    
-    
+
+
     <div className="w-[80%] max-h-max  mx-auto ">
-      
+
       <div className="menu flex items-center justify-between">
-      <div className='flex'>
+        <div className='flex'>
           <img src={logo} alt="logo" width="70px" />
           <nav className='font-semibold p-4 pt-6 pl-18'>
-          <ul className='flex text-[#2D4271] gap-12'>
+            <ul className='flex text-[#2D4271] gap-12'>
               <a href="/">PolyTour</a>
               <a href="/tour">Tour</a>
               <a href="/">Tin tức</a>
@@ -34,21 +38,21 @@ const Info_tour_bocking = (props: Props) => {
               <a href="/contact">Liên hệ</a>
             </ul>
           </nav>
-          </div>
+        </div>
         <div className="search flex items-center">
-  <input type="text" placeholder="Search..." className="border-yellow-300
+          <input type="text" placeholder="Search..." className="border-yellow-300
 border-[3px] px-2 py-2  rounded" />
-  <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
+          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
 
-  
-<div className="ml-2">
-  <Link to="/signup">
-    <button className="bg-green-500 text-white py-1 px-3 rounded">
-      <i className="fas fa-user"></i>
-    </button>
-  </Link>
-</div>
-</div></div>
+
+          <div className="ml-2">
+            <Link to="/signup">
+              <button className="bg-green-500 text-white py-1 px-3 rounded">
+                <i className="fas fa-user"></i>
+              </button>
+            </Link>
+          </div>
+        </div></div>
       <div className="flex gap-3">
         <div className="w-2/3 ">
           {" "}
@@ -228,30 +232,30 @@ border-[3px] px-2 py-2  rounded" />
           </p>
         </p>
         <div>
-        <table className="min-w-full text-center bg-white border border-gray-300">
-      <thead className=" text-[#2D4271] bg-gray-200">
-        <tr>
-          <th className="py-2 px-4 border-b">Họ tên</th>
-          <th className="py-2 px-4 border-b">Ngày sinh</th>
-          <th className="py-2 px-4 border-b">Giới tính</th>
-          <th className="py-2 px-4 border-b">Địa chỉ</th>
-          <th className="py-2 px-4 border-b">Độ tuổi</th>
-          <th className="py-2 px-4 border-b">Phòng đơn</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => (
-          <tr key={item.id}>
-            <td className="py-2 px-4 border-b">{item.name}</td>
-            <td className="py-2 px-4 border-b">{item.dob}</td>
-            <td className="py-2 px-4 border-b">{item.gender}</td>
-            <td className="py-2 px-4 border-b">{item.address}</td>
-            <td className="py-2 px-4 border-b">{item.age}</td>
-            <td className="py-2 px-4 border-b">{item.room}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          <table className="min-w-full text-center bg-white border border-gray-300">
+            <thead className=" text-[#2D4271] bg-gray-200">
+              <tr>
+                <th className="py-2 px-4 border-b">Họ tên</th>
+                <th className="py-2 px-4 border-b">Ngày sinh</th>
+                <th className="py-2 px-4 border-b">Giới tính</th>
+                <th className="py-2 px-4 border-b">Địa chỉ</th>
+                <th className="py-2 px-4 border-b">Độ tuổi</th>
+                <th className="py-2 px-4 border-b">Phòng đơn</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item) => (
+                <tr key={item.id}>
+                  <td className="py-2 px-4 border-b">{item.name}</td>
+                  <td className="py-2 px-4 border-b">{item.dob}</td>
+                  <td className="py-2 px-4 border-b">{item.gender}</td>
+                  <td className="py-2 px-4 border-b">{item.address}</td>
+                  <td className="py-2 px-4 border-b">{item.age}</td>
+                  <td className="py-2 px-4 border-b">{item.room}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
       <div className="border py-5  px-5 rounded-md max-h-100px mt-14 bg-white w-full">

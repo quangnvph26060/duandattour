@@ -10,7 +10,7 @@ use App\Models\DatTour;
 use App\Models\HoaDon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Date;
+
 use Illuminate\Support\Facades\DB;
 
 class ApiTourController extends Controller
@@ -18,15 +18,18 @@ class ApiTourController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function ShowTour()
+    public function ShowTour(string $id)
     {
-        $tour = TourModel::with('images')->get();
+        $tour = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->find($id);
+
         if (!$tour) {
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
         return response()->json($tour);
     }
+
+
     public function index()
     {
         $tour = TourModel::all();
