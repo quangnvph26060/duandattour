@@ -33,8 +33,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
+//api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
+//api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
+// api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
+Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -111,7 +115,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('tour')->group(function () {
         Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
-        Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+      
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);

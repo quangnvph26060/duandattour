@@ -136,11 +136,18 @@ class ApiLoaiTourController extends Controller
         }
         return $loaiTourModel->delete();
     }
-
     public function getMenuPhanCap()
     {
-        $loaiTours = LoaiTourModel::with('tours')->get();
-
-        return response()->json(['loaiTours' => $loaiTours], 200);
+        $loaiTours = LoaiTourModel::all();
+    
+        $menuPhanCap = $loaiTours->map(function ($loaiTour) {
+            $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
+            return [
+                'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),
+                'diemDens' => $diemDens,
+            ];
+        });
+    
+        return response()->json(['menuPhanCap' => $menuPhanCap], 200);
     }
 }
