@@ -28,38 +28,38 @@ class ApiLoaiTourController extends Controller
      * Display a listing of the resource.
      */
     public function ShowLoaiTour()
-{
-    $results = DB::select("
+    {
+        $results = DB::select("
         SELECT dia_diem.ten_dia_diem, loai_tour.ten_loai_tour
         FROM dia_diem
         INNER JOIN loai_tour ON dia_diem.ma_loai_tour = loai_tour.id
     ");
 
-    $groupedData = [];
-    foreach ($results as $result) {
-        $tenLoaiTour = $result->ten_loai_tour;
-        $tenDiaDiem = $result->ten_dia_diem;
+        $groupedData = [];
+        foreach ($results as $result) {
+            $tenLoaiTour = $result->ten_loai_tour;
+            $tenDiaDiem = $result->ten_dia_diem;
 
-        if (!isset($groupedData[$tenLoaiTour])) {
-            $groupedData[$tenLoaiTour] = [
-                'ten_loai_tour' => $tenLoaiTour,
-                'dia_diem' => []
-            ];
+            if (!isset($groupedData[$tenLoaiTour])) {
+                $groupedData[$tenLoaiTour] = [
+                    'ten_loai_tour' => $tenLoaiTour,
+                    'dia_diem' => []
+                ];
+            }
+
+            $groupedData[$tenLoaiTour]['dia_diem'][] = $tenDiaDiem;
         }
 
-        $groupedData[$tenLoaiTour]['dia_diem'][] = $tenDiaDiem;
-    }
+        $formattedData = [];
+        foreach ($groupedData as $key => $value) {
+            $formattedData[] = $value;
+        }
 
-    $formattedData = [];
-    foreach ($groupedData as $key => $value) {
-        $formattedData[] = $value;
+        return response()->json([
+            'code' => 200,
+            'data' => $formattedData
+        ]);
     }
-
-    return response()->json([
-        'code' => 200,
-        'data' => $formattedData
-    ]);
-}
     public function index()
     {
         //
@@ -135,5 +135,12 @@ class ApiLoaiTourController extends Controller
             return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
         }
         return $loaiTourModel->delete();
+    }
+
+    public function getMenuPhanCap()
+    {
+        $loaiTours = LoaiTourModel::with('tours')->get();
+
+        return response()->json(['loaiTours' => $loaiTours], 200);
     }
 }
