@@ -19,7 +19,7 @@ class ApiTourController extends Controller
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
-        return response()->json($tour);
+        return response()->json(['tour' => $tour]);
     }
     public function index()
     {
