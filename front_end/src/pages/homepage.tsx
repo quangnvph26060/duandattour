@@ -40,7 +40,7 @@ const HomePage = () => {
         console.log(error);
       });
   }, []);
-  
+
   const sales = [{
 
     id: 1,
@@ -195,30 +195,15 @@ const HomePage = () => {
   const products = [
     {
       id: 1,
-      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: sl,
-      price: 99.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: TP. Hồ Chí Minh'
     },
     {
       id: 2,
-      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: bb,
-      price: 149.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách    ',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: Hà Nội'
     },
     {
       id: 3,
-      name: 'Trung Quốc: Côn Minh - Đại Lý - Shangrila - Lệ Giang - Thạch Lâm - Côn Minh',
       image: aa,
-      price: 199.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: TP. Hồ Chí Minh'
     }
   ];
 
@@ -464,34 +449,38 @@ border-[3px] px-2 py-2  rounded" />
         </div>
       </div> */}
 
-   <div className="content">
-        <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TPUR GIỜ CHÓT!</h2>
+      <div className="content">
+        <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
         <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {tour.map((item) => (
             <div key={item.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
-               <div>
-            {item.images.map((image) => (
-             <img
-             key={image.id}
-             className="mt-4 rounded-lg w-full h-60 object-cover"
-             src={`http://localhost:8000/storage/${image.image_path}`}
-             alt={`Ảnh ${item.ten_tour}`}
-           />
-            ))}
+
+              {item.images.map((image) => (
+                <img
+                  key={image.id}
+                  className="mt-4 rounded-lg w-full h-60 object-cover"
+                  src={`http://localhost:8000/storage/${image.image_path}`}
+                  alt={`Ảnh ${item.ten_tour}`}
+                />
+              ))}
+
+              <div className="product-details mt-4">   
+              <div className="info-row data">
+            <p>{item.lich_khoi_hanh}</p>-
+            <p>{item.soluong} ngày</p>
           </div>
-              <div className="product-details mt-4">
                 <Link to="/:id/tour" className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
-                <p className="text-gray-600">${item.gia_tour.toFixed(2)}</p>
-                <p>{item.mo_ta}</p>
-                <p>{item.lich_khoi_hanh}</p>
-                <p>Khởi Hành: {item.diem_khoi_hanh}</p>
-                <p> Còn:{item.soluong}</p>
+                <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour.toFixed(2)}đ</p>
+                <p className='text mt-2'>{item.mo_ta}</p>
+                
+                <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
+                
                 <button style={{ backgroundColor: 'red', float: 'right', borderRadius: '5px' }} className="py-2 px-2 text-white mt-5">
                   Giảm 6%
                 </button>
-                <button  className="mt-4 w-full text-center bg-blue-400 text-white py-2 px-4 rounded">
+                <button className="mt-4 w-full text-center bg-blue-400 text-white py-2 px-4 rounded">
                   Còn 00 ngày 1:50:40
                 </button>
               </div>
