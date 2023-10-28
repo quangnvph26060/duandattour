@@ -477,7 +477,7 @@ border-[3px] px-2 py-2  rounded" />
                 
                 <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
                 
-                <button style={{ backgroundColor: 'red', float: 'right', borderRadius: '5px' }} className="py-2 px-2 text-white mt-5">
+                <button style={{ backgroundColor: 'red', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
                   Giảm 6%
                 </button>
                 <button className="mt-4 w-full text-center bg-blue-400 text-white py-2 px-4 rounded">
@@ -563,13 +563,13 @@ border-[3px] px-2 py-2  rounded" />
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
             <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Liên hệ</h3>
-            <p>Email: example@gmail.com</p>
+            <p>Email: Polytour@gmail.com</p>
             <p>Tìm kiếm thông tin</p>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
             <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Hỗ trợ</h3>
             <p>Mạng xã hội</p>
-            <p>1900 1839</p>
+            <p>037 763 8662</p>
             <p>Từ 8:00 - 22:00 hàng ngày</p>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
