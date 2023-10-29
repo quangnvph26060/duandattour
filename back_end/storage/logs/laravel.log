@@ -1995,3 +1995,19 @@
 #59 C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\Users\\\\ASUS\\\\O...')
 #60 {main}
 "} 
+[2023-10-29 08:32:06] local.ERROR: Command "server" is not defined.
+
+Did you mean one of these?
+    make:observer
+    serve {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"server\" is not defined.
+
+Did you mean one of these?
+    make:observer
+    serve at C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\vendor\\symfony\\console\\Application.php:725)
+[stacktrace]
+#0 C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\vendor\\symfony\\console\\Application.php(262): Symfony\\Component\\Console\\Application->find('server')
+#1 C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\vendor\\symfony\\console\\Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\Users\\ASUS\\OneDrive\\Máy tính\\DATN\\Du_an_TN\\Du_An_TN\\Du_An_TN\\back_end\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
