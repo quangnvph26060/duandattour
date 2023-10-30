@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
+
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import {
   FaBeer,
   FaFlag,
@@ -42,15 +47,15 @@ const DetailPage = (props: Props) => {
 const img = Tourdata?.images
 
 
-  console.log(img);
+  console.log(Tourdata);
   
   return (
     <div className="container mx-auto ">
       <div className="menu flex items-center justify-between">
-      <div className='flex'>
+        <div className='flex'>
           <img src={logo} alt="logo" width="70px" />
           <nav className='font-semibold p-4 pt-6 pl-18'>
-          <ul className='flex text-[#2D4271] gap-12'>
+            <ul className='flex text-[#2D4271] gap-12'>
               <a href="/">PolyTour</a>
               <a href="/tour">Tour</a>
               <a href="/">Tin tức</a>
@@ -58,21 +63,21 @@ const img = Tourdata?.images
               <a href="/contact">Liên hệ</a>
             </ul>
           </nav>
-          </div>
+        </div>
         <div className="search flex items-center">
-  <input type="text" placeholder="Search..." className="border-yellow-300
+          <input type="text" placeholder="Search..." className="border-yellow-300
 border-[3px] px-2 py-2  rounded" />
-  <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
+          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
 
-  
-<div className="ml-2">
-  <Link to="/signup">
-    <button className="bg-green-500 text-white py-1 px-3 rounded">
-      <i className="fas fa-user"></i>
-    </button>
-  </Link>
-</div>
-</div></div>
+
+          <div className="ml-2">
+            <Link to="/signup">
+              <button className="bg-green-500 text-white py-1 px-3 rounded">
+                <i className="fas fa-user"></i>
+              </button>
+            </Link>
+          </div>
+        </div></div>
       <div className="Menu  h-10 "></div>
       {/* Header trên ội dung dưới*/}
       <div className="Detail   bg-[#f9f9f9] h-[1500px]">
@@ -101,9 +106,9 @@ border-[3px] px-2 py-2  rounded" />
                   <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                 </svg>
                 <Link to="/booktour">
-                Đặt ngay
-  </Link>
-               
+                  Đặt ngay
+                </Link>
+
               </button>
             </div>
           </div>
@@ -242,7 +247,7 @@ border-[3px] px-2 py-2  rounded" />
           </div>
           <div className="bg-white container">
             <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
-          
+
               <h2>Lịch trình</h2>
             </div>
             <div className="ml-[120px] flex gap-2 mr-[115px] lichtring max-h-[2000px] bg-white border-[1px] rounded border-gray-400 ">

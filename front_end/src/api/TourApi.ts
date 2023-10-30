@@ -47,7 +47,7 @@ const TourApi = createApi({
             providesTags: ['Tour']
         }),
         getdetailTourById: builder.query<Itourdetail, number >({
-            query: (id) => `/tour/show/${id}` ,
+            query: (id) => `/tour/${id}` ,
             providesTags: ['Tour']
         }),
        

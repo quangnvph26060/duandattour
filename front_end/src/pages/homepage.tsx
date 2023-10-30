@@ -216,12 +216,13 @@ const HomePage = () => {
 
       <div className="menu flex items-center justify-between">
         <div className='flex'>
-          <img style={rounded} src={logo} alt="logo" width="70px" />
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+
           <nav className='font-semibold p-4 pt-6 pl-18'>
             <ul className='flex text-[#2D4271] gap-12'>
               <a href="/">PolyTour</a>
               <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
+              <a href="/news">Tin tức</a>
               <a href="">Khuyến mãi</a>
               <a href="/contact">Liên hệ</a>
             </ul>

@@ -20,14 +20,14 @@ class ApiAuthLoginController extends Controller
                 'message' => "Sai tài khoản hoặc mật khẩu"
             ], 422);
         }
-    
+        $roles = $user->getRoleNames();
         $token = $user->createToken('authToken')->plainTextToken;
-       // return redirect()->route('/home'); // add
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
             'messagee'=> 'Đăng nhập thành công!!',
-            'data'=> $user
+            'data'=> $user,
+            'role'=> $roles
         ], 200);
     }
 

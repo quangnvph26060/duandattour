@@ -57,4 +57,6 @@ class TourModel extends Model
     {
         return $this->hasMany(LichTrinhModel::class, 'id_tour', 'id');
     }
+
+    
 }

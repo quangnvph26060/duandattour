@@ -33,16 +33,15 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KhuyenMaiSeeder::class,
             DatTourSeeder::class,
-            KhuyenMaiSeeder::class,
             HoaDonSeeder::class,
             HuongDanVienHoaDonSeeder::class,
-<<<<<<< HEAD
-           
-            
-=======
 
 
->>>>>>> cuongntph27274
+
+
+
+
+
         ]);
     }
 }

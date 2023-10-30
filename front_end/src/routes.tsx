@@ -12,7 +12,6 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
-
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edi";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -44,6 +43,9 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+
+import QLuser from "./pages/qluser";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -63,15 +65,23 @@ export const router = createBrowserRouter([
 
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/tour/show/:idTour", element: <DetailPage /> },
+  { path: "/tour/:idTour", element: <DetailPage /> },
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
+
+  { path: "/tour", element: <TourPage /> },
+  { path: "/signin", element: <SignIn /> },
+  { path: "/signup", element: <Signup /> },
+
+  { path: "/booktour", element: <BookTour /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/profile", element: <QLuser /> },
   { path: "*", element: "Not Found Page" },
 
   {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element: localStorage.getItem("role") ? <LayoutAdmin /> : <Navigate to="/"/>,
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
@@ -135,7 +145,7 @@ export const router = createBrowserRouter([
         element: <ADmin_KhachsanADD />,
       },
       {
-        path: "tour/loai_khach_san/edit/:id",
+        path: "tour/loai_khach_san/edit/:idkhachsan",
         element: <ADmin_KhachsanEdit />,
       },
       {

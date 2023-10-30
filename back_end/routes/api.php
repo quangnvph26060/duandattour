@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAuthLoginController;
+use App\Http\Controllers\Api\ApiDatTourController;
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
@@ -10,11 +11,14 @@ use App\Http\Controllers\api\ApiLichTrinhController;
 use App\Http\Controllers\Api\ApiTourController;
 use App\Http\Controllers\api\ApiTourImageController;
 use App\Http\Controllers\api\ApiTourPhuongTienController;
+use App\Http\Controllers\api\ApiLoaiKhachSanController;
+use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -29,7 +33,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-
+//api chi tiet tour
+Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
+//api list ra danh sách menu
+Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
+// api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
+Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -62,6 +71,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 
 //api phương tiện
 Route::prefix('admin')->group(function () {
+
+
 
     Route::prefix('images')->group(function () {
         Route::get('/images', [ApiImagesController::class, 'getImage']);
@@ -103,10 +114,11 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
-        Route::get('/show/{id}  ', [ApiTourController::class, 'ShowTour']);
+        Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
+      
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
-        Route::get('/{id}', [ApiTourController::class, 'show']);
+        // Route::get('/{id}', [ApiTourController::class, 'show']);
         Route::put('/{id}', [ApiTourController::class, 'update']);
         Route::delete('/{id}', [ApiTourController::class, 'destroy']);
     });
