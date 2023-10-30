@@ -84,7 +84,7 @@ border-[3px] px-2 py-2  rounded" />
           <div className="Title flex ml-[120px] justify-between py-10">
             <div className="title">
               <p className="text-[26px] text-[#2D4271] font-bold">
-                {tourDetail?.ten_tour}
+
                 {Tourdata?.ten_tour}
               </p>
             </div>
@@ -162,7 +162,7 @@ border-[3px] px-2 py-2  rounded" />
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
             <div className="Desc text-[#2D4271] text-[15px]">
               <p className="max-w-[500px]">
-                {tourDetail?.mo_ta}
+
                 {Tourdata?.mo_ta}
               </p>
               <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
@@ -175,13 +175,10 @@ border-[3px] px-2 py-2  rounded" />
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Thời gian {Tourdata?.thoi_gian}
                 </p>
-                <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
 
-                  Nơi khởi hành {tourDetail?.diem_khoi_hanh}
-                </p>
                 <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
 
-                  Số lượng {tourDetail?.soluong}
+
 
                   Nơi khởi hành {Tourdata?.diem_khoi_hanh}
                 </p>
