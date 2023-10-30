@@ -14,7 +14,7 @@ use App\Http\Controllers\api\ApiTourPhuongTienController;
 use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
-
+use App\Http\Controllers\api\ApiPaymentController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +32,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//route payment
+Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
+// lưu kết quả thanh toán vnpay vào DB
+Route::post('/paymentresult', [ApiPaymentController::class, 'CreatePayment']);
+// lưu thanh toán tiền mặt vào DB
+Route::post('/cash', [AuthController::class, 'CreatePaymentCash']);
+// hiển thị  kết quả thanh toán 
+Route::get('/index', [AuthController::class, 'getPaymentData']);
+
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
@@ -43,19 +52,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::delete('logout', [ApiAuthLoginController::class, 'logout']);
+    Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
+
+
+
 //permission && role
 
-Route::get('/', [ApiPermissionsController::class, 'index']);
-Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
-Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
-Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
-Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
-Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
-Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+// Route::get('/', [ApiPermissionsController::class, 'index']);
+// Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
+// Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
+// Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
+// Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
+// Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
+// Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
 // end  permission && role
 
+
+// show chỗ đoạn menu
+Route::get('/ShowLoaiTour', [ApiLoaiTourController::class, 'ShowLoaiTour']);
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], function () {
     Route::prefix('admin')->group(function () {
@@ -72,7 +87,15 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 //api phương tiện
 Route::prefix('admin')->group(function () {
 
-
+    Route::prefix('user')->group(function () {
+        Route::get('/', [ApiPermissionsController::class, 'index']);
+        Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
+        Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
+        Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
+        Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
+        Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
+        Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+    });
 
     Route::prefix('images')->group(function () {
         Route::get('/images', [ApiImagesController::class, 'getImage']);
@@ -113,9 +136,18 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiDiaDiemController::class, 'update']);
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
+    Route::prefix('loaitour')->group(function () {
+        Route::get('/', [ApiLoaiTourController::class, 'index']);
+        Route::post('/', [ApiLoaiTourController::class, 'store']);
+        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
+    });
     Route::prefix('tour')->group(function () {
         Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
    
+
+        Route::get('/{id}  ', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);

@@ -33,7 +33,7 @@ class ApiLoaiTourController extends Controller
         SELECT dia_diem.ten_dia_diem, loai_tour.ten_loai_tour
         FROM dia_diem
         INNER JOIN loai_tour ON dia_diem.ma_loai_tour = loai_tour.id
-    ");
+                                    ");
 
         $groupedData = [];
         foreach ($results as $result) {
@@ -139,7 +139,7 @@ class ApiLoaiTourController extends Controller
     public function getMenuPhanCap()
     {
         $loaiTours = LoaiTourModel::all();
-    
+
         $menuPhanCap = $loaiTours->map(function ($loaiTour) {
             $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
             return [
@@ -147,7 +147,7 @@ class ApiLoaiTourController extends Controller
                 'diemDens' => $diemDens,
             ];
         });
-    
+
         return response()->json(['menuPhanCap' => $menuPhanCap], 200);
     }
 }

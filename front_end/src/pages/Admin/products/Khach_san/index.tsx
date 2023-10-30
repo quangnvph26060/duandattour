@@ -51,7 +51,7 @@ const ADmin_khachsan = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <div className="flex space-x-2">
+                    {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -66,7 +66,7 @@ const ADmin_khachsan = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/loai_khach_san/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>
+                        </div>:""}    
                     </>
                 );
             },

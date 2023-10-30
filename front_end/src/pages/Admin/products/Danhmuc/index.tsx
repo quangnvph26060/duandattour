@@ -44,7 +44,7 @@ const AdminLoai_tour = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <div className="flex space-x-2">
+                     {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -59,7 +59,7 @@ const AdminLoai_tour = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>
+                        </div>:""}   
                     </>
                 );
             },
