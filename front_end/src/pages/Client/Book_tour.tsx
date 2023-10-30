@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -14,6 +13,8 @@ import {
   FaMoneyBill,
   FaMoneyCheckAlt
 } from "react-icons/fa";
+import { useBookQuery, useGetdetailTourByIdQuery } from "../../api/TourApi";
+
 type Props = {};
 
 const img = {
@@ -65,6 +66,11 @@ const BookTour = () => {
   const decrement1 = () => {
     setCount1(count1 - 1);
   };
+
+const { idTour } = useParams<{ idTour: any }>();
+const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
+  console.log(idTour);
+  
   return (
     <div className="container mx-auto">
       {/* header trên thôn tin dưới */}
@@ -96,9 +102,9 @@ const BookTour = () => {
                   <FaStar />
                 </h2>
               </div>
-              <div className=" font-bold text-[#2D4271] text-[25px] py-5">
+              <div className=" font-bold text-[#2D4271] text-[20px] py-5">
                 <h2>
-                  Phú Quốc - Thiên đường giải trí VinWonders - Vinpearl Safari
+               {Tourdata?.ten_tour}
                 </h2>
               </div>
               <p className="mt-1 text-[#2D4271] text-[16px] font-medium">
@@ -154,7 +160,7 @@ const BookTour = () => {
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
           Thông tin liên lạc
         </p>
-      
+      <form action="" method="post">
         <div className="thontin2 flex gap-1 mt-12">
           <div className="ttlienlac  w-2/3  ">
             <div className="flex justify-center h-[200px] rounded  bg-[#f9f9f9]">
@@ -458,13 +464,15 @@ const BookTour = () => {
               >
                 Đặt ngay
               </button>
-              
-            </div>
-          </div>
-        </div>
+           
+            </div>  
+          </div>   
+        </div>   </form>
       </div>
     </div>
   );
 };
 
 export default BookTour;
+
+

@@ -66,6 +66,7 @@ export const router = createBrowserRouter([
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
   { path: "/tour/:idTour", element: <DetailPage /> },
+  { path: "/booktour/:idTour", element: <BookTour /> },
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
@@ -74,7 +75,7 @@ export const router = createBrowserRouter([
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
 
-  { path: "/booktour", element: <BookTour /> },
+
   { path: "/contact", element: <Contact /> },
   { path: "/profile", element: <QLuser /> },
   { path: "*", element: "Not Found Page" },
