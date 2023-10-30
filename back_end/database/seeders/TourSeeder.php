@@ -20,12 +20,14 @@ class TourSeeder extends Seeder
             'lich_khoi_hanh' => '2023/12/10',
             'ngay_ket_thuc' => '2023/12/15',
             'diem_khoi_hanh' => 'Đà Nẵng',
-            'gia_tour'=>1000,
-            'mo_ta'=>'tour ok chưa bro',
+            'gia_nguoilon' => 1000,
+            'gia_treem' => 600,
+            'gia_khuyen_mai' => 999,
+            'mo_ta' => 'tour ok chưa bro',
             'soluong' =>  3,
             'trang_thai' => '0',
             'ma_loai_tour' => '1',
-         
+
         ]);
     }
 }

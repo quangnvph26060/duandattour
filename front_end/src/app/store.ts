@@ -7,6 +7,7 @@ import TourImagesApi, { TourImagesRedeucer } from "../api/TourImagesApi";
 import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
 import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
 import KhachSanApi, { KhachSanRedeucer } from "../api/KhachSanApi";
+import UserApi, { UserReducer } from "../api/UserApi";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -37,9 +38,8 @@ const rootReducer = combineReducers({
     [ImagesApi.reducerPath]: imagesRedeucer,
     [DangNhapApi.reducerPath]: DangNhapReducer,
     [TourImagesApi.reducerPath]: TourImagesRedeucer,
-
+    [UserApi.reducerPath]: UserReducer,
     [LichTrinhApi.reducerPath]: LichTrinhRedeucer,
-
     [KhachSanApi.reducerPath]: KhachSanRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -54,11 +54,11 @@ export const store = configureStore({
         }).concat(TourApi.middleware, LoaiTourApi.middleware,
 
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
-            HuongDanVienApi.middleware, ImagesApi.middleware, TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
-
-
-
-            LoaiPhuongTienApi.middleware, DiaDiemApi.middleware, HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware),
+            HuongDanVienApi.middleware, ImagesApi.middleware,
+             TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
+            LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
+             HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
+             UserApi.middleware),
 
 })
 export type AppDispatch = typeof store.dispatch

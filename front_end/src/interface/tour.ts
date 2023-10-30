@@ -4,8 +4,7 @@ export interface ITour {
     diem_di: string;
     diem_den: string;
     lich_khoi_hanh: Date;
-    lich_ket_thuc: Date;
-    thoi_gian: string;
+    ngay_ket_thuc: Date;
     diem_khoi_hanh: string;
     gia_tour:number;
     mo_ta:string;

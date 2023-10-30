@@ -33,9 +33,14 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KhuyenMaiSeeder::class,
             DatTourSeeder::class,
-
             HoaDonSeeder::class,
             HuongDanVienHoaDonSeeder::class,
+
+
+
+
+
+
 
 
 

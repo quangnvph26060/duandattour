@@ -12,7 +12,6 @@ class HoaDonSeeder extends Seeder
      */
     public function run(): void
     {
-      
         DB::table('hoa_dons')->insert([
             'ma_hoa_don' => "DFHIGF0345",
             'tong_tien' => 10000,

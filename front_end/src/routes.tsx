@@ -30,7 +30,7 @@ import ADmin_Phuontien from "./pages/Admin/products/Phuong_tien";
 import ADmin_PhuontiengADD from "./pages/Admin/products/Phuong_tien/add";
 import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
-import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
+import Admin_Acountkhachhang_Roles from "./pages/Admin/user/khach_hang/roles";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
@@ -45,6 +45,7 @@ import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
 
 import QLuser from "./pages/qluser";
+import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 
 export const router = createBrowserRouter([
   {
@@ -81,7 +82,8 @@ export const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element:   localStorage.getItem("role") === 'admin' ||
+     localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
@@ -164,13 +166,18 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
+     
+      // {
+      //   path: "customer_account/add",
+      //   element: <Admin_Acountkhachhang_Roles />,
+      // },
       {
-        path: "customer_account/add",
-        element: <Admin_Khachhang />,
+        path: "customer_account/edit/:idrole",
+        element: <Admin_Acountkhachhang_Roles />,
       },
       {
-        path: "customer_account/edit/:id",
-        element: <ADmin_ACcountkhachhang_edit />,
+        path: "customer_account/permissions/:idpermission",
+        element: <Admin_Acountkhachhang_Permisssions />,
       },
       {
         path: "account_huongdanvien",

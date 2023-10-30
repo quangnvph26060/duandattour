@@ -28,9 +28,21 @@ const Login = () => {
       });
 
       if (response.status === 200) {
+        const token = response.data.access_token;
+        const role = response.data.role;
+        localStorage.setItem("token",token);
+        localStorage.setItem("role",role);
+        console.log(response.data.role);
+        // if(response.data.role == "admin"){
+        //    window.location.href = 'http://localhost:5173/admin';
+        // }else{
+        //   window.location.href = '/';
+        // }
+        window.location.href = 'http://localhost:5173/';
+        
         console.log('Đăng nhập thành công');
         // Chuyển hướng tới trang admin
-        window.location.href = '/';
+        // window.location.href = '/';
       } else {
         console.log('Đăng nhập không thành công');
         // Xử lý lỗi đăng nhập không thành công

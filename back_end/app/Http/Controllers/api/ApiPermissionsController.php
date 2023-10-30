@@ -14,7 +14,7 @@ class ApiPermissionsController extends Controller
     // hiển thị danh sách user và quyển , vai trò của user đó 
     public function index()
     {
-        $permissions   = User::with('roles', 'permissions')->get();
+        $permissions   = User::with('roles', 'roles.permissions')->get();
         return response()->json($permissions);
     }
     // hiển thị vai trò 
@@ -85,19 +85,19 @@ class ApiPermissionsController extends Controller
     }
     // cấp quyền 
     public function InsertPermission(Request $request, $id)
-{
-    $data = $request->all();
-    $user = User::find($id);
-    $role_id = $user->roles->first()->id;
-    $role = Role::find($role_id);
-    $role->syncPermissions($data['permission']);
- //   givePermissionTo sẽ không đồng bộ các quyền cũ 
- //syncPermissions đồng bộ 
-    $response = [
-        'message' => 'Permissions updated successfully',
-        'user' => $user
-    ];
+    {
+        $data = $request->all();
+        $user = User::find($id);
+        $role_id = $user->roles->first()->id;
+        $role = Role::find($role_id);
+        $role->syncPermissions($data['permission']);
+        //   givePermissionTo sẽ không đồng bộ các quyền cũ 
+        //syncPermissions đồng bộ 
+        $response = [
+            'message' => 'Permissions updated successfully',
+            'user' => $user
+        ];
 
-    return response()->json($response);
-}
+        return response()->json($response);
+    }
 }
