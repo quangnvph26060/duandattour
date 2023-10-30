@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import logo from "./img/logo.jpg"
 import { useGetTourByIdQuery, useGetdetailTourByIdQuery } from "../../api/TourApi";
+
 type Props = {};
 
 const DetailPage = (props: Props) => {
@@ -38,10 +39,10 @@ const DetailPage = (props: Props) => {
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
 
+const img = Tourdata?.images
 
 
-
-  console.log(idTour);
+  console.log(img);
   
   return (
     <div className="container mx-auto ">
@@ -124,7 +125,7 @@ border-[3px] px-2 py-2  rounded" />
             </h2>
           </div>
           <div className="Image ml-[120px] gap-5 flex">
-            <div>
+            {/* <div>
               <img
                 src="https://media.travel.com.vn/tour/tfd_220701022713_187185.jpg"
                 style={radius}
@@ -151,7 +152,9 @@ border-[3px] px-2 py-2  rounded" />
                   style={radius2}
                 />
               </div>
-            </div>
+            </div> */}
+            <img src={Tourdata?.images} alt="" />
+        
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
             <div className="Desc text-[#2D4271] text-[15px]">

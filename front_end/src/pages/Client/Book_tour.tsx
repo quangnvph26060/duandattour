@@ -149,6 +149,7 @@ const BookTour = () => {
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
           Thông tin liên lạc
         </p>
+      
         <div className="thontin2 flex gap-1 mt-12">
           <div className="ttlienlac  w-2/3  ">
             <div className="flex justify-center h-[200px] rounded  bg-[#f9f9f9]">
@@ -452,6 +453,7 @@ const BookTour = () => {
               >
                 Đặt ngay
               </button>
+              
             </div>
           </div>
         </div>
