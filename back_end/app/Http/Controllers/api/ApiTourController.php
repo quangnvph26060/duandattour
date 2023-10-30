@@ -26,22 +26,20 @@ class ApiTourController extends Controller
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
-        return response()->json($tour);
+        return response()->json(['tour' => $tour]);
     }
 
 
     public function index()
     {
-<<<<<<< HEAD
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
 
         if ($tours->isEmpty()) {
             return response()->json(['message' => 'No tours found'], 404);
         }
 
-        return response()->json($tours);
-=======
-        $tour = TourModel::all();
+        return response()->json(['data' => $tours]);
+        // $tour = TourModel::all();
         // lấy ra tất cả
         // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
         //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
@@ -86,8 +84,7 @@ class ApiTourController extends Controller
         // ->get();
         // return response()->json($hdv);
 
-        return  TourResoure::collection($tour);
->>>>>>> quangnvph26060
+        // return  TourResoure::collection('tours' => $tours);
     }
 
 

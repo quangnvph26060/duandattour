@@ -45,11 +45,11 @@ Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => ['auth:sanctum']], function () { 
-     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
-    
+
 
 //permission && role
 
@@ -81,9 +81,9 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 //api phương tiện
 Route::prefix('admin')->group(function () {
 
-    Route::prefix('user')->group(function(){
+    Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
-        Route::get('/phanvaitro/{id}',[ApiPermissionsController::class, 'PhanVaiTro']);
+        Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
         Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
         Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
         Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
@@ -129,6 +129,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiDiaDiemController::class, 'show']);
         Route::put('/{id}', [ApiDiaDiemController::class, 'update']);
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
+    });
+    Route::prefix('loaitour')->group(function () {
+        Route::get('/', [ApiLoaiTourController::class, 'index']);
+        Route::post('/', [ApiLoaiTourController::class, 'store']);
+        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
 
