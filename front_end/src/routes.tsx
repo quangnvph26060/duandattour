@@ -82,8 +82,9 @@ export const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element:   localStorage.getItem("role") === 'admin' ||
-     localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+    element: localStorage.getItem("role") === 'admin' ||
+      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
@@ -166,7 +167,7 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
-     
+
       // {
       //   path: "customer_account/add",
       //   element: <Admin_Acountkhachhang_Roles />,

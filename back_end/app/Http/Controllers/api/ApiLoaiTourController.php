@@ -46,6 +46,7 @@ class ApiLoaiTourController extends Controller
                     'dia_diem' => []
                 ];
             }
+
             $groupedData[$tenLoaiTour]['dia_diem'][] = $tenDiaDiem;
         }
 
@@ -134,5 +135,19 @@ class ApiLoaiTourController extends Controller
             return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
         }
         return $loaiTourModel->delete();
+    }
+    public function getMenuPhanCap()
+    {
+        $loaiTours = LoaiTourModel::all();
+
+        $menuPhanCap = $loaiTours->map(function ($loaiTour) {
+            $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
+            return [
+                'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),
+                'diemDens' => $diemDens,
+            ];
+        });
+
+        return response()->json(['menuPhanCap' => $menuPhanCap], 200);
     }
 }

@@ -17,9 +17,10 @@ class DatTour extends Model
         'cccd',
         'ngay_dat',
         'so_luong_khach',
+        'phuong_thuc_thanh_toan',
         'trang_thai',
         'ma_khach_hang',
         'id_tour',
-        
+
     ];
 }

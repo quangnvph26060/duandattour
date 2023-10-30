@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TourResoure;
+use App\Models\LoaiTourModel;
 use App\Models\TourModel;
 
 use App\Models\DatTour;
@@ -29,6 +30,12 @@ class ApiTourController extends Controller
         return response()->json(['tour' => $tour]);
     }
 
+    public function getToursByDestination(Request $request, $destination)
+    {
+        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
+        $tourdiemdencout = $tourdiemden->count();
+        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
+    }
 
     public function index()
     {
