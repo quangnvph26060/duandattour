@@ -147,7 +147,8 @@ const AdminProduct = (props: Props) => {
                 return (
                     <>
 
-                        <div className="flex space-x-2">
+                 {
+                      localStorage.getItem("role") == 'admin' ?  <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -162,7 +163,8 @@ const AdminProduct = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>
+                        </div>:""
+                 }      
                     </>
                 );
             },

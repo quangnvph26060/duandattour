@@ -1,4 +1,4 @@
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Skeleton, Popconfirm } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -13,14 +13,14 @@ const Admin_Khachhang: React.FC<Props> = () => {
 
   const tourArray = userdata || [];
   const [userData, setUserData] = useState<IUser[]>([]);
-  
+
 
   useEffect(() => {
     if (!isLoading) {
       setUserData(userdata || []);
     }
   }, [isLoading]);
- 
+
   const dataSource = tourArray.map(
     ({
       id,
@@ -31,7 +31,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
       sdt,
       cccd,
       roles,
-     
+
     }: IUser) => ({
       key: id,
       name,
@@ -42,9 +42,9 @@ const Admin_Khachhang: React.FC<Props> = () => {
       cccd,
       roles: roles.map((role: IRole) => role.name).join(", "),
       permissions: roles
-      .map((role: IRole) => role.permissions.map((permission: IPermission) => permission.name))
-      .flat()
-      .join(", "), // Hiển thị danh sách quyền từ mảng roles
+        .map((role: IRole) => role.permissions.map((permission: IPermission) => permission.name))
+        .flat()
+        .join(", "), // Hiển thị danh sách quyền từ mảng roles
     })
   );
   const columns = [
@@ -92,12 +92,12 @@ const Admin_Khachhang: React.FC<Props> = () => {
       title: "Quyền",
       dataIndex: "permissions",
       key: "permissions",
-       
+
     },
     {
       title: "Action",
       render: ({ key: id }: any) => (
-        <div className="flex space-x-2">
+        localStorage.getItem("role") == 'admin'? <div className="flex space-x-2">
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
           </Button>
@@ -105,7 +105,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
           </Button>
-        </div>
+        </div> :""
       ),
     },
   ];

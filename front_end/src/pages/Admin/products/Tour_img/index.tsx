@@ -44,13 +44,13 @@ const Admin_TourImg = () => {
 
 
 
-   
-        const dataSource = tourArray.map(({ id, tour_id, image_id }: ITourImages) => ({
-            key: id,
-            tour_id: tour_id,
-            image_id: image_id,
-        }));
-   
+
+    const dataSource = tourArray.map(({ id, tour_id, image_id }: ITourImages) => ({
+        key: id,
+        tour_id: tour_id,
+        image_id: image_id,
+    }));
+
 
     const columns = [
         {
@@ -90,23 +90,25 @@ const Admin_TourImg = () => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <div className="flex space-x-2">
-                            <Popconfirm
-                                title="Bạn có muốn xóa?"
-                                onConfirm={() => confirm(id)}
-                                okText="Yes"
-                                className="text-black"
-                                cancelText="No"
-                            >
-                                <Button type="primary" danger>
-                                    Xóa
-                                </Button>
-                            </Popconfirm>
+                        {
+                            localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
+                                <Popconfirm
+                                    title="Bạn có muốn xóa?"
+                                    onConfirm={() => confirm(id)}
+                                    okText="Yes"
+                                    className="text-black"
+                                    cancelText="No"
+                                >
+                                    <Button type="primary" danger>
+                                        Xóa
+                                    </Button>
+                                </Popconfirm>
 
-                            <Button type="primary" danger>
-                                <Link to={`/admin/tour/image_tour/edit/${id}`}>Sửa</Link>
-                            </Button>
-                        </div>
+                                <Button type="primary" danger>
+                                    <Link to={`/admin/tour/image_tour/edit/${id}`}>Sửa</Link>
+                                </Button>
+                            </div> : ""
+                        }
                     </>
                 );
             },
@@ -115,11 +117,11 @@ const Admin_TourImg = () => {
     const [selectedImageId, setSelectedImageId] = useState("all"); // State để lưu trữ giá trị đã chọn
     useEffect(() => {
         if (selectedImageId === "all") {
-          setSelectedImageId("all");
+            setSelectedImageId("all");
         } else {
-          setSelectedImageId(selectedImageId);
+            setSelectedImageId(selectedImageId);
         }
-      }, [selectedImageId]);
+    }, [selectedImageId]);
     const handleImageChange = (value) => {
         setSelectedImageId(value); // Cập nhật giá trị đã chọn
         console.log(value); // In giá trị ra console hoặc thực hiện các xử lý khác
@@ -138,7 +140,7 @@ const Admin_TourImg = () => {
     const filteredDataSource = selectedImageId === "all"
         ? dataSource : dataSource.filter((item): boolean => item.tour_id === selectedImageId
         );
-   
+
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">

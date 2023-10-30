@@ -82,7 +82,8 @@ export const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element:  localStorage.getItem("role") == 'admin' ? <LayoutAdmin /> : <Navigate to="/"/>,
+    element:   localStorage.getItem("role") === 'admin' ||
+     localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
