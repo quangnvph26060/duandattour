@@ -27,8 +27,9 @@ const rounded = {
 type Props = {};
 
 const TourPage = (props: Props) => {
-  const { data: Tourdata } = useGetTourQuery()
+  const { data: Tourdata } = useGetTourQuery() 
   const currentDate = new Date();
+  // const Tourdata = imagesdata || []
   // const { data: imagesdata, error, isLoading } = useGetTourImagesQuery();
   const tourArray = Tourdata?.data || [];
   const data = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, anh, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: number; mo_ta: any; anh:string, diem_di: string; lich_khoi_hanh: string; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
@@ -201,7 +202,16 @@ const TourPage = (props: Props) => {
               return (
                 <div key={item.id}>
                   <div className='py-4 bg-neutral-100 rounded-lg'>
-                    <img src={item.anh} alt="anh1" className='h-[315px] w-max rounded-lg' />
+                    <img src={`http://localhost:8000/${item.anh}`} alt={`Ảnh ${item.ten_tour}`} className='h-[315px] w-max rounded-lg' />
+                    {/* {tourArray.images.map((image) => (
+                <img
+                  key={image.id}
+                  className="mt-4 rounded-lg w-full h-60 object-cover"
+                  src={`http://localhost:8000/storage/${image.image_path}`}
+                  alt={`Ảnh ${item.ten_tour}`}
+                />
+              ))} */}
+                    
                     <p className='px-1'>{item.lich_khoi_hanh} - {item.thoi_gian} - Giờ đi: 05:20</p>
                     <p className='font-bold py-2 px-1'>{item.ten_tour}</p>
                     <p className='px-4'>MÃ TOUR :</p>
