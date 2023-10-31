@@ -1,28 +1,43 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
+import { useEffect } from "react";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
+import  useNavigate  from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useGetLoaiTourQuery, useRemoveLoaiTourMutation } from "../../../../api/LoaiTourApi";
+import { ILoaiTour } from "../../../../interface/loaiTour";
+
 
 
 const AdminLoai_tour = (props: Props) => {
-
-   
-   
+    const { data: tourdata, error, isLoading } = useGetLoaiTourQuery();
+    const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+        useRemoveLoaiTourMutation();
+    const confirm = (id: any) => {
+        removeProduct(id);   
+    };
+    // const navigate = useNavigate();
+    const tourArray = tourdata?.data || [];
+    
+    const dataSource = tourArray.map(({ id,ten_loai_tour}: ILoaiTour) => ({
+        key: id,
+        ten_loai_tour
+    }));
     
  
-    
+      
     const columns = [
         {
             title: "ID loại tour",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "key",
+            key: "key",
         },
         {
             title: "Tên loại tour",
             dataIndex:"ten_loai_tour",
-            key: "anh",
+            key: "ten_loai_tour",
         },
         {
             title: "Action",
@@ -50,7 +65,13 @@ const AdminLoai_tour = (props: Props) => {
             },
         },
     ];
-
+    // useEffect(()=>{
+    //     if(isRemoveSuccess){
+    //         // navigator("/admin/tour/loai_tour")
+    //         // Navigator
+    //         useNavigate("/admin/tour/loai_tour");
+    //     }
+    // }, [])
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
@@ -62,7 +83,8 @@ const AdminLoai_tour = (props: Props) => {
                     </Link>
                 </Button>
             </header>
-         
+            {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>
     );
 };

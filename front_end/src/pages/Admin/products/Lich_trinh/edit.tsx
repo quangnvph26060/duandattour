@@ -1,25 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetTourQuery } from '../../../../api/TourApi';
+import { useEditLichTrinhMutation, useGetLichTrinhIdQuery } from '../../../../api/LichTrinhApi';
+import { ILichTrinh } from '../../../../interface/lichtrinh';
 const { Option } = Select;
 
 type FieldType = {
   id: number;
   tieu_de: string;
-    thoi_gian:Date,
-    noi_dung:string,
-    id_tour:bigint
+  thoi_gian: Date,
+  noi_dung: string,
+  id_tour: bigint
 };
 
 const Admin_LichtrinhEDit: React.FC = () => {
   const navigate = useNavigate();
+  const { data: tourdata } = useGetTourQuery();
+  const tourArrary = tourdata?.date || [];
 
-  const onFinish = (values: FieldType) => {
-    // Handle form submission logic here
-    console.log('Form values:', values);
+  const { idlichtrinh } = useParams<{ idlichtrinh: any }>();
+  const { data: LichTrinhData } = useGetLichTrinhIdQuery(idlichtrinh || "");
+  const LichTrinh = LichTrinhData || {};
+  const [updateLichTrinh] = useEditLichTrinhMutation();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if (LichTrinh.date && LichTrinh.data.tieu_de && LichTrinh.date.noi_dung && LichTrinh.date.thoi_gian && LichTrinh.date.id_tour) {
+      form.setFieldsValue({
+        tieu_de: LichTrinh.date.tieu_de,
+        noi_dung: LichTrinh.data.noi_dung,
+        thoi_gian: LichTrinh.data.thoi_gian,
+        id_tour: LichTrinh.data.id_tour,
+      });
+    }
+  }, [LichTrinh]);
+
+  const onFinish = (values: ILichTrinh) => {
+    updateLichTrinh({ ...values, id: idlichtrinh })
+      .unwrap()
+      .then(() => navigate("/admin/tour/lichtrinh"))
+      .catch((error) => {
+        setErrors(error.data.message);
+        setLoading(false);
+      });
   };
+
 
   return (
     <div className="container">
@@ -67,10 +95,10 @@ const Admin_LichtrinhEDit: React.FC = () => {
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
-          <Select>
-            <Option value={1}>Tour 1</Option>
-            <Option value={2}>Tour 2</Option>
-          
+          <Select defaultValue="Chọn" style={{ width: 400, }}>
+            {tourArrary.map((option) => (
+              <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
@@ -80,7 +108,7 @@ const Admin_LichtrinhEDit: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/lich_trinh')}
           >
             Quay lại
           </Button>

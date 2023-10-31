@@ -12,7 +12,6 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
-import AdminProduct from "./pages/Admin/products/tour";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edi";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -35,6 +34,9 @@ import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/add";
 import QLuser from "./pages/qluser";
+import AdminProduct from "./pages/Admin/products/tour";
+import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
+
 
 export const router = createBrowserRouter([
   {
@@ -78,7 +80,7 @@ export const router = createBrowserRouter([
         element: <AdminTourAdd />,
       },
       {
-        path: "tour/edit/:id",
+        path: "tour/edit/:idtour",
         element: <AdminTourEdit />,
       },
       {
@@ -90,19 +92,19 @@ export const router = createBrowserRouter([
         element: <AdminLoai_tourADD />,
       },
       {
-        path: "tour/loai_tour/edit/:id",
+        path: "tour/loai_tour/edit/:idLoaiTour",
         element: <AdminLoai_tourEdit />,
       },
       {
-        path: "tour/dia_diem/",
+        path: "tour/diadiem/",
         element: <AdminDiadiem />,
       },
       {
-        path: "tour/dia_diem/add",
+        path: "tour/diadiem/add",
         element: <AdminDiadiem_ADD />,
       },
       {
-        path: "tour/dia_diem/edit/:id",
+        path: "tour/diadiem/edit/:iddiadiem",
         element: <AdminDiadiem_Edit />,
       },
       {
@@ -138,7 +140,7 @@ export const router = createBrowserRouter([
         element: <ADmin_PhuontiengADD />,
       },
       {
-        path: "tour/loai_phuong_tien/edit/:id",
+        path: "tour/loai_phuong_tien/edit/:idPhuongTien",
         element: <ADmin_Phuongtienedit />,
       },
       {
@@ -158,8 +160,47 @@ export const router = createBrowserRouter([
         element: <Admin_Account_huongdanvien />,
       },
       {
-        path: "account_huongdanvien/edit/:id",
+        path: "account_huongdanvien/add",
+        element: <Admin_Account_huongdanvienAdd />,
+      },
+      {
+        path: "account_huongdanvien/edit/:idhdv",
         element: <Admin_Account_huongdanvienEdit />,
+      },
+      {
+        path: "tour/image_tour",
+        element: <Admin_TourImg />,
+      },
+       {
+        path: "tour/image_tour/add",
+        element: <Admin_TourImgADD />,
+      },
+       {
+        path: "tour/image_tour/edit/:idtourimage",
+        element: <Admin_TourImgEDit />,
+      },
+
+      // images
+      {
+        path: "tour/image/",
+        element: <AdminImage />,
+      },
+      {
+        path: "tour/image/add",
+        element: <AdmidImageADD />,
+      }, 
+      {
+        path: "tour/image/edit/:idimage",
+        element: <Admin_ImageEdit />,
+      },
+      
+      {
+        path: "tour/hoa_don",
+        element: <ADmin_Hoadon />,
+      },
+      {
+        path: "tour/dat_tour",
+        element: <ADmin_DatTour />,
       },
     ],
   },
