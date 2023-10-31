@@ -202,16 +202,7 @@ const TourPage = (props: Props) => {
               return (
                 <div key={item.id}>
                   <div className='py-4 bg-neutral-100 rounded-lg'>
-                    <img src={`http://localhost:8000/${item.anh}`} alt={`Ảnh ${item.ten_tour}`} className='h-[315px] w-max rounded-lg' />
-                    {/* {tourArray.images.map((image) => (
-                <img
-                  key={image.id}
-                  className="mt-4 rounded-lg w-full h-60 object-cover"
-                  src={`http://localhost:8000/storage/${image.image_path}`}
-                  alt={`Ảnh ${item.ten_tour}`}
-                />
-              ))} */}
-                    
+                    <img src={`${item.anh}`} alt={`Ảnh`} className='h-[315px] w-max rounded-lg' />
                     <p className='px-1'>{item.lich_khoi_hanh} - {item.thoi_gian} - Giờ đi: 05:20</p>
                     <p className='font-bold py-2 px-1'>{item.ten_tour}</p>
                     <p className='px-4'>MÃ TOUR :</p>

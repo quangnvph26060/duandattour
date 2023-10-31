@@ -17,7 +17,7 @@ const AdminProduct = (props: Props) => {
     const tourArray = tourdata?.data || [];
     const loaitourArrary = loaitourdata?.data || [];
     const huongdanvienArrary = huongdanviendata?.data || [];
-    const dataSource = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: any; mo_ta: any; diem_di: string; lich_khoi_hanh: string; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
+    const dataSource = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: any; mo_ta: any; diem_di: string; lich_khoi_hanh: any; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
         return ({
             key: id,
             soluong,

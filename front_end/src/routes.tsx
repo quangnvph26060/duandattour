@@ -36,6 +36,14 @@ import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/ad
 import QLuser from "./pages/qluser";
 import AdminProduct from "./pages/Admin/products/tour";
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
+import Admin_TourImg from "./pages/Admin/products/tour"
+import Admin_TourImgADD from "./pages/Admin/products/tour"
+import AdminImage from "./pages/Admin/products/tour"
+import AdmidImageADD from "./pages/Admin/products/tour"
+import Admin_ImageEdit from "./pages/Admin/products/tour"
+import Admin_TourImgEDit from "./pages/Admin/products/tour"
+import ADmin_Hoadon from "./pages/Admin/products/tour"
+import ADmin_DatTour from "./pages/Admin/products/tour"
 
 
 export const router = createBrowserRouter([
