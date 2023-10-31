@@ -17,4 +17,5 @@ export interface Itourdetail {
     phuong_tien:string,
     lich_t_rinh:string
     images:string
+    noi_dung:string
 }

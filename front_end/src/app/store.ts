@@ -8,6 +8,8 @@ import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
 import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
 import KhachSanApi, { KhachSanRedeucer } from "../api/KhachSanApi";
 import UserApi, { UserReducer } from "../api/UserApi";
+import DatourApi,{DattourReducer} from "../api/dattour";
+
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -41,6 +43,7 @@ const rootReducer = combineReducers({
     [UserApi.reducerPath]: UserReducer,
     [LichTrinhApi.reducerPath]: LichTrinhRedeucer,
     [KhachSanApi.reducerPath]: KhachSanRedeucer,
+    [DatourApi.reducerPath]:DattourReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -58,7 +61,7 @@ export const store = configureStore({
              TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
              HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
-             UserApi.middleware),
+             UserApi.middleware,DatourApi.middleware),
 
 })
 export type AppDispatch = typeof store.dispatch

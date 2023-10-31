@@ -53,7 +53,8 @@ const TourApi = createApi({
         book: builder.query<Itourdetail, number >({
             query: (id) => `/booktour/${id}` ,
             providesTags: ['Tour']
-        }),
+        })
+     
 
     })
 });
@@ -65,7 +66,8 @@ export const {
     useGetTourByIdQuery,
     useRemoveTourMutation,
     useGetdetailTourByIdQuery,
-    useBookQuery
+    useBookQuery,
+
 
 } = TourApi;
 export const tourRedeucer = TourApi.reducer;

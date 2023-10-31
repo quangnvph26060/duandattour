@@ -22,7 +22,7 @@ class DatTourSeeder extends Seeder
             'ngay_dat' => '2023/10/10',
             'dia_chi' => 'bình đà',
             'so_luong_khach' => 4,
-            'phuong_thuc_thanh_toan' => '0',
+          
             'trang_thai' => '0',
             'ma_khach_hang' => 1,
             'id_tour' => 1,
