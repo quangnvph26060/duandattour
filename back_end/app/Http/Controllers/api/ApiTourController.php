@@ -33,6 +33,12 @@ class ApiTourController extends Controller
     public function index()
     {
         $tour = TourModel::all();
+
+
+        /////////////////////////
+        // đừng có xóa 
+        //////////////////////////////////////
+
         // lấy ra tất cả
         // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
         //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
