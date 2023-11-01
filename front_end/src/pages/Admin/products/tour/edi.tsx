@@ -22,6 +22,8 @@ const AdminTourEdit = () => {
   const { idtour } = useParams<{ idtour: any }>();
   const { data: TourData } = useGetTourByIdQuery(idtour || "");
   const Tour = TourData || {};
+  console.log(Tour);
+  
   const [selectedDate, setSelectedDate] = useState(null);
   const [updateTour] = useEditTourMutation();
   const [loading, setLoading] = useState(false);
@@ -44,7 +46,7 @@ const AdminTourEdit = () => {
         console.error(error);
       });
     if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
-      && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.thoi_gian &&
+      && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
       Tour.data.lich_khoi_hanh  && Tour.data.soluong
 
     ) {
@@ -56,8 +58,7 @@ const AdminTourEdit = () => {
         ten_hdv: Tour.data.ten_hdv,
         ten_tour: Tour.data.ten_tour,
         diem_khoi_hanh: Tour.data.diem_khoi_hanh,
-        thoi_gian: Tour.data.thoi_gian,
-     
+        ngay_ket_thuc: Tour.data.ngay_ket_thuc,
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
         soluong: Tour.data.soluong,
 
@@ -175,8 +176,8 @@ const AdminTourEdit = () => {
         </Form.Item>
 
         <Form.Item
-          label="Thời gian"
-          name="thoi_gian"
+          label="Ngày Kết Thúc"
+          name="ngay_ket_thuc"
           rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
         >
           <Input />
