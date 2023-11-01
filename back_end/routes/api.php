@@ -117,7 +117,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('tour')->group(function () {
         Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
-      
+
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);
