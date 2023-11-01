@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
 import News from "./pages/newspage";
-// import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
 import DetailPage from "./pages/Client/detail";
@@ -43,6 +42,7 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+import MessengerPage from "./pages/messenger";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -52,14 +52,8 @@ export const router = createBrowserRouter([
       </div>
     ),
   },
-
-  // ,
-  //     {path: "/tour",element:<TourPage/>},
   { path: "/news", element: <News /> },
-  //     {path: "/title",element:<TitelPage/>},
-  //     {path: "/tour",element:<TourPage/>},
   { path: "/tour", element: <TourPage /> },
-
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
   { path: "/tour/:idTour", element: <DetailPage /> },
@@ -67,7 +61,6 @@ export const router = createBrowserRouter([
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
   { path: "*", element: "Not Found Page" },
-
   {
     path: "/admin",
     element: <LayoutAdmin />,
