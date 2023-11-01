@@ -87,7 +87,8 @@ class ApiPaymentController extends Controller
             echo json_encode($returnData);
         }
     }
-    // thêm Db thanh toán bằng chuyền khoản vnpay   sử dụng actions này trong route /paymentResult
+    // thêm Db thanh toán bằng chuyền khoản vnpay 
+    //  sử dụng actions này trong route /paymentResult
     public function CreatePayment(Request $request)
     {
         $paymentData = $request->all();
