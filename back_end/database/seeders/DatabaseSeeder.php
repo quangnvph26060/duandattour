@@ -36,11 +36,6 @@ class DatabaseSeeder extends Seeder
             KhuyenMaiSeeder::class,
             HoaDonSeeder::class,
             HuongDanVienHoaDonSeeder::class,
-<<<<<<< HEAD
-=======
-
-
->>>>>>> af913bec31528c8e3b8b90dd836f57b9dc5e33de
         ]);
     }
 }

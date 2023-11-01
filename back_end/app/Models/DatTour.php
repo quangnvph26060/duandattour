@@ -12,14 +12,14 @@ class DatTour extends Model
 
     protected $fillable = [
             'ten_khach_hang',
-            'email ',
+            'email',
             'sdt',
             'dia_chi',
             'cccd',
             'ngay_dat',
             'so_luong_khach',
             'trang_thai',
-            'ma_khach_hang ',
+            'ma_khach_hang',
             'id_tour'
     ];
 }

@@ -35,6 +35,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
+Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
+Route::post('postDattour', [ApiDatTourController::class, 'creatDatTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
