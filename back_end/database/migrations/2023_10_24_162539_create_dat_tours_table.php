@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dat_tours', function (Blueprint $table) {
             $table->id();
             $table->string('ten_khach_hang');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('sdt');
             $table->string('dia_chi');
             $table->string('cccd')->nullable();
