@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -527,12 +527,14 @@ useEffect(() => {
                 {/* <p className="text-[200px] ml-10">
                   <FaQrcode />
                 </p> */}
+           <Link to="/booking/:id" className="flex items-center space-x-2">
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
                   type="submit" 
                 >
                   Đặt ngay 
                 </button>
+                </Link>
               </div>
             </div>
           </div>
