@@ -8,6 +8,7 @@ const AdminImage = () => {
   const { data: imagesdata, error, isLoading } = useGetImagesQuery();
   const [removeImage, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveImagesMutation();
 
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
 
@@ -57,7 +58,7 @@ const AdminImage = () => {
       render: ({ key: id }: any) => {
         return (
           <>
-            <div className="flex space-x-2">
+         {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
               <Popconfirm
                 title="Bạn có muốn xóa?"
                 onConfirm={() => confirm(id)}
@@ -73,7 +74,7 @@ const AdminImage = () => {
               <Button type="primary" danger>
                 <Link to={`/admin/tour/image/edit/${id}`}>Sửa</Link>
               </Button>
-            </div>
+            </div>:""}   
           </>
         );
       },

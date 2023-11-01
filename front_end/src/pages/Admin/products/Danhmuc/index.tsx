@@ -4,7 +4,7 @@ type Props = {};
 import { useEffect } from "react";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
-import  useNavigate  from "react-router-dom";
+import useNavigate from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useGetLoaiTourQuery, useRemoveLoaiTourMutation } from "../../../../api/LoaiTourApi";
 import { ILoaiTour } from "../../../../interface/loaiTour";
@@ -16,18 +16,18 @@ const AdminLoai_tour = (props: Props) => {
     const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
         useRemoveLoaiTourMutation();
     const confirm = (id: any) => {
-        removeProduct(id);   
+        removeProduct(id);
     };
     // const navigate = useNavigate();
     const tourArray = tourdata?.data || [];
-    
-    const dataSource = tourArray.map(({ id,ten_loai_tour}: ILoaiTour) => ({
+
+    const dataSource = tourArray.map(({ id, ten_loai_tour }: ILoaiTour) => ({
         key: id,
         ten_loai_tour
     }));
-    
- 
-      
+
+
+
     const columns = [
         {
             title: "ID loại tour",
@@ -36,7 +36,7 @@ const AdminLoai_tour = (props: Props) => {
         },
         {
             title: "Tên loại tour",
-            dataIndex:"ten_loai_tour",
+            dataIndex: "ten_loai_tour",
             key: "ten_loai_tour",
         },
         {
@@ -44,7 +44,7 @@ const AdminLoai_tour = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <div className="flex space-x-2">
+                     {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -59,7 +59,7 @@ const AdminLoai_tour = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>
+                        </div>:""}   
                     </>
                 );
             },

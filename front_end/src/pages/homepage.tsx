@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../page.css'
+
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import logo from '../img/logo.jpg';
-import bner from '../img/banner.png';
 import bnr from '../img/huy.webp';
 import bh from '../img/bh.webp';
-import hh from '../img/hh.webp';
 import sl from '../img/sl.webp';
 import bb from '../img/bb.jpg';
 import aa from '../img/aa.webp';
@@ -22,31 +21,68 @@ import tt from '../img/5.webp';
 import yy from '../img/6.webp';
 import he from '../img/bbbbb.webp'
 import hq from '../img/aaaaa.webp'
+import { data } from 'autoprefixer';
+
 
 
 const rounded = {
   borderRadius: '25px',
 };
 const HomePage = () => {
+  const [remainingTime, setRemainingTime] = useState(15 * 3600); // 5 minutes in seconds
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime(prevTime => prevTime - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  // Chuyển đổi giây thành chuỗi định dạng "hh:mm:ss"
+  const formatTime = time => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  const [data, settour] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/admin/tour')
+      .then(response => response.json())
+      .then(result => {
+        settour(result.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
   const sales = [{
 
     id: 1,
-    name: 'Vũng Tàu',
+    name: 'Combo Vũng Tàu 3N2Đ: Vé máy bay khứ hồi + Khách sạn lusion 4 sao (Bao gồm Ăn sáng)',
     image: sl,
-    price: 99.99,
-    details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-    code: '  Mã tour:vNNSGN192-037-051023QH-V ',
+    price: 2.10,
+    details: 'Vũng Tàu 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
+    code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
 
   },
   {
 
     id: 2,
-    name: 'Vịnh Hạ long',
+    name: 'Combo Dà Nẵng 4N2Đ: Vé máy bay khứ hồi + Khách sạn Hồng Thanh Boutique 5 sao (Bao gồm ăn uống)',
     image: cc,
-    price: 99.99,
+    price: 99.9,
     details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-    code: '  Mã tour:vNNSGN192-037-051023QH-V ',
+    code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
 
   }
@@ -54,11 +90,11 @@ const HomePage = () => {
   {
 
     id: 3,
-    name: 'Nha Trang',
+    name: 'Combo Quy Nhơn 3N2Đ: Vé máy bay khứ hồi + Khách sạn LAmor Boutique 4 sao (Bao gồm Ăn sáng)',
     image: bh,
-    price: 99.99,
+    price: 55.9,
     details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-    code: '  Mã tour:vNNSGN192-037-051023QH-V ',
+    code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
 
   }
@@ -182,48 +218,32 @@ const HomePage = () => {
   const products = [
     {
       id: 1,
-      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: sl,
-      price: 99.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: TP. Hồ Chí Minh'
     },
     {
       id: 2,
-      name: 'Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour) ',
       image: bb,
-      price: 149.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách    ',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: Hà Nội'
     },
     {
       id: 3,
-      name: 'Trung Quốc: Côn Minh - Đại Lý - Shangrila - Lệ Giang - Thạch Lâm - Côn Minh',
       image: aa,
-      price: 199.99,
-      details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
-      code: '  Mã tour:vNNSGN192-037-051023QH-V ',
-      start: 'Nơi khởi hành: TP. Hồ Chí Minh'
     }
   ];
 
   return (
 
     <div className="bg-white rounded-lg shadow p-4">
-      <div className="banner">
-        <h1 className="text-2xl text-center font-bold mb-4">Welcome to PolyTour</h1>
-      </div>
+
 
       <div className="menu flex items-center justify-between">
         <div className='flex'>
-          <img style={rounded} src={logo} alt="logo" width="70px" />
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+
           <nav className='font-semibold p-4 pt-6 pl-18'>
             <ul className='flex text-[#2D4271] gap-12'>
               <a href="/">PolyTour</a>
               <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
+              <a href="/news">Tin tức</a>
               <a href="">Khuyến mãi</a>
               <a href="/contact">Liên hệ</a>
             </ul>
@@ -386,7 +406,7 @@ border-[3px] px-2 py-2  rounded" />
       {/*  */}
       <div className="content">
         <div className="content">
-          <h2 className='mt-5 mb-5 home-page__title '>CHƯƠNG TRÌNH PolyyTour!!!</h2>
+          <h2 className='mt-5 mb-5 home-page__title '>KHÁM PHÁ ƯU ĐÃI POLYTOUR!!!</h2>
           <Slider
             className="product-lista grid gap-4 grid-cols-1  "
             dots={true}
@@ -424,30 +444,45 @@ border-[3px] px-2 py-2  rounded" />
         </div>
       </div>
       {/*  */}
+
       <div className="content">
-        <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TPUR GIỜ CHÓT!</h2>
+        <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
         <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <div key={product.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
-              <img
-                className="mt-4 rounded-lg w-full h-60 object-cover"
-                src={product.image}
-                alt={product.name}
-              />
+          {data.map((item) => (
+            <div key={item.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
+
+              {item.images.map((image) => (
+                <img
+                  key={image.id}
+                  className="mt-4 rounded-lg w-full h-60 object-cover"
+                  src={`http://localhost:8000/storage/${image.image_path}`}
+                  alt={`Ảnh ${item.ten_tour}`}
+                />
+              ))}
+
               <div className="product-details mt-4">
+                <div className="info-row data">
+                  <p>{item.lich_khoi_hanh}</p>-
+                  <p>{item.soluong} ngày</p>
+                </div>
                 <Link to="/:id/tour" className="text-blue-500 hover:underline">
-                  <h3 className="text-lg font-bold">{product.name}</h3>
+                  <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
-                <p className="text-gray-600">${product.price.toFixed(2)}</p>
-                <p>{product.details}</p>
-                <p>{product.code}</p>
-                <p>{product.start}</p>
-                <button style={{ backgroundColor: 'red', float: 'right', borderRadius: '5px' }} className="py-2 px-2 text-white mt-5">
+                <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{item.gia_nguoilon.toFixed(2)}đ</p>
+                <p className='text mt-2'>{item.mo_ta}</p>
+
+                <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
+
+                <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
                   Giảm 6%
                 </button>
-                <button className="mt-4 w-full text-center bg-blue-400 text-white py-2 px-4 rounded">
-                  Còn 00 ngày 1:50:40
+                <button
+                  id="countdown-btn" style={{ color: '#4D4AEF' }}
+                  className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
+                >
+                  Còn 00 ngày {formatTime(remainingTime)}
                 </button>
+
               </div>
             </div>
           ))}
@@ -455,7 +490,7 @@ border-[3px] px-2 py-2  rounded" />
       </div>
       {/*  */}
       <div className="content">
-        <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
+        <h2 className="mt-5 mb-5 home-page__title">VÉ TOUR ƯU ĐÃI ĐẶC BIỆT!</h2>
         <div className="product-list overflow-x-auto">
           {sales.map((sale) => (
             <div key={sale.id} className="bg-gray-100 p-4 mt-5 rounded-lg flex items-center mx-4">
@@ -469,7 +504,8 @@ border-[3px] px-2 py-2  rounded" />
                   Vé máy bay + Khách sạn
                 </button>
                 <h3 className="text-lg font-bold">{sale.name}</h3>
-                <p className="text-gray-600">${sale.price.toFixed(2)}</p>
+                <p className='price-c'>Giá chỉ từ</p>
+                <p className="price-t ">${sale.price.toFixed(2)}</p>
                 <p>{sale.details}</p>
                 <p>{sale.code}</p>
                 <div className="flex justify-between mt-4">
@@ -528,13 +564,13 @@ border-[3px] px-2 py-2  rounded" />
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
             <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Liên hệ</h3>
-            <p>Email: example@gmail.com</p>
+            <p>Email: Polytour@gmail.com</p>
             <p>Tìm kiếm thông tin</p>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
             <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Hỗ trợ</h3>
             <p>Mạng xã hội</p>
-            <p>1900 1839</p>
+            <p>037 763 8662</p>
             <p>Từ 8:00 - 22:00 hàng ngày</p>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/5">
@@ -594,6 +630,8 @@ border-[3px] px-2 py-2  rounded" />
           </p>
         </div>
       </footer>
+      <script src="./"></script>
+
     </div>
   );
 };

@@ -2,22 +2,42 @@ type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-
-
+import { useGetKhachSanQuery,useRemoveKhachSanMutation } from "../../../../api/KhachSanApi";
+import { IKhachSan } from "../../../../interface/khachsan";
+import { useEffect } from "react";
 const ADmin_khachsan = (props: Props) => {
 
+    const { data: khachsandata, error, isLoading } = useGetKhachSanQuery();
    
+    const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+    useRemoveKhachSanMutation();
+
+    const confirm = (id: any) => {
+        if(!window.confirm('bạn có muốn xóa không ')){
+            return 
+        }
+        removeProduct(id);
+        
+    };
+    const navigate = useNavigate();
+    useEffect(()=>{
+       
+    },[navigate])
    
+    const khachsanArray = khachsandata?.data || [];
     
- 
+    const dataSource = khachsanArray.map(({ id,loai_khach_san}: IKhachSan) => ({
+        key: id,
+        loai_khach_san
+    }));
     
     const columns = [
         {
             title: "ID",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "key",
+            key: "key",
         },
         {
             title: "Loại khách sạn",
@@ -31,7 +51,7 @@ const ADmin_khachsan = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                        <div className="flex space-x-2">
+                    {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -46,7 +66,7 @@ const ADmin_khachsan = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/loai_khach_san/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>
+                        </div>:""}    
                     </>
                 );
             },
@@ -64,6 +84,8 @@ const ADmin_khachsan = (props: Props) => {
                     </Link>
                 </Button>
             </header>
+            {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
          
         </div>
     );
