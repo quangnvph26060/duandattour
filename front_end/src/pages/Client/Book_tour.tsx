@@ -24,7 +24,17 @@ const img = {
   witdh: "100px",
   height: "66px",
 };
-
+const initialFormData = {
+  ten_khach_hang: "",
+  email: "",
+  sdt: "",
+  dia_chi: "",
+  cccd: "",
+  ngay_dat: "",
+  so_luong_khach: "",
+  ma_khach_hang: "",
+  
+};
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true);
@@ -74,51 +84,53 @@ const BookTour = () => {
         setQuantity2(quantity2 - 1);
       }
     };
-    const navigate = useNavigate()
-    const [addTour]=useDattourMutation();
-    const onFinish = (event: React.FormEvent,values:Dattour) => {
-      event.preventDefault();
-      addTour(values)
 
-      console.log('Dữ liệu biểu mẫu đã được gửi:', formData);
-    };
   
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-
+  
   // Lấy token từ localStorage
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [formData, setFormData] = useState({ /* ... */ });
+  const [formData, setFormData] = useState({initialFormData,id_tour:idTour});
+  const [responseMessage, setResponseMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [addTour] = useDattourMutation(); // Sử dụng hàm addTour từ API
   useEffect(() => {
+    // Lấy thông tin người dùng từ token và điền vào formData
+    const token = localStorage.getItem("token");
     if (token) {
-      // Gửi yêu cầu API để lấy thông tin người dùng với token
-      fetch('http://localhost:8000/api/user', {
-        method: 'GET',
+      // Gửi yêu cầu API để lấy thông tin người dùng từ token
+      fetch("http://localhost:8000/api/user", {
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Lỗi trong việc lấy thông tin người dùng.');
-          }
-        })
+        .then((response) => response.json())
         .then((userData) => {
-         setUserData(userData);
+          setFormData({
+            ...formData,
+            ten_khach_hang: userData.name,
+            email: userData.email,
+            sdt: userData.sdt,
+            dia_chi: userData.dia_chi,
+            so_luong_khach:userData.so_luong_khach, 
+            ma_khach_hang:userData.id,
+            id_tour:  idTour
+          });
+          console.log( userData.name);
+          
         })
         .catch((error) => {
           console.error(error);
         });
-    } else {
-      console.log('Không có token. Đăng nhập lại hoặc xử lý thích hợp.');
-    }
-  }, [token]);
- // Hàm tính tổng giá
+    }   
+  }, []);
+
+
 
  const calculateTotalPrice = () => {
   const gialon = datatourArray?.gia_nguoilon;
@@ -129,6 +141,36 @@ const BookTour = () => {
 const images = datatourArray?.images || [];
 // console.log(images);
 
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData({ ...formData, [name]: value });
+
+};
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  addTour(formData) // Gửi yêu cầu POST bằng hàm addTour từ API
+    .unwrap() // Lấy dữ liệu trả về từ yêu cầu POST
+    .then((response) => {
+      setIsLoading(false);
+      setResponseMessage(response.message);
+      // Xử lý kết quả thành công
+    })
+    .catch((error) => {
+      setIsLoading(false);
+      setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
+      // Xử lý lỗi
+    });
+};
+const [soLuongKhach, setSoLuongKhach] = useState(0);
+useEffect(() => {
+  setSoLuongKhach(quantity + quantity2);
+  setFormData({
+    ...formData,
+    so_luong_khach: quantity + quantity2
+  });
+}, [quantity, quantity2]);
   return (
     <div className="container mx-auto">
       {/* header trên thôn tin dưới */}
@@ -216,41 +258,49 @@ const images = datatourArray?.images || [];
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
           Thông tin liên lạc 
         </p> 
-      <form   onSubmit={onFinish} >
+      <form  onSubmit={handleSubmit}>
         
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
             <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="hidden" value={userData?.id} 
+                    type="hidden"   value={formData.ma_khach_hang}  onChange={handleChange}
                   />
                    <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="hidden" value={datatourArray?.id} 
+                    type="hidden"    value={formData.id_tour} name='id_tour'  onChange={handleChange}
+                  
                   />
               <div className="flex justify-center h-[200px] rounded  bg-[#f9f9f9]">
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
                   <input
-                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text" value={userData?.name} name='ten_khach_hang'
-                  />
+  type="text"
+  id="ten_khach_hang"
+  name="ten_khach_hang"
+  value={formData.ten_khach_hang}
+  onChange={handleChange}
+  defaultValue={token ? formData.ten_khach_hang : "" } 
+/>
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="number" value={userData?.sdt} name='sdt'
+                    type="number"    value={formData.sdt} name='sdt' id='sdt'
+                    onChange={handleChange}
                   />
                 </div>
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Email </p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text"  value={userData?.email} name='email'
+                    type="text"   value={formData.email} name='email' id='email'
+                    onChange={handleChange}
                   />
                   <p className="text-[#2D4271] mb-1">Địa chỉ</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text"  value={userData?.dia_chi} name='dia_chi'
+                    type="text"    value={formData.dia_chi}  name='dia_chi' id='dia_chi'
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -261,27 +311,39 @@ const images = datatourArray?.images || [];
                 Hành khách
               </p>
               <div className="text-[#2D4271] flex justify-between">
-                <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
-                <label htmlFor="quantity">Người lớn</label>
-      <div className='flex gap-3'>
-             <button type="button" onClick={handleIncrement} className="icon-button">+</button>
-        <input type="text" className='w-[10px]' id="quantity" value={quantity} readOnly />
-        <button type="button" onClick={handleDecrement} className="icon-button">-</button>
+      <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
+        <label htmlFor="quantity">Người lớn</label>
+        <div className="flex gap-3">
+          <button type="button" onClick={handleIncrement} className="icon-button">
+            +
+          </button>
+          <input type="text" className="w-[10px]" name="quantity" id="quantity" value={quantity} readOnly />
+          <button type="button" onClick={handleDecrement} className="icon-button">
+            -
+          </button>
+        </div>
       </div>
-      
-                </div>
-                <input type="text" name='so_luong_khach' className='w-[10px]' id="quantity" value={quantity+quantity2} readOnly />
-                <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
-                <label htmlFor="quantity2">Trẻ em</label>
-      <div className='flex gap-3'>
-             <button type="button" onClick={handleIncrement2} className="icon-button">+</button>
-        <input type="text" className='w-[10px]' id="quantity2" value={quantity2} readOnly />
-        <button type="button" onClick={handleDecrement2} className="icon-button">-</button>
+      <input
+        type="text"
+        name="so_luong_khach"
+        className="w-[10px]"
+        id="so_luong_khach"
+        value={soLuongKhach}
+        readOnly
+      />
+      <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
+        <label htmlFor="quantity2">Trẻ em</label>
+        <div className="flex gap-3">
+          <button type="button" onClick={handleIncrement2} className="icon-button">
+            +
+          </button>
+          <input type="text" className="w-[10px]" name="quantity2" id="quantity2" value={quantity2} readOnly />
+          <button type="button" onClick={handleDecrement2} className="icon-button">
+            -
+          </button>
+        </div>
       </div>
-   
-                </div>
-             
-              </div>
+    </div>
             </div>
            
               </div>
@@ -467,7 +529,7 @@ const images = datatourArray?.images || [];
                 </p> */}
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
-                  type="submit"
+                  type="submit" 
                 >
                   Đặt ngay 
                 </button>

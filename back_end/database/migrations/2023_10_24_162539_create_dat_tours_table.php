@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('sdt');
             $table->string('dia_chi');
-            $table->string('cccd');
+            $table->string('cccd')->nullable();
             $table->date('ngay_dat');
             $table->integer('so_luong_khach');
        
