@@ -4,7 +4,7 @@ type Props = {};
 
 import { Table, Button, Skeleton, Popconfirm, Alert, } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons"
 import { AiOutlinePlus } from "react-icons/ai";
 
 import { useEffect } from "react";
@@ -98,24 +98,28 @@ const ADmin_DatTour = (props: Props) => {
                 return (
                     <>
 
-                        <div className="flex space-x-2">
-                            <Button danger type="primary" >
-                                <Link to="/admin/tour/hoa_don">Xác nhận đặt tour</Link>
-                            </Button>
-                            <Popconfirm
-                                title="Bạn có muốn xóa?"
-                                onConfirm={() => confirm(id)}
-                                okText="Yes" className="text-black"
-                                cancelText="No"
-                            >
-                                <Button danger>
-                                    <DeleteOutlined type="primary" style={{ color: "red" }} />
+                        <div className="">
+                            <div className="space-x-2 py-1">
+                                <Button>
+                                    <Link to="/admin/tour/hoa_don"><CheckOutlined type="primary" style={{ color: "blue" }} /></Link>
                                 </Button>
+                            </div>
+                            <div className="space-x-2">
+                                <Popconfirm
+                                    title="Bạn có muốn xóa?"
+                                    onConfirm={() => confirm(id)}
+                                    okText="Yes" className="text-black"
+                                    cancelText="No"
+                                >
+                                    <Button danger>
+                                        <DeleteOutlined type="primary" style={{ color: "red" }} />
+                                    </Button>
 
-                            </Popconfirm>
-                            <Button>
-                                <Link to={`/admin/Dat_tour/edit/${id}`}><EditOutlined /></Link>
-                            </Button>
+                                </Popconfirm>
+                                <Button>
+                                    <Link to={`/admin/Dat_tour/edit/${id}`}><EditOutlined /></Link>
+                                </Button>
+                            </div>
 
                         </div>
                     </>
