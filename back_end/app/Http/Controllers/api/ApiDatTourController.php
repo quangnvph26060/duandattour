@@ -30,13 +30,13 @@ class ApiDatTourController extends Controller
         return response()->json($response);
     }
 
-    public function creatDatTour(Request $request)
+    public function createDatTour(Request $request)
     {
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
         $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
-        $creatDatTour = DatTour::create($datTour);
-        return response()->json(['creatDatTour' => $creatDatTour]);
+        $createDatTour = DatTour::create($datTour);
+        return response()->json(['createDatTour' => $createDatTour]);
     }
     public function indexDat(){
         $dattour = DatTour::all();
