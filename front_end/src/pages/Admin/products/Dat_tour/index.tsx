@@ -2,8 +2,9 @@ type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
 
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import { AiOutlinePlus } from "react-icons/ai";
 
 import { useEffect } from "react";
@@ -107,10 +108,14 @@ const ADmin_DatTour = (props: Props) => {
                                 okText="Yes" className="text-black"
                                 cancelText="No"
                             >
-                                <Button type="primary" danger>
-                                    Xóa
+                                <Button danger>
+                                    <DeleteOutlined type="primary" style={{ color: "red" }} />
                                 </Button>
+
                             </Popconfirm>
+                            <Button>
+                                <Link to={`/admin/Dat_tour/edit/${id}`}><EditOutlined /></Link>
+                            </Button>
 
                         </div>
                     </>
