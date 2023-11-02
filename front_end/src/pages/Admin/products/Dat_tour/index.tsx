@@ -2,11 +2,13 @@ type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
 
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons"
 import { AiOutlinePlus } from "react-icons/ai";
 
 import { useEffect } from "react";
+import React from "react";
 const ADmin_DatTour = (props: Props) => {
 
     // 1 useGetdattour
@@ -69,11 +71,6 @@ const ADmin_DatTour = (props: Props) => {
             key: "ngay_dat",
         },
         {
-            title: "Trạng thái",
-            dataIndex: "trang_thai",
-            key: "trang_thai",
-        },
-        {
             title: "Tour được đặt",
             dataIndex: "id_tour",
             key: "id_tour",
@@ -88,6 +85,11 @@ const ADmin_DatTour = (props: Props) => {
             dataIndex: "so_luong",
             key: "so_luong",
         },
+        {
+            title: "Trạng thái",
+            dataIndex: "trang_thai",
+            key: "trang_thai",
+        },
 
 
         {
@@ -96,20 +98,28 @@ const ADmin_DatTour = (props: Props) => {
                 return (
                     <>
 
-                        <div className="flex space-x-2">
-                            <Button danger type="primary" >
-                                <Link to="/admin/tour/hoa_don">Xác nhận đặt tour</Link>
-                            </Button>
-                            <Popconfirm
-                                title="Bạn có muốn xóa?"
-                                onConfirm={() => confirm(id)}
-                                okText="Yes" className="text-black"
-                                cancelText="No"
-                            >
-                                <Button type="primary" danger>
-                                    Xóa
+                        <div className="">
+                            <div className="space-x-2 py-1">
+                                <Button>
+                                    <Link to="/admin/tour/hoa_don"><CheckOutlined type="primary" style={{ color: "blue" }} /></Link>
                                 </Button>
-                            </Popconfirm>
+                            </div>
+                            <div className="space-x-2">
+                                <Popconfirm
+                                    title="Bạn có muốn xóa?"
+                                    onConfirm={() => confirm(id)}
+                                    okText="Yes" className="text-black"
+                                    cancelText="No"
+                                >
+                                    <Button danger>
+                                        <DeleteOutlined type="primary" style={{ color: "red" }} />
+                                    </Button>
+
+                                </Popconfirm>
+                                <Button>
+                                    <Link to={`/admin/Dat_tour/edit/${id}`}><EditOutlined /></Link>
+                                </Button>
+                            </div>
 
                         </div>
                     </>

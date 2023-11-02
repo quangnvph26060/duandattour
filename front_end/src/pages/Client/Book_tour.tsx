@@ -16,6 +16,7 @@ import {
 import { useDattourMutation, useGetDattourbyIdQuery } from "../../api/dattour";
 import { Tour } from "antd";
 import { Dattour } from '../../interface/Dattour';
+import logo from "./img/logo.jpg"
 import axios from 'axios';
 type Props = {};
 
@@ -31,7 +32,7 @@ const initialFormData = {
   dia_chi: "",
   cccd: "",
   ngay_dat: "",
-  so_luong_khach: "",
+  so_luong_khach:1,
   ma_khach_hang: "",
 
 };
@@ -74,20 +75,32 @@ const BookTour = () => {
       setQuantity(1)
     }
   };
-  // gia tre em
-  const [quantity2, setQuantity2] = useState(0);
-
-  const handleIncrement2 = () => {
-    setQuantity2(quantity2 + 1);
-  };
-
-  const handleDecrement2 = () => {
-    if (quantity2 > 0) {
-      setQuantity2(quantity2 - 1);
-    }
-  };
 
 
+    // gia tre em
+    const [quantity2, setQuantity2] = useState(0);
+
+    const handleIncrement2 = () => {
+      setQuantity2(quantity2 + 1);
+    };
+  
+    const handleDecrement2 = () => {
+      if (quantity2 > 0) {
+        setQuantity2(quantity2 - 1);
+      }
+    };
+    const [soLuongKhach, setSoLuongKhach] = useState(1);
+    useEffect(() => {
+      const newSoLuongKhach = quantity + quantity2;
+      if (newSoLuongKhach !== 1) {
+        setSoLuongKhach(newSoLuongKhach);
+        setFormData({
+          ...formData,
+          so_luong_khach: newSoLuongKhach
+        });
+      }
+    }, [quantity, quantity2]);
+  
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
@@ -119,17 +132,22 @@ const BookTour = () => {
             email: userData.email,
             sdt: userData.sdt,
             dia_chi: userData.dia_chi,
-            so_luong_khach: userData.so_luong_khach,
-            ma_khach_hang: userData.id,
-            id_tour: idTour
+
+            ma_khach_hang:userData.id,
+            id_tour:  idTour
           });
-
-
+          console.log( userData);
+          
         })
         .catch((error) => {
           console.error(error);
         });
-    }
+    } else{
+      setFormData({
+        ...formData,
+        ma_khach_hang: null, // hoặc có thể là ""
+      });
+    }  
   }, []);
 
   const calculateTotalPrice = () => {
@@ -198,18 +216,12 @@ const BookTour = () => {
     }
 
   };
-  const [soLuongKhach, setSoLuongKhach] = useState(0);
-  useEffect(() => {
-    setSoLuongKhach(quantity + quantity2);
-    setFormData({
-      ...formData,
-      so_luong_khach: quantity + quantity2
-    });
-  }, [quantity, quantity2]);
+
   return (
     <div className="container mx-auto">
+         
       {/* header trên thôn tin dưới */}
-      <div className="info mx-auto w-10/12 ">
+      <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
           <div className="img-book w-1/3">
             {images && images.length > 0 ? (
@@ -297,15 +309,15 @@ const BookTour = () => {
 
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
-              <input
-                className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                type="hidden" value={formData.ma_khach_hang} onChange={handleChange}
-              />
-              <input
-                className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                type="hidden" value={formData.id_tour} name='id_tour' onChange={handleChange}
-
-              />
+            <input
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
+                    type="hidden"   value={formData.ma_khach_hang} onChange={handleChange}
+                  />
+                   <input
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
+                    type="hidden"    value={formData.id_tour} name='id_tour'  onChange={handleChange}
+                  
+                  />
               <div className="flex justify-center h-[200px] rounded  bg-[#f9f9f9]">
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
@@ -341,46 +353,47 @@ const BookTour = () => {
               </div>
 
               <div>
-                <div>
-                  <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
-                    Hành khách
-                  </p>
-                  <div className="text-[#2D4271] flex justify-between">
-                    <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
-                      <label htmlFor="quantity">Người lớn</label>
-                      <div className="flex gap-3">
-                        <button type="button" onClick={handleIncrement} className="icon-button">
-                          +
-                        </button>
-                        <input type="text" className="w-[10px]" name="quantity" id="quantity" value={quantity} readOnly />
-                        <button type="button" onClick={handleDecrement} className="icon-button">
-                          -
-                        </button>
-                      </div>
-                    </div>
-                    <input
-                      type="hidden"
-                      name="so_luong_khach"
-                      className="w-[10px]"
-                      id="so_luong_khach"
-                      value={soLuongKhach}
-                      readOnly
-                    />
-                    <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
-                      <label htmlFor="quantity2">Trẻ em</label>
-                      <div className="flex gap-3">
-                        <button type="button" onClick={handleIncrement2} className="icon-button">
-                          +
-                        </button>
-                        <input type="text" className="w-[10px]" name="quantity2" id="quantity2" value={quantity2} readOnly />
-                        <button type="button" onClick={handleDecrement2} className="icon-button">
-                          -
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+              <div>
+              <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
+                Hành khách
+              </p>
+              <div className="text-[#2D4271] flex justify-between">
+      <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
+        <label htmlFor="quantity">Người lớn</label>
+        <div className="flex gap-3">
+          <button type="button" onClick={handleIncrement} className="icon-button">
+            +
+          </button>
+          <input type="text" className="w-[10px]" name="quantity" id="quantity" value={quantity} readOnly />
+          <button type="button" onClick={handleDecrement} className="icon-button">
+            -
+          </button>
+        </div>
+      </div>
+      <input
+        type="hidden"
+        name="so_luong_khach"
+        className="w-[10px]"
+        id="so_luong_khach"
+        value={soLuongKhach}
+        onChange={handleChange}
+        readOnly
+      />
+      <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
+        <label htmlFor="quantity2">Trẻ em</label>
+        <div className="flex gap-3">
+          <button type="button" onClick={handleIncrement2} className="icon-button">
+            +
+          </button>
+          <input type="text" className="w-[10px]" name="quantity2" id="quantity2" value={quantity2} readOnly />
+          <button type="button" onClick={handleDecrement2} className="icon-button">
+            -
+          </button>
+        </div>
+      </div>
+    </div>
+            </div>
+           
               </div>
               <div className="thanhstoan mt-10">
                 <p className="mt-5 text-[#2D4271] text-[28px] font-bold">
@@ -562,20 +575,14 @@ const BookTour = () => {
                 {/* <p className="text-[200px] ml-10">
                   <FaQrcode />
                 </p> */}
-                <Link to="/booking/:id" className="flex items-center space-x-2">
-                  {/* <button
-                    className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
-                    type="submit"
-                  >
-                    Đặt ngay
-                  </button> */}
-                </Link>
+         
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
                   type="submit"
                 >
                   Đặt ngay
                 </button>
+               
               </div>
             </div>
           </div>

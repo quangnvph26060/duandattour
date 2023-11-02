@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('dia_chi');
             $table->string('cccd')->nullable();
             $table->date('ngay_dat');
-            $table->integer('so_luong_khach');
+            $table->integer('so_luong_khach')->default(1);;
        
             $table->tinyInteger('trang_thai')->default(0);
             $table->foreignId('ma_khach_hang')->constrained('users');
