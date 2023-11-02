@@ -30,7 +30,7 @@ import ADmin_Phuontien from "./pages/Admin/products/Phuong_tien";
 import ADmin_PhuontiengADD from "./pages/Admin/products/Phuong_tien/add";
 import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
-import ADmin_ACcountkhachhang_edit from "./pages/Admin/user/khach_hang/edit";
+import Admin_Acountkhachhang_Roles from "./pages/Admin/user/khach_hang/roles";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
 import Admin_Account_huongdanvienAdd from "./pages/Admin/user/huong_dan_vien/add";
@@ -43,34 +43,68 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+import { Route,Routes } from "react-router-dom";
+import QLuser from "./pages/qluser";
+import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
+import LayoutWebsite from "./components/layouts/LayoutWebsite";
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div>
-        <HomePage />
-      </div>
-    ),
+    element: <LayoutWebsite />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "news",
+        element: <News />,
+      },
+      {
+        path: "tour",
+        element: <TourPage />,
+      },
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "signup",
+        element: <Signup />,
+      },
+      {
+        path: "tour/:idTour",
+        element: <DetailPage />,
+      },
+      {
+        path: "booktour/:idTour",
+        element: <BookTour />,
+      },
+      {
+        path: "booktour",
+        element: <BookTour />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
+      {
+        path: "booking/:id",
+        element: <Info_tour_bocking />,
+      },
+      {
+        path: "profile",
+        element: <QLuser />,
+      },
+    ],
   },
-
-  // ,
-  //     {path: "/tour",element:<TourPage/>},
-  { path: "/news", element: <News /> },
-  //     {path: "/title",element:<TitelPage/>},
-  //     {path: "/tour",element:<TourPage/>},
-  { path: "/tour", element: <TourPage /> },
-
-  { path: "/signin", element: <SignIn /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/tour/:idTour", element: <DetailPage /> },
-  { path: "/booktour", element: <BookTour /> },
-  { path: "/contact", element: <Contact /> },
-  { path: "/booking/:id", element: <Info_tour_bocking /> },
-  { path: "*", element: "Not Found Page" },
 
   {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element: localStorage.getItem("role") === 'admin' ||
+      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
@@ -134,7 +168,7 @@ export const router = createBrowserRouter([
         element: <ADmin_KhachsanADD />,
       },
       {
-        path: "tour/loai_khach_san/edit/:id",
+        path: "tour/loai_khach_san/edit/:idkhachsan",
         element: <ADmin_KhachsanEdit />,
       },
       {
@@ -153,13 +187,18 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
+
+      // {
+      //   path: "customer_account/add",
+      //   element: <Admin_Acountkhachhang_Roles />,
+      // },
       {
-        path: "customer_account/add",
-        element: <Admin_Khachhang />,
+        path: "customer_account/edit/:idrole",
+        element: <Admin_Acountkhachhang_Roles />,
       },
       {
-        path: "customer_account/edit/:id",
-        element: <ADmin_ACcountkhachhang_edit />,
+        path: "customer_account/permissions/:idpermission",
+        element: <Admin_Acountkhachhang_Permisssions />,
       },
       {
         path: "account_huongdanvien",
@@ -177,11 +216,11 @@ export const router = createBrowserRouter([
         path: "tour/image_tour",
         element: <Admin_TourImg />,
       },
-       {
+      {
         path: "tour/image_tour/add",
         element: <Admin_TourImgADD />,
       },
-       {
+      {
         path: "tour/image_tour/edit/:idtourimage",
         element: <Admin_TourImgEDit />,
       },
@@ -194,12 +233,11 @@ export const router = createBrowserRouter([
       {
         path: "tour/image/add",
         element: <AdmidImageADD />,
-      }, 
+      },
       {
         path: "tour/image/edit/:idimage",
         element: <Admin_ImageEdit />,
       },
-      
       {
         path: "tour/hoa_don",
         element: <ADmin_Hoadon />,

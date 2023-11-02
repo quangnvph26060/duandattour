@@ -1,21 +1,40 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
 
-const { Option } = Select;
+import { useNavigate,useParams } from 'react-router-dom';
+import { useEditKhachSanMutation,useGetKhachSanByIdQuery } from '../../../../api/KhachSanApi';
+import { IKhachSan } from '../../../../interface/khachsan';
 
-type FieldType = {
-  id: number;
-  loai_khach_san: string;
-};
 
 const ADmin_KhachsanEdit: React.FC = () => {
+  const {idkhachsan}=useParams<{
+    idkhachsan:any
+  }>();
+  const {data:LoaiKhachSanData} =useGetKhachSanByIdQuery(idkhachsan || "");
+  const LoaiKhachSan=LoaiKhachSanData || {};
+  const[updateLoaiKhachSan]=useEditKhachSanMutation();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [form] = Form.useForm();
+  useEffect(()=>{
+    if(LoaiKhachSan.data && LoaiKhachSan.data.loai_khach_san){
+      form.setFieldsValue({
+        loai_khach_san: LoaiKhachSan.data.loai_khach_san,
+      });
+    }
+  },[LoaiKhachSan]);
   const navigate = useNavigate();
 
-  const onFinish = (values: FieldType) => {
+  const onFinish = (values: IKhachSan) => {
 
-    console.log('Form values:', values);
+    updateLoaiKhachSan({ ...values, id: idkhachsan })
+    .unwrap()
+    .then(() => navigate("/admin/tour/loai_khach_san"))
+    .catch((error) => {
+      setErrors(error.data.message);
+      setLoading(false);
+      
+    });
   };
 
   return (
@@ -51,7 +70,7 @@ const ADmin_KhachsanEdit: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour')}
+            onClick={() => navigate('/admin/tour/loai_khach_san')}
           >
             Quay lại
           </Button>

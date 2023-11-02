@@ -11,35 +11,7 @@ const Signup = () => {
       <div className="banner">
         <h1 className="text-2xl text-center font-bold mb-4">Welcome to PolyTour</h1>
       </div>
-      <div className="menu flex items-center justify-between">
-      <div className='flex'>
-          <img style={rounded} src={logo} alt="logo" width="70px" />
-          <nav className='font-semibold p-4 pt-6 pl-18'>
-            <ul className='flex text-[#2D4271] gap-12'>
-              <a href="/">PolyTour</a>
-              <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
-              <a href="">Khuyến mãi</a>
-              <a href="/contact">Liên hệ</a>
-            </ul>
-          </nav>
-          </div>
-        <div className="search flex items-center">
-  <input type="text" placeholder="Search..." className="border-yellow-300
-border-[3px] px-2 py-2  rounded" />
-  <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
-
-  
-<div className="ml-2">
-  <Link to="/signup">
-    <button className="bg-green-500 text-white py-1 px-3 rounded">
-      <i className="fas fa-user"></i>
-    </button>
-  </Link>
-</div>
-
-</div>
-      </div>
+     
 
       <div className="banner">
         <h2 style={{color:'blue'}} className="text-2xl text-center mt-20 font-bold mb-4">Đăng Ký Hội Viên</h2>
