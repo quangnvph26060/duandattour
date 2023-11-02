@@ -37,9 +37,9 @@ Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->n
 // lưu kết quả thanh toán vnpay vào DB
 Route::post('/paymentresult', [ApiPaymentController::class, 'CreatePayment']);
 // lưu thanh toán tiền mặt vào DB
-Route::post('/cash', [AuthController::class, 'CreatePaymentCash']);
+Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 // hiển thị  kết quả thanh toán 
-Route::get('/index', [AuthController::class, 'getPaymentData']);
+Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 //api chi tiet tour

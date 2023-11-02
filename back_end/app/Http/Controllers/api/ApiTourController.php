@@ -39,6 +39,13 @@ class ApiTourController extends Controller
 
     public function index()
     {
+       // $tour = TourModel::all();
+
+
+        /////////////////////////
+        // đừng có xóa 
+        //////////////////////////////////////
+
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
 
         if ($tours->isEmpty()) {
