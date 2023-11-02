@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../page.css'
-
+import '../messenger.css';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -21,14 +21,72 @@ import tt from '../img/5.webp';
 import yy from '../img/6.webp';
 import he from '../img/bbbbb.webp'
 import hq from '../img/aaaaa.webp'
-import { data } from 'autoprefixer';
-
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 const rounded = {
   borderRadius: '25px',
 };
 const HomePage = () => {
+  // boxchat
+  const [messageHistory, setMessageHistory] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isChatVisible, setIsChatVisible] = useState(false);
+  const messageListRef = useRef(null);
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messageHistory]);
+
+  const handleToggleChat = () => {
+    setIsChatVisible(prevState => !prevState);
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== '') {
+      const newMessage = {
+        text: inputValue,
+        sender: 'user',
+        timestamp: new Date().getTime(),
+      };
+      setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+      setInputValue('');
+      sendAutoReply(inputValue);
+    }
+  };
+
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const sendAutoReply = userMessage => {
+    let autoReply;
+    if (userMessage.includes('loại tour')) {
+      autoReply =
+        'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
+    } else {
+      autoReply =
+        'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
+    }
+    const newMessage = {
+      text: autoReply,
+      sender: 'assistant',
+      timestamp: new Date().getTime(),
+    };
+    setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+  };
+
+  const formatTimestamp = timestamp => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+  };
+  // boxchat
   const [remainingTime, setRemainingTime] = useState(15 * 3600); // 5 minutes in seconds
 
   useEffect(() => {
@@ -54,7 +112,7 @@ const HomePage = () => {
   const [data, settour] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/admin/tour')
+    fetch('http://127.0.0.1:8000/api/admin/tour/')
       .then(response => response.json())
       .then(result => {
         settour(result.data);
@@ -233,9 +291,49 @@ const HomePage = () => {
   return (
 
     <div className="bg-white rounded-lg shadow p-4">
+  <div className="  ">
+      {isChatVisible && (
+        <div className="chat-box">
+          <div className="chat-header">
+          <img  src={logo} alt="logo" width="30px" />
+            <h3 className="chat-title">PolyTour</h3>
+          </div>
+          <div className="message-list" ref={messageListRef}>
+            {messageHistory.map((message, index) => (
+              <div key={index} className={`message ${message.sender}`}>
+                <div className="message-text">{message.text}</div>
+                <div className="message-timestamp">
+                  {formatTimestamp(message.timestamp)}
+                </div>
+              </div>
+            ))}
+          </div>
 
+          <div className="input-area">
+            <div className="input-container">
+              <input
+                type="text"
+                placeholder="Nhập tin nhắn..."
+                className="message-input"
+                value={inputValue}
+                onChange={event => setInputValue(event.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+              <button className="send-button" onClick={handleSendMessage}>
+                Gửi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-     
+      <div className="icon" onClick={handleToggleChat}>
+      <div  >
+      <FontAwesomeIcon icon={faFacebookMessenger} style={{ color: 'blue', fontSize: '30px' }} />
+    </div>
+      </div>
+    </div>
+    
 
       <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
@@ -375,6 +473,7 @@ const HomePage = () => {
       </div>
 
       {/*  */}
+    
       <div className="content">
         <div className="content">
           <h2 className='mt-5 mb-5 home-page__title '>KHÁM PHÁ ƯU ĐÃI POLYTOUR!!!</h2>
@@ -431,28 +530,28 @@ const HomePage = () => {
                 />
               ))}
 
-              <div className="product-details mt-4">
-                <div className="info-row data">
-                  <p>{item.lich_khoi_hanh}</p>-
-                  <p>{item.soluong} ngày</p>
-                </div>
-                <Link to={`/tour/${item.id}`} className="text-blue-500 hover:underline">
+              <div className="product-details mt-4">   
+              <div className="info-row data">
+            <p>{item.lich_khoi_hanh}</p>-
+            <p>{item.soluong} ngày</p>
+          </div>
+                <Link to="/:id/tour" className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
-                <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{item.gia_nguoilon.toFixed(2)}đ</p>
+                <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour}đ</p>
                 <p className='text mt-2'>{item.mo_ta}</p>
-
+                
                 <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
-
+                
                 <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
                   Giảm 6%
                 </button>
                 <button
-                  id="countdown-btn" style={{ color: '#4D4AEF' }}
-                  className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
-                >
-                  Còn 00 ngày {formatTime(remainingTime)}
-                </button>
+      id="countdown-btn" style={{color: '#4D4AEF'}}
+      className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
+    >
+      Còn 00 ngày {formatTime(remainingTime)}
+    </button>
 
               </div>
             </div>
