@@ -132,8 +132,6 @@ const BookTour = () => {
     }
   }, []);
 
-
-
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
     const ginho = datatourArray?.gia_treem;
@@ -146,7 +144,6 @@ const BookTour = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
   };
 
 
