@@ -70,11 +70,6 @@ const ADmin_DatTour = (props: Props) => {
             key: "ngay_dat",
         },
         {
-            title: "Trạng thái",
-            dataIndex: "trang_thai",
-            key: "trang_thai",
-        },
-        {
             title: "Tour được đặt",
             dataIndex: "id_tour",
             key: "id_tour",
@@ -88,6 +83,11 @@ const ADmin_DatTour = (props: Props) => {
             title: "Số lượng đặt",
             dataIndex: "so_luong",
             key: "so_luong",
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "trang_thai",
+            key: "trang_thai",
         },
 
 

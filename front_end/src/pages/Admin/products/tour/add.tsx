@@ -106,6 +106,16 @@ const AdminTourAdd: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          label="Thời Gian"
+          name="thoi_gian"
+          rules={[
+            { required: true, message: "Vui lòng nhập thời gian!" },
+            { min: 3, message: "Thời gian phải từ 1 ngày" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="Điểm khởi hành"
           name="diem_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng chọn điểm khởi hành!' }]}

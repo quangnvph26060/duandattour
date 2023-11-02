@@ -1,9 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import AiOutlineShoppingCart from 'react-icons'
 import logo from '../img/logo.jpg'
 import anh1 from '../img/anh1.jpg'
@@ -20,87 +15,45 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
-<<<<<<< HEAD
 import { useGetTourQuery } from '../api/TourApi'
 import { useGetTourImagesQuery } from '../api/TourImagesApi'
 import { useGetHuongDanVienQuery } from '../api/HuongDanVienApi'
-=======
->>>>>>> cuongntph27274
 
 
 const rounded = {
   borderRadius: '25px',
 };
-<<<<<<< HEAD
 
 type Props = {};
 
 const TourPage = (props: Props) => {
-  const { data: Tourdata } = useGetTourQuery() 
+  const { data: Tourdata } = useGetTourQuery()
   const currentDate = new Date();
-  // const Tourdata = imagesdata || []
-  // const { data: imagesdata, error, isLoading } = useGetTourImagesQuery();
   const tourArray = Tourdata?.data || [];
-  const data = tourArray.map(function ({ id, ten_tour, gia_tour, mo_ta, soluong, anh, diem_khoi_hanh, diem_den, diem_di, lich_khoi_hanh, thoi_gian, trang_thai, ma_loai_tour, ma_hdv }: ITour): { key: number; soluong: number; ten_tour: string; diem_khoi_hanh: string; diem_den: string; gia_tour: number; mo_ta: any; anh:string, diem_di: string; lich_khoi_hanh: string; thoi_gian: string; trang_thai: number; ma_loai_tour: number; ma_hdv: number; } {
-    return ({
-        key: id,
-        soluong,
-        ten_tour,
-        anh,
-        diem_khoi_hanh,
-        diem_den,
-        gia_tour,
-        mo_ta,
-        diem_di,
-        lich_khoi_hanh,
-        thoi_gian,
-        trang_thai,
-        ma_loai_tour,
-        ma_hdv
-    });
-});
-=======
-const TourPage = () => {
-  // const images = [
-  //     {
-  //         id: 1,
-  //         name:'product-1',
-  //         imagePath: qq
-  //     }
-  // ]
->>>>>>> cuongntph27274
+  const images = tourArray?.images || [];
+  console.log(tourArray)
   return (
     <div className=''>
       <header>
-        <div className="menu flex items-center justify-between">
-          <div className='flex'>
-            <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+        <div className='flex'>
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+          <nav className='p-4 pt-6 pl-20'>
 
-            <nav className='font-semibold p-4 pt-6 pl-18'>
-              <ul className='flex text-[#2D4271] gap-12'>
-                <a href="/">PolyTour</a>
-                <a href="/tour">Tour</a>
-                <a href="/news">Tin tức</a>
-                <a href="">Khuyến mãi</a>
-                <a href="/contact">Liên hệ</a>
-              </ul>
-            </nav>
+            <ul className='flex gap-12'>
+              <a href="/tour">Du lịch</a>
+              <a href="">Vận chuyển</a>
+              <a href="/news">Tin tức</a>
+              <a href="">Khuyến mãi</a>
+              <a href="">Liên hệ</a>
+            </ul>
+          </nav>
+          <div className='p-4 pt-6 ml-auto'>
+            <input className='border border-blue-400 rounded-md w-64' type="text" placeholder='Bắt đầu tìm kiếm...' name="" id="" />
           </div>
-          <div className="search flex items-center">
-            <input type="text" placeholder="Search..." className="border-yellow-300
-border-[3px] px-2 py-2  rounded" />
-            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
-
-
-            <div className="ml-2">
-              <Link to="/signup">
-                <button className="bg-green-500 text-white py-1 px-3 rounded">
-                  <i className="fas fa-user"></i>
-                </button>
-              </Link>
-            </div>
-
-          </div>
+          <button className='pr-5'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+            </svg>
+          </button>
         </div>
       </header>
       <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
@@ -225,13 +178,21 @@ border-[3px] px-2 py-2  rounded" />
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
+
           <div className='grid grid-cols-3 gap-7'>
-<<<<<<< HEAD
             {tourArray?.map((item: any) => {
               return (
                 <div key={item.id}>
                   <div className='py-4 bg-neutral-100 rounded-lg'>
-                    <img src={`${item.anh}`} alt={`Ảnh`} className='h-[315px] w-max rounded-lg' />
+                    {images && images.length > 0 ? (
+                      <div>
+                        {/* {images.map((image) => ( */}
+                        <img key={images[0].id} src={`http://localhost:8000/storage/${images[0].item.image_path}`} />
+                        {/* ))} */}
+                      </div>
+                    ) : (
+                      <p>Không có hình ảnh cho tour này.</p>
+                    )}
                     <p className='px-1'>{item.lich_khoi_hanh} - {item.thoi_gian} - Giờ đi: 05:20</p>
                     <p className='font-bold py-2 px-1'>{item.ten_tour}</p>
                     <p className='px-4'>MÃ TOUR :</p>
@@ -245,7 +206,7 @@ border-[3px] px-2 py-2  rounded" />
                     </div>
                     <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
                     <div className='flex gap-16 justify-between px-4 p-1'>
-                      <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
+                      <p className='text-lg font-semibold text-red-500'>{item.gia_khuyen_mai}₫</p>
                       <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
                     </div>
                     <div className='flex justify-between px-4 gap-10 pt-3'>
@@ -262,39 +223,7 @@ border-[3px] px-2 py-2  rounded" />
               )
             })}
 
-=======
->>>>>>> cuongntph27274
             <div className='py-4 bg-neutral-100 rounded-lg'>
-
-              <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 p-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
-
               <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
               <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
               <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -

@@ -46,7 +46,7 @@ const AdminTourEdit = () => {
         console.error(error);
       });
     if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
-      && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
+      && Tour.data.ten_tour && Tour.data.thoi_gian && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
       Tour.data.lich_khoi_hanh  && Tour.data.soluong
 
     ) {
@@ -57,6 +57,7 @@ const AdminTourEdit = () => {
         ma_loai_tour: Tour.data.ma_loai_tour,
         ten_hdv: Tour.data.ten_hdv,
         ten_tour: Tour.data.ten_tour,
+        thoi_gian:Tour.data.thoi_gian,
         diem_khoi_hanh: Tour.data.diem_khoi_hanh,
         ngay_ket_thuc: Tour.data.ngay_ket_thuc,
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
@@ -114,6 +115,16 @@ const AdminTourEdit = () => {
           rules={[
             { required: true, message: "Vui lòng nhập tên tour!" },
             { min: 3, message: "Tên tour ít nhất 3 ký tự" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Thời Gian"
+          name="thoi_gian"
+          rules={[
+            { required: true, message: "Vui lòng nhập thời gian!" },
+            { min: 3, message: "Thời gian phải từ 1 ngày" },
           ]}
         >
           <Input />

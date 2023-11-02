@@ -33,9 +33,10 @@ const AdminProduct = (props: Props) => {
     const huongdanvienArrary = huongdanviendata?.data || [];
     const dataSource = tourArray.map((
         { id, ten_tour, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
-            diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
+            diem_den, diem_di, thoi_gian, lich_khoi_hanh, ngay_ket_thuc,
             trang_thai, ma_loai_tour }: ITour): {
                 key: number; soluong: number; ten_tour: string;
+                thoi_gian: Date;
                 diem_khoi_hanh: string; diem_den: string;
                 gia_nguoilon: any; gia_treem: any; mo_ta: any; diem_di: string;
                 lich_khoi_hanh: Date; ngay_ket_thuc: string,
@@ -44,6 +45,7 @@ const AdminProduct = (props: Props) => {
                 key: id,
                 soluong,
                 ten_tour,
+                thoi_gian,
                 diem_khoi_hanh,
                 diem_den,
                 gia_nguoilon, gia_treem,
@@ -80,6 +82,11 @@ const AdminProduct = (props: Props) => {
             title: "Điểm Khởi Hành",
             dataIndex: "diem_khoi_hanh",
             key: "diem_khoi_hanh",
+        },
+        {
+            title: "Thời gian",
+            dataIndex: "thoi_gian",
+            key: "thoi_gian",
         },
         {
             title: "Lịch Khởi Hành",
