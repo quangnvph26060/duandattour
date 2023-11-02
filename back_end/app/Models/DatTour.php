@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class DatTour extends Model
 {
     use HasFactory;
-    protected $table = "dat_tours";
-
+    protected $table = 'dat_tours';
     protected $fillable = [
+<<<<<<< HEAD
             'ten_khach_hang',
             'email',
             'sdt',
@@ -22,4 +22,17 @@ class DatTour extends Model
             'ma_khach_hang',
             'id_tour'
     ];
+=======
+        'ten_khach_hang',
+        'email',
+        'sdt',
+        'dia_chi',
+        'cccd',
+        'ngay_dat',
+        'so_luong_khach',
+        'trang_thai',
+        'ma_khach_hang',
+        'id_tour'
+];
+>>>>>>> thaihdph27014
 }

@@ -15,7 +15,8 @@ import {
   FaStar,
 } from "react-icons/fa";
 import logo from "./img/logo.jpg"
-import { useGetTourByIdQuery } from "../../api/TourApi";
+import { useGetTourByIdQuery, useGetdetailTourByIdQuery } from "../../api/TourApi";
+
 type Props = {};
 
 const DetailPage = (props: Props) => {
@@ -35,14 +36,19 @@ const DetailPage = (props: Props) => {
     width: "580px  ",
   };
   const img1 = {
+
     borderRadius: "5px",
     height: "210px",
     width: "309px  ",
   };
   const { idTour } = useParams<{ idTour: any }>();
-  const { data: Tourdata } = useGetTourByIdQuery(idTour || "");
-  const tourDetail = Tourdata?.data || [];
-  console.log(tourDetail);
+  const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
+
+  const datatourArray = Tourdata?.data || [];
+  const images = datatourArray?.images || [];
+
+  console.log(images);
+
   return (
     <div className="container mx-auto ">
       <div className="menu flex items-center justify-between">
@@ -79,12 +85,12 @@ border-[3px] px-2 py-2  rounded" />
           <div className="Title flex ml-[120px] justify-between py-10">
             <div className="title">
               <p className="text-[26px] text-[#2D4271] font-bold">
-                {tourDetail?.ten_tour}
+              {datatourArray?.ten_tour}
               </p>
             </div>
 
             <div className="price buy mr-40 flex gap-5 ">
-              <p className="text-[26px] text-red-500 font-bold">{tourDetail?.gia_tour}</p>
+              <p className="text-[26px] text-red-500 font-bold">{datatourArray?.gia_nguoilon}</p>
               <p className="mt-2">/khách</p>
               <button
                 type="button"
@@ -99,9 +105,10 @@ border-[3px] px-2 py-2  rounded" />
                 >
                   <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                 </svg>
-                <Link to="/booktour">
-                  Đặt ngay
-                </Link>
+                <Link to={`/booktour/${idTour}`}>
+  Đặt ngay
+</Link>
+
 
               </button>
             </div>
@@ -124,57 +131,65 @@ border-[3px] px-2 py-2  rounded" />
             </h2>
           </div>
           <div className="Image ml-[120px] gap-5 flex">
-            <div>
-              <img
-                src="https://media.travel.com.vn/tour/tfd_220701022713_187185.jpg"
-                style={radius}
-              />
-            </div>
+          {images && images.length > 0 ? (
+      <div>
+        {/* {images.map((image) => ( */}
+          <img key={images[0].id}      src={`http://localhost:8000/storage/${images[0].image_path}`}  />
+        {/* ))} */}
+      </div>
+    ) : (
+      <p>Không có hình ảnh cho tour này.</p>
+    )}  
+    {images && images.length > 0 ? (
             <div>
               {" "}
               <div className="flex gap-5">
                 {" "}
                 <img
                   style={radius1}
-                  src="https://media.travel.com.vn/tour/tfd_220701023049_247289.jpg"
+                  src={`http://localhost:8000/storage/${images[1].image_path}`}
                   alt=""
                 />
                 <img
                   style={radius1}
-                  src="https://media.travel.com.vn/tour/tfd_220701023656_254440.jpg"
+                  src={`http://localhost:8000/storage/${images[2].image_path}`}
                   alt=""
                 />{" "}
               </div>
               <div className="mt-5">
                 <img
-                  src="https://media.travel.com.vn/destination/dc_211112_GRAND%20WORLD%20(4).jpg"
+                  src={`http://localhost:8000/storage/${images[3].image_path}`}
                   style={radius2}
                 />
               </div>
             </div>
+             ) : (
+              <p>Không có hình ảnh cho tour này.</p>
+            )}  
+        
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
             <div className="Desc text-[#2D4271] text-[15px]">
               <p className="max-w-[500px]">
-                {tourDetail?.mo_ta}
+            {datatourArray?.mo_ta}
               </p>
               <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Khởi hành {tourDetail?.lich_khoi_hanh}
+                  Khởi hành {datatourArray?.lich_khoi_hanh}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Tập trung 05:30 ngày 04/10/2023
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                  Thời gian {tourDetail?.thoi_gian}
+                  Thời gian {datatourArray?.thoi_gian}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-
-                  Nơi khởi hành {tourDetail?.diem_khoi_hanh}
+                
+                  Nơi khởi hành {datatourArray?.diem_khoi_hanh}
                 </p>
                 <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
-
-                  Số lượng {tourDetail?.soluong}
+             
+                  Số lượng {datatourArray?.soluong  }
                 </p>
               </div>
             </div>
@@ -243,53 +258,36 @@ border-[3px] px-2 py-2  rounded" />
               <h2>Lịch trình</h2>
             </div>
             <div className="ml-[120px] flex gap-2 mr-[115px] lichtring max-h-[2000px] bg-white border-[1px] rounded border-gray-400 ">
-              <div className="w-1/3 bg-[#f9f9f9]">
-                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                  Ngày 1: HẢI PHÒNG - LÀO CAI – BẢN CÁT CÁT (Ăn: Sáng, Trưa, Tối) (// '$name')
-                </h2>
-                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                  Ngày 2 - SA PA – FANXIPAN – CẦU KÍNH RỒNG MÂY (Ăn: Sáng, Trưa, Tối) (// '$name')
-                </h2>
-                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                  Ngày 3 - SA PA - CÔC LẾU - HẢI PHÒNG (Ăn sáng, trưa) (// '$name')
-                </h2>
-              </div>
-              <div className="w-2/3 ">
-                <div className="max-w-full">
-                  <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                    Ngày 1: HẢI PHÒNG - LÀO CAI – BẢN CÁT CÁT (Ăn: Sáng, Trưa, Tối) (// '$name')
-                  </h2>
-                  <p className=" text-[#2D4271] text-[12px]">05h00 Xe cùng hướng dẫn viên của Vietravel đón Quý khách tại số 4 Trần Hưng Đạo, Hồng Bàng , Hải Phòng khởi hành đi Sapa. Đoàn ăn sáng tại nhà hàng địa phương. Quý khách tiếp tục lên xe đi Sapa, trên đường đoàn có dịp chiêm ngưỡng phong cảnh Núi Rừng Tây Bắc, đời sống của Đồng Bào dân tộc Thái, H’Mong của 2 tỉnh Yên Bái, Lào Cai.
-                    -    Bản Cát Cát - đẹp như một bức tranh giữa vùng phố cổ Sapa, nơi đây thu hút du khách bởi cầu treo, thác nước, guồng nước và những mảng màu hoa mê hoặc du khách khi lạc bước đến đây. Thăm những nếp nhà của người Mông, Dao, Giáy trong bản, du khách sẽ không khỏi ngỡ ngàng trước vẻ đẹp mộng mị của một trong những ngôi làng cổ đẹp nhất Sapa.
-                    Quý khách dùng cơm tối và nhận phòng nghỉ ngơi hoặc tự do dạo phố ngắm nhà thờ Đá Sapa, tự do thưởng thức đặc sản vùng cao như: thịt lợn cắp nách nướng, trứng nướng, rượu táo mèo, giao lưu với người dân tộc vùng cao.
-                    Nghỉ đêm tại Sapa</p>
-                </div>
-                <div className="max-w-full">
-                  <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                    Ngày 2 - SA PA – FANXIPAN – CẦU KÍNH RỒNG MÂY (Ăn: Sáng, Trưa, Tối) (// '$name')
-                  </h2>
-                  <p className=" text-[#2D4271] text-[12px]">Quý khách dùng điểm tâm sáng tại khách sạn. xe đưa đoàn ra ga Sapa, Quý khách trải nghiệm đến khu du lịch Fansipan Legend bằng Tàu hỏa leo núi Mường Hoa (chi phí chưa bao gồm trong giá tour) hiện đại nhất Việt Nam với tổng chiều dài gần 2000m, thưởng ngoạn bức tranh phong cảnh đầy màu sắc của cánh rừng nguyên sinh, thung lũng Mường Hoa.
-
-                    Chinh phục đỉnh núi Fansipan với độ cao 3.143m hùng vĩ bằng cáp treo (chi phí tự túc).
-                    Lễ Phật tại chùa Trình hay cầu phúc lộc, bình an cho gia đình tại Bích Vân Thiền Tự trong hệ thống cảnh quan tâm linh trên đỉnh Fansipan.
-                    Sau khi ăn trưa, xe đưa đoàn đi tham quan Cầu kính Rồng Mây - tọa lạc trên đỉnh đèo Ô Quy Hồ thuộc địa phận huyện Tam Đường của tỉnh Lai Châu. Nơi đây còn được mệnh danh là Cổng trời trên đỉnh Ô Quy Hồ. Hệ thống thang máy dài 70m cheo leo, thang máy sẽ đưa du khách lên vị trí của cầu kính cao 2.200m so với mực nước biển và mặt cầu cách vách núi 60m tạo cảm giác như lơ lửng giữa không trung. (Chi phí  chưa bao gồm trong giá tour).
-
-                    Quý khách dùng cơm tối tại nhà hàng địa phương và  tự do khám phá thành phố Sapa về đêm. Tại đây, quý khách có thể tự do khám phá những quán café mới lạ độc đáo đa phong cách hoặc vào những ngày cuối tuần, quý khách sẽ được chứng kiến những hoạt động văn hóa văn nghệ đặc sắc của người dân Sapa cũng như được tự do thưởng thức các món nướng thơm.
-
-                    Nghỉ đêm tại Sapa.</p>
-                </div>
-                <div className="max-w-full">
-                  <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-                    Ngày 3 - SA PA - CÔC LẾU - HẢI PHÒNG (Ăn sáng, trưa) (// '$name')
-                  </h2>
-                  <p className=" text-[#2D4271] text-[12px]">Đoàn ăn sáng buffet tại khách sạn và làm thủ tục trả phòng khách sạn. Xe đưa đoàn đi tham quan Secret Garden - điểm sống ảo mới toanh giữa lòng phố núi Sapa đang làm mưa làm gió với ‘giường trên không’ và ‘nhà bong bóng’. Hãy nghĩ đến cảnh bạn sẽ được nằm ườn trên chăn bông bồng bềnh, view ‘khách sạn ngàn sao’, có thể nằm ngắm trời ngắm mây, nhìn thẳng ra những dãy núi mờ ảo trong mây. Bể bơi vô cực, xích đu vô cực hay tổ chim cũng là điểm cực ‘chất’ ở Secret Garden . Và chưa hết! Nếu bạn muốn chụp một bộ ảnh với những concept như là vườn địa đàng hay kỳ nghỉ ở Địa Trung Hải, hãy đến ngay sân café ở đây, khoảng sân này được thiết kế cực kỳ tỉ mỉ, khiến bạn sẽ cực kỳ lúng túng không biết nên chụp góc nào đẹp nhất bởi góc nào cũng đều đẹp.
-
-                    Tiếp tục hành trình, Quý khách dùng cơm trưa tại nhà hàng địa phương và tham quan mua sắm tại chợ Cốc Lếu - Trung tâm thương mại lớn vùng biên. Sau đó Đoàn lên xe di chuyển về Hải Phòng, Hướng dẫn viên đưa Quý khách về lại điểm hẹn ban đầu, HDV chia tay và Hẹn gặp lại Qúy khách, kết thúc chương trình du lịch
-
-
-                    (*) Thứ tự các điểm thăm quan có thể thay đổi theo tình hình thực tế tại thời điểm xuất phát nhưng vẫn đảm bảo đầy đủ các quyền lợi và các điểm thăm quan theo chương trình.</p>
-                </div>
-              </div>
+            <div className="w-1/3 bg-[#f9f9f9]">
+            <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+            
+            {datatourArray && datatourArray.lich_t_rinh ? (
+  datatourArray.lich_t_rinh.map((tieude) => (
+    <p className="mb-20" key={tieude.id}>{tieude.tieu_de}</p>
+  ))
+) : (
+  <p>Không có lịch trình.</p>
+)}
+            </h2>
+         
+       
+            
+          
+            </div>
+            <div className="w-2/3 ">
+              <div className="max-w-full">
+              <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+              {datatourArray && datatourArray.lich_t_rinh ? (
+  datatourArray.lich_t_rinh.map((tieude) => (
+    <p key={tieude.id}>{tieude.noi_dung}</p>
+  ))
+) : (
+  <p>Không có lịch trình.</p>
+)}
+            </h2>
+               
+              </div>  
+            </div>
             </div>
             <div className="ml-[120px] chitiet">
               <div className="row gap-[48px] flex justify-between">

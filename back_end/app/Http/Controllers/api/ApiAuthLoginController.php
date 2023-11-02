@@ -22,6 +22,8 @@ class ApiAuthLoginController extends Controller
         }
         $roles = $user->getRoleNames();
         $token = $user->createToken('authToken')->plainTextToken;
+       // return redirect()->route('/home'); // add
+       
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -33,6 +35,7 @@ class ApiAuthLoginController extends Controller
 
     public function logout () {
         Auth::user()->tokens()->delete();
+      
         return response()->json(['message' => 'Đăng xuất thành công !!'],200);
     }
 }

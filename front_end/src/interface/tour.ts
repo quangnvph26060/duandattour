@@ -4,13 +4,13 @@ export interface ITour {
     diem_di: string;
     diem_den: string;
     lich_khoi_hanh: Date;
-    lich_ket_thuc: Date;
-    thoi_gian: string;
+    ngay_ket_thuc: Date;
     diem_khoi_hanh: string;
-    gia_tour:number;
-    mo_ta:string;
+    gia_nguoilon: number;
+    gia_treem: number;
+    mo_ta: string;
     soluong: number;
     trang_thai: number;
     ma_loai_tour: number;
-    data:any
+    data: any
 }

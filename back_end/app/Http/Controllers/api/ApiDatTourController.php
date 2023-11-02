@@ -42,4 +42,5 @@ class ApiDatTourController extends Controller
         $dattour = DatTour::all();
         return response()->json(['code'=>200,'dattour'=>$dattour]);
     }
+
 }
