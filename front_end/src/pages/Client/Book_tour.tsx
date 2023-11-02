@@ -222,33 +222,7 @@ const BookTour = () => {
 
   return (
     <div className="container mx-auto">
-            <div className="menu flex items-center justify-between">
-        <div className='flex'>
-          <img src={logo} alt="logo" width="70px" />
-          <nav className='font-semibold p-4 pt-6 pl-18'>
-            <ul className='flex text-[#2D4271] gap-12'>
-              <a href="/">PolyTour</a>
-              <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
-              <a href="">Khuyến mãi</a>
-              <a href="/contact">Liên hệ</a>
-            </ul>
-          </nav>
-        </div>
-        <div className="search flex items-center">
-          <input type="text" placeholder="Search..." className="border-yellow-300
-border-[3px] px-2 py-2  rounded" />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
-
-
-          <div className="ml-2">
-            <Link to="/signup">
-              <button className="bg-green-500 text-white py-1 px-3 rounded">
-                <i className="fas fa-user"></i>
-              </button>
-            </Link>
-          </div>
-        </div></div>
+         
       {/* header trên thôn tin dưới */}
       <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
@@ -400,7 +374,7 @@ border-[3px] px-2 py-2  rounded" />
         </div>
       </div>
       <input
-        type="text"
+        type="hidden"
         name="so_luong_khach"
         className="w-[10px]"
         id="so_luong_khach"

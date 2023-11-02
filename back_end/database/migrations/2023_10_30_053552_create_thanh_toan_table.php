@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('thanh_toan', function (Blueprint $table) {
             $table->id();
             $table->integer('ma_giao_dich')->nullable();
-            $table->float('tong_tien_tt')->nullable()->comment('số tiền thanh toán');
+            $table->integer('tong_tien_tt')->nullable()->comment('số tiền thanh toán');
             $table->string('pttt',255)->nullable()->comment('phương thức thanh toán');
             $table->string('ma_phan_hoi',255)->nullable()->comment('mã phản hồi');
             $table->string('ghi_chu')->nullable()->comment('nội dung thanh toán');
