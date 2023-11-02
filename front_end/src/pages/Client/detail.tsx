@@ -45,9 +45,9 @@ const DetailPage = (props: Props) => {
   const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
+  const images = datatourArray?.images || [];
 
-
-  console.log(Tourdata?.data);
+  console.log(images);
 
   return (
     <div className="container mx-auto ">
@@ -90,7 +90,7 @@ border-[3px] px-2 py-2  rounded" />
             </div>
 
             <div className="price buy mr-40 flex gap-5 ">
-              <p className="text-[26px] text-red-500 font-bold">{datatourArray?.gia_tour}</p>
+              <p className="text-[26px] text-red-500 font-bold">{datatourArray?.gia_nguoilon}</p>
               <p className="mt-2">/khách</p>
               <button
                 type="button"
@@ -131,35 +131,41 @@ border-[3px] px-2 py-2  rounded" />
             </h2>
           </div>
           <div className="Image ml-[120px] gap-5 flex">
-            {/* <div>
-              <img
-                src="https://media.travel.com.vn/tour/tfd_220701022713_187185.jpg"
-                style={radius}
-              />
-            </div>
+          {images && images.length > 0 ? (
+      <div>
+        {/* {images.map((image) => ( */}
+          <img key={images[0].id}      src={`http://localhost:8000/storage/${images[0].image_path}`}  />
+        {/* ))} */}
+      </div>
+    ) : (
+      <p>Không có hình ảnh cho tour này.</p>
+    )}  
+    {images && images.length > 0 ? (
             <div>
               {" "}
               <div className="flex gap-5">
                 {" "}
                 <img
                   style={radius1}
-                  src="https://media.travel.com.vn/tour/tfd_220701023049_247289.jpg"
+                  src={`http://localhost:8000/storage/${images[1].image_path}`}
                   alt=""
                 />
                 <img
                   style={radius1}
-                  src="https://media.travel.com.vn/tour/tfd_220701023656_254440.jpg"
+                  src={`http://localhost:8000/storage/${images[2].image_path}`}
                   alt=""
                 />{" "}
               </div>
               <div className="mt-5">
                 <img
-                  src="https://media.travel.com.vn/destination/dc_211112_GRAND%20WORLD%20(4).jpg"
+                  src={`http://localhost:8000/storage/${images[3].image_path}`}
                   style={radius2}
                 />
               </div>
-            </div> */}
-            <img src={Tourdata?.images} alt="" />
+            </div>
+             ) : (
+              <p>Không có hình ảnh cho tour này.</p>
+            )}  
         
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">

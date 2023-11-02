@@ -16,7 +16,7 @@ import {
 import { useDattourMutation, useGetDattourbyIdQuery } from "../../api/dattour";
 import { Tour } from "antd";
 import { Dattour } from '../../interface/Dattour';
-
+import logo from "./img/logo.jpg"
 type Props = {};
 
 const img = {
@@ -31,7 +31,7 @@ const initialFormData = {
   dia_chi: "",
   cccd: "",
   ngay_dat: "",
-  so_luong_khach: "",
+  so_luong_khach:1,
   ma_khach_hang: "",
   
 };
@@ -72,6 +72,8 @@ const BookTour = () => {
       setQuantity(1)
     }
   };
+
+
     // gia tre em
     const [quantity2, setQuantity2] = useState(0);
 
@@ -84,7 +86,17 @@ const BookTour = () => {
         setQuantity2(quantity2 - 1);
       }
     };
-
+    const [soLuongKhach, setSoLuongKhach] = useState(1);
+    useEffect(() => {
+      const newSoLuongKhach = quantity + quantity2;
+      if (newSoLuongKhach !== 1) {
+        setSoLuongKhach(newSoLuongKhach);
+        setFormData({
+          ...formData,
+          so_luong_khach: newSoLuongKhach
+        });
+      }
+    }, [quantity, quantity2]);
   
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
@@ -117,17 +129,22 @@ const BookTour = () => {
             email: userData.email,
             sdt: userData.sdt,
             dia_chi: userData.dia_chi,
-            so_luong_khach:userData.so_luong_khach, 
+
             ma_khach_hang:userData.id,
             id_tour:  idTour
           });
-          console.log( userData.name);
+          console.log( userData);
           
         })
         .catch((error) => {
           console.error(error);
         });
-    }   
+    } else{
+      setFormData({
+        ...formData,
+        ma_khach_hang: null, // hoặc có thể là ""
+      });
+    }  
   }, []);
 
 
@@ -163,18 +180,38 @@ const handleSubmit = (e) => {
       // Xử lý lỗi
     });
 };
-const [soLuongKhach, setSoLuongKhach] = useState(0);
-useEffect(() => {
-  setSoLuongKhach(quantity + quantity2);
-  setFormData({
-    ...formData,
-    so_luong_khach: quantity + quantity2
-  });
-}, [quantity, quantity2]);
+
   return (
     <div className="container mx-auto">
+            <div className="menu flex items-center justify-between">
+        <div className='flex'>
+          <img src={logo} alt="logo" width="70px" />
+          <nav className='font-semibold p-4 pt-6 pl-18'>
+            <ul className='flex text-[#2D4271] gap-12'>
+              <a href="/">PolyTour</a>
+              <a href="/tour">Tour</a>
+              <a href="/">Tin tức</a>
+              <a href="">Khuyến mãi</a>
+              <a href="/contact">Liên hệ</a>
+            </ul>
+          </nav>
+        </div>
+        <div className="search flex items-center">
+          <input type="text" placeholder="Search..." className="border-yellow-300
+border-[3px] px-2 py-2  rounded" />
+          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
+
+
+          <div className="ml-2">
+            <Link to="/signup">
+              <button className="bg-green-500 text-white py-1 px-3 rounded">
+                <i className="fas fa-user"></i>
+              </button>
+            </Link>
+          </div>
+        </div></div>
       {/* header trên thôn tin dưới */}
-      <div className="info mx-auto w-10/12 ">
+      <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
           <div className="img-book w-1/3">
           {images && images.length > 0 ? (
@@ -264,7 +301,7 @@ useEffect(() => {
             <div className="ttlienlac  w-2/3  ">
             <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="hidden"   value={formData.ma_khach_hang}  onChange={handleChange}
+                    type="hidden"   value={formData.ma_khach_hang} onChange={handleChange}
                   />
                    <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
@@ -329,6 +366,7 @@ useEffect(() => {
         className="w-[10px]"
         id="so_luong_khach"
         value={soLuongKhach}
+        onChange={handleChange}
         readOnly
       />
       <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
@@ -527,14 +565,14 @@ useEffect(() => {
                 {/* <p className="text-[200px] ml-10">
                   <FaQrcode />
                 </p> */}
-           <Link to="/booking/:id" className="flex items-center space-x-2">
+         
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
                   type="submit" 
                 >
                   Đặt ngay 
                 </button>
-                </Link>
+               
               </div>
             </div>
           </div>

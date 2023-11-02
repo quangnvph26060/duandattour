@@ -465,7 +465,7 @@ border-[3px] px-2 py-2  rounded" />
                   <p>{item.lich_khoi_hanh}</p>-
                   <p>{item.soluong} ngày</p>
                 </div>
-                <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                <Link to={`/tour/${item.id}`} className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
                 <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{item.gia_nguoilon.toFixed(2)}đ</p>
