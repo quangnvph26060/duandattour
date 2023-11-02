@@ -40,6 +40,18 @@
     transition: max-height 0.3s ease-in;
   }
   
+  .icon-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .icon-button:hover {
+    color: blue; /* Màu khi hover */
+  }
   
   
   

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TourResoure;
+use App\Models\LoaiTourModel;
 use App\Models\TourModel;
 
 use App\Models\DatTour;
@@ -26,19 +27,33 @@ class ApiTourController extends Controller
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
-        return response()->json($tour);
+        return response()->json(['data' => $tour]);
     }
 
+    public function getToursByDestination(Request $request, $destination)
+    {
+        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
+        $tourdiemdencout = $tourdiemden->count();
+        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
+    }
 
     public function index()
     {
-        $tour = TourModel::all();
+       // $tour = TourModel::all();
 
 
         /////////////////////////
         // đừng có xóa 
         //////////////////////////////////////
 
+        $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
+
+        if ($tours->isEmpty()) {
+            return response()->json(['message' => 'No tours found'], 404);
+        }
+
+        return response()->json(['data' => $tours]);
+        // $tour = TourModel::all();
         // lấy ra tất cả
         // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
         //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
@@ -83,8 +98,9 @@ class ApiTourController extends Controller
         // ->get();
         // return response()->json($hdv);
 
-        return  TourResoure::collection($tour);
+        // return  TourResoure::collection('tours' => $tours);
     }
+
 
     /**
      * Store a newly created resource in storage.

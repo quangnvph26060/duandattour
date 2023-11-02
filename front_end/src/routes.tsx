@@ -67,6 +67,7 @@ export const router = createBrowserRouter([
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
   { path: "/tour/:idTour", element: <DetailPage /> },
+  { path: "/booktour/:idTour", element: <BookTour /> },
   { path: "/booktour", element: <BookTour /> },
   { path: "/contact", element: <Contact /> },
   { path: "/booking/:id", element: <Info_tour_bocking /> },
@@ -74,16 +75,16 @@ export const router = createBrowserRouter([
   { path: "/tour", element: <TourPage /> },
   { path: "/signin", element: <SignIn /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/:id/tour", element: <DetailPage /> },
-  { path: "/booktour", element: <BookTour /> },
+
   { path: "/contact", element: <Contact /> },
   { path: "/profile", element: <QLuser /> },
   { path: "*", element: "Not Found Page" },
 
   {
     path: "/admin",
-    element:   localStorage.getItem("role") === 'admin' ||
-     localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+    element: localStorage.getItem("role") === 'admin' ||
+      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       {
@@ -166,7 +167,7 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
-     
+
       // {
       //   path: "customer_account/add",
       //   element: <Admin_Acountkhachhang_Roles />,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAuthLoginController;
+use App\Http\Controllers\Api\ApiDatTourController;
 use App\Http\Controllers\Api\ApiHuongDanVienController;
 use App\Http\Controllers\Api\ApiLoaiTourController;
 use App\Http\Controllers\Api\ApiLoaiPhuongTienController;
@@ -36,20 +37,27 @@ Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->n
 // lưu kết quả thanh toán vnpay vào DB
 Route::post('/paymentresult', [ApiPaymentController::class, 'CreatePayment']);
 // lưu thanh toán tiền mặt vào DB
-Route::post('/cash', [AuthController::class, 'CreatePaymentCash']);
+Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 // hiển thị  kết quả thanh toán 
-Route::get('/index', [AuthController::class, 'getPaymentData']);
+Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-
+//api chi tiet tour
+Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
+// dat tour
+Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
+//api list ra danh sách menu
+Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
+// api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
+Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => ['auth:sanctum']], function () { 
-     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
-    
+
 
 //permission && role
 
@@ -81,9 +89,9 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 //api phương tiện
 Route::prefix('admin')->group(function () {
 
-    Route::prefix('user')->group(function(){
+    Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
-        Route::get('/phanvaitro/{id}',[ApiPermissionsController::class, 'PhanVaiTro']);
+        Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
         Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
         Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
         Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
@@ -130,8 +138,15 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiDiaDiemController::class, 'update']);
         Route::delete('/{id}', [ApiDiaDiemController::class, 'destroy']);
     });
+    Route::prefix('loaitour')->group(function () {
+        Route::get('/', [ApiLoaiTourController::class, 'index']);
+        Route::post('/', [ApiLoaiTourController::class, 'store']);
+        Route::get('/{id}', [ApiLoaiTourController::class, 'show']);
+        Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
+        Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
+    });
     Route::prefix('tour')->group(function () {
-        Route::get('/{id}  ', [ApiTourController::class, 'ShowTour']);
+        Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);

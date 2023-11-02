@@ -1,4 +1,4 @@
-interface IUser {
+export  interface IUser {
     id: number;
     name: string;
     image: string;
@@ -14,7 +14,7 @@ interface IUser {
     permissions:Permission[];
 }
 
-interface Role {
+export interface Role {
     id: number;
     name: string;
     guard_name: string;
@@ -23,7 +23,7 @@ interface Role {
     permissions: Permission[];
 }
 
-interface Permission {
+export interface Permission {
     id: number;
     name: string;
     guard_name: string;

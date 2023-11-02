@@ -19,13 +19,14 @@ return new class extends Migration
             $table->date('lich_khoi_hanh');
             $table->date('ngay_ket_thuc');
             $table->string('diem_khoi_hanh');
-            $table->integer('gia_tour');
+            $table->integer('gia_nguoilon');
+            $table->integer('gia_treem');
             $table->integer('gia_khuyen_mai');
             $table->text('mo_ta');
             $table->integer('soluong');
             $table->tinyInteger('trang_thai')->default(0);
             $table->foreignId('ma_loai_tour')->constrained('loai_tour');
-          
+
             $table->timestamps();
             $table->softDeletes();
         });

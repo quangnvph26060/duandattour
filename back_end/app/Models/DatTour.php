@@ -19,7 +19,6 @@ class DatTour extends Model
         'so_luong_khach',
         'trang_thai',
         'ma_khach_hang',
-        'id_tour',
-        
+        'id_tour'
     ];
 }

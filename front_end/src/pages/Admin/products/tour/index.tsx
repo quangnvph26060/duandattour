@@ -28,31 +28,32 @@ const AdminProduct = (props: Props) => {
 
     const tourArray = tourdata?.data || [];
     console.log(tourArray);
-    
+
     const loaitourArrary = loaitourdata?.data || [];
     const huongdanvienArrary = huongdanviendata?.data || [];
     const dataSource = tourArray.map((
-        { id, ten_tour, gia_tour, mo_ta, soluong, diem_khoi_hanh,
-             diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
-              trang_thai, ma_loai_tour }: ITour): 
-              { key: number; soluong: number; ten_tour: string; 
+        { id, ten_tour, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
+            diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
+            trang_thai, ma_loai_tour }: ITour): {
+                key: number; soluong: number; ten_tour: string;
                 diem_khoi_hanh: string; diem_den: string;
-                 gia_tour: any; mo_ta: any; diem_di: string; 
-                 lich_khoi_hanh: Date; ngay_ket_thuc:string,
-                  trang_thai: number; ma_loai_tour: number; ma_hdv: number; } => ({
-        key: id,
-        soluong,
-        ten_tour,
-        diem_khoi_hanh,
-        diem_den,
-        gia_tour,
-        mo_ta,
-        diem_di,
-        lich_khoi_hanh,
-        ngay_ket_thuc,
-        trang_thai,
-        ma_loai_tour,
-    }));
+                gia_nguoilon: any; gia_treem: any; mo_ta: any; diem_di: string;
+                lich_khoi_hanh: Date; ngay_ket_thuc: string,
+                trang_thai: number; ma_loai_tour: number; ma_hdv: number;
+            } => ({
+                key: id,
+                soluong,
+                ten_tour,
+                diem_khoi_hanh,
+                diem_den,
+                gia_nguoilon, gia_treem,
+                mo_ta,
+                diem_di,
+                lich_khoi_hanh,
+                ngay_ket_thuc,
+                trang_thai,
+                ma_loai_tour,
+            }));
 
     const columns = [
         {
@@ -90,7 +91,7 @@ const AdminProduct = (props: Props) => {
             },
         },
 
-       
+
         {
             title: "Lịch Kết Thúc",
             dataIndex: "ngay_ket_thuc",
@@ -101,9 +102,14 @@ const AdminProduct = (props: Props) => {
             },
         },
         {
-            title: "Giá Tour",
-            dataIndex: "gia_tour",
-            key: "gia_tour",
+            title: "Giá Người lớn",
+            dataIndex: "gia_nguoilon",
+            key: "gia_nguoilon",
+        },
+        {
+            title: "Giá Trẻ em",
+            dataIndex: "gia_treem",
+            key: "gia_treem",
         },
         {
             title: "Số Lượng Còn Nhận ",
@@ -147,24 +153,24 @@ const AdminProduct = (props: Props) => {
                 return (
                     <>
 
-                 {
-                      localStorage.getItem("role") == 'admin' ?  <div className="flex space-x-2">
-                            <Popconfirm
-                                title="Bạn có muốn xóa?"
-                                onConfirm={() => confirm(id)}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Button type="primary" danger>
-                                    Xóa
-                                </Button>
-                            </Popconfirm>
+                        {
+                            localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
+                                <Popconfirm
+                                    title="Bạn có muốn xóa?"
+                                    onConfirm={() => confirm(id)}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <Button type="primary" danger>
+                                        Xóa
+                                    </Button>
+                                </Popconfirm>
 
-                            <Button type="primary" danger>
-                                <Link to={`/admin/tour/edit/${id}`}>Sửa</Link>
-                            </Button>
-                        </div>:""
-                 }      
+                                <Button type="primary" danger>
+                                    <Link to={`/admin/tour/edit/${id}`}>Sửa</Link>
+                                </Button>
+                            </div> : ""
+                        }
                     </>
                 );
             },

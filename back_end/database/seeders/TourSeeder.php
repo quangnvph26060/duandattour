@@ -14,19 +14,20 @@ class TourSeeder extends Seeder
     public function run(): void
     {
         DB::table('tour')->insert([
-            'ten_tour' => "Hà Nội - Bái Đính - Khu Du Lịch Tràng An - Bái Đính - Hạ Long - Yên Tử",
+            'ten_tour' => "Buôn Ma Thuột - Pleiku - Kon Tum - Khu Du Lịch Măng Đen - Hồ Lăk",
             'diem_di' => 'Đà Nẵng',
             'diem_den' => 'Hà Nội',
             'lich_khoi_hanh' => '2023/12/10',
             'ngay_ket_thuc' => '2023/12/15',
             'diem_khoi_hanh' => 'Đà Nẵng',
-            'gia_tour'=>1000,
-            'gia_khuyen_mai'=>999,
-            'mo_ta'=>'tour ok chưa bro',
+            'gia_nguoilon' => 1000,
+            'gia_treem' => 600,
+            'gia_khuyen_mai' => 999,
+            'mo_ta' => 'tour ok chưa bro',
             'soluong' =>  3,
             'trang_thai' => '0',
             'ma_loai_tour' => '1',
-         
+
         ]);
     }
 }
