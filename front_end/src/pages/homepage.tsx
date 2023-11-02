@@ -566,7 +566,7 @@ border-[3px] px-2 py-2  rounded" />
                 <Link to="/:id/tour" className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
-                <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour.toFixed(2)}đ</p>
+                {/* <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour.toFixed(2)}đ</p> */}
                 <p className='text mt-2'>{item.mo_ta}</p>
                 
                 <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
