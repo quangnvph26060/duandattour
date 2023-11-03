@@ -37,15 +37,18 @@ Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->n
 // lưu kết quả thanh toán vnpay vào DB
 Route::post('/paymentresult', [ApiPaymentController::class, 'CreatePayment']);
 // lưu thanh toán tiền mặt vào DB
-Route::post('/cash', [AuthController::class, 'CreatePaymentCash']);
+Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 // hiển thị  kết quả thanh toán 
-Route::get('/index', [AuthController::class, 'getPaymentData']);
+Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
 Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
+//thông tin thanh toán
+Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
+
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour

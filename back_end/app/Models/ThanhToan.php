@@ -20,4 +20,7 @@ class ThanhToan extends Model
         'id_dat_tour',
 
     ];
+    public function DatTour() {
+        return $this->belongsto(DatTour::class, 'id_dat_tour');
+    }
 }

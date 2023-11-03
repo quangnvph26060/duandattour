@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ThanhToan;
+use App\Models\DatTour;
 use Illuminate\Http\Request;
 
 class ApiPaymentController extends Controller
@@ -12,7 +13,7 @@ class ApiPaymentController extends Controller
     public function vnpay_payment(Request $request)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost:3000/paymentResult"; // bên react
+        $vnp_Returnurl = "http://localhost:5173/booking/:id"; // bên react
         $vnp_TmnCode = "EAJULQG0"; // Mã website tại VNPAY
         $vnp_HashSecret = "FRGFBFYWLNQEFGLSYIPFMIDTRDAOZODT"; // Chuỗi bí mật
         $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã đơn hàng (có thể thay đổi theo nhu cầu)
@@ -87,22 +88,22 @@ class ApiPaymentController extends Controller
             echo json_encode($returnData);
         }
     }
-    // thêm Db thanh toán bằng chuyền khoản vnpay   sử dụng actions này trong route /paymentResult
+    // thêm Db thanh toán bằng chuyền khoản vnpay 
+   
     public function CreatePayment(Request $request)
     {
         $paymentData = $request->all();
-
         if ($paymentData['vnp_ResponseCode'] == '00') {
-            // /$latestDatTour = DatTour::orderBy('id', 'desc')->first();
+            $latestDatTour = DatTour::latest('created_at')->first();
             $thanhToan = ThanhToan::create([
                 'ma_giao_dich' => $paymentData['vnp_TxnRef'],
                 'tong_tien_tt' => $paymentData['vnp_Amount'],
                 'pttt' => 'transfer',
                 'ma_phan_hoi' => $paymentData['vnp_ResponseCode'],
-                'ghi_chu' => $paymentData['vnp_OrderInfo'],
+                'ghi_chu' => null,
                 'ma_ngan_hang' => $paymentData['vnp_BankCode'],
                 'ngay_thanh_toan' => $paymentData['vnp_PayDate'],
-                'id_dat_tour' => '1', //  $latestDatTour->id or lấy từ bên react sang 
+                'id_dat_tour' => $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
             ]);
 
             return response()->json($thanhToan, 201);
@@ -110,11 +111,10 @@ class ApiPaymentController extends Controller
 
         return response()->json(['error' => 'Payment failed'], 400);
     }
-    // hiển thị  sử dụng actions này trong route /paymentResult
+    // hiển thị  kết quả
     public function getPaymentData(Request $request)
     {
         $paymentData = $request->all();
-
         $thanhToan = ThanhToan::where('ma_giao_dich', $paymentData['vnp_TxnRef'])->first();
         return response()->json($thanhToan);
     }
@@ -123,23 +123,35 @@ class ApiPaymentController extends Controller
     {
         $paymentData = $request->all();
 
-        if ($paymentData['method'] == 'cash') {
-            // /$latestDatTour = DatTour::orderBy('id', 'desc')->first();
-            $thanhToan = ThanhToan::create([
-                'ma_giao_dich' => null,
-                'tong_tien_tt' => $paymentData['vnp_Amount'],
-                'pttt' => 'cash',
-                'ma_phan_hoi' => null,
-                'ghi_chu' => $paymentData['vnp_OrderInfo'],
-                'ma_ngan_hang' => null,
-                'ngay_thanh_toan' => date('Y-m-d H:i:s'),
-                'id_dat_tour' => '1', //  $latestDatTour->id or lấy từ bên react sang 
-            ]);
-
-            return response()->json($thanhToan, 201);
+        if ($paymentData['payment_method'] === 'cash') {
+           
+            $latestDatTour = DatTour::latest('created_at')->first();
+            if ($latestDatTour->trang_thai == '0') {
+                // rồi làm quản lý đặt tour thì cập nhật lại trang thái thì mới vào vào bảng thanh toán 
+                $thanhToan = ThanhToan::create([
+                    'ma_giao_dich' => rand(1, 100),
+                    'tong_tien_tt' => $paymentData['vnp_Amount'],
+                    'pttt' => $paymentData['payment_method'],
+                    'ma_phan_hoi' => null,
+                    'ghi_chu' => null,
+                    'ma_ngan_hang' => null,
+                    'ngay_thanh_toan' => date('Y-m-d H:i:s'),
+                    'id_dat_tour' =>  $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
+                ]);
+                return response()->json($thanhToan, 201);
+            }
         }
-
         return response()->json(['error' => 'Payment failed'], 400);
     }
 
+    public function getBookingTour($id) {
+        $bookingtour = ThanhToan::find($id);
+        if($bookingtour){
+            $bookings = ThanhToan::with('DatTour.tours')->find($id);
+            return response()->json(['data'=>$bookings],200);
+        }
+        // return response()->json(['booking'=>$bookingtour],200);
+        return response()->json(['message'=>'Không tìm thấy booking tour'],404);
+    }
+   
 }

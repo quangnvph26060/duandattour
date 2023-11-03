@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams  } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,6 +17,7 @@ import { useDattourMutation, useGetDattourbyIdQuery } from "../../api/dattour";
 import { Tour } from "antd";
 import { Dattour } from '../../interface/Dattour';
 import logo from "./img/logo.jpg"
+import axios from 'axios';
 type Props = {};
 
 const img = {
@@ -33,18 +34,20 @@ const initialFormData = {
   ngay_dat: "",
   so_luong_khach:1,
   ma_khach_hang: "",
-  
+
 };
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(true); // tiền mặt
 
   const handleRadioChange = () => {
     setIsChecked(!isChecked);
     setIsChecked(true);
     setIsChecked1(false);
   };
-  const [isChecked1, setIsChecked1] = useState(false);
+
+
+  const [isChecked1, setIsChecked1] = useState(false);// chuyển khoản 
 
   const handleRadioChange1 = () => {
     setIsChecked1(!isChecked1);
@@ -67,7 +70,7 @@ const BookTour = () => {
   const handleDecrement = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
-    }else{
+    } else {
       alert("tối thiểu số hành khách là 1")
       setQuantity(1)
     }
@@ -102,11 +105,11 @@ const BookTour = () => {
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-  
+
   // Lấy token từ localStorage
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [formData, setFormData] = useState({initialFormData,id_tour:idTour});
+  const [formData, setFormData] = useState({ initialFormData, id_tour: idTour });
   const [responseMessage, setResponseMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [addTour] = useDattourMutation(); // Sử dụng hàm addTour từ API
@@ -149,80 +152,90 @@ const BookTour = () => {
 
 
 
- const calculateTotalPrice = () => {
-  const gialon = datatourArray?.gia_nguoilon;
-  const ginho = datatourArray?.gia_treem;
-  const totalPrice = quantity * gialon  + quantity2 *ginho;
-  return totalPrice;
-}
-const images = datatourArray?.images || [];
-// console.log(images);
+  const calculateTotalPrice = () => {
+    const gialon = datatourArray?.gia_nguoilon;
+    const ginho = datatourArray?.gia_treem;
+    const totalPrice = quantity * gialon + quantity2 * ginho;
+    return totalPrice;
+  }
+  const images = datatourArray?.images || [];
+  // console.log(images);
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData({ ...formData, [name]: value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
 
-};
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setIsLoading(true);
+  };
 
-  addTour(formData) // Gửi yêu cầu POST bằng hàm addTour từ API
-    .unwrap() // Lấy dữ liệu trả về từ yêu cầu POST
-    .then((response) => {
-      setIsLoading(false);
-      setResponseMessage(response.message);
-      // Xử lý kết quả thành công
-    })
-    .catch((error) => {
-      setIsLoading(false);
-      setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
-      // Xử lý lỗi
-    });
-};
+
+  const [paymentResult, setPaymentResult] = useState(null);
+  //  khi bấm đặt hàng thì nó thực thi handleSubmit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (isChecked) {
+      // tiền mặt 
+      try {
+        const addTourResponse = await addTour(formData).unwrap();
+        setIsLoading(false);
+        setResponseMessage(addTourResponse.message);
+        // Xử lý kết quả thành công
+        const requestData = {
+          vnp_Amount: calculateTotalPrice(),
+          payment_method: 'cash',
+        };
+        const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
+        setPaymentResult(paymentResponse.data);
+         window.location.href = `/booking/:id`; // chuyển hướng khi thành công
+      } catch (error) {
+        setIsLoading(false);
+        setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
+        // Xử lý lỗi
+        console.error(error);
+      }
+    } else if (isChecked1) {
+      // thanh toán vnpay
+      // vào bảng đặt tour
+        const addTourResponse = await addTour(formData).unwrap();
+        setIsLoading(false);
+        setResponseMessage(addTourResponse.message);
+          // lưu vào bảng thanh toán 
+        const requestData = {
+          redirect: true,
+          vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
+          vnp_OrderInfo: 'mô tả',
+          vnp_OrderType: 'atm',
+          vnp_Amount: calculateTotalPrice() * 100,
+        };
+      axios
+        .post('http://localhost:8000/api/vnpay_payment', requestData)
+        .then(response => {
+          window.location.href = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+  };
 
   return (
     <div className="container mx-auto">
-            <div className="menu flex items-center justify-between">
-        <div className='flex'>
-          <img src={logo} alt="logo" width="70px" />
-          <nav className='font-semibold p-4 pt-6 pl-18'>
-            <ul className='flex text-[#2D4271] gap-12'>
-              <a href="/">PolyTour</a>
-              <a href="/tour">Tour</a>
-              <a href="/">Tin tức</a>
-              <a href="">Khuyến mãi</a>
-              <a href="/contact">Liên hệ</a>
-            </ul>
-          </nav>
-        </div>
-        <div className="search flex items-center">
-          <input type="text" placeholder="Search..." className="border-yellow-300
-border-[3px] px-2 py-2  rounded" />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">Search</button>
-
-
-          <div className="ml-2">
-            <Link to="/signup">
-              <button className="bg-green-500 text-white py-1 px-3 rounded">
-                <i className="fas fa-user"></i>
-              </button>
-            </Link>
-          </div>
-        </div></div>
+         
       {/* header trên thôn tin dưới */}
       <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
           <div className="img-book w-1/3">
-          {images && images.length > 0 ? (
-      <div>
-        {/* {images.map((image) => ( */}
-          <img key={images[0].id}      src={`http://localhost:8000/storage/${images[0].image_path}`}  />
-        {/* ))} */}
-      </div>
-    ) : (
-      <p>Không có hình ảnh cho tour này.</p>
-    )}
+            {images && images.length > 0 ? (
+              <div>
+                {/* {images.map((image) => ( */}
+                <img key={images[0].id} src={`http://localhost:8000/storage/${images[0].image_path}`} />
+                {/* ))} */}
+              </div>
+            ) : (
+              <p>Không có hình ảnh cho tour này.</p>
+            )}
           </div>
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
@@ -293,10 +306,10 @@ border-[3px] px-2 py-2  rounded" />
           </div>
         </div>
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
-          Thông tin liên lạc 
-        </p> 
-      <form  onSubmit={handleSubmit}>
-        
+          Thông tin liên lạc
+        </p>
+        <form onSubmit={handleSubmit}>
+
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
             <input
@@ -312,17 +325,17 @@ border-[3px] px-2 py-2  rounded" />
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
                   <input
-  type="text"
-  id="ten_khach_hang"
-  name="ten_khach_hang"
-  value={formData.ten_khach_hang}
-  onChange={handleChange}
-  defaultValue={token ? formData.ten_khach_hang : "" } 
-/>
+                    type="text"
+                    id="ten_khach_hang"
+                    name="ten_khach_hang"
+                    value={formData.ten_khach_hang}
+                    onChange={handleChange}
+                    defaultValue={token ? formData.ten_khach_hang : ""}
+                  />
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="number"    value={formData.sdt} name='sdt' id='sdt'
+                    type="number" value={formData.sdt} name='sdt' id='sdt'
                     onChange={handleChange}
                   />
                 </div>
@@ -330,18 +343,18 @@ border-[3px] px-2 py-2  rounded" />
                   <p className="text-[#2D4271] mb-1">Email </p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text"   value={formData.email} name='email' id='email'
+                    type="text" value={formData.email} name='email' id='email'
                     onChange={handleChange}
                   />
                   <p className="text-[#2D4271] mb-1">Địa chỉ</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text"    value={formData.dia_chi}  name='dia_chi' id='dia_chi'
+                    type="text" value={formData.dia_chi} name='dia_chi' id='dia_chi'
                     onChange={handleChange}
                   />
                 </div>
               </div>
-               
+
               <div>
               <div>
               <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
@@ -361,7 +374,7 @@ border-[3px] px-2 py-2  rounded" />
         </div>
       </div>
       <input
-        type="text"
+        type="hidden"
         name="so_luong_khach"
         className="w-[10px]"
         id="so_luong_khach"
@@ -404,7 +417,7 @@ border-[3px] px-2 py-2  rounded" />
                         <input
                           className="r-0"
                           type="radio"
-
+                          // tiền mặt 
                           checked={isChecked}
                           onChange={handleRadioChange}
                         />
@@ -488,7 +501,7 @@ border-[3px] px-2 py-2  rounded" />
                   alt=""
                 />
                 <p className=" text-[#2D4271] text-base font-semibold">
-                 {datatourArray?.ten_tour}
+                  {datatourArray?.ten_tour}
                 </p>
               </div>
               <div className="time mt-8 ">
@@ -568,16 +581,16 @@ border-[3px] px-2 py-2  rounded" />
          
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
-                  type="submit" 
+                  type="submit"
                 >
-                  Đặt ngay 
+                  Đặt ngay
                 </button>
                
               </div>
             </div>
           </div>
-          </form> 
-      
+        </form>
+
       </div>
     </div>
   );

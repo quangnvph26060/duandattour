@@ -22,7 +22,7 @@ class ApiDatTourController extends Controller
                 $user = Auth::guard('sanctum')->user();
             }
             $response = [
-                'tour' => $tour,
+                'data' => $tour,
                 'user' => $user,
             ];
         }
