@@ -529,15 +529,14 @@ const HomePage = () => {
                   alt={`Ảnh ${item.ten_tour}`}
                 />
               ))}
-
               <div className="product-details mt-4">   
               <div className="info-row data">
             <p>{item.lich_khoi_hanh}</p>-
             <p>{item.soluong} ngày</p>
           </div>
-                <Link to="/:id/tour" className="text-blue-500 hover:underline">
-                  <h3 className="text-lg font-bold">{item.ten_tour}</h3>
-                </Link>
+          <Link to="/:id/tour" className="text-blue-500 hover:underline">
+  <h3 className="text-lg font-bold">{item.ten_tour}</h3>
+</Link>
                 <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour}đ</p>
                 <p className='text mt-2'>{item.mo_ta}</p>
                 

@@ -26,7 +26,7 @@ const News = () => {
    
 
       <div>
-        <article className='container mx-auto'>
+        <article  className=' container mx-auto px-20 gap-11 pt-5'>
           <h1 className='text-center text-red-500 font-semibold text-3xl py-3'>Tin tức PolyTour</h1>
           <div className='flex gap-72 py-2 container justify-center'>
             <p className='font-medium'>Tin tức du lịch</p>
@@ -102,8 +102,7 @@ const News = () => {
           </div>
         </article>
       </div>
-
-      {/* footer */}
+ 
       <footer className='text-center py-5'></footer>
     </div>
   )

@@ -1,11 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import AiOutlineShoppingCart from 'react-icons'
-import logo from '../img/logo.jpg'
 import anh1 from '../img/anh1.jpg'
 import anh2 from '../img/anh2.jpg'
 import anh3 from '../img/anh3.jpg'
@@ -21,29 +18,12 @@ import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
 
-
-const rounded = {
-  borderRadius: '25px',
-};
 const TourPage = () => {
-  // const images = [
-  //     {
-  //         id: 1,
-  //         name:'product-1',
-  //         imagePath: qq
-  //     }
-  // ]
   return (
     <div className=''>
-      <header>
-       
-      </header>
-      <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
-
-
-      <div className='flex container mx-auto gap-11 pt-5'>
+     <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside className='w-1/4 bg-gray-100 h-[1300px]'>
+        <aside style={{borderRadius:'10px'}} className='w-1/4 bg-gray-100 h-[1300px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
           <div className='text-center p-2 py-4 '>
