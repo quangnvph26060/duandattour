@@ -60,7 +60,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
     },
     {
       title: "Ảnh đại diện",
-      dataIndex: "image",
+      dataIndex: "imagedd",
       key: "image",
     },
     {
@@ -97,7 +97,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
     {
       title: "Action",
       render: ({ key: id }: any) => (
-        localStorage.getItem("role") == 'admin'? <div className="flex space-x-2">
+        localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
           </Button>
@@ -105,7 +105,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
           </Button>
-        </div> :""
+        </div> : ""
       ),
     },
   ];

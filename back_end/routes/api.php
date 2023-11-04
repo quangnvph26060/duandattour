@@ -18,7 +18,7 @@ use App\Http\Controllers\api\ApiPaymentController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\ApiAuthController;
 
 
 /*
@@ -57,7 +57,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
-
+Route::prefix('register')->group(function () {
+    Route::get('/', [ApiAuthController::class, 'index']);
+    Route::post('/dk', [ApiAuthController::class, 'registers']);
+});
 
 //permission && role
 
