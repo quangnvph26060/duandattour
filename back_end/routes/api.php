@@ -15,6 +15,7 @@ use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
+use App\Http\Controllers\Api\ApiSearchController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,13 @@ Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
 Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+
+//api láy all điểm đến của tour làm chức năng search
+Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
+//api láy all điểm đi của tour làm chức năng search
+Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
