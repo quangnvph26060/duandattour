@@ -1,13 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { IPour } from "../interface/home";
 import { Link } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import anh1 from '../img/anh1.jpg'
-import anh2 from '../img/anh2.jpg'
-import anh3 from '../img/anh3.jpg'
-import ticket from "../img/ticket.png"
-import shopping from "../img/shopping.png"
 import anh4 from "../img/anh4.jpg"
 import star from "../img/star.png"
 import line from "../img/line.png"
@@ -17,13 +14,101 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
-
+const rounded = { borderRadius: '25px' };
+import logo from '../img/logo.jpg';
 const TourPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tours, setTours] = useState<IPour[]>([]);
+  const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+        setTours(response.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setError("Error retrieving tours.");
+      }
+    };
+
+    fetchTours();
+  }, []);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = () => {
+    const filteredTours = tours.filter((tour) =>
+      tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredTours(filteredTours);
+    setSearched(true); // Đánh dấu đã tìm kiếm
+  };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setFilteredTours([]);
+    setSearched(false); // Đánh dấu chưa tìm kiếm
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
+
   return (
     <div className=''>
-     <div className='flex container mx-auto px-10 gap-11 pt-5'>
+      {/*  */}
+      <div> <div className="menu flex tours-center justify-between">
+        <div className='flex'>
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+
+          <nav className='font-semibold p-4 pt-6 pl-18'>
+            <ul className='flex text-[#2D4271] gap-12'>
+              <a href="/">PolyTour</a>
+              <a href="/tour">Tour</a>
+              <a href="/news">Tin tức</a>
+              <a href="">Khuyến mãi</a>
+              <a href="/contact">Liên hệ</a>
+            </ul>
+          </nav>
+        </div>
+        <div className="search mt-5   tours-center">
+        <input className="border-yellow-300
+border-[3px] px-2 py-2  rounded"
+          type="text"
+          placeholder="Search tours"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button> {/* Thêm nút tìm kiếm */}
+        {/* <button onClick={handleResetSearch}>Reset</button> Thêm nút reset */}    
+            <Link to="/signup">
+              <button className="bg-green-500 text-white py-1 px-3 rounded">
+                <i className="fas fa-user"></i>
+              </button>
+            </Link>
+       </div>
+      </div>
+      </div>
+      {/*  */}
+
+      <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside style={{borderRadius:'10px'}} className='w-1/4 bg-gray-100 h-[1300px]'>
+        <aside style={{ borderRadius: '10px' }} className='w-1/4 bg-gray-100 h-[1300px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
           <div className='text-center p-2 py-4 '>
@@ -136,100 +221,51 @@ const TourPage = () => {
         </aside>
 
         {/*conten-right*/}
-
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
-          <div className='grid grid-cols-3 gap-7'>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
+            <div className="content">
+              <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
+              <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {displayedTours.map((tour) => (
 
-              <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 p-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
+                  <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
 
-              <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -
-                KDL Bà Nà - Cầu Vàng - Hội An - Đà Nẵng - Thưởng Thức Ca Hò Huế trên...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-225423VU-V</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium px-4 pt-1'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 pb-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
+                    {tour.images.map((image) => (
+                      <img
+                        key={image.id}
+                        className="mt-4 rounded-lg w-full h-60 object-cover"
+                        src={`http://localhost:8000/storage/${image.image_path}`}
+                        alt={`Ảnh ${tour.ten_tour}`}
+                      />
+                    ))}
+                    <div className="product-details mt-4">
+                      <div className="info-row data">
+                        <p>{tour.lich_khoi_hanh}</p>-
+                        <p>{tour.soluong} ngày</p>
+                      </div>
+                      <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                        <h3 className="text-lg font-bold">{tour.ten_tour}</h3>
+                      </Link>
+                      <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
+                      <p className='text mt-2'>{tour.mo_ta}</p>
 
-              <img src={anh3} alt="anh3" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>23/09/2023 - Trong ngày - Giờ đi: 16:00</p>
-              <p className='font-bold py-2 px-1'>Trải nghiệm đặc sản: Tour xuyên rừng - KDL Đất Mũi Cà Mau - Áp dụng cho nhóm 6 khách trở lên </p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN4568-140-220923VU-V</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              {/* <p className='text-base font-medium pt-1'>Giá cũ: 7,990,000₫</p> */}
-              {/* <div className='flex gap-16 pb-1'> */}
+                      <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
 
-              <p className='text-lg font-semibold text-red-500 px-4'>1,190,000₫</p>
-              {/* <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div> */}
-              {/* </div> */}
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
+                      <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
+                        Giảm 6%
+                      </button>
+                      <button
+                        id="countdown-btn" style={{ color: '#4D4AEF' }}
+                        className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
+                      >
+                        Còn 00 ngày
+                      </button>
+
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+           
           </div>
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>

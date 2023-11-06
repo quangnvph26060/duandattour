@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
 import News from "./pages/newspage";
-// import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
 import DetailPage from "./pages/Client/detail";
@@ -47,8 +46,13 @@ import { Route,Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-
+import TestPage from "./pages/test";
 export const router = createBrowserRouter([
+  {
+
+      path: "/tour",
+      element: <TourPage />,
+  },
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -61,10 +65,7 @@ export const router = createBrowserRouter([
         path: "news",
         element: <News />,
       },
-      {
-        path: "tour",
-        element: <TourPage />,
-      },
+     
       {
         path: "signin",
         element: <SignIn />,
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
         element: <BookTour />,
       },
       {
+        path: "test",
+        element: <TestPage />,
+      },
+      {
         path: "booktour",
         element: <BookTour />,
       },
@@ -97,6 +102,7 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <QLuser />,
       },
+ 
     ],
   },
 
