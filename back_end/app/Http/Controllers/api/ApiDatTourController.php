@@ -43,4 +43,24 @@ class ApiDatTourController extends Controller
         return response()->json(['code'=>200,'dattour'=>$dattour]);
     }
 
+    public function getListBookingTour() {
+
+            $bookings = DatTour::with('ThanhToan','tours')->get();
+            return response()->json(['data'=>$bookings],200);
+    }
+
+    public function updateStatus($id){
+        $updateStatus = DatTour::find($id);
+        if($updateStatus->trang_thai==0){
+            $updateStatus->trang_thai=1;
+            $updateStatus->save();
+            return response()->json(['message'=>'Cập nhập trạng thái thành công!!'],200);
+        }
+        return response()->json(['message'=>'Đơn hàng đã thanh toán rồi'],404);
+        // dd($updateStatus->ten_khach_hang);
+        // if($updateStatus){
+
+        // }
+    }
+
 }

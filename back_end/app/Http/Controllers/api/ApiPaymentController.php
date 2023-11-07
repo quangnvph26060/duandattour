@@ -145,14 +145,6 @@ class ApiPaymentController extends Controller
     }
 
     public function getBookingTour($id) {
-        // $bookingtour = ThanhToan::find($id);
-        // if($bookingtour){
-        //     $bookings = ThanhToan::with('DatTour.tours')->find($id);
-        //     return response()->json(['data'=>$bookings],200);
-        // }
-        // // return response()->json(['booking'=>$bookingtour],200);
-        // return response()->json(['message'=>'Không tìm thấy booking tour'],404);
-
         $bookingtour = DatTour::find($id);
         if($bookingtour){
             $bookings = DatTour::with('ThanhToan','tours')->find($id);
@@ -162,14 +154,4 @@ class ApiPaymentController extends Controller
         return response()->json(['message'=>'Không tìm thấy booking tour'],404);
     }
 
-    // public function getBookingTourcheck($id) {
-    //     $bookingtour = DatTour::find($id);
-    //     if($bookingtour){
-    //         $bookings = DatTour::with('DatTour.tours')->find($id);
-    //         return response()->json(['data'=>$bookings],200);
-    //     }
-    //     // return response()->json(['booking'=>$bookingtour],200);
-    //     return response()->json(['message'=>'Không tìm thấy booking tour'],404);
-    // }
-   
 }

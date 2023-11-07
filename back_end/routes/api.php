@@ -196,4 +196,9 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
     });
+
+    Route::prefix('dattour')->group(function () {
+        Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
+        Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
+    });
 });
