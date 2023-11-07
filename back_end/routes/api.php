@@ -43,6 +43,7 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
+
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
@@ -65,6 +66,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 

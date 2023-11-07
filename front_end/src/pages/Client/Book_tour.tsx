@@ -187,7 +187,10 @@ const BookTour = () => {
         };
         const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
         setPaymentResult(paymentResponse.data);
-         window.location.href = `/booking/:id`; // chuyển hướng khi thành công
+        // debugger;
+         window.location.href = `/booking/${paymentResponse.data.id_dat_tour}`; // chuyển hướng khi thành công
+        //  <Link to={`/admin/booking/edit/${id}`}><EditOutlined /></Link>
+
       } catch (error) {
         setIsLoading(false);
         setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
