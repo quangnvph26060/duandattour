@@ -42,6 +42,7 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
+Route::post('/logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 // dat tour

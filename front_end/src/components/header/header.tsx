@@ -1,11 +1,14 @@
 const rounded = {
-    borderRadius: '25px',
-  };
-  
+  borderRadius: '25px',
+};
+import React from 'react';
 import { Link } from 'react-router-dom';
-  import logo from '../img/logo.jpg';
+import logo from '../img/logo.jpg';
+
+
 const HeaderWebsite = () => {
-    return  <div> <div className="menu flex items-center justify-between">
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  return <div> <div className="menu flex items-center justify-between">
     <div className='flex'>
       <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
 
@@ -26,16 +29,18 @@ border-[3px] px-2 py-2  rounded" />
 
 
       <div className="ml-2">
-        <Link to="/signup">
-          <button className="bg-green-500 text-white py-1 px-3 rounded">
-            <i className="fas fa-user"></i>
-          </button>
-        </Link>
+        {userData && (
+          <Link to={`/profile/${userData.id}`}> {/* Thêm ID của người dùng vào đường dẫn */}
+            <button className="bg-green-500 text-white py-1 px-3 rounded">
+              <i className="fas fa-user"></i>
+            </button>
+          </Link>
+        )}
       </div>
 
     </div>
   </div>
-  </div> 
+  </div>
 };
 
 export default HeaderWebsite;

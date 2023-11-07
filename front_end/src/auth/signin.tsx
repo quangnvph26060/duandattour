@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
-import logo from '../img/logo.jpg';
-import { Link } from 'react-router-dom';
+
+import axios from 'axios';
+import Modal from 'react-modal';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +11,12 @@ const Signup = () => {
     email: '',
     dia_chi: '',
     password: '',
-    hinh: null, // Thêm trường hinh để lưu trữ tệp tin
-    previewURL: null, // URL tạm thời cho hình ảnh được chọn
+    hinh: null,
+    previewURL: null,
   });
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+
+
 
   const handleChange = (e) => {
     if (e.target.name === 'hinh') {
@@ -21,14 +24,14 @@ const Signup = () => {
       setFormData({
         ...formData,
         hinh: file,
-        previewURL: URL.createObjectURL(file), // Tạo URL tạm thời cho hình ảnh
+        previewURL: URL.createObjectURL(file),
       });
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formDataWithFile = new FormData();
@@ -38,21 +41,46 @@ const Signup = () => {
     formDataWithFile.append('email', formData.email);
     formDataWithFile.append('dia_chi', formData.dia_chi);
     formDataWithFile.append('password', formData.password);
-    formDataWithFile.append('hinh', formData.hinh); // Thêm tệp tin vào FormData
+    formDataWithFile.append('hinh', formData.hinh);
 
-    fetch('http://127.0.0.1:8000/api/register/dk', {
-      method: 'POST',
-      body: formDataWithFile,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/register/dk', {
+        method: 'POST',
+        body: formDataWithFile,
       });
-  };
+      const data = await response.json();
+      console.log(data);
 
+
+      // Lưu thông tin đăng nhập vào trạng thái ứng dụng
+      const userData = {
+        username: data.email, // Thay bằng tên đăng nhập hoặc email của người dùng
+        token: data.password, // Thay bằng token xác thực (nếu có)
+      };
+      localStorage.setItem('userData', JSON.stringify(userData));
+
+      // Đăng nhập tự động sau khi đăng ký thành công
+      const loginResponse = await axios.post('http://127.0.0.1:8000/api/login', {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (loginResponse.status === 200) {
+        const token = loginResponse.data.access_token;
+        localStorage.setItem('token', token);
+
+        // Chuyển hướng đến trang sau khi đăng nhập thành công
+        window.location.href = 'http://localhost:5173/';
+      } else {
+        console.log('Đăng nhập không thành công');
+        // Xử lý lỗi đăng nhập không thành công
+      }
+
+    } catch (error) {
+      console.error('Đăng ký không thành công:', error);
+      // Xử lý lỗi khi đăng ký không thành công
+    }
+  };
 
 
   const rounded = {
@@ -102,7 +130,14 @@ const Signup = () => {
               onChange={handleChange}
             />
             {formData.previewURL && (
-              <img style={{ maxWidth: '300px', maxHeight: '300px' }} src={formData.previewURL} alt="Ảnh đại diện" />
+              <div className="ml-64 w-48 h-48 flex items-center justify-center bg-gray-200 rounded-full">
+                <img
+                  src={formData.previewURL}
+                  alt="Ảnh đại diện"
+                  className="rounded-full w-44 h-44 border-4 border-white"
+                />
+              </div>
+
             )}
           </div>
           <div>
@@ -193,7 +228,17 @@ const Signup = () => {
           </button>
 
         </div>
+        <Modal
+          isOpen={successModalOpen}
+          onRequestClose={() => setSuccessModalOpen(false)}
+          contentLabel="Đăng ký thành công"
+        >
+          <h2>Đăng ký thành công!</h2>
+          <p>Cảm ơn bạn đã đăng ký. Chúng tôi đã gửi một email xác nhận đến địa chỉ email của bạn.</p>
+          <button onClick={() => setSuccessModalOpen(false)}>Đóng</button>
+        </Modal>
       </form>
+
       <div style={{ textAlign: 'left' }}>
         - Hội viên đăng ký chương trình cung cấp đúng các thông tin về số điện thoại, địa chỉ liên hệ, địa chỉ email của Hội viên. Khi có thay đổi, Hội viên có thể tự cập nhật vào tài khoản tại POlyTourPlus.com hoặc liên hệ thông báo trực tiếp với nhân viên POlyTour và yêu cầu cập nhật. <br />
         {/* Add other text */}
