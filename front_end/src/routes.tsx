@@ -43,12 +43,14 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
-import { Route,Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-
+import ChatComponent from "./pages/Admin/products/Message/ChatBox";
+import { ContextProvider } from "./context/ContextProvider";
 export const router = createBrowserRouter([
+  
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -103,7 +105,8 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     element: localStorage.getItem("role") === 'admin' ||
-      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+      localStorage.getItem("role") === 'nhan_vien' ||
+      localStorage.getItem("role") === 'customer_feedback' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
@@ -187,7 +190,10 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
-
+      {
+        path: 'customer_feedback',
+        element: <ChatComponent />
+      },
       // {
       //   path: "customer_account/add",
       //   element: <Admin_Acountkhachhang_Roles />,

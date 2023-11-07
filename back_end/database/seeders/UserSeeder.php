@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         Role::create(['name' => 'nhan_vien']);
         Role::create(['name' => 'khach_hang']);
         Role::create(['name' => 'huong_dan_vien']);
+        Role::create(['name' => 'customer_feedback']);  //  Customer Feedback
         Permission::create(['name' => 'add_tour']); // tạo Permission
         Permission::create(['name' => 'add_loaitour']); // tạo Permission
         Permission::create(['name' => 'add_diadiem']); // tạo Permission

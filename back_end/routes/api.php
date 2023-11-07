@@ -15,6 +15,7 @@ use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
+use App\Http\Controllers\api\ApiMessageController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('demo',function(){
+    dd(gethostbyname(gethostname()));
+});
+// api show user và vai trò của nó 
+Route::get('/showuser', [ApiMessageController::class, 'showuser']); 
+// api hiển thị  message
+Route::get('/messages', [ApiMessageController::class, 'showMessage']);
+// them tin nhắn 
+Route::post('/messages', [ApiMessageController::class, 'store']);
+// lấy ra id của tài khoản có vai trò phản hồi tin nhắn 
+Route::get('/findNameRole', [ApiMessageController::class, 'findNameRole']); 
 //route payment
 Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 // lưu kết quả thanh toán vnpay vào DB
@@ -56,20 +68,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
-
-
-
-//permission && role
-
-// Route::get('/', [ApiPermissionsController::class, 'index']);
-// Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
-// Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
-// Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
-// Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
-// Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
-// Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
-// end  permission && role
-
 
 // show chỗ đoạn menu
 Route::get('/ShowLoaiTour', [ApiLoaiTourController::class, 'ShowLoaiTour']);
