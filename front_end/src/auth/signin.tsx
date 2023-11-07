@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import axios from 'axios';
-import Modal from 'react-modal';
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const Signup = () => {
     hinh: null,
     previewURL: null,
   });
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
+
 
 
 
@@ -228,15 +228,7 @@ const Signup = () => {
           </button>
 
         </div>
-        <Modal
-          isOpen={successModalOpen}
-          onRequestClose={() => setSuccessModalOpen(false)}
-          contentLabel="Đăng ký thành công"
-        >
-          <h2>Đăng ký thành công!</h2>
-          <p>Cảm ơn bạn đã đăng ký. Chúng tôi đã gửi một email xác nhận đến địa chỉ email của bạn.</p>
-          <button onClick={() => setSuccessModalOpen(false)}>Đóng</button>
-        </Modal>
+
       </form>
 
       <div style={{ textAlign: 'left' }}>

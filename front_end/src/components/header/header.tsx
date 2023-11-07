@@ -1,13 +1,35 @@
 const rounded = {
   borderRadius: '25px',
 };
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../img/logo.jpg';
 
 
 const HeaderWebsite = () => {
-  const userData = JSON.parse(localStorage.getItem('userData'));
+
+  const token = localStorage.getItem("token");
+  const [usersId, setUserId] = useState("");
+  useEffect(() => {
+    if (token) {
+      // Gửi yêu cầu API để lấy thông tin người dùng từ token
+      fetch("http://localhost:8000/api/user", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((userData) => {
+          setUserId(userData);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [token])
+
+
   return <div> <div className="menu flex items-center justify-between">
     <div className='flex'>
       <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
@@ -29,8 +51,20 @@ border-[3px] px-2 py-2  rounded" />
 
 
       <div className="ml-2">
-        {userData && (
-          <Link to={`/profile/${userData.id}`}> {/* Thêm ID của người dùng vào đường dẫn */}
+        {token ? (
+          <Link to="/profile">
+            <img
+              src={`http://localhost:8000/storage/${usersId.image}`}
+              alt="img"
+              style={{
+                width: '50px',
+                borderRadius: '50%', // Đặt border-radius thành 50% để làm cho hình ảnh tròn
+                border: '2px solid #fff', // Đặt border với màu và độ rộng tùy chọn
+              }}
+            />
+          </Link>
+        ) : (
+          <Link to="/signup">
             <button className="bg-green-500 text-white py-1 px-3 rounded">
               <i className="fas fa-user"></i>
             </button>

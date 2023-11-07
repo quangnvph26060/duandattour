@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -26,6 +26,7 @@ const rounded = {
   borderRadius: '25px',
 };
 const TourPage = () => {
+
   // const images = [
   //     {
   //         id: 1,
@@ -36,7 +37,7 @@ const TourPage = () => {
   return (
     <div className=''>
       <header>
-       
+
       </header>
       <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
 

@@ -11,9 +11,9 @@ type Props = {};
 const Admin_Khachhang: React.FC<Props> = () => {
   const { data: userdata, error, isLoading } = useGetUserQuery();
 
-  const tourArray = userdata || [];
-  const [userData, setUserData] = useState<IUser[]>([]);
 
+  const tourArray = userdata?.data || [];
+  const [userData, setUserData] = useState<IUser[]>([]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -60,7 +60,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
     },
     {
       title: "Ảnh đại diện",
-      dataIndex: "imagedd",
+      dataIndex: "image",
       key: "image",
     },
     {

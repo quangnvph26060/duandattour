@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, createContext } from 'react';
 import axios from 'axios';
 import logo from '../img/logo.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
+import { useStateContext } from '../context/ContextProvider';
+
 
 const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({}); // Thêm state để lưu trữ các lỗi
-
+  const { setUser } = useStateContext();
   const rounded = {
     borderRadius: '50%',
   };
@@ -59,14 +62,11 @@ const Login = () => {
         const role = response.data.role;
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
-        console.log(response.data.role);
-
-        window.location.href = 'http://localhost:5173/';
-
-        console.log('Đăng nhập thành công');
-        // Đặt thông báo thành công đăng nhập
-        // Chuyển hướng tới trang admin
-        // window.location.href = '/';
+        localStorage.setItem("id", response.data.data.id);
+        // authContext.storeAuthData(token,role);
+        setUser(response.data.role);
+        alert("Đăng nhập thành công");
+        window.location.href = 'http://localhost:5173';
       } else {
         console.log('Đăng nhập không thành công');
         // Xử lý lỗi đăng nhập không thành công

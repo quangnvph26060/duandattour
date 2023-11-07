@@ -15,6 +15,7 @@ use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
+use App\Http\Controllers\api\ApiMessageController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,17 @@ use App\Http\Controllers\Api\ApiAuthController;
 |
 */
 
+Route::get('demo', function () {
+    dd(gethostbyname(gethostname()));
+});
+// api show user và vai trò của nó 
+Route::get('/showuser', [ApiMessageController::class, 'showuser']);
+// api hiển thị  message
+Route::get('/messages', [ApiMessageController::class, 'showMessage']);
+// them tin nhắn 
+Route::post('/messages', [ApiMessageController::class, 'store']);
+// lấy ra id của tài khoản có vai trò phản hồi tin nhắn 
+Route::get('/findNameRole', [ApiMessageController::class, 'findNameRole']);
 //route payment
 Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 // lưu kết quả thanh toán vnpay vào DB
@@ -42,7 +54,7 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-Route::post('/logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
+
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 // dat tour
