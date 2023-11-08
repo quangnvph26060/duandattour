@@ -47,6 +47,7 @@ import AdminProduct from "./pages/Admin/products/tour";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import Giohanguser from "./pages/giohanguser";
+import Dmkuser from "./pages/doimk";
 
 
 export const router = createBrowserRouter([
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
   //     {path: "/tour",element:<TourPage/>},
   { path: "/news", element: <News /> },
   //     {path: "/title",element:<TitelPage/>},
-  //     {path: "/tour",element:<TourPage/>},
+  {path: "/dmk",element:<Dmkuser/>},
   { path: "/tour", element: <TourPage /> },
   {path: "/giohanguser",element: <Giohanguser/>},
 
