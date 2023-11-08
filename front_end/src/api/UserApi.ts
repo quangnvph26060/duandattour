@@ -51,10 +51,43 @@ const UserApi = createApi({
         body: User
       })
     }),
+    addUser:builder.mutation<IUser,IUser>({
+      query:(User)=>({
+          url:'/user',
+          method: "POST",
+          body:User
+       }),
+      invalidatesTags: ['User']
+    }),
+    editUser:builder.mutation<IUser,IUser>({
+    query:(user)=>({
+        url:`/user/${user.id}`,
+        method: "PUT",
+        body:user 
+    }),
+    invalidatesTags: ['User']
+    }),
+    removeUser:builder.mutation<IUser,IUser>({
+      query:(id)=>({
+          url:`/user/${id}`,
+          method: "DELETE",
+        
+      })
+      
+    }),
+    getUserById: builder.query<IUser, number >({
+      query: (id) => `/user/${id}` ,
+      providesTags: ['User']
+    }),
+
   })
 });
 
 export const {
+  useGetUserByIdQuery,
+  useRemoveUserMutation,
+  useEditUserMutation,
+  useAddUserMutation,
   useGetUserQuery,
   useGetRolesQuery,
   useGetPermissionsQuery,

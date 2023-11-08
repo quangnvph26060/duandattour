@@ -113,6 +113,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
         Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
         Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+        Route::post('/',[ApiPermissionsController::class,'store']);
+        Route::get('/{id}',[ApiPermissionsController::class,'show']);
+        Route::put('/{id}',[ApiPermissionsController::class,'update']);
+        Route::delete('/{id}',[ApiPermissionsController::class,'destroy']);
+        
+        
+        
     });
 
     Route::prefix('images')->group(function () {

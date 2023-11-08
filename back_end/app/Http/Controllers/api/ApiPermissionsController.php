@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UsersModel;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -16,6 +17,39 @@ class ApiPermissionsController extends Controller
     {
         $permissions   = User::with('roles', 'roles.permissions')->get();
         return response()->json(['data' => $permissions]);
+    }
+    public function store(Request $request)
+    {
+        $User = $request->all();
+        return UsersModel::create($User);
+    }
+    public function show(string $id)
+    {
+        $User = UsersModel::find($id);
+        if (!$User) {
+            return response()->json($User);
+        }
+        return response()->json($User);
+    }
+    public function update(Request $request, string $id)
+    {
+        $User = UsersModel::find($id);
+        if (!$User) {
+            return response()->json([
+                'message' => 'Không tìm người dùng'
+            ], 404);
+        }
+        return $User->update($request->all());
+    }
+    public function destroy(string $id)
+    {
+        $User = UsersModel::find($id);
+        if (!$User) {
+            return response()->json([
+                'message' => 'Không tìm thấy người dùng '
+            ], 404);
+        }
+        return $User->delete();
     }
     // hiển thị vai trò 
     public function PhanVaiTro($id)

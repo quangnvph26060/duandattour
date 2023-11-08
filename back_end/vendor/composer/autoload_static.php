@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
+class ComposerStaticInitb1b1de8adf83a302460c7edae16240dd
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -359,8 +359,8 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -545,6 +545,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Http\\Controllers\\api\\ApiLichTrinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLichTrinhController.php',
         'App\\Http\\Controllers\\api\\ApiLoaiKhachSanController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLoaiKhachSanController.php',
         'App\\Http\\Controllers\\api\\ApiLoaiPhuongTienController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLoaiPhuongTienController.php',
+        'App\\Http\\Controllers\\api\\ApiMessageController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiMessageController.php',
         'App\\Http\\Controllers\\api\\ApiPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiPaymentController.php',
         'App\\Http\\Controllers\\api\\ApiPermissionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiPermissionsController.php',
         'App\\Http\\Controllers\\api\\ApiTourImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourImageController.php',
@@ -586,6 +587,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Models\\LoaiKhachSanModel' => __DIR__ . '/../..' . '/app/Models/LoaiKhachSanModel.php',
         'App\\Models\\LoaiPhuongTienModel' => __DIR__ . '/../..' . '/app/Models/LoaiPhuongTienModel.php',
         'App\\Models\\LoaiTourModel' => __DIR__ . '/../..' . '/app/Models/LoaiTourModel.php',
+        'App\\Models\\Message' => __DIR__ . '/../..' . '/app/Models/Message.php',
         'App\\Models\\ThanhToan' => __DIR__ . '/../..' . '/app/Models/ThanhToan.php',
         'App\\Models\\TourImagesModel' => __DIR__ . '/../..' . '/app/Models/TourImagesModel.php',
         'App\\Models\\TourKhachSanModel' => __DIR__ . '/../..' . '/app/Models/TourKhachSanModel.php',
@@ -1685,6 +1687,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Bus\\BatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BatchRepository.php',
         'Illuminate\\Bus\\Batchable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Batchable.php',
         'Illuminate\\Bus\\BusServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BusServiceProvider.php',
+        'Illuminate\\Bus\\ChainedBatch' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/ChainedBatch.php',
         'Illuminate\\Bus\\DatabaseBatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/DatabaseBatchRepository.php',
         'Illuminate\\Bus\\Dispatcher' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Dispatcher.php',
         'Illuminate\\Bus\\Events\\BatchDispatched' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Events/BatchDispatched.php',
@@ -6408,6 +6411,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Symfony\\Component\\String\\Inflector\\FrenchInflector' => __DIR__ . '/..' . '/symfony/string/Inflector/FrenchInflector.php',
         'Symfony\\Component\\String\\Inflector\\InflectorInterface' => __DIR__ . '/..' . '/symfony/string/Inflector/InflectorInterface.php',
         'Symfony\\Component\\String\\LazyString' => __DIR__ . '/..' . '/symfony/string/LazyString.php',
+        'Symfony\\Component\\String\\Resources\\WcswidthDataGenerator' => __DIR__ . '/..' . '/symfony/string/Resources/WcswidthDataGenerator.php',
         'Symfony\\Component\\String\\Slugger\\AsciiSlugger' => __DIR__ . '/..' . '/symfony/string/Slugger/AsciiSlugger.php',
         'Symfony\\Component\\String\\Slugger\\SluggerInterface' => __DIR__ . '/..' . '/symfony/string/Slugger/SluggerInterface.php',
         'Symfony\\Component\\String\\UnicodeString' => __DIR__ . '/..' . '/symfony/string/UnicodeString.php',
@@ -6718,9 +6722,9 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb1b1de8adf83a302460c7edae16240dd::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb1b1de8adf83a302460c7edae16240dd::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb1b1de8adf83a302460c7edae16240dd::$classMap;
 
         }, null, ClassLoader::class);
     }

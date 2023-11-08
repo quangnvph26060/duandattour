@@ -1,26 +1,32 @@
 import React, { useEffect } from 'react';
-import { Form, Button, Input, DatePicker, Select,Upload } from 'antd';
-import { AiOutlineLoading3Quarters,AiOutlineUpload } from 'react-icons/ai';
-import { useNavigate,useParams } from 'react-router-dom';
+import { Form, Button, Input, DatePicker, Select, Upload } from 'antd';
+import { AiOutlineLoading3Quarters, AiOutlineUpload } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAddHuongDanVienMutation } from '../../../../api/HuongDanVienApi';
 import { IHuongDanVien } from '../../../../interface/huongDanVien';
+import { IUser } from '../../../../interface/user';
+import { useAddUserMutation } from '../../../../api/UserApi';
+
 
 const { Option } = Select;
 
 type FieldType = {
     id: number;
     ten_hd: string;
+    image:string;
     email: string;
     dia_chi: string;
     sdt: string;
+    cccd:string;
+    password:string
     // image:File | null
 };
 
 const Admin_Account_huongdanvienAdd: React.FC = () => {
-    const [addHuongDanVien] = useAddHuongDanVienMutation();
+    const [addHuongDanVien] = useAddUserMutation();
     const navigate = useNavigate();
   
-    const onFinish = (values: IHuongDanVien) => {
+    const onFinish = (values: IUser) => {
       addHuongDanVien(values)
           .unwrap()
           .then(() => navigate("/admin/account_huongdanvien"));
@@ -29,7 +35,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Update hướng dẫn viên</h2>
+        <h2 className="font-bold text-2xl">Thêm hướng dẫn viên</h2>
       </header>
       <Form
         className="tour-form"
@@ -42,7 +48,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
       >
      <Form.Item
   label="Hướng dẫn viên" 
-  name="ten_hd"
+  name="name"
   rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
 >
   <Input />
@@ -57,26 +63,14 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
 >
   <Input />
 </Form.Item>
-{/* <Form.Item
+
+<Form.Item
   label="Ảnh"
   name="image"
-  rules={[{ required: true, message: 'Vui lòng chọn ảnh!' }]}
-  valuePropName="fileList"
-  getValueFromEvent={(event) => {
-    if (Array.isArray(event)) {
-      return event;
-    }
-    return event && event.fileList;
-  }}
+  rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
 >
-  <Upload 
-    name="image" 
-    listType="picture"
-    beforeUpload={() => false}
-  >
-    <Button icon={<AiOutlineUpload />}>Chọn ảnh</Button>
-  </Upload>
-</Form.Item> */}
+  <Input />
+</Form.Item>
 <Form.Item
   label="Địa chỉ"
   name="dia_chi"
@@ -93,6 +87,26 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
   ]}
 >
   <Input />
+</Form.Item>
+<Form.Item
+  label="Cccd"
+  name="cccd"
+  rules={[
+    { required: true, message: 'Vui lòng nhập số cccd!' },
+    { pattern: /^[0-9]+$/, message: 'Số điện thoại chỉ gồm các chữ số' },
+  ]}
+>
+  <Input />
+</Form.Item>
+<Form.Item
+  label="Password"
+  name="password"
+  rules={[
+    { required: true, message: 'Vui lòng nhập mật khẩu!' },
+    
+  ]}
+>
+  <Input type='password'/>
 </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">

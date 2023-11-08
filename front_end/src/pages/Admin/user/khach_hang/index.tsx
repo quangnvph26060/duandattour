@@ -105,6 +105,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
           </Button>
+          
         </div> : ""
       ),
     },
