@@ -46,7 +46,7 @@ import { Route,Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-import TestPage from "./pages/test";
+import PromotionPage from "./pages/PromotionPage";
 export const router = createBrowserRouter([
   {
 
@@ -83,8 +83,8 @@ export const router = createBrowserRouter([
         element: <BookTour />,
       },
       {
-        path: "test",
-        element: <TestPage />,
+        path: "Promo",
+        element: <PromotionPage />,
       },
       {
         path: "booktour",

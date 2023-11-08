@@ -59,10 +59,6 @@ const TourPage = () => {
     setSearched(false); // Đánh dấu chưa tìm kiếm
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -255,10 +251,10 @@ border-[3px] px-2 py-2  rounded"
                         Giảm 6%
                       </button>
                       <button
-                        id="countdown-btn" style={{ color: '#4D4AEF' }}
+                        id="countdown-btn" style={{ color:'revert' }}
                         className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
                       >
-                        Còn 00 ngày
+                        Đặt Ngay
                       </button>
 
                     </div>
@@ -427,7 +423,92 @@ border-[3px] px-2 py-2  rounded"
       </div>
 
       {/* Footer */}
-      <footer></footer>
+      <footer className="mt-15  text-center bg-gray-100">
+        <div className="flex flex-wrap justify-center">
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4 ">Điểm đến</h3>
+            <ul className="list-disc pl-4">
+              <li>Hà Nội</li>
+              <li>Hồ Chí Minh</li>
+              <li>Đà Nẵng</li>
+              <li>Hội An</li>
+              <li>Nha Trang</li>
+              <li>Phú Quốc</li>
+              <li>Đà Lạt</li>
+              <li>Sapa</li>
+              <li>Phan Thiết</li>
+              <li>Hạ Long</li>
+              <li>Vũng Tàu</li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Liên hệ</h3>
+            <p>Email: Polytour@gmail.com</p>
+            <p>Tìm kiếm thông tin</p>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Hỗ trợ</h3>
+            <p>Mạng xã hội</p>
+            <p>037 763 8662</p>
+            <p>Từ 8:00 - 22:00 hàng ngày</p>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Thông tin</h3>
+            <ul className="list-disc pl-4">
+              <li>Tạp chí du lịch</li>
+              <li>Cẩm nang du lịch</li>
+              <li>Tin tức</li>
+              <li>Sitemap</li>
+              <li>FAQs</li>
+              <li>Chính sách riêng tư</li>
+              <li>Thỏa thuận sử dụng</li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Dòng tour</h3>
+            <ul className="list-disc pl-4">
+              <li>Cao cấp</li>
+              <li>Tiêu chuẩn</li>
+              <li>Tiết kiệm</li>
+              <li>Giá tốt</li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-wrap mt-8">
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Liên kết</h3>
+            <ul className="list-disc pl-4">
+              <li><a href="/">Trang chủ</a></li>
+              <li><a href="/about">Giới thiệu</a></li>
+              <li><a href="/services">Dịch vụ</a></li>
+              <li><a href="/contact">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Theo dõi chúng tôi</h3>
+            <ul className="flex justify-center mb-4">
+              <li className="mr-4"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-twitter"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-instagram"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-youtube"></i></a></li>
+            </ul>
+            <p className="text-sm">Theo dõi chúng tôi để cập nhật thông tin mới nhất về du lịch.</p>
+          </div>
+          <div className="w-fullmd:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Đăng ký nhận tin</h3>
+            <p>Đăng ký để nhận thông tin du lịch, khuyến mãi và tin tức mới nhất.</p>
+            <form className="mt-4 mr-5">
+              <input type="email" placeholder="Nhập địa chỉ email" className="w-full py-2 px-4  rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500" />
+              <button type="submit" className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none">Đăng ký</button>
+            </form>
+          </div>
+        </div>
+        <div className="mt-8">
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Your Website. All rights reserved
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

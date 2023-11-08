@@ -699,7 +699,7 @@ const HomePage = () => {
           </p>
         </div>
       </footer>
-      <script src="./"></script>
+       
 
     </div>
   );
