@@ -46,6 +46,8 @@ Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 // dat tour
 Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
+//check dattour id
+Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
@@ -183,4 +185,5 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
     });
+    
 });

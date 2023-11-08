@@ -143,5 +143,14 @@ class ApiPaymentController extends Controller
         }
         return response()->json(['error' => 'Payment failed'], 400);
     }
-   
+    //
+    public function getBookingTour($id) {
+        $bookingtour = DatTour::find($id);
+        if($bookingtour){
+            $bookings = DatTour::with('ThanhToan','tours')->find($id);
+            return response()->json(['data'=>$bookings],200);
+        }
+        // return response()->json(['booking'=>$bookingtour],200);
+        return response()->json(['message'=>'Không tìm thấy booking tour'],404);
+    }
 }

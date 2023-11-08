@@ -187,7 +187,8 @@ const BookTour = () => {
         };
         const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
         setPaymentResult(paymentResponse.data);
-         window.location.href = `/booking/:id`; // chuyển hướng khi thành công
+        alert('Đặt tour bằng tiền mặt thành công')
+        window.location.href = `/bookingtour/${paymentResponse.data.id_dat_tour}`;
       } catch (error) {
         setIsLoading(false);
         setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
