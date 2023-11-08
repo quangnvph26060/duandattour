@@ -58,6 +58,7 @@ border-[3px] px-2 py-2  rounded" />
               alt="img"
               style={{
                 width: '50px',
+                height: '50px',
                 borderRadius: '50%', // Đặt border-radius thành 50% để làm cho hình ảnh tròn
                 border: '2px solid #fff', // Đặt border với màu và độ rộng tùy chọn
               }}

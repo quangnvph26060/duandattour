@@ -47,7 +47,8 @@ import { Route, Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-
+import Giohanguser from "./pages/giohanguser";
+import Doimk from "./pages/changeMk";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -96,6 +97,14 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <QLuser />,
+      },
+      {
+        path: "/giohanguser",
+        element: <Giohanguser />
+      },
+      {
+        path: "/changeMk",
+        element: <Doimk />
       },
     ],
   },
