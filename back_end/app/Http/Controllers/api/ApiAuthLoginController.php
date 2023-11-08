@@ -33,6 +33,16 @@ class ApiAuthLoginController extends Controller
         ], 200);
     }
 
+    public function delailUser(){
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Người dùng không tồn tại'], 404);
+        }
+
+        return response()->json(['data' => $user],200);
+    }
+
     public function logout () {
         Auth::user()->tokens()->delete();
       

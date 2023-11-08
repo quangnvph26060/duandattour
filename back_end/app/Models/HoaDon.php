@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\DatTour;
 class HoaDon extends Model
 {
     use HasFactory;
@@ -15,7 +15,7 @@ class HoaDon extends Model
         'ngay_tao_hoa_don',
         'id_dat_tour',
         'ma_khuyen_mai',
-       
-        
     ];
+
+   
 }

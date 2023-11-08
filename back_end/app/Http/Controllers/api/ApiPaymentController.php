@@ -143,7 +143,6 @@ class ApiPaymentController extends Controller
         }
         return response()->json(['error' => 'Payment failed'], 400);
     }
-    //
     public function getBookingTour($id) {
         $bookingtour = DatTour::find($id);
         if($bookingtour){
