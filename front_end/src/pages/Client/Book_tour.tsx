@@ -493,7 +493,7 @@ const BookTour = () => {
                 Dịch vụ tùy chọn Option 1{" "}
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
-                Tour trọn gói (? khách){" "}
+                Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
               <div className="name flex gap-3 mt-4">
                 <img
