@@ -7,6 +7,9 @@ const rounded = {
     borderRadius: '25px',
 };
 const Dmkuser = () => {
+    const [oldPassword, setOldPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const Td = JSON.parse(localStorage.getItem('id'));
@@ -55,6 +58,43 @@ const Dmkuser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+
+        // Validate that the new password and confirm password match
+        if (newPassword !== confirmPassword) {
+            alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+            return;
+        }
+
+        try {
+            await axios.put('http://127.0.0.1:8000/api/change_password', {
+                password: oldPassword,
+                passwordnew: newPassword,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            alert("Đổi mật khẩu thành công!");
+            await axios.delete('http://127.0.0.1:8000/api/logout', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('id');
+            localStorage.removeItem('role');
+
+            // Redirect or perform other actions after logout
+
+            window.location.href = 'http://localhost:5173/signup';
+        } catch (error) {
+            console.error('Lỗi khi đổi mật khẩu:', error);
+        }
+    };
     return (
         <div>
             {/*  */}
@@ -98,42 +138,69 @@ const Dmkuser = () => {
 
                     {/*  */}
                     <article className='w-4/5 container border border-gray-300 rounded-lg '>
-                        <div className="wrapper p-md-4 px-5">
-                            <div className="heading">
+                        <div className="wrapper p-md-4 px-5 ">
+                            <div className="heading py-4">
                                 <h5 className="text-xl font-medium">Đổi mật khẩu</h5>
-                                <p className="text-muted mb-4">
+                                <p className=" mb-4">
                                     Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho
                                     người khác
                                 </p>
                             </div>
-                            <form className="row change-password py-4">
+                            <form className="change-password px-5" onSubmit={handlePasswordChange}>
                                 <div className="col-12">
-                                    <div className="mb-3 row">
-                                        <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label">Mật khẩu cũ</label>
-                                        <div className="col-sm-7">
+                                    <div className="mb-3 row flex justify-between">
+                                        <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label py-2">Mật khẩu cũ</label>
+                                        <div className="col-sm-7 px-5">
+                                            <input
+                                                className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3"
+                                                id="OldPassword"
+                                                name="OldPassword"
+                                                placeholder="Mật khẩu cũ"
+                                                type="password"
+                                                value={oldPassword}
+                                                onChange={(e) => setOldPassword(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="col d-inline-flex align-items-center py-2">
+                                            <a className="font-medium pl-28 text-blue-500" href="#">Quên mật khẩu?</a>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row flex gap-32">
+                                        <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label py-2">Mật khẩu mới</label>
+                                        <div className="col-sm-7 px-5">
+                                            <input
+                                                className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3"
+                                                id="PasswordNew"
+                                                name="PasswordNew"
+                                                placeholder="Mật khẩu mới"
+                                                type="password"
+                                                value={newPassword}
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                            />
 
-                                            <input className="form-control" id="Password" name="Password" placeholder="Mật khẩu cũ" type="password" value="" />
-                                        </div>
-                                        <div className="col d-inline-flex align-items-center">
-                                            <a className="fw-bold" href="#">Quên mật khẩu?</a>
                                         </div>
                                     </div>
-                                    <div className="mb-3 row">
-                                        <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label">Mật khẩu mới</label>
-                                        <div className="col-sm-7"></div>
-                                        <input className="form-control" id="PasswordNew" name="PasswordNew" placeholder="Mật  khẩu mới" type="password" value="" />
+                                </div>
+                                <div className="mb-3 row flex gap-20 container">
+                                    <label htmlFor="inputConfirmPassword" className="py-2">Nhập lại mật khẩu mới</label>
+                                    <div className="col-sm-7 px-[7px]">
+                                        <input
+                                            className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3"
+                                            id="ConfirmPassword"
+                                            name="ConfirmPassword"
+                                            placeholder="Xác nhận mật khẩu"
+                                            type="password"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                        />
                                     </div>
                                 </div>
-                                <div className="mb-3 row">
-                                    <label htmlFor="inputConfirmPassword" className="col-sm-3 col-form-label">Nhập lại mật khẩu mới</label>
-                                    <div className="col-sm-7">
-                                        <input className="form-control" id="RePasswordNew" name="RePasswordNew" placeholder="Nhập lại mật khẩu mới" type="password" value="" />
-                                    </div>
-                                </div>
-                                <div className="row">
+                                <div className="row justify-center py-3 ">
                                     <div className="col-md-3"></div>
-                                    <div className="col-md-7">
-                                        <button className="btn btn-primary w-100">Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i></button>
+                                    <div className="col-md-7 bg-red-500 py-3 px-20 rounded-lg">
+                                        <button className="btn btn-primary w-100 text-white" type="submit">
+                                            Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </form>

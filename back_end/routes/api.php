@@ -79,10 +79,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
+    Route::put('/change_password', [ApiAuthLoginController::class, 'changePassword'])->name('changePassword');
 });
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/change_password', [ApiAuthController::class, 'change_password'])->name('change_password');
-});
+
 
 Route::prefix('register')->group(function () {
     Route::get('/', [ApiAuthController::class, 'index']);

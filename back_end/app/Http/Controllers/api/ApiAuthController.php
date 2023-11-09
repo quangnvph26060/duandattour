@@ -59,24 +59,4 @@ class ApiAuthController extends Controller
 
         return response()->json(['message' => 'Đăng ký tài khoản thành công!!']);
     }
-    public function change_password(Request $request)
-    {
-        $request->validate([
-            'old_password' => 'required|string',
-            'new_password' => 'required|string|min:6',
-        ]);
-
-        $user = Auth::user();
-
-        // Kiểm tra mật khẩu cũ
-        if (!Hash::check($request->old_password, $user->password)) {
-            return response()->json(['error' => 'Mật khẩu cũ không đúng'], 401);
-        }
-
-        // Cập nhật mật khẩu mới
-        $user->password = Hash::make($request->new_password);
-        $user->save();
-
-        return response()->json(['message' => 'Cập nhật mật khẩu thành công']);
-    }
 }

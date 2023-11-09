@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tour', function (Blueprint $table) {
             $table->id(); // Sử dụng trường tự tăng làm khóa chính
-            $table->string('ten_tour')->unique();
+            $table->string('ten_tour');
             $table->string('diem_di');
             $table->string('diem_den');
             $table->date('lich_khoi_hanh');
