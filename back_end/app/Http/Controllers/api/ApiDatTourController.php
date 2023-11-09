@@ -106,8 +106,12 @@ class ApiDatTourController extends Controller
         if ($updateStatus->trang_thai == 0) {
             $updateStatus->trang_thai = 1;
             $updateStatus->save();
-            return response()->json(['message' => 'Cập nhập trạng thái thành công!!'], 200);
+            return response()->json(['message' => 'Cập nhập thanh toán thành công!!'], 200);
+        }else if($updateStatus->trang_thai == 1){
+            $updateStatus->trang_thai = 0;
+            $updateStatus->save();
+            return response()->json(['message' => 'Cập nhập chưa thanh toán thành công!!'], 200);
         }
-        return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+        // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
     }
 }

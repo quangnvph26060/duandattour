@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import '../page.css'
 import '../messenger.css';
 import { Link } from 'react-router-dom';
@@ -43,6 +44,33 @@ const HomePage = () => {
   const handleToggleChat = () => {
     setIsChatVisible(prevState => !prevState);
   };
+  const [DiemDenData, setDiemDenData] = useState([]);
+  const getListDiemDen = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/getListDiemDen');
+      console.log(response.data.data);
+      setDiemDenData(response.data.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [DiemDiData, setDiemDiData] = useState([]);
+  const getListDiemDi = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/getListDiemDi');
+      console.log(response.data.data);
+      setDiemDiData(response.data.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getListDiemDen();
+    getListDiemDi();
+  }, []);
 
   const handleSendMessage = () => {
     if (inputValue.trim() !== '') {
@@ -389,8 +417,11 @@ const HomePage = () => {
             <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>
             <select id="destination" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
               <option value="">Chọn nơi đến</option>
-              <option value="">Hà Nội</option>
-              <option value="male">Hải Phòng</option>
+              {DiemDenData.map(DiemDen => (
+                 <option value={DiemDen} key={DiemDen}>{DiemDen}</option>
+              ))}
+             
+              {/* <option value="male">Hải Phòng</option>
               <option value="female">Nam Định</option>
               <option value="female">Vũng Tàu</option>
               <option value="female">Tp. HCM</option>
@@ -402,7 +433,7 @@ const HomePage = () => {
               <option value="female">Tây nguyên </option>
               <option value="female">Bình Định</option>
               <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+              <option value="female">Hà Tĩnh</option> */}
 
             </select>
           </div>
@@ -411,7 +442,10 @@ const HomePage = () => {
             <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label>
             <select id="departure" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
               <option value="">Chọn nơi đi</option>
-              <option value="">Hà Nội</option>
+              {DiemDiData.map(DiemDi=>(
+                <option value={DiemDi} key={DiemDi}>{DiemDi}</option>
+              ))}
+              {/* <option value="">Hà Nội</option>
               <option value="male">Hải Phòng</option>
               <option value="female">Nam Định</option>
               <option value="female">Vũng Tàu</option>
@@ -424,7 +458,7 @@ const HomePage = () => {
               <option value="female">Tây nguyên </option>
               <option value="female">Bình Định</option>
               <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+              <option value="female">Hà Tĩnh</option> */}
             </select>
           </div>
 
