@@ -68,8 +68,36 @@ class ApiDatTourController extends Controller
     public function getListBookingTour()
     {
 
-        $bookings = DatTour::with('ThanhToan', 'tours')->get();
+        $bookings = DatTour::with('ThanhToan', 'tours.images')->get();
         return response()->json(['data' => $bookings], 200);
+    }
+
+    public function getListBookingTourUnpaid()
+    {
+
+        $bookingsUnpaid = DatTour::with('ThanhToan', 'tours.images')
+        ->where('trang_thai',0)
+        ->get();
+        return response()->json(['data' => $bookingsUnpaid], 200);
+    }
+
+    public function getListBookingTourPaid()
+    {
+
+        $bookingsUnpaid = DatTour::with('ThanhToan', 'tours.images')
+        ->where('trang_thai',1)
+        ->get();
+        return response()->json(['data' => $bookingsUnpaid], 200);
+    }
+
+    public function getBookingTourDeltail($id) {
+        $bookingtour = DatTour::find($id);
+        if($bookingtour){
+            $bookings = DatTour::with('ThanhToan','tours.images')->find($id);
+            return response()->json(['data'=>$bookings],200);
+        }
+        // return response()->json(['booking'=>$bookingtour],200);
+        return response()->json(['message'=>'Không tìm thấy booking tour'],404);
     }
 
     public function updateStatus($id)
