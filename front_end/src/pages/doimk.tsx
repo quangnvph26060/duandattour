@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import logo from '../img/logo.jpg'
 import { AiOutlineSearch } from 'react-icons/ai';
 import axios from 'axios'; // Import Axios
@@ -9,6 +9,61 @@ const rounded = {
 const Dmkuser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
+
+    //tạo mật khẩu mới
+    // const [currentPassword, setCurrentPassword] = useState('');
+    // const [newPassword, setNewPassword] = useState('');
+    // const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    // const [message, setMessage] = useState('');
+
+    // const handleSubmit = (event: { preventDefault: () => void; }) => {
+    //     event.preventDefault();
+
+    //     // Kiểm tra xem bạn đang thực hiện tác vụ nào (đổi mật khẩu hoặc tạo mật khẩu mới)
+    //     // Ví dụ: sử dụng biến action (có thể là "change" hoặc "reset")
+    //     const action = 'reset'; // Đổi thành 'change' hoặc 'reset' tùy theo tác vụ cần thực hiện
+
+    //     if (action === 'reset') {
+    //         // Kiểm tra tính hợp lệ của mật khẩu và xác nhận mật khẩu mới
+    //         if (newPassword !== confirmNewPassword) {
+    //             setMessage("Mật khẩu không khớp. Vui lòng kiểm tra lại.");
+    //             return;
+    //         }
+
+    //         // Gọi API để tạo mật khẩu mới
+    //         fetch('https://example.com/api/reset-password', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ newPassword }),
+    //         })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setMessage(data.message);
+    //         })
+    //         .catch(error => {
+    //             setMessage("Đã xảy ra lỗi: " + error.message);
+    //         });
+    //     } else if (action === 'change') {
+    //         // Gọi API để thay đổi mật khẩu
+    //         fetch('https://example.com/api/change-password', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ currentPassword, newPassword }),
+    //         })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setMessage(data.message);
+    //         })
+    //         .catch(error => {
+    //             setMessage("Đã xảy ra lỗi: " + error.message);
+    //         });
+    //     }
+
+
     useEffect(() => {
         if (token) {
             // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -38,6 +93,9 @@ const Dmkuser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
+
+    
+
     return (
         <div>
             {/*  */}

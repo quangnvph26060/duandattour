@@ -10,6 +10,7 @@ const rounded = {
     borderRadius: '25px',
 };
 
+
 const QLuser = () => {
 
     const token = localStorage.getItem("token");
@@ -91,9 +92,10 @@ const QLuser = () => {
                             <h1 className='font-medium text-xl py-3 px-5'>Thông tin cá nhân</h1>
                             <p className='text-gray-500 text-sm pb-5 px-5'>Cập nhật thông tin của Quý khách và tìm hiểu các thông tin này được sử dụng ra sao.</p>
                             {/* <hr  className='h-[2px] bg-slate-400 mx-5'/> */}
-                            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <form className="relative overflow-x-auto shadow-md sm:rounded-lg" >
                                 <table className="w-full overflow-x-auto text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <tbody>
+                                    <tbody id='editForm'>
+                                        {/* <!-- Các trường chỉnh sửa và nút lưu ở đây --> */}
                                         <tr className="bg-white border-y dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 Họ và Tên
@@ -185,7 +187,7 @@ const QLuser = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </form>
 
                         </div>
                     </article>
