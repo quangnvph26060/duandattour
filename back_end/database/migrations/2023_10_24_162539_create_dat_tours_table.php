@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('dat_tours', function (Blueprint $table) {
             $table->id();
             $table->string('ten_khach_hang');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('sdt');
             $table->string('dia_chi');
-            $table->string('cccd');
+            $table->string('cccd')->nullable();
             $table->date('ngay_dat');
-            $table->integer('so_luong_khach');
-            $table->tinyInteger('phuong_thuc_thanh_toan')->default(0);
+            $table->integer('so_luong_khach')->default(1);;
+       
             $table->tinyInteger('trang_thai')->default(0);
             $table->foreignId('ma_khach_hang')->constrained('users');
             $table->foreignId('id_tour')->constrained('tour');

@@ -1,4 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Link } from 'react-router-dom';
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import AiOutlineShoppingCart from 'react-icons'
 import logo from '../img/logo.jpg'
 import anh1 from '../img/anh1.jpg'
@@ -16,8 +21,6 @@ import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
 import { useGetTourQuery } from '../api/TourApi'
-import { useGetTourImagesQuery } from '../api/TourImagesApi'
-import { useGetHuongDanVienQuery } from '../api/HuongDanVienApi'
 
 
 const rounded = {
@@ -212,10 +215,10 @@ const TourPage = (props: Props) => {
                     <div className='flex justify-between px-4 gap-10 pt-3'>
                       <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
                         <img src={shopping} alt="shopping" className='w-5' />
-                        <p className='text-white text-sm'>Đặt ngay</p>
+                        <a href="booktour"><p className='text-white text-sm'>Đặt ngay</p></a>
                       </button>
                       <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                        <p className='text-sm'>Xem chi tiết</p>
+                        <a href="booktour"><p className='text-sm'>Xem chi tiết</p></a>
                       </button>
                     </div>
                   </div>
@@ -275,7 +278,7 @@ const TourPage = (props: Props) => {
               <div className='flex justify-between px-4 gap-10 pt-3'>
                 <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
                   <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
+                 <a href="tour/:idTour"> <p className='text-white text-sm'>Đặt ngay</p></a>
                 </button>
                 <button className='border border-sky-500 py-2 px-5 rounded-xl'>
                   <p className='text-sm'>Xem chi tiết</p>

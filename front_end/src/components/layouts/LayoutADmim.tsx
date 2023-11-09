@@ -20,6 +20,7 @@ const LayoutAdmin = () => {
     } = theme.useToken();
 
     return (
+        
         <div>
             <div className="bg-white border-b-2 border-black">
                 <img src="https://img.fcbayern.com/image/upload/t_cms-2x1/f_auto/w_1600,c_fill/q_auto/v1694938726/cms/public/images/fcbayern-com/homepage/Saison-23-24/Gegner/Manchester%20United/160812-manchester-united-logo-ima-169.jpg" height={50} width={50} alt="" />
@@ -56,6 +57,9 @@ const LayoutAdmin = () => {
                             <Menu.Item key="2-6">
                                 <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
                             </Menu.Item>
+                            <Menu.Item key="2-7">
+                                <Link to="/admin/customer_feedback">Customer Feedback</Link>
+                            </Menu.Item>
                             <Menu.SubMenu key="2-7" title="Quản lý hình ảnh">
                                 <Menu.Item key="2-7-1">
                                     <Link to="/admin/tour/image/">Danh sách hình ảnh</Link>
@@ -64,6 +68,7 @@ const LayoutAdmin = () => {
                                     <Link to="/admin/tour/image_tour">Quản lý  hình ảnh tour</Link>
                                 </Menu.Item>
                             </Menu.SubMenu>
+
 
 
                         </Menu.SubMenu>

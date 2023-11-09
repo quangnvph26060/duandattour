@@ -27,7 +27,7 @@ class ApiTourController extends Controller
             return response()->json(['message' => 'Tour not found'], 404);
         }
 
-        return response()->json(['tour' => $tour]);
+        return response()->json(['data' => $tour]);
     }
 
     public function getToursByDestination(Request $request, $destination)
@@ -39,6 +39,13 @@ class ApiTourController extends Controller
 
     public function index()
     {
+       // $tour = TourModel::all();
+
+
+        /////////////////////////
+        // đừng có xóa 
+        //////////////////////////////////////
+
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
 
         if ($tours->isEmpty()) {

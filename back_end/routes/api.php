@@ -15,10 +15,11 @@ use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
+use App\Http\Controllers\api\ApiMessageController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\ApiAuthController;
 
 
 /*
@@ -32,18 +33,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('demo', function () {
+    dd(gethostbyname(gethostname()));
+});
+// api show user và vai trò của nó 
+Route::get('/showuser', [ApiMessageController::class, 'showuser']);
+// api hiển thị  message
+Route::get('/messages', [ApiMessageController::class, 'showMessage']);
+// them tin nhắn 
+Route::post('/messages', [ApiMessageController::class, 'store']);
+// lấy ra id của tài khoản có vai trò phản hồi tin nhắn 
+Route::get('/findNameRole', [ApiMessageController::class, 'findNameRole']);
 //route payment
 Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 // lưu kết quả thanh toán vnpay vào DB
 Route::post('/paymentresult', [ApiPaymentController::class, 'CreatePayment']);
 // lưu thanh toán tiền mặt vào DB
-Route::post('/cash', [AuthController::class, 'CreatePaymentCash']);
+Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 // hiển thị  kết quả thanh toán 
-Route::get('/index', [AuthController::class, 'getPaymentData']);
+Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
+
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
+// dat tour
+Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
@@ -55,7 +70,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
-
+Route::prefix('register')->group(function () {
+    Route::get('/', [ApiAuthController::class, 'index']);
+    Route::post('/dk', [ApiAuthController::class, 'registers']);
+});
 
 //permission && role
 
@@ -144,8 +162,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
     });
     Route::prefix('tour')->group(function () {
-
-        Route::get('/{id}  ', [ApiTourController::class, 'ShowTour']);
+        Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);

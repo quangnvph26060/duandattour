@@ -65,7 +65,7 @@ const Dmkuser = () => {
                             <div className='py-3'></div>
 
                             <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
-                            <div className=''>
+                            <div className='con'>
                                 <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>
                                 <a href="/changeMk"> <p className='text-gray-500 text-sm py-1 hover:text-red-500'>Đổi mật khẩu</p></a>
                                 <a href="#" onClick={handleLogout}>
@@ -81,42 +81,42 @@ const Dmkuser = () => {
 
                     {/*  */}
                     <article className='w-4/5 container border border-gray-300 rounded-lg '>
-                        <div className="wrapper p-md-4 px-5">
-                            <div className="heading">
+                        <div className="wrapper p-md-4 px-5 ">
+                            <div className="heading py-4">
                                 <h5 className="text-xl font-medium">Đổi mật khẩu</h5>
-                                <p className="text-muted mb-4">
+                                <p className=" mb-4">
                                     Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho
                                     người khác
                                 </p>
                             </div>
-                            <form className="row change-password py-4">
+                            <form className="change-password px-5">
                                 <div className="col-12">
-                                    <div className="mb-3 row">
-                                        <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label">Mật khẩu cũ</label>
-                                        <div className="col-sm-7">
-
-                                            <input className="form-control" id="Password" name="Password" placeholder="Mật khẩu cũ" type="password" value="" />
+                                    <div className="mb-3 row flex justify-between">
+                                        <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label py-2">Mật khẩu cũ</label>
+                                        <div className="col-sm-7 px-5">
+                                            <input className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3" id="Password" name="Password" placeholder="Mật khẩu cũ" type="password" value="" />
                                         </div>
-                                        <div className="col d-inline-flex align-items-center">
-                                            <a className="fw-bold" href="#">Quên mật khẩu?</a>
+                                        <div className="col d-inline-flex align-items-center py-2">
+                                            <a className="font-medium pl-28 text-blue-500" href="#">Quên mật khẩu?</a>
                                         </div>
                                     </div>
-                                    <div className="mb-3 row">
-                                        <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label">Mật khẩu mới</label>
-                                        <div className="col-sm-7"></div>
-                                        <input className="form-control" id="PasswordNew" name="PasswordNew" placeholder="Mật  khẩu mới" type="password" value="" />
+                                    <div className="mb-3 row flex gap-32">
+                                        <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label py-2">Mật khẩu mới</label>
+                                        <div className="col-sm-7 px-5">
+                                            <input className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3" id="PasswordNew" name="PasswordNew" placeholder="Mật  khẩu mới" type="password" value="" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="mb-3 row">
-                                    <label htmlFor="inputConfirmPassword" className="col-sm-3 col-form-label">Nhập lại mật khẩu mới</label>
-                                    <div className="col-sm-7">
-                                        <input className="form-control" id="RePasswordNew" name="RePasswordNew" placeholder="Nhập lại mật khẩu mới" type="password" value="" />
+                                <div className="mb-3 row flex gap-20 container">
+                                    <label htmlFor="inputConfirmPassword" className="py-2">Nhập lại mật khẩu mới</label>
+                                    <div className="col-sm-7 px-[7px]">
+                                        <input className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3" id="RePasswordNew" name="RePasswordNew" placeholder="Nhập lại mật khẩu mới" type="password" value="" />
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row justify-center py-3 ">
                                     <div className="col-md-3"></div>
-                                    <div className="col-md-7">
-                                        <button className="btn btn-primary w-100">Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i></button>
+                                    <div className="col-md-7 bg-red-500 py-3 px-20 rounded-lg">
+                                        <button className="btn btn-primary w-100 text-white">Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </form>
