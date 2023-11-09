@@ -48,9 +48,8 @@ Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
 Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
-//thông tin thanh toán
-Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 
+Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour

@@ -2,142 +2,184 @@ type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
 
-import { Table, Button, Skeleton, Popconfirm, Alert, } from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, Switch ,message} from "antd";
+import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons"
+import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons";
 import { AiOutlinePlus } from "react-icons/ai";
-
-import { useEffect } from "react";
+import { IQuanlyDattour } from "../../../../interface/qlytdatour";
+import { useEffect, useState } from "react";
 import React from "react";
+import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
+import { Modal, Descriptions } from "antd";
 const ADmin_DatTour = (props: Props) => {
+  const onChange = (checked: boolean) => {
+    console.log(`switch to ${checked}`);
+  };
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a success message',
+    });
+  };
+  // 1 useGetdattour
+  const { data: Data } = useGetQuanlydattourQuery();
+  const DataQuanly = Data?.data || [];
 
-    // 1 useGetdattour
-
-    // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-    // useRemove();
-
-    // const confirm = (id: any) => {
-    //     if(!window.confirm('bạn có muốn xóa không ')){
-    //         return 
-    //     }
-    //     removeProduct(id);
-
-    // };
-    const navigate = useNavigate();
-    useEffect(() => {
-
-    }, [navigate])
-
-    //  const dattour = dattour?.data || [];
-
-    // const dataSource = dattour.map(({ id_dat_tour,ngay_dat,trang_thai,id_tour,id_khach_hang,so_luong}: TDattour) => ({
-    //  key:  id_dat_tour,ngay_dat,trang_thai,id_tour,id_khach_hang,so_luong
-    //   
-    // }));
-
-
-    const dataSource = [
-        {
-            key: '1',
-            ma_dat_tour: 'DT001',
-            ngay_dat: '2023-10-16',
-            trang_thai: 'Chưa thanh toán',
-            id_tour: 'T001',
-            id_khach_hang: 'KH001',
-            so_luong: 2,
-        },
-        {
-            key: '2',
-            ma_dat_tour: 'DT002',
-            ngay_dat: '2023-10-17',
-            trang_thai: 'Chưa thanh toán',
-            id_tour: 'T002',
-            id_khach_hang: 'KH002',
-            so_luong: 3,
-        },
-
-    ];
+  const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
+  const [selectedId, setSelectedId] = useState("");
+  console.log(Tourinfo);
+  const updateStatus = (id) => {
+    setSelectedId(id);
+    axios.put(`http://127.0.0.1:8000/api/admin/dattour/updateStatus/${id}`)
+    .then(response => {
+      if(response){
+        success();
+      }
+      // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
+    })
+    .catch(error => {
+      console.error('API error:', error);
+      // Xử lý lỗi nếu có
+    });
+  }
 
 
-    const columns = [
-        {
-            title: "Mã đặt tour",
-            dataIndex: "key",
-            key: "key",
-        },
-        {
-            title: "Ngày đặt",
-            dataIndex: "ngay_dat",
-            key: "ngay_dat",
-        },
-        {
-            title: "Tour được đặt",
-            dataIndex: "id_tour",
-            key: "id_tour",
-        },
-        {
-            title: "Mã khách hàng",
-            dataIndex: "id_khach_hang",
-            key: "id_khach_hang",
-        },
-        {
-            title: "Số lượng đặt",
-            dataIndex: "so_luong",
-            key: "so_luong",
-        },
-        {
-            title: "Trạng thái",
-            dataIndex: "trang_thai",
-            key: "trang_thai",
-        },
+  // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+  // useRemove();
 
+  // const confirm = (id: any) => {
+  //     if(!window.confirm('bạn có muốn xóa không ')){
+  //         return
+  //     }
+  //     removeProduct(id);
 
-        {
-            title: "Action",
-            render: ({ key: id }: any) => {
-                return (
-                    <>
+  // };
 
-                        <div className="">
-                            <div className="space-x-2 py-1">
-                                <Button>
-                                    <Link to="/admin/tour/hoa_don"><CheckOutlined type="primary" style={{ color: "blue" }} /></Link>
-                                </Button>
-                            </div>
-                            <div className="space-x-2">
-                                <Popconfirm
-                                    title="Bạn có muốn xóa?"
-                                    onConfirm={() => confirm(id)}
-                                    okText="Yes" className="text-black"
-                                    cancelText="No"
-                                >
-                                    <Button danger>
-                                        <DeleteOutlined type="primary" style={{ color: "red" }} />
-                                    </Button>
+  //  const dattour = dattour?.data || [];
 
-                                </Popconfirm>
-                                <Button>
-                                    <Link to={`/admin/Dat_tour/edit/${id}`}><EditOutlined /></Link>
-                                </Button>
-                            </div>
+  const dataSource = DataQuanly.map(
+    ({
+      id,
+      ten_khach_hang,
+      ngay_dat,
+      trang_thai,
+      id_tour,
+      so_luong_khach,
+      ten_tour,
+    }: IQuanlyDattour) => ({
+      key: id,
+      ngay_dat,
+      trang_thai,
+      id_tour,
+      so_luong_khach,
+      ten_khach_hang,
+      ten_tour: Tourinfo.ten_tour,
+    })
+  );
 
-                        </div>
-                    </>
-                );
-            },
-        },
-    ];
+  const columns = [
+    {
+      title: "Mã đặt tour",
+      dataIndex: "key",
+      key: "key",
+    },
+    {
+      title: "Tour được đặt đặt",
+      dataIndex: "ten_tour",
+      key: "ten_tour",
+      onCell: () => ({
+        style: { cursor: "pointer", textDecoration: "underline" },
+      }),
+      render: (text, record) => (
+        <span onClick={() => openModal(record)}>{text}</span>
+      ),
+    },
+    {
+      title: "Ngày đặt",
+      dataIndex: "ngay_dat",
+      key: "ngay_dat",
+    },
 
-    return (
-        <div>
-            <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
+    {
+      title: "Tên khách hàng",
+      dataIndex: "ten_khach_hang",
+      key: "ten_khach_hang",
+    },
+    {
+      title: "Số lượng đặt",
+      dataIndex: "so_luong_khach",
+      key: "so_luong_khach",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "trang_thai",
+      key: "trang_thai",
+      render: (trang_thai, { key: id }: any) => {
+        const check = trang_thai === 0 ? false : true;
+        console.log(id);
 
-            </header>
-            {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
-            {<Table dataSource={dataSource} columns={columns} />}
-        </div>
-    );
+        return (
+          <Switch
+            defaultChecked={check}
+            onChange={(checked) => {
+              updateStatus(id);
+              onChange(checked);
+            }}
+          />
+        );
+        //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+      },
+    },
+
+    {
+      title: "Action",
+      render: ({ key: id }: any) => {
+        return (
+          <>
+            <div className="">
+              <div className="space-x-2 py-1">
+                <Button>
+                  <Link to="/admin/tour/hoa_don">
+                    <CheckOutlined type="primary" style={{ color: "blue" }} />
+                  </Link>
+                </Button>
+              </div>
+              <div className="space-x-2">
+                <Popconfirm
+                  title="Bạn có muốn xóa?"
+                  onConfirm={() => confirm(id)}
+                  okText="Yes"
+                  className="text-black"
+                  cancelText="No"
+                >
+                  <Button danger>
+                    <DeleteOutlined type="primary" style={{ color: "red" }} />
+                  </Button>
+                </Popconfirm>
+                <Button>
+                  <Link to={`/admin/Dat_tour/edit/${id}`}>
+                    <EditOutlined />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div>
+      <header className="mb-4 flex justify-between items-center">
+        <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
+      </header>
+      {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
+      {<Table dataSource={dataSource} columns={columns} />}
+    </div>
+  );
 };
 
 export default ADmin_DatTour;

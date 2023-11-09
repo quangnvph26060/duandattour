@@ -114,7 +114,7 @@ const DetailPage = (props: Props) => {
     ) : (
       <p>Không có hình ảnh cho tour này.</p>
     )}  
-    {images && images.length > 0 ? (
+    {/* {images && images.length > 0 ? (
             <div>
               {" "}
               <div className="flex gap-5">
@@ -139,7 +139,7 @@ const DetailPage = (props: Props) => {
             </div>
              ) : (
               <p>Không có hình ảnh cho tour này.</p>
-            )}  
+            )}   */}
         
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
