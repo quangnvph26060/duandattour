@@ -2,26 +2,51 @@ type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
 
-import { Table, Button, Skeleton, Popconfirm, Alert, Pagination, } from "antd";
+
+import { Table, Button, Skeleton, Popconfirm, Alert, Switch ,message} from "antd";
+import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons"
+import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IQuanlyDattour } from "../../../../interface/qlytdatour";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
-import { Modal, Descriptions } from 'antd';
+import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
   
-  
+    const onChange = (checked: boolean) => {
+        console.log(`switch to ${checked}`);
+      };
+      const [messageApi, contextHolder] = message.useMessage();
+      const success = () => {
+        messageApi.open({
+          type: 'success',
+          content: 'This is a success message',
+        });
+      };
 
     // 1 useGetdattour
         const {data:Data} = useGetQuanlydattourQuery()
         const DataQuanly = Data?.data|| []
       
         const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
-  
+        const [selectedId, setSelectedId] = useState("");
+        const updateStatus = (id) => {
+            setSelectedId(id);
+            axios.put(`http://127.0.0.1:8000/api/admin/dattour/updateStatus/${id}`)
+            .then(response => {
+              if(response){
+                success();
+              }
+              // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
+            })
+            .catch(error => {
+              console.error('API error:', error);
+              // Xử lý lỗi nếu có
+            });
+          }
         // Lấy dữ liệu cho trang hiện tại
       
   
@@ -102,8 +127,20 @@ const ADmin_DatTour = (props: Props) => {
             title: "Trạng thái",
             dataIndex: "trang_thai",
             key: "trang_thai",
-            render: (trang_thai) => {
-              return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+            render: (trang_thai, { key: id }: any) => {
+              const check = trang_thai === 0 ? false : true;
+              console.log(id);
+      
+              return (
+                <Switch
+                  defaultChecked={check}
+                  onChange={(checked) => {
+                    updateStatus(id);
+                    onChange(checked);
+                  }}
+                />
+              );
+              //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
             },
           },
 
@@ -163,7 +200,7 @@ const ADmin_DatTour = (props: Props) => {
 
             </header>
             {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
-            {<Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />}
+            {<Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 10 }} />}
          
             <Modal
         visible={modalVisible}
