@@ -1,16 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\api;
-
+use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UsersModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class ApiPermissionsController extends Controller
 {
+
 
     // hiển thị danh sách user và quyển , vai trò của user đó 
     public function index()
@@ -20,9 +23,29 @@ class ApiPermissionsController extends Controller
     }
     public function store(Request $request)
     {
-        $User = $request->all();
-        return UsersModel::create($User);
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+        }
+
+        $user = UsersModel::create([
+            'name' => $request->name,
+            'image' => $imagePath,
+            'dia_chi' => $request->dia_chi,
+            'email' => $request->email,
+            'sdt' => $request->sdt,
+            'cccd' => $request->cccd,
+            'password' => Hash::make($request->password),
+
+        ]);
+
+
+        Mail::to($user->email)->send(new RegisterUser($user));
+
+        return response()->json(['message' => 'Thêm hướng dẫn viên thành công !!']);
     }
+
     public function show(string $id)
     {
         $User = UsersModel::find($id);

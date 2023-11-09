@@ -13,13 +13,13 @@ const { Option } = Select;
 type FieldType = {
     id: number;
     ten_hd: string;
-    image:string;
+    
     email: string;
     dia_chi: string;
     sdt: string;
     cccd:string;
     password:string
-    // image:File | null
+    image:File | null
 };
 
 const Admin_Account_huongdanvienAdd: React.FC = () => {
@@ -67,9 +67,22 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
 <Form.Item
   label="Ảnh"
   name="image"
-  rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+  rules={[{ required: true, message: 'Vui lòng chọn ảnh!' }]}
+  valuePropName="fileList"
+  getValueFromEvent={(event) => {
+    if (Array.isArray(event)) {
+      return event;
+    }
+    return event && event.fileList;
+  }}
 >
-  <Input />
+  <Upload 
+    name="hinh" 
+    listType="picture"
+    beforeUpload={() => false}
+  >
+    <Button icon={<AiOutlineUpload />}>Chọn ảnh</Button>
+  </Upload>
 </Form.Item>
 <Form.Item
   label="Địa chỉ"
