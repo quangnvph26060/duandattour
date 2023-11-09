@@ -24,10 +24,10 @@ const LayoutAdmin = () => {
             <div className="bg-white border-b-2 border-black">
                 <img src="https://img.fcbayern.com/image/upload/t_cms-2x1/f_auto/w_1600,c_fill/q_auto/v1694938726/cms/public/images/fcbayern-com/homepage/Saison-23-24/Gegner/Manchester%20United/160812-manchester-united-logo-ima-169.jpg" height={50} width={50} alt="" />
             </div>
-            <Layout className="h-screen">
+            <Layout className="h-screen ">
 
                 <Sider trigger={null} collapsible collapsed={collapsed}>
-                    <div className="demo-logo-vertical" />
+                    <div className=" demo-logo-vertical" />
 
                     <Menu
                         theme="dark"
