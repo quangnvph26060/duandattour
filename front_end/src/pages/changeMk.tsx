@@ -6,9 +6,12 @@ import '../index.css'
 const rounded = {
     borderRadius: '25px',
 };
-const Giohanguser = () => {
+const Dmkuser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
+    const Td = JSON.parse(localStorage.getItem('id'));
+
+    const role = localStorage.getItem('role');
     useEffect(() => {
         if (token) {
             // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -27,12 +30,26 @@ const Giohanguser = () => {
                 });
         }
     }, [token])
-    const handleLogout = async () => {
-        try {
-            // Gửi yêu cầu đăng xuất đến API
-            await axios.delete('http://127.0.0.1:8000/api/logout');
 
-            // Sau khi đăng xuất thành công, chuyển hướng người dùng đến trang đăng nhập hoặc trang chính.
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const confirmLogout = window.confirm("Bạn chắc chắn muốn đăng xuất?");
+
+        if (!confirmLogout) {
+            return;
+        }
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete('http://127.0.0.1:8000/api/logout', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            localStorage.removeItem('token');
+            localStorage.removeItem('id');
+            localStorage.removeItem('role');
+            // Display a success message
+            alert("Đăng xuất thành công!");
             window.location.href = 'http://localhost:5173';
         } catch (error) {
             console.error('Lỗi khi đăng xuất:', error);
@@ -40,7 +57,6 @@ const Giohanguser = () => {
     };
     return (
         <div>
-            <br /><br /><br /><br />
             {/*  */}
             <div className='container mx-auto'>
                 <div className='flex gap-10'>
@@ -63,16 +79,16 @@ const Giohanguser = () => {
                                 </div>
                             </div>
                             <hr className='mx-5 h-[2px] bg-slate-900' />
-                            <div className='py-3'>
-                                <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
-                                <div className='px-10'>
-                                    <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>
-                                    <a href="/changeMk"> <p className='text-gray-500 text-sm py-1 hover:text-red-500'>Đổi mật khẩu</p></a>
-                                    <a href="#" onClick={handleLogout}>
-                                        <p className='text-gray-500 text-sm py-1 hover:text-red-500'>Đăng xuất</p>
-                                    </a>
+                            <div className='py-3'></div>
 
-                                </div>
+                            <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
+                            <div className=''>
+                                <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>
+                                <a href="/changeMk"> <p className='text-gray-500 text-sm py-1 hover:text-red-500'>Đổi mật khẩu</p></a>
+                                <a href="#" onClick={handleLogout}>
+                                    <p className='text-gray-500 text-sm py-1 hover:text-red-500'>Đăng xuất</p>
+                                </a>
+
                             </div>
                             <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đơn đặt chỗ</h3></a>
                             <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
@@ -80,10 +96,11 @@ const Giohanguser = () => {
                         </div>
                     </aside>
 
-                    <article className='w-4/5 container'>
-                        <div className="wrapper p-md-4">
+                    {/*  */}
+                    <article className='w-4/5 container border border-gray-300 rounded-lg '>
+                        <div className="wrapper p-md-4 px-5">
                             <div className="heading">
-                                <h5 className="fw-bold">Đổi mật khẩu</h5>
+                                <h5 className="text-xl font-medium">Đổi mật khẩu</h5>
                                 <p className="text-muted mb-4">
                                     Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho
                                     người khác
@@ -103,26 +120,24 @@ const Giohanguser = () => {
                                     </div>
                                     <div className="mb-3 row">
                                         <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label">Mật khẩu mới</label>
-                                        <div className="col-sm-7">
-                                            <input className="form-control" id="PasswordNew" name="PasswordNew" placeholder="Mật  khẩu mới" type="password" value="" />
-                                        </div>
+                                        <div className="col-sm-7"></div>
+                                        <input className="form-control" id="PasswordNew" name="PasswordNew" placeholder="Mật  khẩu mới" type="password" value="" />
                                     </div>
-                                    <div className="mb-3 row">
-                                        <label htmlFor="inputConfirmPassword" className="col-sm-3 col-form-label">Nhập lại mật khẩu mới</label>
-                                        <div className="col-sm-7">
-                                            <input className="form-control" id="RePasswordNew" name="RePasswordNew" placeholder="Nhập lại mật khẩu mới" type="password" value="" />
-                                        </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label htmlFor="inputConfirmPassword" className="col-sm-3 col-form-label">Nhập lại mật khẩu mới</label>
+                                    <div className="col-sm-7">
+                                        <input className="form-control" id="RePasswordNew" name="RePasswordNew" placeholder="Nhập lại mật khẩu mới" type="password" value="" />
                                     </div>
-                                    <div className="row">
-                                        <div className="col-md-3"></div>
-                                        <div className="col-md-7">
-                                            <button className="btn btn-primary w-100">Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i></button>
-                                        </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-3"></div>
+                                    <div className="col-md-7">
+                                        <button className="btn btn-primary w-100">Đổi mật khẩu&nbsp;&nbsp;<i className="fas fa-sign-in-alt" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-
                     </article>
                 </div>
             </div>
@@ -130,4 +145,4 @@ const Giohanguser = () => {
     )
 }
 
-export default Giohanguser
+export default Dmkuser

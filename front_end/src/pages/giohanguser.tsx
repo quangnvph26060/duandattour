@@ -9,6 +9,9 @@ const rounded = {
 const Giohanguser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
+    const Td = JSON.parse(localStorage.getItem('id'));
+
+    const role = localStorage.getItem('role');
     useEffect(() => {
         if (token) {
             // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -27,12 +30,26 @@ const Giohanguser = () => {
                 });
         }
     }, [token])
-    const handleLogout = async () => {
-        try {
-            // Gửi yêu cầu đăng xuất đến API
-            await axios.delete('http://127.0.0.1:8000/api/logout');
 
-            // Sau khi đăng xuất thành công, chuyển hướng người dùng đến trang đăng nhập hoặc trang chính.
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const confirmLogout = window.confirm("Bạn chắc chắn muốn đăng xuất?");
+
+        if (!confirmLogout) {
+            return;
+        }
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete('http://127.0.0.1:8000/api/logout', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            localStorage.removeItem('token');
+            localStorage.removeItem('id');
+            localStorage.removeItem('role');
+            // Display a success message
+            alert("Đăng xuất thành công!");
             window.location.href = 'http://localhost:5173';
         } catch (error) {
             console.error('Lỗi khi đăng xuất:', error);

@@ -9,7 +9,7 @@ use App\Models\TourImagesModel;
 use App\Models\LichTrinhModel;
 use App\Models\TourPhuongTienModel;
 use App\Models\TourKhachSanModel;
-
+use App\Models\DatTour;
 class TourModel extends Model
 {
     use HasFactory, SoftDeletes;
@@ -58,5 +58,9 @@ class TourModel extends Model
         return $this->hasMany(LichTrinhModel::class, 'id_tour', 'id');
     }
 
+    public function DatTour()
+    {
+        return $this->hasMany(DatTour::class, 'id_tour');
+    }
     
 }

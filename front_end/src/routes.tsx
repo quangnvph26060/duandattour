@@ -91,7 +91,7 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "booking/:id",
+        path: "bookingtour/:id",
         element: <Info_tour_bocking />,
       },
       {
