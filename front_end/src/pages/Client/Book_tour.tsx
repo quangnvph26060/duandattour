@@ -60,11 +60,21 @@ const BookTour = () => {
   const handleAgreeToggle = () => {
     setIsAgreed(!isAgreed);
   };
+  const validateQuantity = (newQuantity: number, newQuantity2: number) => {
+    const totalGuests = newQuantity + newQuantity2;
+    if (totalGuests > datatourArray?.soluong) {
+      alert("Bạn đã nhập quá số lượng cho phép");
+      return false;
+    }
+    return true;
+  };
   // gia ng lon
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    if (validateQuantity(quantity + 1, quantity2)) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const handleDecrement = () => {
@@ -81,7 +91,9 @@ const BookTour = () => {
     const [quantity2, setQuantity2] = useState(0);
 
     const handleIncrement2 = () => {
-      setQuantity2(quantity2 + 1);
+      if (validateQuantity(quantity, quantity2 + 1)) {
+        setQuantity2(quantity2 + 1);
+      }
     };
   
     const handleDecrement2 = () => {
@@ -101,6 +113,7 @@ const BookTour = () => {
       }
     }, [quantity, quantity2]);
   
+    
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 

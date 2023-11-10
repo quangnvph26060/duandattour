@@ -64,7 +64,19 @@ const LayoutAdmin = () => {
                                     <Link to="/admin/tour/image_tour">Quản lý  hình ảnh tour</Link>
                                 </Menu.Item>
                             </Menu.SubMenu>
-
+                            <Menu.SubMenu   key="2-8" title={
+          <Link to="/admin/tour/dat_tour">
+            <span>Quản lý tour</span>
+          </Link>
+        }>
+                                
+                                <Menu.Item key="2-8-1">
+                                    <Link to="/admin/tour/tour_chuathanhtoan">Tour chưa thanh toán</Link>
+                                </Menu.Item>
+                                <Menu.Item key="2-8-2">
+                                    <Link to="/admin/tour/tour_dathanhtoan">Tour đã thanh toán</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
 
                         </Menu.SubMenu>
                         <Menu.SubMenu key="3" icon={<AiOutlineUser />} title="Tài khoản">
