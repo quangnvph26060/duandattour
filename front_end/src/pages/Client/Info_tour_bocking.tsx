@@ -31,8 +31,6 @@ const Info_tour_bocking = () => {
       vnp_ResponseCode: urlParams.get('vnp_ResponseCode'), // trạng thái 
       vnp_TxnRef: urlParams.get('vnp_TxnRef'),
     };
-    console.log(paymentData.vnp_Amount);
-
     axios.post('http://localhost:8000/api/paymentresult', paymentData)
       .then(response => {
         setPaymentResult(response.data);

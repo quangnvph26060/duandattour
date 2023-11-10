@@ -60,15 +60,22 @@ const LayoutAdmin = () => {
                             <Menu.Item key="2-7">
                                 <Link to="/admin/customer_feedback">Customer Feedback</Link>
                             </Menu.Item>
-                            <Menu.SubMenu key="2-7" title="Quản lý hình ảnh">
-                                <Menu.Item key="2-7-1">
+                            <Menu.SubMenu key="2-8" title="Quản lý hình ảnh">
+                                <Menu.Item key="2-8-1">
                                     <Link to="/admin/tour/image/">Danh sách hình ảnh</Link>
                                 </Menu.Item>
-                                <Menu.Item key="2-7-2">
+                                <Menu.Item key="2-8-2">
                                     <Link to="/admin/tour/image_tour">Quản lý  hình ảnh tour</Link>
                                 </Menu.Item>
                             </Menu.SubMenu>
-
+                            <Menu.SubMenu key="2-9" title="Quản lý mã giảm giá">
+                                <Menu.Item key="2-9-1">
+                                    <Link to="/admin/tour/discount/">Danh sách mã giảm giá</Link>
+                                </Menu.Item>
+                                <Menu.Item key="2-9-2">
+                                    <Link to="/admin/tour/tour_discount/">Quản lý giảm giá  tour</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
 
 
                         </Menu.SubMenu>

@@ -49,6 +49,12 @@ import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/pe
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import ChatComponent from "./pages/Admin/products/Message/ChatBox";
 import { ContextProvider } from "./context/ContextProvider";
+import AdminGiam_Gia from "./pages/Admin/products/GiamGia";
+import AdminGiam_GiaADD from "./pages/Admin/products/GiamGia/add";
+import AdminGiam_GiaEdit from "./pages/Admin/products/GiamGia/edit";
+import Admin_TourDiscount from "./pages/Admin/products/Tour_GiamGia";
+import Admin_TourDiscountADD from "./pages/Admin/products/Tour_GiamGia/add";
+import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
 export const router = createBrowserRouter([
   
   {
@@ -251,6 +257,32 @@ export const router = createBrowserRouter([
       {
         path: "tour/dat_tour",
         element: <ADmin_DatTour />,
+      },
+      // giảm giá 
+      {
+        path: "tour/discount/",
+        element: <AdminGiam_Gia />,
+      },
+      {
+        path: "tour/discount/add",
+        element: <AdminGiam_GiaADD />,
+      },
+      {
+        path: "tour/discount/edit/:iddiscount",
+        element: <AdminGiam_GiaEdit />,
+      },
+      // tour_discount
+      {
+        path: "tour/tour_discount/",
+        element: <Admin_TourDiscount />,
+      },
+      {
+        path: "tour/tour_discount/add",
+        element: <Admin_TourDiscountADD />,
+      },
+      {
+        path: "tour/tour_discount/edit/:idtourdiscount",
+        element: <Admin_TourDiscountEDIT />,
       },
     ],
   },

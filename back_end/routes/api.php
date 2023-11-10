@@ -16,11 +16,12 @@ use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
 use App\Http\Controllers\api\ApiMessageController;
+use App\Http\Controllers\api\ApiDiscountController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +34,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// api demo
+Route::get('a',[ApiDatTourController::class,'demo']);
 Route::get('demo',function(){
-    dd(gethostbyname(gethostname()));
+    $today= Carbon::today(); // Lấy ngày tháng năm hiện tại
+    $today1 = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
+   return response()->json([
+    'today'=>$today,
+    'today+1'=>$today1,
+   ]);
 });
+Route::get('abc',[ApiDiscountController::class,'abc']);
+//end api demo
+
+
+// api mã giảm giá 
+Route::post('check_coupon',[ApiDiscountController::class,'check_coupon']);
 // api show user và vai trò của nó 
 Route::get('/showuser', [ApiMessageController::class, 'showuser']); 
 // api hiển thị  message
@@ -83,10 +97,22 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
         });
     });
 });
-
-//api phương tiện
+// api giảm giá 
 Route::prefix('admin')->group(function () {
-
+    Route::prefix('discount')->group(function () {
+        Route::get('/', [ApiDiscountController::class, 'showDiscount']);
+        Route::post('/', [ApiDiscountController::class, 'store']);
+        Route::get('/{id}', [ApiDiscountController::class, 'show']);
+        Route::put('update/{id}', [ApiDiscountController::class, 'update']);
+        Route::delete('/{id}', [ApiDiscountController::class, 'destroy']);
+    });
+    Route::prefix('tour_discount')->group(function () {
+        Route::get('/', [ApiDiscountController::class, 'tour_discount']);
+        Route::post('/', [ApiDiscountController::class, 'tour_discount_add']);
+        Route::get('/{id}', [ApiDiscountController::class, 'tour_discount_show']);
+        Route::put('update/{id}', [ApiDiscountController::class, 'tour_discount_update']);
+        Route::delete('/{id}', [ApiDiscountController::class, 'tour_discount_delete']);
+    });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
         Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
