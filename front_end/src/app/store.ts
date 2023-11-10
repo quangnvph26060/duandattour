@@ -8,8 +8,9 @@ import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
 import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
 import KhachSanApi, { KhachSanRedeucer } from "../api/KhachSanApi";
 import UserApi, { UserReducer } from "../api/UserApi";
-import DatourApi,{DattourReducer} from "../api/dattour";
-import CheckingApi,{CheckingReducer} from "../api/Check";
+import DatourApi, { DattourReducer } from "../api/dattour";
+import CheckingApi, { CheckingReducer } from "../api/Check";
+import TourApidd, { tourddRedeucer } from "../api/dondadat";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -44,9 +45,10 @@ const rootReducer = combineReducers({
     [UserApi.reducerPath]: UserReducer,
     [LichTrinhApi.reducerPath]: LichTrinhRedeucer,
     [KhachSanApi.reducerPath]: KhachSanRedeucer,
-    [DatourApi.reducerPath]:DattourReducer,
-    [CheckingApi.reducerPath]:CheckingReducer,
-    [QuanlydattoutApi.reducerPath]:QuanlydattourReducer,
+    [DatourApi.reducerPath]: DattourReducer,
+    [CheckingApi.reducerPath]: CheckingReducer,
+    [QuanlydattoutApi.reducerPath]: QuanlydattourReducer,
+    [TourApidd.reducerPath]: tourddRedeucer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -61,10 +63,10 @@ export const store = configureStore({
 
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
             HuongDanVienApi.middleware, ImagesApi.middleware,
-             TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
+            TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
-             HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
-             UserApi.middleware,DatourApi.middleware,CheckingApi.middleware,QuanlydattoutApi.middleware),
+            HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
+            UserApi.middleware, DatourApi.middleware, CheckingApi.middleware, QuanlydattoutApi.middleware, TourApidd.middleware),
 
 })
 export type AppDispatch = typeof store.dispatch

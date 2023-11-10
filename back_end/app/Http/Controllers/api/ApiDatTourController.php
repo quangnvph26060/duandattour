@@ -14,8 +14,8 @@ class ApiDatTourController extends Controller
     public function getDatTour(Request $request, $id)
     {
         $result = TourModel::find($id);
-        if($result){
-            $tour= TourModel::with('images')->first();
+        if ($result) {
+            $tour = TourModel::with('images')->first();
             $user = null;
 
             if (Auth::guard('sanctum')->check()) {
@@ -26,7 +26,7 @@ class ApiDatTourController extends Controller
                 'user' => $user,
             ];
         }
-        
+
         return response()->json($response);
     }
 
@@ -38,29 +38,31 @@ class ApiDatTourController extends Controller
         $createDatTour = DatTour::create($datTour);
         return response()->json(['createDatTour' => $createDatTour]);
     }
-    public function indexDat(){
+    public function indexDat()
+    {
         $dattour = DatTour::all();
-        return response()->json(['code'=>200,'dattour'=>$dattour]);
+        return response()->json(['code' => 200, 'dattour' => $dattour]);
     }
 
-    public function getListBookingTour() {
+    public function getListBookingTour()
+    {
 
-            $bookings = DatTour::with('ThanhToan','tours')->get();
-            return response()->json(['data'=>$bookings],200);
+        $bookings = DatTour::with('ThanhToan', 'tours')->get();
+        return response()->json(['data' => $bookings], 200);
     }
 
-    public function updateStatus($id){
+    public function updateStatus($id)
+    {
         $updateStatus = DatTour::find($id);
-        if($updateStatus->trang_thai==0){
-            $updateStatus->trang_thai=1;
+        if ($updateStatus->trang_thai == 0) {
+            $updateStatus->trang_thai = 1;
             $updateStatus->save();
-            return response()->json(['message'=>'Cập nhập trạng thái thành công!!'],200);
+            return response()->json(['message' => 'Cập nhập trạng thái thành công!!'], 200);
         }
-        return response()->json(['message'=>'Đơn hàng đã thanh toán rồi'],404);
+        return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
         // dd($updateStatus->ten_khach_hang);
         // if($updateStatus){
 
         // }
     }
-
 }

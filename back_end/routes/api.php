@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
     Route::put('/change_password', [ApiAuthLoginController::class, 'changePassword'])->name('changePassword');
+    Route::put('/forgotPassword', [ApiAuthLoginController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::get('/user', [ApiAuthLoginController::class, 'getToursByUserId']);
 });
 
 
@@ -215,6 +217,9 @@ Route::prefix('admin')->group(function () {
 
     Route::prefix('dattour')->group(function () {
         Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
+
+
+
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
     });
 });

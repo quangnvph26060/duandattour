@@ -76,18 +76,25 @@ const QLuser = () => {
             {/* Content */}
             <div className="container mx-auto">
                 <div className="flex gap-10">
-                    <aside className="w-1/5 container mx-auto">
-                        <div className="border border-gray-300 rounded-lg container mx-auto">
-                            <div className="px-4 py-7 flex gap-1">
-                                <img src={logo} className="w-14" alt="" />
-                                <div className="p-2">
-                                    <h1 className="font-medium p-1">Nguyễn Mạnh Hiếu</h1>
-                                    <p className="text-sm px-1 text-left">
-                                        nguyenmanhhieutl@gmail.com
-                                    </p>
+                    <aside className='w-1/5 container mx-auto'>
+                        <div className='border border-gray-300 rounded-lg container mx-auto'>
+                            <div className='px-4 py-7 flex gap-1'>
+                                <img
+                                    src={`http://localhost:8000/storage/${usersId.image}`}
+                                    alt="img"
+                                    style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        borderRadius: '50%', // Đặt border-radius thành 50% để làm cho hình ảnh tròn
+                                        border: '2px solid #fff', // Đặt border với màu và độ rộng tùy chọn
+                                    }}
+                                />
+                                <div className='p-2'>
+                                    <h1 className='font-medium p-1'>{usersId.name}</h1>
+                                    <p className='text-sm px-1 text-left'>{usersId.email}</p>
                                 </div>
                             </div>
-                            <hr className="mx-5 h-[2px] bg-slate-900" />
+                            <hr className='mx-5 h-[2px] bg-slate-900' />
                             <div className='py-3'>
                                 <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
                                 <div className='px-10'>
@@ -99,21 +106,9 @@ const QLuser = () => {
 
                                 </div>
                             </div>
-                            <a href="">
-                                <h3 className="px-5 py-1 font-medium hover:text-red-500">
-                                    Đơn đặt chỗ
-                                </h3>
-                            </a>
-                            <a href="">
-                                <h3 className="px-5 py-1 font-medium hover:text-red-500">
-                                    Đánh giá của quý khách
-                                </h3>
-                            </a>
-                            <a href="">
-                                <h3 className="px-5 py-1 pb-10 font-medium hover:text-red-500">
-                                    Yêu thích đã lưu
-                                </h3>
-                            </a>
+                            <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đơn đặt chỗ</h3></a>
+                            <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
+                            <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
                     <article className="w-4/5">
@@ -142,14 +137,9 @@ const QLuser = () => {
                                             >
                                                 Họ và Tên
                                             </th>
-                                            <td className="px-6 py-4">Mạnh Hiếu</td>
+                                            <td className="px-6 py-4">M{usersId.name}</td>
                                             <td className=" px-6 py-4 text-right">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -161,12 +151,7 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">0</td>
                                             <td className="px-6 py-4 text-right">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -176,14 +161,9 @@ const QLuser = () => {
                                             >
                                                 Địa chỉ Email
                                             </th>
-                                            <td className="px-6 py-4">nguyenmanhhieutl@gmail.com</td>
+                                            <td className="px-6 py-4">{usersId.email}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -193,14 +173,9 @@ const QLuser = () => {
                                             >
                                                 Số điện thoại
                                             </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
+                                            <td className="px-6 py-4">{usersId.sdt}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -212,12 +187,7 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">Chưa có thông tin</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -229,12 +199,7 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">Chưa có thông tin</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -246,12 +211,7 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">Chưa có thông tin</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -261,14 +221,9 @@ const QLuser = () => {
                                             >
                                                 Địa chỉ
                                             </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
+                                            <td className="px-6 py-4">{usersId.dia_chi}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-                                                <a
-                                                    href="#"
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                >
-                                                    Edit
-                                                </a>
+
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -278,7 +233,7 @@ const QLuser = () => {
                                             >
                                                 CMND
                                             </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
+                                            <td className="px-6 py-4">{usersId.cccd}</td>
                                             <td className="px-6 py-4 text-right mr-4">
 
                                             </td>

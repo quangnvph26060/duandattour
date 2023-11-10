@@ -10,6 +10,8 @@ use App\Models\LichTrinhModel;
 use App\Models\TourPhuongTienModel;
 use App\Models\TourKhachSanModel;
 use App\Models\DatTour;
+use App\Models\LoaiTourModel;
+
 class TourModel extends Model
 {
     use HasFactory, SoftDeletes;
@@ -31,6 +33,10 @@ class TourModel extends Model
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
+    }
+    public function loaiTours()
+    {
+        return $this->belongsto(LoaiTourModel::class, 'ma_loai_tour');
     }
     public function images()
     {
@@ -62,5 +68,4 @@ class TourModel extends Model
     {
         return $this->hasMany(DatTour::class, 'id_tour');
     }
-    
 }

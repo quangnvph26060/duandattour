@@ -9,6 +9,8 @@ const rounded = {
 const Giohanguser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
+    const [data, setUserTours] = useState([]);
+
     const Td = JSON.parse(localStorage.getItem('id'));
 
     const role = localStorage.getItem('role');
@@ -55,11 +57,48 @@ const Giohanguser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
+    // useEffect(() => {
+    //     axios.get('http://127.0.0.1:8000/api/admin/dattour/user/1')
+    //         .then((response) => {
+    //             setUserTours(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Lỗi khi tải dữ liệu:', error);
+    //         });
+    // }, []);
+    console.log();
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/user`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((userData) => {
+                setUserTours(userData);
+            })
+
+            .catch((error) => {
+                console.error(error);
+            });
+        // .then(response => response.json())
+        // 
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
+    }, []);
+
+
+
+
     return (
+
         <div>
+
             <br /><br /><br /><br />
             {/*  */}
-            <div className='container mx-auto'>
+            <div className='container mx-auto' >
                 <div className='flex gap-10'>
                     <aside className='w-1/5 container mx-auto'>
                         <div className='border border-gray-300 rounded-lg container mx-auto'>
@@ -97,7 +136,8 @@ const Giohanguser = () => {
                         </div>
                     </aside>
 
-                    <article className='w-4/5 container'>
+
+                    <article className='w-4/5 container'  >
                         <div className='flex border justify-between px-10 py-5 rounded-lg'>
                             <a href="">Tất cả</a>
                             <a href="">Chờ xác nhận</a>
@@ -111,44 +151,44 @@ const Giohanguser = () => {
                                 <input type="text" className='overflow-hidden w-96' placeholder='Tìm kiếm theo tên tour/tourCode hoặc số booking' name="" id="" />
                             </div>
                         </div>
-                        <div className='px-2'>
-                            <h1 className='text-2xl font-medium'>Liên tuyến Miền Trung - Miền Nam</h1>
-                            <p className='py-3'>10/11/2023 - 20/11/2023</p>
-                        </div>
-                        <div>
-                            <div className='flex border gap-5 px-10 py-5 rounded-lg'>
-                                <div>
-                                    <div className='flex gap-4'>
-                                        <img src="http://localhost:5173/src/img/sl.webp" className='w-1/3 rounded-lg' alt="" />
-                                        <div>
-                                            <h2 className='text-2xl font-medium'>Hà Nội - Sapa - Fansipang - Ninh Bình - Tràng An - Bái Đính - Yên Tử | Thu bên nhau</h2>
-                                            <div className='py-4'>
-                                                <p className='py-1font-medium'>Tuyệt vời</p>
-                                                <p>358 Quan tâm</p>
-                                                <div className='flex justify-between'>
-                                                    <p className='py-3'>Số booking: 2HBNDFSBV43476</p>
-                                                    <div>
-                                                        <p className='text-xl text-red-500 font-medium'>Quá Hạn thanh toán</p>
-                                                        <p className='text-xl text-red-500 font-medium'>14,790,000₫</p>
-                                                    </div>
+
+
+
+                        <div className='flex border gap-5 px-10 py-5 rounded-lg'>
+                            <div>
+                                <div className='flex gap-4'>
+                                    <img src="http://localhost:5173/src/img/sl.webp" className='w-1/3 rounded-lg' alt="" />
+                                    <div>
+                                        <h2 className='text-2xl font-medium'></h2>
+                                        <div className='py-4'>
+                                            <p className='py-1font-medium'>Tuyệt vời</p>
+                                            <p>358 Quan tâm</p>
+                                            <div className='flex justify-between'>
+                                                <p className='py-3'>Số booking: 2HBNDFSBV43476</p>
+                                                <div>
+                                                    <p className='text-xl text-red-500 font-medium'>Quá Hạn thanh toán</p>
+                                                    <p className='text-xl text-red-500 font-medium'>14,790,000₫</p>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <p className='py-4'>1 người 6 đêm</p>
-                                            </div>
                                         </div>
-
+                                        <div>
+                                            <p className='py-4'>1 người 6 đêm</p>
+                                        </div>
                                     </div>
-                                    <div>
 
-                                    </div>
+                                </div>
+                                <div>
+
                                 </div>
                             </div>
                         </div>
+
                     </article>
+
                 </div>
             </div>
-        </div>
+
+        </div >
     )
 }
 
