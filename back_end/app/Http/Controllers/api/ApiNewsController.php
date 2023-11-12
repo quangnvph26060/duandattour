@@ -44,11 +44,11 @@ class ApiNewsController extends Controller
         $news->data = $request->input('data', $news->data);
 
         // Xử lý ảnh nếu có
-        if ($request->hasFile('hinh')) {
+        if ($request->hasFile('image')) {
             // Lưu ảnh vào thư mục public/uploads (bạn có thể tùy chỉnh đường dẫn)
-            $image = $request->file('hinh');
+            $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads'), $imageName);
+            $image->move(public_path('hinh'), $imageName);
 
             // Lưu tên ảnh vào trường image
             $news->image = $imageName;
