@@ -20,7 +20,7 @@ use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiAuthController;
-
+use App\Http\Controllers\API\ApiNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -205,5 +205,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiTourPhuongTienController::class, 'show']);
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
+    });
+    Route::prefix('news')->group(function () {
+        Route::get('/', [ApiNewsController::class, 'index']);
+        Route::post('/', [ApiNewsController::class, 'store']);
+        Route::get('/{id}', [ApiNewsController::class, 'show']);
+        Route::put('/{id}', [ApiNewsController::class, 'update']);
+        Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
     });
 });
