@@ -17,6 +17,7 @@ use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
 use App\Http\Controllers\api\ApiMessageController;
 use App\Http\Controllers\api\ApiDiscountController;
+use App\Http\Controllers\Api\ApiSearchController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -68,18 +69,29 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
+
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
-// dat tour
+Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
 Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
+
+Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
 Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+
+//api láy all điểm đến của tour làm chức năng search
+Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
+//api láy all điểm đi của tour làm chức năng search
+Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
@@ -206,5 +218,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiTourPhuongTienController::class, 'show']);
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
+    });
+
+    Route::prefix('dattour')->group(function () {
+        //list all BookingTour
+        Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
+        //list BookingTour chưa thanh toán
+        Route::get('/getListBookingTourUnpaid', [ApiDatTourController::class, 'getListBookingTourUnpaid']);
+        //list BookingTour đã thanh toán
+        Route::get('/getListBookingTourPaid', [ApiDatTourController::class, 'getListBookingTourPaid']);
+        // Chi tiết booking tour
+        Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
+        Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
     });
 });

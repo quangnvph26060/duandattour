@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../page.css'
 import '../messenger.css';
 import { Link } from 'react-router-dom';
@@ -25,16 +25,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import MessageChatBox from './Client/Message/Message';
-import { useStateContext  } from "../context/ContextProvider";
+import { useStateContext } from "../context/ContextProvider";
 const rounded = {
   borderRadius: '25px',
 };
 const HomePage = () => {
-  
+
   // const { user, setUser, userid, setUserId } = useStateContext();
   // console.log(user);
   // test
- 
+
   // boxchat
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [inputValue, setInputValue] = useState('');
@@ -340,7 +340,7 @@ const HomePage = () => {
           </div>
         </div>
       </div> */}
-      <MessageChatBox/>
+      <MessageChatBox />
 
       <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
@@ -480,7 +480,6 @@ const HomePage = () => {
       </div>
 
       {/*  */}
-
       <div className="content">
         <div className="content">
           <h2 className='mt-5 mb-5 home-page__title '>KHÁM PHÁ ƯU ĐÃI POLYTOUR!!!</h2>

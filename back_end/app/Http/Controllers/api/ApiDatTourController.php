@@ -4,62 +4,163 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\DatTour;
+use App\Models\ThanhToan;
+use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 class ApiDatTourController extends Controller
 {
     //
     public function getDatTour(Request $request, $id)
     {
-        $tour = TourModel::with('images')->find($id);
-        $user = null;
+        $result = TourModel::find($id);
+        if ($result) {
+            $tour = TourModel::with('images')->first();
+            $user = null;
 
-        if (Auth::guard('sanctum')->check()) {
-            $user = Auth::guard('sanctum')->user();
+            if (Auth::guard('sanctum')->check()) {
+                $user = Auth::guard('sanctum')->user();
+            }
+            $response = [
+                'data' => $tour,
+                'user' => $user,
+            ];
         }
-
-        $response = [
-            'data' => $tour,
-            'user' => $user,
-        ];
 
         return response()->json($response);
     }
 
     public function createDatTour(Request $request)
     {
+      
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
-        $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
-       // $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
-       // $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
+        // $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
+        $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
+        $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
         $createDatTour = DatTour::create($datTour);
         return response()->json(['createDatTour' => $createDatTour]);
+        if ($request->has('so_luong_khach')) {
+            // Trường 'so_luong_khach' đã tồn tại trong yêu cầu HTTP
+            // Tiếp tục truy cập vào giá trị của trường 'so_luong_khach'
+            $soLuongKhach = $request->input('so_luong_khach');
+            // Tiếp tục xử lý với giá trị $soLuongKhach
+        } else {
+            // Trường 'so_luong_khach' không tồn tại trong yêu cầu HTTP
+            // Thực hiện xử lý mặc định ở đây (ví dụ: gán giá trị mặc định là 1)
+            $soLuongKhach = 1;
+        }
+        $tourone = TourModel::find($datTour['id_tour']);
+        if ($soLuongKhach <= $tourone->soluong) {
+            $createDatTour = DatTour::create($datTour);
+            $soluong = $tourone->soluong - $soLuongKhach;
+            if ($createDatTour) {
+                $tourone->soluong = $soluong;
+                $tourone->save();
+            }
+            return response()->json(['createDatTour' => $createDatTour]);
+        } else {
+            return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);
+        }
     }
-   
+    public function indexDat()
+    {
+        $dattour = DatTour::all();
+        return response()->json(['code' => 200, 'dattour' => $dattour]);
+    }
+
 
     // public function demo()
     // {
-    //     $datTours = DatTour::all();
-    
-    //     $result = [];
-    
-    //     foreach ($datTours as $datTour) {
-
-    //         $ngayDat = Carbon::parse($datTour->ngay_dat);
-    //          // Chuyển đổi giá trị ngày đặt thành đối tượng Carbon
-    //         $ngayDatCongMotGio = $ngayDat->addHour(1);
-    //          // Cộng thêm một giờ vào ngày đặt
-    
-    //         $result[] = [
-    //             'ngay_dat_ban_dau' => $datTour->ngay_dat,
-    //             'ngay_dat_cong_mot_gio' => $ngayDatCongMotGio->toDateTimeString()
-    //         ];
+    //     $currentDate = Carbon::now()->toDateString(); // Lấy ngày hiện tại
+    //     $tours = DatTour::all(); // Lấy danh sách các tour
+        
+    //     foreach ($tours as $tour) {
+    //         $expirationDate = $tour->ngay_het_han;
+           
+    //         if ($expirationDate < $currentDate && $tour->trang_thai == 0) {
+    //             // Xóa các bản ghi trong bảng "Thanh toán" (Payment) liên quan đến tour
+               
+    //             if ($tour->ThanhToan) {
+    //                 $tour->ThanhToan->delete();
+    //             }
+        
+    //             // Xóa tour
+    //             $tour->delete();
+    //         }
     //     }
-    
-    //     return response()->json($result);
+        
+    //     return 'Xóa các tour hết hạn thành công';
     // }
 
+    public function getListBookingTour()
+    {
+
+        $bookings = DatTour::with('ThanhToan', 'tours.images')->get();
+        return response()->json(['data' => $bookings], 200);
+    }
+
+    public function getListBookingTourUnpaid()
+    {
+
+        $bookingsUnpaid = DatTour::with('ThanhToan', 'tours.images')
+            ->where('trang_thai', 0)
+            ->get();
+        return response()->json(['data' => $bookingsUnpaid], 200);
+    }
+
+    public function getListBookingTourPaid()
+    {
+
+        $bookingsUnpaid = DatTour::with('ThanhToan', 'tours.images')
+            ->where('trang_thai', 1)
+            ->get();
+        return response()->json(['data' => $bookingsUnpaid], 200);
+    }
+
+    public function getBookingTourDeltail($id)
+    {
+        $bookingtour = DatTour::find($id);
+        if ($bookingtour) {
+            $bookings = DatTour::with('ThanhToan', 'tours.images')->find($id);
+            return response()->json(['data' => $bookings], 200);
+        }
+        // return response()->json(['booking'=>$bookingtour],200);
+        return response()->json(['message' => 'Không tìm thấy booking tour'], 404);
+    }
+
+    public function updateStatus($id)
+    {
+        $updateStatus = DatTour::find($id);
+        if ($updateStatus->trang_thai == 0) {
+            $thantoandata = ThanhToan::where('id_dat_tour', $id)->first();
+            if($thantoandata){
+                ThanhToanDetail::create([
+                    'ma_giao_dich' => $thantoandata->ma_giao_dich,
+                    'tong_tien_tt' => $thantoandata->tong_tien_tt,
+                    'pttt' => $thantoandata->pttt,
+                    'ma_phan_hoi' => null,
+                    'ghi_chu' => null,
+                    'ma_ngan_hang' => null,
+                    'ngay_thanh_toan' => date('Y-m-d H:i:s'),
+                    'id_dat_tour' =>  $id,
+                ]);
+                $thantoandata->delete();
+    
+                // Cập nhật trạng thái của đơn đặt tour
+                $updateStatus->trang_thai = 1;
+                $updateStatus->save();
+    
+                return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
+            }
+        } else if ($updateStatus->trang_thai == 1) {
+            $updateStatus->trang_thai = 0;
+            $updateStatus->save();
+            return response()->json(['message' => 'Cập nhập chưa thanh toán thành công!!'], 200);
+        }
+        // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+    }
 }

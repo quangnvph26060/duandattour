@@ -11,6 +11,7 @@ import UserApi, { UserReducer } from "../api/UserApi";
 import DatourApi,{DattourReducer} from "../api/dattour";
 import DiscountApi,{DiscountRedeucer} from "../api/discountApi";
 import TourDiscountApi,{TourDiscountRedeucer} from "../api/TourDiscountApi";
+import CheckingApi,{CheckingReducer} from "../api/Check";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -24,6 +25,8 @@ import {
 } from 'redux-persist';
 import DangNhapApi, { DangNhapReducer } from "../api/dangnhap";
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import QuanlydattoutApi, { QuanlydattourReducer } from "../api/qlydattour";
+
 
 
 // Cấu hình persist ( lưu localStorage )
@@ -46,7 +49,9 @@ const rootReducer = combineReducers({
     [KhachSanApi.reducerPath]: KhachSanRedeucer,
     [DatourApi.reducerPath]:DattourReducer,
     [DiscountApi.reducerPath]:DiscountRedeucer,
-    [TourDiscountApi.reducerPath]:TourDiscountRedeucer
+    [TourDiscountApi.reducerPath]:TourDiscountRedeucer,
+    [CheckingApi.reducerPath]:CheckingReducer,
+    [QuanlydattoutApi.reducerPath]:QuanlydattourReducer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -64,7 +69,9 @@ export const store = configureStore({
              TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
              HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
-             UserApi.middleware,DatourApi.middleware,DiscountApi.middleware,TourDiscountApi.middleware),
+             UserApi.middleware,DatourApi.middleware,DiscountApi.middleware,TourDiscountApi.middleware
+             , CheckingApi.middleware,QuanlydattoutApi.middleware),
+          
 
 })
 export type AppDispatch = typeof store.dispatch

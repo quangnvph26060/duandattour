@@ -28,18 +28,23 @@ class DattourCommand extends Command
     public function handle()
     {
         
-     
+       
         $currentDate = Carbon::now()->toDateString(); // Lấy ngày hiện tại
         $tours = DatTour::all(); // Lấy danh sách các tour
-
+        
         foreach ($tours as $tour) {
             $expirationDate = $tour->ngay_het_han;
+           
             if ($expirationDate < $currentDate && $tour->trang_thai == 0) {
-                // Xóa tour nếu ngày hết hạn đã qua và trạng thái là 0
+                
+                if ($tour->ThanhToan) {
+                    $tour->ThanhToan->delete();
+                }
+                // Xóa tour
                 $tour->delete();
             }
         }
-
+        
         return 'Xóa các tour hết hạn thành công';
     
     }

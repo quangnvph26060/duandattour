@@ -8,7 +8,7 @@ import SignIn from "./auth/signin";
 import DetailPage from "./pages/Client/detail";
 import BookTour from "./pages/Client/Book_tour";
 import Contact from "./pages/Client/contact";
-import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
+
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
@@ -55,6 +55,9 @@ import AdminGiam_GiaEdit from "./pages/Admin/products/GiamGia/edit";
 import Admin_TourDiscount from "./pages/Admin/products/Tour_GiamGia";
 import Admin_TourDiscountADD from "./pages/Admin/products/Tour_GiamGia/add";
 import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
+import ADmin_Qlytourchuathanhtoan from "./pages/Admin/products/Dat_tour/index2";
+import ADmin_Qlytourdathanhtoan from "./pages/Admin/products/Dat_tour/index3";
+import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 export const router = createBrowserRouter([
   
   {
@@ -98,7 +101,7 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "booking/:id",
+        path: "bookingtour/:id",
         element: <Info_tour_bocking />,
       },
       {
@@ -284,6 +287,15 @@ export const router = createBrowserRouter([
         path: "tour/tour_discount/edit/:idtourdiscount",
         element: <Admin_TourDiscountEDIT />,
       },
+      {
+        path: "tour/tour_chuathanhtoan",
+        element: <ADmin_Qlytourchuathanhtoan />,
+      },
+      {
+        path: "tour/tour_dathanhtoan",
+        element: <ADmin_Qlytourdathanhtoan />,
+      },
+    
     ],
   },
 ]);
