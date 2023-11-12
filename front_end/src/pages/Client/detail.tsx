@@ -18,7 +18,11 @@ import logo from "./img/logo.jpg"
 import { useGetTourByIdQuery, useGetdetailTourByIdQuery } from "../../api/TourApi";
 
 type Props = {};
-
+const img = {
+  borderRadius: "10px",
+  witdh: "100px",
+  height: "66px",
+};
 const DetailPage = (props: Props) => {
   const radius = {
     borderRadius: "10px",
@@ -41,6 +45,7 @@ const DetailPage = (props: Props) => {
     height: "210px",
     width: "309px  ",
   };
+
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
 
@@ -51,7 +56,7 @@ const DetailPage = (props: Props) => {
 
   return (
     <div className="container mx-auto ">
-      
+
       <div className="Menu  h-10 "></div>
       {/* Header trên ội dung dưới*/}
       <div className="Detail   bg-[#f9f9f9] h-[1500px]">
@@ -59,7 +64,7 @@ const DetailPage = (props: Props) => {
           <div className="Title flex ml-[120px] justify-between py-10">
             <div className="title">
               <p className="text-[26px] text-[#2D4271] font-bold">
-              {datatourArray?.ten_tour}
+                {datatourArray?.ten_tour}
               </p>
             </div>
 
@@ -80,8 +85,8 @@ const DetailPage = (props: Props) => {
                   <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                 </svg>
                 <Link to={`/booktour/${idTour}`}>
-  Đặt ngay
-</Link>
+                  Đặt ngay
+                </Link>
 
 
               </button>
@@ -105,16 +110,16 @@ const DetailPage = (props: Props) => {
             </h2>
           </div>
           <div className="Image ml-[120px] gap-5 flex">
-          {images && images.length > 0 ? (
-      <div>
-        {/* {images.map((image) => ( */}
-          <img key={images[0].id}      src={`http://localhost:8000/storage/${images[0].image_path}`}  />
-        {/* ))} */}
-      </div>
-    ) : (
-      <p>Không có hình ảnh cho tour này.</p>
-    )}  
-    {/* {images && images.length > 0 ? (
+            {images && images.length > 0 ? (
+              <div>
+                {/* {images.map((image) => ( */}
+                <img style={radius2} key={images[0].id} src={`http://localhost:8000/storage/${images[0].image_path}`} />
+                {/* ))} */}
+              </div>
+            ) : (
+              <p>Không có hình ảnh cho tour này.</p>
+            )}
+            {/* {images && images.length > 0 ? (
             <div>
               {" "}
               <div className="flex gap-5">
@@ -140,12 +145,12 @@ const DetailPage = (props: Props) => {
              ) : (
               <p>Không có hình ảnh cho tour này.</p>
             )}   */}
-        
+
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
             <div className="Desc text-[#2D4271] text-[15px]">
               <p className="max-w-[500px]">
-            {datatourArray?.mo_ta}
+                {datatourArray?.mo_ta}
               </p>
               <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
@@ -158,12 +163,12 @@ const DetailPage = (props: Props) => {
                   Thời gian {datatourArray?.thoi_gian}
                 </p>
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
-                
+
                   Nơi khởi hành {datatourArray?.diem_khoi_hanh}
                 </p>
                 <p className="mt-1   text-[#2D4271] text-[18px] font-medium">
-             
-                  Số lượng {datatourArray?.soluong  }
+
+                  Số lượng {datatourArray?.soluong}
                 </p>
               </div>
             </div>
@@ -232,36 +237,36 @@ const DetailPage = (props: Props) => {
               <h2>Lịch trình</h2>
             </div>
             <div className="ml-[120px] flex gap-2 mr-[115px] lichtring max-h-[2000px] bg-white border-[1px] rounded border-gray-400 ">
-            <div className="w-1/3 bg-[#f9f9f9]">
-            <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-            
-            {datatourArray && datatourArray.lich_t_rinh ? (
-  datatourArray.lich_t_rinh.map((tieude) => (
-    <p className="mb-20" key={tieude.id}>{tieude.tieu_de}</p>
-  ))
-) : (
-  <p>Không có lịch trình.</p>
-)}
-            </h2>
-         
-       
-            
-          
-            </div>
-            <div className="w-2/3 ">
-              <div className="max-w-full">
-              <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
-              {datatourArray && datatourArray.lich_t_rinh ? (
-  datatourArray.lich_t_rinh.map((tieude) => (
-    <p key={tieude.id}>{tieude.noi_dung}</p>
-  ))
-) : (
-  <p>Không có lịch trình.</p>
-)}
-            </h2>
-               
-              </div>  
-            </div>
+              <div className="w-1/3 bg-[#f9f9f9]">
+                <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+
+                  {datatourArray && datatourArray.lich_t_rinh ? (
+                    datatourArray.lich_t_rinh.map((tieude) => (
+                      <p className="mb-20" key={tieude.id}>{tieude.tieu_de}</p>
+                    ))
+                  ) : (
+                    <p>Không có lịch trình.</p>
+                  )}
+                </h2>
+
+
+
+
+              </div>
+              <div className="w-2/3 ">
+                <div className="max-w-full">
+                  <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
+                    {datatourArray && datatourArray.lich_t_rinh ? (
+                      datatourArray.lich_t_rinh.map((tieude) => (
+                        <p key={tieude.id}>{tieude.noi_dung}</p>
+                      ))
+                    ) : (
+                      <p>Không có lịch trình.</p>
+                    )}
+                  </h2>
+
+                </div>
+              </div>
             </div>
             <div className="ml-[120px] chitiet">
               <div className="row gap-[48px] flex justify-between">

@@ -184,7 +184,9 @@ const BookTour = () => {
         };
         const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
         setPaymentResult(paymentResponse.data);
-        window.location.href = `/booking/:id`; // chuyển hướng khi thành công
+
+        alert('Đặt tour bằng tiền mặt thành công')
+        window.location.href = `/bookingtour/${paymentResponse.data.id_dat_tour}`;
       } catch (error) {
         setIsLoading(false);
         setResponseMessage("Lỗi trong quá trình gửi yêu cầu.");
@@ -322,13 +324,11 @@ const BookTour = () => {
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
                   <input
-                    type="text"
-                    id="ten_khach_hang"
-                    name="ten_khach_hang"
-                    value={formData.ten_khach_hang}
-                    onChange={handleChange}
-                    defaultValue={token ? formData.ten_khach_hang : ""}
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
+                    type="text" value={formData.ten_khach_hang} name='sdt' id='sdt'
+                    onChange={handleChange} defaultValue={token ? formData.ten_khach_hang : ""}
                   />
+
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"

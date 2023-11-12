@@ -6,13 +6,22 @@ import { Table, Button, Skeleton, Popconfirm, Alert, } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons"
 import { AiOutlinePlus } from "react-icons/ai";
-
-import { useEffect } from "react";
+import { IQuanlyDattour } from "../../../../interface/qlytdatour";
+import { useEffect, useState } from "react";
 import React from "react";
+import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
+import { Modal, Descriptions } from 'antd';
 const ADmin_DatTour = (props: Props) => {
+  
 
     // 1 useGetdattour
-
+        const {data:Data} = useGetQuanlydattourQuery()
+        const DataQuanly = Data?.data|| []
+      
+        const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
+      
+        console.log(Tourinfo);
+  
     // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     // useRemove();
 
@@ -23,40 +32,16 @@ const ADmin_DatTour = (props: Props) => {
     //     removeProduct(id);
 
     // };
-    const navigate = useNavigate();
-    useEffect(() => {
 
-    }, [navigate])
 
     //  const dattour = dattour?.data || [];
 
-    // const dataSource = dattour.map(({ id_dat_tour,ngay_dat,trang_thai,id_tour,id_khach_hang,so_luong}: TDattour) => ({
-    //  key:  id_dat_tour,ngay_dat,trang_thai,id_tour,id_khach_hang,so_luong
-    //   
-    // }));
+    const dataSource = DataQuanly.map(({ id,ten_khach_hang,ngay_dat,trang_thai,id_tour,so_luong_khach,ten_tour}: IQuanlyDattour) => ({
+     key:  id,ngay_dat,trang_thai,id_tour,so_luong_khach,ten_khach_hang,ten_tour:Tourinfo.ten_tour,
+      
+    }));
 
 
-    const dataSource = [
-        {
-            key: '1',
-            ma_dat_tour: 'DT001',
-            ngay_dat: '2023-10-16',
-            trang_thai: 'Chưa thanh toán',
-            id_tour: 'T001',
-            id_khach_hang: 'KH001',
-            so_luong: 2,
-        },
-        {
-            key: '2',
-            ma_dat_tour: 'DT002',
-            ngay_dat: '2023-10-17',
-            trang_thai: 'Chưa thanh toán',
-            id_tour: 'T002',
-            id_khach_hang: 'KH002',
-            so_luong: 3,
-        },
-
-    ];
 
 
     const columns = [
@@ -66,30 +51,42 @@ const ADmin_DatTour = (props: Props) => {
             key: "key",
         },
         {
+            title: 'Tour được đặt đặt',
+            dataIndex: 'ten_tour',
+            key: 'ten_tour',
+            onCell: () => ({
+              style: { cursor: 'pointer', textDecoration: 'underline' },
+            }),
+            render: (text, record) => (
+              <span onClick={() => openModal(record)}>
+                {text}
+              </span>
+            ),
+          },
+        {
             title: "Ngày đặt",
             dataIndex: "ngay_dat",
             key: "ngay_dat",
         },
+    
         {
-            title: "Tour được đặt",
-            dataIndex: "id_tour",
-            key: "id_tour",
-        },
-        {
-            title: "Mã khách hàng",
-            dataIndex: "id_khach_hang",
-            key: "id_khach_hang",
+            title: "Tên khách hàng",
+            dataIndex: "ten_khach_hang",
+            key: "ten_khach_hang",
         },
         {
             title: "Số lượng đặt",
-            dataIndex: "so_luong",
-            key: "so_luong",
+            dataIndex: "so_luong_khach",
+            key: "so_luong_khach",
         },
         {
             title: "Trạng thái",
             dataIndex: "trang_thai",
             key: "trang_thai",
-        },
+            render: (trang_thai) => {
+              return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+            },
+          },
 
 
         {
@@ -127,7 +124,8 @@ const ADmin_DatTour = (props: Props) => {
             },
         },
     ];
-
+    
+    
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
@@ -136,8 +134,10 @@ const ADmin_DatTour = (props: Props) => {
             </header>
             {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
             {<Table dataSource={dataSource} columns={columns} />}
+       
+            
         </div>
     );
-};
+}
 
 export default ADmin_DatTour;

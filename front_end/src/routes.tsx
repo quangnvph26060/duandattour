@@ -48,8 +48,7 @@ import { Route, Routes } from "react-router-dom";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import Giohanguser from "./pages/giohanguser";
-import Doimk from "./pages/changeMk";
-import Dmkuser from "./pages/doimk";
+import Dmkuser from "./pages/changeMk";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -92,7 +91,7 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "booking/:id",
+        path: "bookingtour/:id",
         element: <Info_tour_bocking />,
       },
       {

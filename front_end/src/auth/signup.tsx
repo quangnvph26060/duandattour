@@ -67,13 +67,14 @@ const Login = () => {
         setUser(response.data.role);
         alert("Đăng nhập thành công");
         window.location.href = 'http://localhost:5173';
-      } else {
-        console.log('Đăng nhập không thành công');
-        // Xử lý lỗi đăng nhập không thành công
+
+
       }
     } catch (error) {
       console.log('Đã xảy ra lỗi', error);
-      // Xử lý lỗi kết nối hoặc lỗi từ phía server
+
+      // Xử lý lỗi đăng nhập không thành công
+      alert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.");
     }
   };
 
