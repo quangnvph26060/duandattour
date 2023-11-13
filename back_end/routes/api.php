@@ -68,6 +68,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
+    //api thay đổi mật khẩu
+    Route::put('changepassword',[ApiAuthLoginController::class,'changePassword']);
 });
 
 
