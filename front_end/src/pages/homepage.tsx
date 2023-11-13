@@ -28,6 +28,14 @@ const rounded = {
   borderRadius: '25px',
 };
 const HomePage = () => {
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+    return formatter.format(value);
+  };
+
   // boxchat
   const [messageHistory, setMessageHistory] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -127,7 +135,7 @@ const HomePage = () => {
     id: 1,
     name: 'Combo Vũng Tàu 3N2Đ: Vé máy bay khứ hồi + Khách sạn lusion 4 sao (Bao gồm Ăn sáng)',
     image: sl,
-    price: 2.10,
+    price: 2000000,
     details: 'Vũng Tàu 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
     code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
@@ -138,7 +146,7 @@ const HomePage = () => {
     id: 2,
     name: 'Combo Dà Nẵng 4N2Đ: Vé máy bay khứ hồi + Khách sạn Hồng Thanh Boutique 5 sao (Bao gồm ăn uống)',
     image: cc,
-    price: 99.9,
+    price: 7000000,
     details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
     code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
@@ -150,7 +158,7 @@ const HomePage = () => {
     id: 3,
     name: 'Combo Quy Nhơn 3N2Đ: Vé máy bay khứ hồi + Khách sạn LAmor Boutique 4 sao (Bao gồm Ăn sáng)',
     image: bh,
-    price: 55.9,
+    price: 9000000,
     details: 'Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách',
     code: ' Ngày đi : 15/12/2003',
     start: 'Nơi khởi hành: TP. Hồ Chí Minh'
@@ -516,7 +524,10 @@ const HomePage = () => {
           <Link to="/:id/tour" className="text-blue-500 hover:underline">
   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
 </Link>
-                <p className='price'>Giá :1500000đ</p><p style={{color:'#fd5056',fontSize:"18px",fontWeight:'700'}}>{item.gia_tour}đ</p>
+<p className='price'>Giá: {formatCurrency(15000000)}</p>
+      <p style={{ color: '#fd5056', fontSize: '18px', fontWeight: '700' }}>
+        {formatCurrency(item.gia_tour)}
+      </p>
                 <p className='text mt-2'>{item.mo_ta}</p>
                 
                 <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
@@ -553,7 +564,7 @@ const HomePage = () => {
                 </button>
                 <h3 className="text-lg font-bold">{sale.name}</h3>
                 <p className='price-c'>Giá chỉ từ</p>
-                <p className="price-t ">${sale.price.toFixed(2)}</p>
+                <p className="price-t ">{formatCurrency(sale.price)}</p>
                 <p>{sale.details}</p>
                 <p>{sale.code}</p>
                 <div className="flex justify-between mt-4">
