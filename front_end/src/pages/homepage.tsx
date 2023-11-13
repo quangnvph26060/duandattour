@@ -433,43 +433,22 @@ const HomePage = () => {
       </div>
 
       <div className="content">
-        <div className="content">
-          <h2 className='mt-5 mb-5 home-page__title '>CHƯƠNG TRÌNH ƯU ĐÃI!!!</h2>
-          <Slider
-            className="product-list1 grid gap-4 grid-cols-1  "
-            dots={true}
-            infinite={true}
-            speed={500}
-            slidesToShow={3}
-            slidesToScroll={1}
-            responsive={[
-              {
-                breakpoint: 1024,
-                settings: {
-                  slidesToShow: 2,
-                  slidesToScroll: 1,
-                },
-              },
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 1,
-                  slidesToScroll: 1,
-                },
-              },
-            ]}
-          >
-            {products.map((product) => (
-              <div key={product.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center ">
-                <img
-                  className="mt-4 rounded-lg w-full h-40 object-cover"
-                  src={product.image}
+      <div className="content">
+  <h2 className='mt-5 mb-5 home-page__title'>CHƯƠNG TRÌNH ƯU ĐÃI!!!</h2>
+  <div className="product-list1 grid gap-4 grid-cols-3">
+    {products.map((product) => (
+      <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
+        <img
+          className="rounded-lg w-full h-40 object-cover mb-4"
+          src={product.image}
+          alt={product.name}
+        />
+       
+      </div>
+    ))}
+  </div>
 
-                />
-              </div>
-            ))}
-          </Slider>
-        </div>
+</div>
       </div>
 
       {/*  */}

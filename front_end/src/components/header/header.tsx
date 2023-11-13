@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const HeaderWebsite = () => {
     return  <div> <div className="menu flex items-center justify-between">
     <div className='flex'>
-      <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+      <a href="/"><img style={rounded} src={logo} alt="logo" width="80px" /></a>
 
       <nav className='font-semibold p-4 pt-6 pl-18'>
         <ul className='flex text-[#2D4271] gap-12'>

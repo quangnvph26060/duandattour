@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import '../tour.css'
 import { IPour } from "../interface/home";
 import { Link } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -17,6 +18,21 @@ import anh15 from "../img/anh15.jpg"
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 const TourPage = () => {
+  const [budget, setBudget] = useState(0);
+
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+    return formatter.format(value);
+  };
+
+  const handleBudgetChange = (event) => {
+    const newBudget = event.target.value;
+    setBudget(newBudget);
+  };
+
   const [searchTerm, setSearchTerm] = useState("");
   const [tours, setTours] = useState<IPour[]>([]);
   const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
@@ -43,7 +59,7 @@ const TourPage = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-
+ 
   const handleSearch = () => {
     const filteredTours = tours.filter((tour) =>
       tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
@@ -70,7 +86,7 @@ const TourPage = () => {
       {/*  */}
       <div> <div className="menu flex tours-center justify-between">
         <div className='flex'>
-          <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
+          <a href="/"><img style={rounded} src={logo} alt="logo" width="80px" /></a>
 
           <nav className='font-semibold p-4 pt-6 pl-18'>
             <ul className='flex text-[#2D4271] gap-12'>
@@ -104,9 +120,9 @@ border-[3px] px-2 py-2  rounded"
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside style={{ borderRadius: '10px' }} className='w-1/4 bg-gray-100 h-[1300px]'>
+        <aside  style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1400px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
-          <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
+          <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Tour</h2>
           <div className='text-center p-2 py-4 '>
             <select className='rounded-md border border-black'>
               <option value="1">Du lịch</option>
@@ -120,21 +136,54 @@ border-[3px] px-2 py-2  rounded"
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
               <option value="1">-- Tất cả --</option>
-              <option value="2">okok</option>
+              <option value="2">Du lịch sinh thái.</option>
+              <option value="2">Du lịch văn hóa.</option>
+              <option value="2">Du lịch nghỉ dưỡng.</option>
+              <option value="2">Du lịch giải trí</option>
+              <option value="2">Du lịch thể thao.</option>
+              <option value="2">Du lịch khám phá</option>
+              <option value="2">Du lịch mạo hiểm</option>
+              <option value="2">Du lịch kết hợp</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Điểm đi</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
-              <option value="1">-- Tất cả --</option>
-              <option value="2">okok</option>
+            <option value="">Chọn Điểm đi</option>
+              <option value="">Hà Nội</option>
+              <option value="male">Hải Phòng</option>
+              <option value="female">Nam Định</option>
+              <option value="female">Vũng Tàu</option>
+              <option value="female">Tp. HCM</option>
+              <option value="female">Bà Rịa </option>
+              <option value="female">Ba Vì</option>
+              <option value="female">Đà Lạt</option>
+              <option value="female">Huế</option>
+              <option value="female">Quảng Bình</option>
+              <option value="female">Tây nguyên </option>
+              <option value="female">Bình Định</option>
+              <option value="female">Quảng Nam</option>
+              <option value="female">Hà Tĩnh</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Điểm đến</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
-              <option value="1">-- Chọn điểm đến --</option>
-              <option value="2">okok</option>
+            <option value="">Chọn Điểm đến</option>
+              <option value="">Hà Nội</option>
+              <option value="male">Hải Phòng</option>
+              <option value="female">Nam Định</option>
+              <option value="female">Vũng Tàu</option>
+              <option value="female">Tp. HCM</option>
+              <option value="female">Bà Rịa </option>
+              <option value="female">Ba Vì</option>
+              <option value="female">Đà Lạt</option>
+              <option value="female">Huế</option>
+              <option value="female">Quảng Bình</option>
+              <option value="female">Tây nguyên </option>
+              <option value="female">Bình Định</option>
+              <option value="female">Quảng Nam</option>
+              <option value="female">Hà Tĩnh</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
@@ -193,12 +242,14 @@ border-[3px] px-2 py-2  rounded"
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Giá tốt</button>
             </div>
           </div>
-          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm______________________________</p>
-          <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách</p>
-          <div className='px-3 pt-1'>
-            <input className='w-60' type="range" />
-          </div>
-          <p className='px-3'>0đ - 200.000.000đ</p>
+          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm__________________</p>
+          <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
+  
+      <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách: {formatCurrency(budget)}</p>
+      <div className='px-3 pt-1'>
+        <input className='w-60' type="range" min="0" max="200000000" onChange={handleBudgetChange} />
+      </div>
+      <p className='px-3'>0đ - {formatCurrency(200000000)}</p>
           <p className='px-3 text-lg font-medium py-1'>Thông tin vận chuyển</p>
           <div className='flex gap-3 py-1 pt-2 container justify-center'>
             <div className=''>
@@ -208,12 +259,8 @@ border-[3px] px-2 py-2  rounded"
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Ô tô</button>
             </div>
           </div>
-          <h2 className='px-3 text-lg font-medium py-1'>Hiển Thị những chuyến đi có</h2>
-          <div className='px-3 pb-5'>
-            <input type="radio" value="" name="" id="" />Khuyến mãi
-            <br />
-            <input type="radio" value="" name="" id="" />Còn chỗ
-          </div>
+          <button className="bt mt-4 mb-6 ml-7">Hiển thị những chuyến đi có</button>
+        
         </aside>
 
         {/*conten-right*/}
