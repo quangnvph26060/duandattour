@@ -102,12 +102,12 @@ class ApiAuthLoginController extends Controller
     public function getToursByUserId()
     {
         $userId = Auth::id();
-        $bookings = DatTour::with('ThanhToan', 'tours.images')->where('ma_khach_hang', $userId)->get();
-        return response()->json(['data' => $bookings], 200);
+        // $bookings = DatTour::with('ThanhToan', 'tours.images', 'tours.loaiTours')->where('ma_khach_hang', $userId)->get();
+        // return response()->json(['data' => $bookings], 200);
 
-        // $userBookings = DatTour::where('ma_khach_hang', $userId)->with('tours', 'ThanhToan', 'loaiTours', 'images')->get();
+        $userBookings = DatTour::where('ma_khach_hang', $userId)->with('ThanhToan', 'tours.images', 'tours.loaiTours')->get();
 
-        // // Lấy thông tin ma_loai_tour từ id_tour
+        // Lấy thông tin ma_loai_tour từ id_tour
         // foreach ($userBookings as $booking) {
         //     $idTour = $booking->id_tour;
         //     $maLoaiTour = TourModel::with()->find($idTour);
@@ -115,6 +115,6 @@ class ApiAuthLoginController extends Controller
         //     $booking->ma_loai_tour = $maLoaiTour;
         // }
 
-        // return response()->json([$userBookings], 200);
+        return response()->json(['data' => $userBookings], 200);
     }
 }

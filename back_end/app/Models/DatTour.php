@@ -28,6 +28,7 @@ class DatTour extends Model
         return $this->hasOne(ThanhToan::class, 'id_dat_tour');
     }
 
+
     public function tours()
     {
         return $this->belongsto(TourModel::class, 'id_tour');

@@ -57,37 +57,26 @@ const Giohanguser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
-    // useEffect(() => {
-    //     axios.get('http://127.0.0.1:8000/api/admin/dattour/user/1')
-    //         .then((response) => {
-    //             setUserTours(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Lỗi khi tải dữ liệu:', error);
-    //         });
-    // }, []);
-    console.log();
-
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/user`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((userData) => {
-                setUserTours(userData);
+        if (token) {
+            fetch('http://127.0.0.1:8000/api/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
+                .then(response => response.json())
+                .then(result => {
+                    setUserTours(result.data);
+                    console.log(result.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }, [token])
 
-            .catch((error) => {
-                console.error(error);
-            });
-        // .then(response => response.json())
-        // 
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-    }, []);
+
+    console.log(data);
 
 
 
@@ -97,7 +86,7 @@ const Giohanguser = () => {
         <div>
 
             <br /><br /><br /><br />
-            {/*  */}
+
             <div className='container mx-auto' >
                 <div className='flex gap-10'>
                     <aside className='w-1/5 container mx-auto'>
@@ -152,41 +141,51 @@ const Giohanguser = () => {
                             </div>
                         </div>
 
+                        {data.map((user) => (
 
+                            <div key={user.id}>
+                                <div className='px-2'>
+                                    <h1 className='text-2xl font-medium'>Liên tuyến Miền Trung - Miền Nam</h1>
+                                    <p className='py-3'>10/11/2023 - 20/11/2023</p>
+                                </div>
 
-                        <div className='flex border gap-5 px-10 py-5 rounded-lg'>
-                            <div>
-                                <div className='flex gap-4'>
-                                    <img src="http://localhost:5173/src/img/sl.webp" className='w-1/3 rounded-lg' alt="" />
-                                    <div>
-                                        <h2 className='text-2xl font-medium'></h2>
-                                        <div className='py-4'>
-                                            <p className='py-1font-medium'>Tuyệt vời</p>
-                                            <p>358 Quan tâm</p>
-                                            <div className='flex justify-between'>
-                                                <p className='py-3'>Số booking: 2HBNDFSBV43476</p>
+                                {Array.isArray(user.tours) && user.tours?.map((tour) => (
+                                    <div key={tour.id} className='flex border gap-5 px-10 py-5 rounded-lg'>
+                                        <div>
+                                            <div className='flex gap-4'>
+                                                <img src="http://localhost:5173/src/img/sl.webp" className='w-1/3 rounded-lg' alt="" />
                                                 <div>
-                                                    <p className='text-xl text-red-500 font-medium'>Quá Hạn thanh toán</p>
-                                                    <p className='text-xl text-red-500 font-medium'>14,790,000₫</p>
+                                                    <h2 className='text-2xl font-medium'>{tour.ten_tour}</h2>
+                                                    <div className='py-4'>
+                                                        <p className='py-1 font-medium'>Tuyệt vời</p>
+                                                        <p>358 Quan tâm</p>
+                                                        <div className='flex justify-between'>
+                                                            <p className='py-3'>Số booking: 2HBNDFSBV43476</p>
+                                                            <div>
+                                                                <p className='text-xl text-red-500 font-medium'>Quá Hạn thanh toán</p>
+                                                                <p className='text-xl text-red-500 font-medium'>14,790,000₫</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <p className='py-4'>1 người 6 đêm</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <p className='py-4'>1 người 6 đêm</p>
+
                                         </div>
                                     </div>
+                                ))
 
-                                </div>
-                                <div>
-
-                                </div>
+                                }
                             </div>
-                        </div>
+                        ))}
+
 
                     </article>
 
                 </div>
-            </div>
+            </div >
 
         </div >
     )
