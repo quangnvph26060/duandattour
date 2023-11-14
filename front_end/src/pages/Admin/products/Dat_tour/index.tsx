@@ -16,16 +16,19 @@ import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
   
-    const onChange = (checked: boolean) => {
-        console.log(`switch to ${checked}`);
-      };
-      const [messageApi, contextHolder] = message.useMessage();
-      const success = () => {
-        messageApi.open({
-          type: 'success',
-          content: 'This is a success message',
-        });
-      };
+  const onChange = (checked: boolean) => {
+    console.log(`switch to ${checked}`);
+    if (checked) {
+      success();
+    }
+  
+  };
+
+  const success = () => {
+     message.success('Trạng thái đã được chuyển đổi thành công');
+    
+  };
+ 
 
     // 1 useGetdattour
         const {data:Data} = useGetQuanlydattourQuery()
@@ -81,9 +84,7 @@ const ADmin_DatTour = (props: Props) => {
     setSelectedTour(null);
     setModalVisible(false);
   };
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+
 
     const columns = [
         {
@@ -96,12 +97,13 @@ const ADmin_DatTour = (props: Props) => {
             dataIndex: 'tours',
             key: 'tours',
             onCell: () => ({
-              style: { cursor: 'pointer', textDecoration: 'underline' },
+              style: { cursor: 'pointer', textDecoration: '' },
             }),
             render: (text, record) => {
               console.log("record.tours:", record.tours); // Thêm dòng này
               return (
                 <span onClick={() => openModal(record)}>
+                👁
                   {record.tours && record.tours.ten_tour}
                 </span>
               );
@@ -123,26 +125,26 @@ const ADmin_DatTour = (props: Props) => {
             dataIndex: "so_luong_khach",
             key: "so_luong_khach",
         },
-        {
-            title: "Trạng thái",
-            dataIndex: "trang_thai",
-            key: "trang_thai",
-            render: (trang_thai, { key: id }: any) => {
-              const check = trang_thai === 0 ? false : true;
-              console.log(id);
-      
-              return (
-                <Switch
-                  defaultChecked={check}
-                  onChange={(checked) => {
-                    updateStatus(id);
-                    onChange(checked);
-                  }}
-                />
-              );
-              //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+          {
+              title: "Trạng thái",
+              dataIndex: "trang_thai",
+              key: "trang_thai",
+              render: (trang_thai, { key: id }: any) => {
+                const check = trang_thai === 0 ? false : true;
+                console.log(id);
+        
+                return (
+                  <Switch
+                    defaultChecked={check}
+                    onChange={(checked) => {
+                      updateStatus(id);
+                    
+                    }}
+                  />
+                );
+                //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+              },
             },
-          },
 
 
        
@@ -202,24 +204,35 @@ const ADmin_DatTour = (props: Props) => {
             {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
             {<Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 10 }} />}
          
-            <Modal
-        visible={modalVisible}
-        onCancel={closeModal}
-        footer={null}
-        width={850} // Đặt chiều rộng của Modal theo nhu cầu
-      >
-        {selectedTour && (
-          <div>
-            <Descriptions title="Thông tin Tour" bordered>
-              <Descriptions.Item label="Tên Tour">{selectedTour.ten_tour}</Descriptions.Item>
-              {/* Thêm các thông tin khác từ tours mà bạn muốn hiển thị */}
-            </Descriptions>
+     <Modal
+  visible={modalVisible}
+  onCancel={closeModal}
+  footer={null}
+  className="rounded-md"
+>
+  {selectedTour && (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
+      <table className="w-full table-auto border-collapse border rounded">
+        <tbody>
+          {tourDetailsColumns.map((column) => (
+            <tr key={column.key} className="border-b">
+              <td className="py-2 px-4 font-semibold">{column.title}</td>
+              <td className="py-2 px-4">
+                {column.dataIndex === 'images' ? (
+                  <img src={selectedTour[column.dataIndex][0]} alt="Tour" className="w-full max-h-32 object-cover" />
+                ) : (
+                  selectedTour[column.dataIndex]
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</Modal>
 
-            <h2 style={{ marginTop: 16 }}>Chi tiết Tour</h2>
-            <Table dataSource={[selectedTour]} columns={tourDetailsColumns}  />
-          </div>
-        )}
-      </Modal>
             
         </div>
     );
