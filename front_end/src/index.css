@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* component tailwind */
+@layer components{
+  .menu-items{
+    @apply inline-block border-b-4 border-white hover:border-black;
+  }
+  .mega-menu-items {
+    @apply hover:text-red-500 cursor-pointer px-[2px] text-sm;
+  }  
+  .mega-menu-title{
+    @apply  font-semibold text-xl mb-5 text-blue-800;
+  }
+  .max-withd{
+    @apply w-max
+  }
+}
+
 /*detail*/
 .img-container {
   position: relative;

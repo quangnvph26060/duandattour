@@ -34,14 +34,56 @@ const HeaderWebsite = () => {
     <div className='flex'>
       <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
 
-      <nav className='font-semibold p-4 pt-6 pl-18'>
-        <ul className='flex text-[#2D4271] gap-12'>
-          <a href="/">PolyTour</a>
-          <a href="/tour">Tour</a>
-          <a href="/news">Tin tức</a>
-          <a href="">Khuyến mãi</a>
-          <a href="/contact">Liên hệ</a>
-        </ul>
+      <nav className='font-semibold p-4 pt-8 pl-18'>
+        <div className='max-w-7xl flex justify-between items-center mx-auto relative'>
+          <ul className='flex text-[#2D4271] max-w-7xl gap-12'>
+            <li><a href="/" className=''>PolyTour</a></li>
+            <li className='group'>
+              <a href="/tour" className='menu-items'>Tour</a>
+              {/* Menu phân cấp*/}
+                <div className='flex max-withd gap-10 bg-white p-5 absolute top-full left-15 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+                  <ul className='p-2'>
+                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Bắc</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Trung</a></li> 
+                    <li className='py-2'><a href=""className='mega-menu-items'>Tour Miền Tây Nam Bộ</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Đông Nam Bộ</a></li>
+                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                  </ul>
+
+                  <ul className='p-2'>
+                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Trung</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Bắc</a></li> 
+                    <li className='py-2'><a href=""className='mega-menu-items'>Tour Miền Tây Nam Bộ</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Đông Nam Bộ</a></li>
+                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                  </ul>
+
+                  <ul className='p-2'>
+                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Tây Nam Bộ</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Trung</a></li> 
+                    <li className='py-2'><a href=""className='mega-menu-items'>Tour Miền Bắc</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Đông Nam Bộ</a></li>
+                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                  </ul>
+
+                  <ul className='p-2'>
+                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Đông Nam Bộ</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Trung</a></li> 
+                    <li className='py-2'><a href=""className='mega-menu-items'>Tour Miền Tây Nam Bộ</a></li>
+                    <li className='py-2'><a href="" className='mega-menu-items'>Tour Miền Bắc </a></li>
+                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                  </ul>
+                </div>
+              {/* Menu phân cấp*/}
+            </li>
+            <li><a href="/news" className=''>Tin tức</a></li>
+            <li><a href="" className=''>Khuyến mãi</a></li>
+            <li><a href="/contact" className=''>Liên hệ</a></li>
+          </ul>
+          {/* <ul>
+            <li><a href="">kjhlkjh</a></li>
+          </ul> */}
+        </div>
       </nav>
     </div>
     <div className="search flex items-center">
