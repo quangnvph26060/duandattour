@@ -20,14 +20,15 @@ const LayoutAdmin = () => {
     } = theme.useToken();
 
     return (
+
         <div>
-            <div className="bg-white border-b-2 border-black">
+            <div className="bg-white  border-b-2 border-black">
                 <img src="https://img.fcbayern.com/image/upload/t_cms-2x1/f_auto/w_1600,c_fill/q_auto/v1694938726/cms/public/images/fcbayern-com/homepage/Saison-23-24/Gegner/Manchester%20United/160812-manchester-united-logo-ima-169.jpg" height={50} width={50} alt="" />
             </div>
-            <Layout className="h-screen">
+            <Layout className="h-screen ">
 
                 <Sider trigger={null} collapsible collapsed={collapsed}>
-                    <div className="demo-logo-vertical" />
+                    <div className=" demo-logo-vertical" />
 
                     <Menu
                         theme="dark"
@@ -56,22 +57,45 @@ const LayoutAdmin = () => {
                             <Menu.Item key="2-6">
                                 <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
                             </Menu.Item>
-                            <Menu.SubMenu key="2-7" title="Quản lý hình ảnh">
-                                <Menu.Item key="2-7-1">
+                            <Menu.Item key="2-7">
+                                <Link to="/admin/customer_feedback">Customer Feedback</Link>
+                            </Menu.Item>
+                            <Menu.SubMenu key="2-8" title="Quản lý hình ảnh">
+                                <Menu.Item key="2-8-1">
                                     <Link to="/admin/tour/image/">Danh sách hình ảnh</Link>
                                 </Menu.Item>
-                                <Menu.Item key="2-7-2">
+                                <Menu.Item key="2-8-2">
                                     <Link to="/admin/tour/image_tour">Quản lý  hình ảnh tour</Link>
                                 </Menu.Item>
                             </Menu.SubMenu>
+                            <Menu.SubMenu key="2-9" title="Quản lý mã giảm giá">
+                                <Menu.Item key="2-9-1">
+                                    <Link to="/admin/tour/discount/">Danh sách mã giảm giá</Link>
+                                </Menu.Item>
+                                <Menu.Item key="2-9-2">
+                                    <Link to="/admin/tour/tour_discount/">Quản lý giảm giá  tour</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
 
+                            <Menu.SubMenu key="3" title={
+                                <Link to="/admin/tour/dat_tour">
+                                    <span>Quản lý tour</span>
+                                </Link>
+                            }>
+                                <Menu.Item key="3-1">
+                                    <Link to="/admin/tour/tour_chuathanhtoan">Tour chưa thanh toán</Link>
+                                </Menu.Item>
+                                <Menu.Item key="3-2">
+                                    <Link to="/admin/tour/tour_dathanhtoan">Tour đã thanh toán</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
 
                         </Menu.SubMenu>
-                        <Menu.SubMenu key="3" icon={<AiOutlineUser />} title="Tài khoản">
-                            <Menu.Item key="3-2">
+                        <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
+                            <Menu.Item key="4-1">
                                 <Link to="/admin/customer_account">Tài khoản khách</Link>
                             </Menu.Item>
-                            <Menu.Item key="3-3">
+                            <Menu.Item key="4-2">
                                 <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
                             </Menu.Item>
 

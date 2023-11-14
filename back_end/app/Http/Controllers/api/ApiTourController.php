@@ -8,6 +8,7 @@ use App\Models\LoaiTourModel;
 use App\Models\TourModel;
 
 use App\Models\DatTour;
+use App\Models\Discount;
 use App\Models\HoaDon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -39,66 +40,13 @@ class ApiTourController extends Controller
 
     public function index()
     {
-       // $tour = TourModel::all();
-
-
-        /////////////////////////
-        // đừng có xóa 
-        //////////////////////////////////////
-
+       
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
-
         if ($tours->isEmpty()) {
             return response()->json(['message' => 'No tours found'], 404);
         }
-
         return response()->json(['data' => $tours]);
-        // $tour = TourModel::all();
-        // lấy ra tất cả
-        // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
-        //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
-        //     ->select('tour.lich_khoi_hanh', 'tour.ngay_ket_thuc', 'hoa_dons.ma_hoa_don')
-        //     ->get();
-        // // lấy ngày kết thúc 
-        // $hoadon = HoaDon::join('dat_tours', 'hoa_dons.id_dat_tour', '=', 'dat_tours.id')
-        // ->join('tour', 'dat_tours.id_tour', '=', 'tour.id')
-        // ->join('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('tour.ngay_ket_thuc')
-        // ->first();
-        // lấy ngày kết thúc ra sử dụng 
-        // $ngayKetThucArray = $hoadon->pluck('ngay_ket_thuc')->toArray();
-        // foreach ($tours as $tour) {
-        //     $lichKhoiHanh = Carbon::parse($tour->lich_khoi_hanh);
-        //     $ngayKetThuc = Carbon::parse($tour->ngay_ket_thuc);
-        //     $soNgayChenhLech = $ngayKetThuc->diffInDays($lichKhoiHanh);
-
-        //     // Lưu số ngày chênh lệch vào thuộc tính của đối tượng tour
-        //     $tour->so_ngay_chenh_lech = $soNgayChenhLech;
-
-        //      $ngayHienTai = Carbon::today(); // Lấy ngày hiện tại (không bao gồm giờ, phút, giây)
-
-        //      $tour->ngay_hien_tai = $ngayHienTai->toDateString();
-
-        // }
-
-        // return response()->json($tours);
-
-        // bảng hoasddwon chưa liên kết với bảng hướng đãn viên 
-        //       $results = DB::table('hoa_dons')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('hoa_dons.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hoadon_id')
-        // ->get();
-        //   return response()->json($results);
-        //bảng hướng dẫn viên chưa liên kết với bảng hóa đơn
-        //   $hdv = DB::table('huong_dan_vien')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'huong_dan_vien.id', '=', 'huong_dan_vien_hoa_dons.hdv_id')
-        // ->select('huong_dan_vien.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hdv_id')
-        // ->get();
-        // return response()->json($hdv);
-
-        // return  TourResoure::collection('tours' => $tours);
+        
     }
 
 
@@ -161,5 +109,24 @@ class ApiTourController extends Controller
                 'message' => 'Không tìm thấy thông tin'
             ], 404);
         }
+    }
+
+    public function getlisttourKM() {
+        $tourKM = TourModel::with('discounts','images')->where('trang_thai',1)->get();
+        $tourKMWithDiscounts = [];
+        
+        foreach ($tourKM as $tour) {
+            if ($tour->discounts->isNotEmpty()) {
+                $expiryDates = $tour->discounts->pluck('expiry_date');
+                $maxExpiryDate = $expiryDates->max();
+                $now = Carbon::now();
+                $expiryDate = Carbon::parse($maxExpiryDate);
+                $countdown = $expiryDate->diffInSeconds($now);
+                $tour->max_expiry_date = $maxExpiryDate;
+                $tourKMWithDiscounts[] = $tour;
+            }
+        }
+        
+        return response()->json(['tourKM' => $tourKMWithDiscounts], 200);
     }
 }

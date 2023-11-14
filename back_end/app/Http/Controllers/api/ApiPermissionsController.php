@@ -48,7 +48,6 @@ class ApiPermissionsController extends Controller
     {
         $data = $request->all();
         Role::create(['name' => $data['role']]);
-
         $response = [
             'message' => 'Role created successfully',
             'data' => $data['role']

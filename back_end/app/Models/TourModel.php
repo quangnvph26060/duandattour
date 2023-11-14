@@ -10,6 +10,8 @@ use App\Models\LichTrinhModel;
 use App\Models\TourPhuongTienModel;
 use App\Models\TourKhachSanModel;
 use App\Models\DatTour;
+use App\Models\TourDiscount;
+use App\Models\Discount;
 class TourModel extends Model
 {
     use HasFactory, SoftDeletes;
@@ -28,6 +30,15 @@ class TourModel extends Model
         'ma_loai_tour',
         'ma_hdv'
     ];
+    public function tourDiscount()
+    {
+        return $this->hasMany(TourDiscount::class, 'tour_id', 'id');
+    }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'tour_discount', 'tour_id', 'discount_id');
+    }  
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');

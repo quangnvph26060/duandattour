@@ -16,12 +16,13 @@ class DatTour extends Model
             'dia_chi',
             'cccd',
             'ngay_dat',
+            'ngay_het_han',
             'so_luong_khach',
             'trang_thai',
             'ma_khach_hang',
             'id_tour'
     ];
-
+  
     public function ThanhToan()
     {
         return $this->hasOne(ThanhToan::class, 'id_dat_tour');

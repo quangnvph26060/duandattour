@@ -23,40 +23,40 @@ const Info_tour_bocking = () => {
 
   //   // Add more data as needed
   // ];
-  // const [paymentResult, setPaymentResult] = useState(null);
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const paymentData = {
-  //     vnp_Amount: urlParams.get('vnp_Amount'), // tiền 
-  //     vnp_BankCode: urlParams.get('vnp_BankCode'), // ngân hàng 
-  //     vnp_PayDate: urlParams.get('vnp_PayDate'), // ngày thanh toán 
-  //     vnp_ResponseCode: urlParams.get('vnp_ResponseCode'), // trạng thái 
-  //     vnp_TxnRef: urlParams.get('vnp_TxnRef'),
-  //   };
-  //   console.log(paymentData.vnp_Amount);
+  const [paymentResult, setPaymentResult] = useState(null);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentData = {
+      vnp_Amount: urlParams.get('vnp_Amount'), // tiền 
+      vnp_BankCode: urlParams.get('vnp_BankCode'), // ngân hàng 
+      vnp_PayDate: urlParams.get('vnp_PayDate'), // ngày thanh toán 
+      vnp_ResponseCode: urlParams.get('vnp_ResponseCode'), // trạng thái 
+      vnp_TxnRef: urlParams.get('vnp_TxnRef'),
+    };
+    console.log(paymentData.vnp_Amount);
 
-  //   axios.post('http://localhost:8000/api/paymentresult', paymentData)
-  //     .then(response => {
-  //       setPaymentResult(response.data);
+    axios.post('http://localhost:8000/api/paymentresult', paymentData)
+      .then(response => {
+        setPaymentResult(response.data);
 
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  //   // Gọi API để lấy dữ liệu kết quả thanh toán sau khi component được render
-  //   // KHÔNG DÙNG GET NÀY NỮA http://localhost:8000/api/showResult 
-  //   axios.get('http://localhost:8000/api/showResult', { params: paymentData })
-  //     .then(response => {
-  //       setPaymentResult(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    // Gọi API để lấy dữ liệu kết quả thanh toán sau khi component được render
+    // KHÔNG DÙNG GET NÀY NỮA http://localhost:8000/api/showResult 
+    axios.get('http://localhost:8000/api/showResult', { params: paymentData })
+      .then(response => {
+        setPaymentResult(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-  // }, []);
-
-  const {id} =  useParams<{ id: any }>()
+  }, []);
+////
+const {id} =  useParams<{ id: any }>();
   const { data: Data } = useGetCheckbooktourQuery(id || "");
   const DataCheck = Data?.data || [];
   // console.log('Daata:',DataCheck);
