@@ -1,26 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\DatTour;
+use App\Models\HoaDon;
 use App\Models\ThanhToan;
 use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ApiDatTourController extends Controller
 {
     //
     public function getDatTour(Request $request, $id)
     {
-        $result = TourModel::find($id);
-        if ($result) {
-            $tour = TourModel::with('images')->first();
-            $user = null;
-
+        $tour = TourModel::with('images', 'phuongTien', 'khachSan',)->find($id);;
+        $user = null;
+        if ($tour) {
             if (Auth::guard('sanctum')->check()) {
                 $user = Auth::guard('sanctum')->user();
             }
@@ -28,21 +28,22 @@ class ApiDatTourController extends Controller
                 'data' => $tour,
                 'user' => $user,
             ];
+            return response()->json($response);
+        } else {
+            return response()->json(['message' => 'Không tìm thấy tour'], 404);
         }
-
-        return response()->json($response);
     }
 
     public function createDatTour(Request $request)
     {
-      
+
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
         // $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
         $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
         $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-        $createDatTour = DatTour::create($datTour);
-        return response()->json(['createDatTour' => $createDatTour]);
+        // $createDatTour = DatTour::create($datTour);
+        // return response()->json(['createDatTour' => $createDatTour]);
         if ($request->has('so_luong_khach')) {
             // Trường 'so_luong_khach' đã tồn tại trong yêu cầu HTTP
             // Tiếp tục truy cập vào giá trị của trường 'so_luong_khach'
@@ -77,22 +78,29 @@ class ApiDatTourController extends Controller
     // {
     //     $currentDate = Carbon::now()->toDateString(); // Lấy ngày hiện tại
     //     $tours = DatTour::all(); // Lấy danh sách các tour
-        
+
     //     foreach ($tours as $tour) {
+    //         $tourdetail = DB::table('tour')->where('id', $tour->id_tour)->first();
+
+    //         // dd($tourdetail->soluong); // số lượng khách 
     //         $expirationDate = $tour->ngay_het_han;
-           
+    //         echo $expirationDate < $currentDate;
     //         if ($expirationDate < $currentDate && $tour->trang_thai == 0) {
-    //             // Xóa các bản ghi trong bảng "Thanh toán" (Payment) liên quan đến tour
-               
+    //             //  $tourdetail->update(['soluong'=>$tourdetail->soluong + $tour->so_luong_khach]);
+    //             $affected = DB::table('tour')
+    //                 ->where('id', $tour->id_tour)
+    //                 ->update(['soluong' =>  DB::raw('soluong + ' . $tour->so_luong_khach)]);
+
     //             if ($tour->ThanhToan) {
     //                 $tour->ThanhToan->delete();
     //             }
-        
+
+
     //             // Xóa tour
     //             $tour->delete();
     //         }
     //     }
-        
+
     //     return 'Xóa các tour hết hạn thành công';
     // }
 
@@ -137,7 +145,7 @@ class ApiDatTourController extends Controller
         $updateStatus = DatTour::find($id);
         if ($updateStatus->trang_thai == 0) {
             $thantoandata = ThanhToan::where('id_dat_tour', $id)->first();
-            if($thantoandata){
+            if ($thantoandata) {
                 ThanhToanDetail::create([
                     'ma_giao_dich' => $thantoandata->ma_giao_dich,
                     'tong_tien_tt' => $thantoandata->tong_tien_tt,
@@ -148,12 +156,18 @@ class ApiDatTourController extends Controller
                     'ngay_thanh_toan' => date('Y-m-d H:i:s'),
                     'id_dat_tour' =>  $id,
                 ]);
+                HoaDon::create([
+                    'ma_hoa_don'=>Str::random(10),
+                    'tong_tien'=>$thantoandata->tong_tien_tt,
+                     'ngay_tao_hoa_don'=>date('Y-m-d H:i:s'),
+                    'id_dat_tour'=>$id,
+                ]);
                 $thantoandata->delete();
-    
+
                 // Cập nhật trạng thái của đơn đặt tour
                 $updateStatus->trang_thai = 1;
                 $updateStatus->save();
-    
+
                 return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
             }
         } else if ($updateStatus->trang_thai == 1) {

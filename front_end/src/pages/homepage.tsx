@@ -94,11 +94,18 @@ const HomePage = () => {
   //   return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
   // };
   // boxchat
-  const [remainingTime, setRemainingTime] = useState(15 * 3600); // 5 minutes in seconds
+  const [remainingTime, setRemainingTime] = useState(60); // 5 minutes in seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setRemainingTime(prevTime => prevTime - 1);
+      setRemainingTime((prevTime) =>{
+        let newTime = prevTime - 5;
+        console.log(newTime); // Hiển thị thông điệp lên console
+        if(newTime === 0){
+         // alert('đúng mẹ rồi ');
+        }
+        return newTime;
+      } );
     }, 1000);
 
     return () => {
