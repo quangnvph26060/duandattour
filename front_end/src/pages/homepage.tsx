@@ -6,6 +6,9 @@ import Slider from 'react-slick';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import { faPlane } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '../img/logo.jpg';
 import bnr from '../img/huy.webp';
 import bh from '../img/bh.webp';
@@ -341,7 +344,7 @@ const HomePage = () => {
     </div>
       </div>
     </div>
-    
+    {/* <FontAwesomeIcon icon={faMapMarkerAlt} /> */}
 
       <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
@@ -379,38 +382,96 @@ const HomePage = () => {
           ))}
         </Slider>
       </div>
-      <div className="bg-white box-shadow rounded-lg  p-9 mx-auto" style={{ width: '1100px' }}>
+      <div className="bg-white box-shadow rounded-lg  p-9 mx-auto" style={{ width: '1200px' }}>
         <div className="tour-form mt-2 flex items-center">
           <div className="flex items-center mr-4">
             <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
-            <input type="date" id="arrivalDate" className=" custum  border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300" />
+            <div className="relative">
+  <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+    <span>&#128197;</span>
+  </label>
+  <input
+    type="date"
+    id="arrivalDate"
+    className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
+  />
+</div>
           </div>
 
           <div className="flex items-center mr-4">
             <div className="flex items-center mr-4">
               <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
-              <input type="date" id="arrivalDate" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300" />
+              <div className="relative">
+  <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+    <span>&#128197;</span>
+  </label>
+  <input
+    type="date"
+    id="arrivalDate"
+    className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
+  />
+</div>
             </div>
           </div>
 
           <div className="flex items-center mr-4">
             <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>
             <select id="destination" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
-              <option value="">Chọn nơi đến</option>
-              <option value="">Hà Nội</option>
-              <option value="male">Hải Phòng</option>
-              <option value="female">Nam Định</option>
-              <option value="female">Vũng Tàu</option>
-              <option value="female">Tp. HCM</option>
-              <option value="female">Bà Rịa </option>
-              <option value="female">Ba Vì</option>
-              <option value="female">Đà Lạt</option>
-              <option value="female">Huế</option>
-              <option value="female">Quảng Bình</option>
-              <option value="female">Tây nguyên </option>
-              <option value="female">Bình Định</option>
-              <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+          
+            <option value="Hà Nội">
+      <FontAwesomeIcon icon={faPlane} /> Hà Nội
+    </option>
+  <option value="Hcm">Hồ Chí Minh</option>
+  <option value="Hải Phòng">Hải Phòng</option>
+  <option value="Đà Nẵng">Đà Nẵng</option>
+  <option value="Cần Thơ">Cần Thơ</option>
+  <option value="An Giang">An Giang</option>
+  <option value="Bà Rịa ">Bà Rịa - Vũng Tàu</option>
+  <option value="Bắc Giang">Bắc Giang</option>
+  <option value="Bắc Kạn">Bắc Kạn</option>
+  <option value="Bạc Liêu">Bạc Liêu</option>
+  <option value="Bắc Ninh">Bắc Ninh</option>
+  <option value="Bến Tre">Bến Tre</option>
+  <option value="Bình Định">Bình Định</option>
+  <option value="Bình Dương">Bình Dương</option>
+  <option value="Bình Phước">Bình Phước</option>
+  <option value="Bình Thuận">Bình Thuận</option>
+  <option value="Cà Mau">Cà Mau</option>
+  <option value="Cao Bằng">Cao Bằng</option>
+  <option value="Đắk Lắk">Đắk Lắk</option>
+  <option value="Đắk Nông">Đắk Nông</option>
+  <option value="Điện Biên">Điện Biên</option>
+  <option value="Đồng Nai">Đồng Nai</option>
+  <option value="Đồng Tháp">Đồng Tháp</option>
+  <option value="Gia Lai">Gia Lai</option>
+  <option value="Hà Giang">Hà Giang</option>
+  <option value="Hà Nam">Hà Nam</option>
+  <option value="Hà Tĩnh">Hà Tĩnh</option>
+  <option value="Hải Dương">Hải Dương</option>
+  <option value="Hậu Giang">Hậu Giang</option>
+  <option value="Hòa Bình">Hòa Bình</option>
+  <option value="Hưng Yên">Hưng Yên</option>
+  <option value="Khánh Hòa">Khánh Hòa</option>
+  <option value="Kiên Giang">Kiên Giang</option>
+  <option value="Kon Tum">Kon Tum</option>
+  <option value="Lai Châu">Lai Châu</option>
+  <option value="Lâm Đồng">Lâm Đồng</option>
+  <option value="Lạng Sơn">Lạng Sơn</option>
+  <option value="Lào Cai">Lào Cai</option>
+  <option value="Long An">Long An</option>
+  <option value="Nam Định">Nam Định</option>
+  <option value="Nghệ An">Nghệ An</option>
+  <option value="Ninh Bình">Ninh Bình</option>
+  <option value="Ninh Thuận">Ninh Thuận</option>
+  <option value="Phú Thọ">Phú Thọ</option>
+  <option value="Phú Yên">Phú Yên</option>
+  <option value="Quảng Bình">Quảng Bình</option>
+  <option value="Quảng Nam">Quảng Nam</option>
+  <option value="Quảng Ngãi">Quảng Ngãi</option>
+  <option value="Quảng Ninh">Quảng Ninh</option>
+  <option value="Quảng Trị">Quảng Trị</option>
+  <option value="Sóc Trăng">Sóc Trăng</option>
+  <option value="Sơn La">Sơn La</option>
 
             </select>
           </div>
@@ -418,21 +479,59 @@ const HomePage = () => {
           <div className="flex items-center mr-4">
             <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label>
             <select id="departure" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
-              <option value="">Chọn nơi đi</option>
-              <option value="">Hà Nội</option>
-              <option value="male">Hải Phòng</option>
-              <option value="female">Nam Định</option>
-              <option value="female">Vũng Tàu</option>
-              <option value="female">Tp. HCM</option>
-              <option value="female">Bà Rịa </option>
-              <option value="female">Ba Vì</option>
-              <option value="female">Đà Lạt</option>
-              <option value="female">Huế</option>
-              <option value="female">Quảng Bình</option>
-              <option value="female">Tây nguyên </option>
-              <option value="female">Bình Định</option>
-              <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+              
+              <option value="Hà Nội">Hà Nội</option>
+  <option value="Hcm">Hồ Chí Minh </option>
+  <option value="Hải Phòng">Hải Phòng</option>
+  <option value="Đà Nẵng">Đà Nẵng</option>
+  <option value="Cần Thơ">Cần Thơ</option>
+  <option value="An Giang">An Giang</option>
+  <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+  <option value="Bắc Giang">Bắc Giang</option>
+  <option value="Bắc Kạn">Bắc Kạn</option>
+  <option value="Bạc Liêu">Bạc Liêu</option>
+  <option value="Bắc Ninh">Bắc Ninh</option>
+  <option value="Bến Tre">Bến Tre</option>
+  <option value="Bình Định">Bình Định</option>
+  <option value="Bình Dương">Bình Dương</option>
+  <option value="Bình Phước">Bình Phước</option>
+  <option value="Bình Thuận">Bình Thuận</option>
+  <option value="Cà Mau">Cà Mau</option>
+  <option value="Cao Bằng">Cao Bằng</option>
+  <option value="Đắk Lắk">Đắk Lắk</option>
+  <option value="Đắk Nông">Đắk Nông</option>
+  <option value="Điện Biên">Điện Biên</option>
+  <option value="Đồng Nai">Đồng Nai</option>
+  <option value="Đồng Tháp">Đồng Tháp</option>
+  <option value="Gia Lai">Gia Lai</option>
+  <option value="Hà Giang">Hà Giang</option>
+  <option value="Hà Nam">Hà Nam</option>
+  <option value="Hà Tĩnh">Hà Tĩnh</option>
+  <option value="Hải Dương">Hải Dương</option>
+  <option value="Hậu Giang">Hậu Giang</option>
+  <option value="Hòa Bình">Hòa Bình</option>
+  <option value="Hưng Yên">Hưng Yên</option>
+  <option value="Khánh Hòa">Khánh Hòa</option>
+  <option value="Kiên Giang">Kiên Giang</option>
+  <option value="Kon Tum">Kon Tum</option>
+  <option value="Lai Châu">Lai Châu</option>
+  <option value="Lâm Đồng">Lâm Đồng</option>
+  <option value="Lạng Sơn">Lạng Sơn</option>
+  <option value="Lào Cai">Lào Cai</option>
+  <option value="Long An">Long An</option>
+  <option value="Nam Định">Nam Định</option>
+  <option value="Nghệ An">Nghệ An</option>
+  <option value="Ninh Bình">Ninh Bình</option>
+  <option value="Ninh Thuận">Ninh Thuận</option>
+  <option value="Phú Thọ">Phú Thọ</option>
+  <option value="Phú Yên">Phú Yên</option>
+  <option value="Quảng Bình">Quảng Bình</option>
+  <option value="Quảng Nam">Quảng Nam</option>
+  <option value="Quảng Ngãi">Quảng Ngãi</option>
+  <option value="Quảng Ninh">Quảng Ninh</option>
+  <option value="Quảng Trị">Quảng Trị</option>
+  <option value="Sóc Trăng">Sóc Trăng</option>
+  <option value="Sơn La">Sơn La</option>
             </select>
           </div>
 

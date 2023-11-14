@@ -98,11 +98,11 @@ const TourPage = () => {
             </ul>
           </nav>
         </div>
-        <div className="search mt-5   tours-center">
-        <input className="border-yellow-300
-border-[3px] px-2 py-2  rounded"
+        <div className="search mt-2   tours-center">
+        <input style={{ width: '220px' }} className="border-yellow-300
+border-[3px] px- py-2  rounded"
           type="text"
-          placeholder="Search tours"
+          placeholder="Search...."
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -120,9 +120,9 @@ border-[3px] px-2 py-2  rounded"
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside  style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1400px]'>
+        <aside  style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1450px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
-          <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Tour</h2>
+          <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Poly Tour</h2>
           <div className='text-center p-2 py-4 '>
             <select className='rounded-md border border-black'>
               <option value="1">Du lịch</option>
@@ -150,40 +150,116 @@ border-[3px] px-2 py-2  rounded"
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
             <option value="">Chọn Điểm đi</option>
-              <option value="">Hà Nội</option>
-              <option value="male">Hải Phòng</option>
-              <option value="female">Nam Định</option>
-              <option value="female">Vũng Tàu</option>
-              <option value="female">Tp. HCM</option>
-              <option value="female">Bà Rịa </option>
-              <option value="female">Ba Vì</option>
-              <option value="female">Đà Lạt</option>
-              <option value="female">Huế</option>
-              <option value="female">Quảng Bình</option>
-              <option value="female">Tây nguyên </option>
-              <option value="female">Bình Định</option>
-              <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+          <option value="Hà Nội">Hà Nội</option>
+  <option value="Hồ Chí Minh">Hồ Chí Minh (TP.HCM)</option>
+  <option value="Hải Phòng">Hải Phòng</option>
+  <option value="Đà Nẵng">Đà Nẵng</option>
+  <option value="Cần Thơ">Cần Thơ</option>
+  <option value="An Giang">An Giang</option>
+  <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+  <option value="Bắc Giang">Bắc Giang</option>
+  <option value="Bắc Kạn">Bắc Kạn</option>
+  <option value="Bạc Liêu">Bạc Liêu</option>
+  <option value="Bắc Ninh">Bắc Ninh</option>
+  <option value="Bến Tre">Bến Tre</option>
+  <option value="Bình Định">Bình Định</option>
+  <option value="Bình Dương">Bình Dương</option>
+  <option value="Bình Phước">Bình Phước</option>
+  <option value="Bình Thuận">Bình Thuận</option>
+  <option value="Cà Mau">Cà Mau</option>
+  <option value="Cao Bằng">Cao Bằng</option>
+  <option value="Đắk Lắk">Đắk Lắk</option>
+  <option value="Đắk Nông">Đắk Nông</option>
+  <option value="Điện Biên">Điện Biên</option>
+  <option value="Đồng Nai">Đồng Nai</option>
+  <option value="Đồng Tháp">Đồng Tháp</option>
+  <option value="Gia Lai">Gia Lai</option>
+  <option value="Hà Giang">Hà Giang</option>
+  <option value="Hà Nam">Hà Nam</option>
+  <option value="Hà Tĩnh">Hà Tĩnh</option>
+  <option value="Hải Dương">Hải Dương</option>
+  <option value="Hậu Giang">Hậu Giang</option>
+  <option value="Hòa Bình">Hòa Bình</option>
+  <option value="Hưng Yên">Hưng Yên</option>
+  <option value="Khánh Hòa">Khánh Hòa</option>
+  <option value="Kiên Giang">Kiên Giang</option>
+  <option value="Kon Tum">Kon Tum</option>
+  <option value="Lai Châu">Lai Châu</option>
+  <option value="Lâm Đồng">Lâm Đồng</option>
+  <option value="Lạng Sơn">Lạng Sơn</option>
+  <option value="Lào Cai">Lào Cai</option>
+  <option value="Long An">Long An</option>
+  <option value="Nam Định">Nam Định</option>
+  <option value="Nghệ An">Nghệ An</option>
+  <option value="Ninh Bình">Ninh Bình</option>
+  <option value="Ninh Thuận">Ninh Thuận</option>
+  <option value="Phú Thọ">Phú Thọ</option>
+  <option value="Phú Yên">Phú Yên</option>
+  <option value="Quảng Bình">Quảng Bình</option>
+  <option value="Quảng Nam">Quảng Nam</option>
+  <option value="Quảng Ngãi">Quảng Ngãi</option>
+  <option value="Quảng Ninh">Quảng Ninh</option>
+  <option value="Quảng Trị">Quảng Trị</option>
+  <option value="Sóc Trăng">Sóc Trăng</option>
+  <option value="Sơn La">Sơn La</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Điểm đến</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
             <option value="">Chọn Điểm đến</option>
-              <option value="">Hà Nội</option>
-              <option value="male">Hải Phòng</option>
-              <option value="female">Nam Định</option>
-              <option value="female">Vũng Tàu</option>
-              <option value="female">Tp. HCM</option>
-              <option value="female">Bà Rịa </option>
-              <option value="female">Ba Vì</option>
-              <option value="female">Đà Lạt</option>
-              <option value="female">Huế</option>
-              <option value="female">Quảng Bình</option>
-              <option value="female">Tây nguyên </option>
-              <option value="female">Bình Định</option>
-              <option value="female">Quảng Nam</option>
-              <option value="female">Hà Tĩnh</option>
+            <option value="Hà Nội">Hà Nội</option>
+  <option value="Hồ Chí Minh">Hồ Chí Minh (TP.HCM)</option>
+  <option value="Hải Phòng">Hải Phòng</option>
+  <option value="Đà Nẵng">Đà Nẵng</option>
+  <option value="Cần Thơ">Cần Thơ</option>
+  <option value="An Giang">An Giang</option>
+  <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+  <option value="Bắc Giang">Bắc Giang</option>
+  <option value="Bắc Kạn">Bắc Kạn</option>
+  <option value="Bạc Liêu">Bạc Liêu</option>
+  <option value="Bắc Ninh">Bắc Ninh</option>
+  <option value="Bến Tre">Bến Tre</option>
+  <option value="Bình Định">Bình Định</option>
+  <option value="Bình Dương">Bình Dương</option>
+  <option value="Bình Phước">Bình Phước</option>
+  <option value="Bình Thuận">Bình Thuận</option>
+  <option value="Cà Mau">Cà Mau</option>
+  <option value="Cao Bằng">Cao Bằng</option>
+  <option value="Đắk Lắk">Đắk Lắk</option>
+  <option value="Đắk Nông">Đắk Nông</option>
+  <option value="Điện Biên">Điện Biên</option>
+  <option value="Đồng Nai">Đồng Nai</option>
+  <option value="Đồng Tháp">Đồng Tháp</option>
+  <option value="Gia Lai">Gia Lai</option>
+  <option value="Hà Giang">Hà Giang</option>
+  <option value="Hà Nam">Hà Nam</option>
+  <option value="Hà Tĩnh">Hà Tĩnh</option>
+  <option value="Hải Dương">Hải Dương</option>
+  <option value="Hậu Giang">Hậu Giang</option>
+  <option value="Hòa Bình">Hòa Bình</option>
+  <option value="Hưng Yên">Hưng Yên</option>
+  <option value="Khánh Hòa">Khánh Hòa</option>
+  <option value="Kiên Giang">Kiên Giang</option>
+  <option value="Kon Tum">Kon Tum</option>
+  <option value="Lai Châu">Lai Châu</option>
+  <option value="Lâm Đồng">Lâm Đồng</option>
+  <option value="Lạng Sơn">Lạng Sơn</option>
+  <option value="Lào Cai">Lào Cai</option>
+  <option value="Long An">Long An</option>
+  <option value="Nam Định">Nam Định</option>
+  <option value="Nghệ An">Nghệ An</option>
+  <option value="Ninh Bình">Ninh Bình</option>
+  <option value="Ninh Thuận">Ninh Thuận</option>
+  <option value="Phú Thọ">Phú Thọ</option>
+  <option value="Phú Yên">Phú Yên</option>
+  <option value="Quảng Bình">Quảng Bình</option>
+  <option value="Quảng Nam">Quảng Nam</option>
+  <option value="Quảng Ngãi">Quảng Ngãi</option>
+  <option value="Quảng Ninh">Quảng Ninh</option>
+  <option value="Quảng Trị">Quảng Trị</option>
+  <option value="Sóc Trăng">Sóc Trăng</option>
+  <option value="Sơn La">Sơn La</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>

@@ -1,24 +1,142 @@
+/* Thiết lập font chữ và màu chữ chung */
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+h1 {
+  font-size: 24px;
+  /* Kích thước chữ tiêu đề */
+  /* Chữ đậm */
+  color: #333;
+  /* Màu chữ tiêu đề */
+  text-align: center;
+  /* Căn giữa tiêu đề */
+  /* Các thuộc tính khác tùy chỉnh khác cho tiêu đề của bạn */
+}
+
+/* Định nghĩa kiểu cho tiêu đề */
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Định nghĩa kiểu cho nút */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+/* Định nghĩa kiểu cho danh sách */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+/* Định nghĩa kiểu cho hình ảnh */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Định nghĩa kiểu cho bảng */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: bold;
+}
+
+/* Định nghĩa kiểu cho form */
+form {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+textarea {
+  height: 100px;
+}
+
+/* Sửa màu cho lịch */
+.calendar {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Sửa màu cho các thành phố */
+.city {
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 .product-list {
   max-width: 100%;
   margin: 0 auto;
 }
+
 .product-listb {
   max-width: 100%;
 }
-.content{
+
+.content {
   margin: 40px;
-  
-border: burlywood;
+
+  border: rgb(246, 208, 158);
 }
-.price-c{
+
+.price-c {
   font-weight: 700;
   color: #2d4271;
 }
-.price-t{
+
+.price-t {
   font-size: 20px;
-    font-weight: 700;
-    color: #fd5056;
+  font-weight: 700;
+  color: #fd5056;
 }
+
 .button-wrapper {
   display: flex;
   flex-direction: column;
@@ -28,40 +146,50 @@ border: burlywood;
 .button-wrapper button {
   margin-top: 10px;
 }
+
 .info-row {
   display: flex;
   align-items: center;
 }
-.text{
+
+.text {
   font-size: 15px;
   color: #2d4271;
   font-family: sans-serif;
   font-style: normal;
 }
+
 .price {
   text-decoration: line-through;
 }
+
 .date {
   font-size: 13px;
   color: #2d4271;
-  font:  sans-serif;
+  font: sans-serif;
 }
+
 .info-row p {
   margin-right: 10px;
 }
+
 .home-page__title {
   font-weight: 500;
   font-size: 30px;
   color: #2d4271;
 }
+
 .product-list .slick-slide {
   display: flex;
   justify-content: center;
 }
+
 .box-shadow {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-  
-}.form-input {
+
+}
+
+.form-input {
   width: 300px;
   height: 40px;
   padding: 0.5rem;
@@ -73,6 +201,7 @@ border: burlywood;
 br {
   margin-bottom: 1rem;
 }
+
 .product-list .slick-dots {
   bottom: 10px;
 }
@@ -80,48 +209,69 @@ br {
 .product-list .slick-dots li button:before {
   font-size: 12px;
 }
-.custum{
+
+.custum {
   border: 3.5px solid black;
 }
 
 .product-lista img {
   width: 100%;
   height: 310px;
-  margin: auto ;
+  margin: auto;
   object-fit: cover;
 }
-.hoem{
+
+.hoem {
   color: #555;
   border: #2d4271;
 }
+
 .product-list1 img {
   width: 100%;
   height: 210px;
   object-fit: cover;
 }
+
 .product-list img {
 
   height: 40%;
   object-fit: cover;
-}.text-lg {
-  font-size: 1.125rem; /* Tăng kích thước chữ lên 1.125rem */
-  color: #333; /* Đổi màu chữ thành màu đen */
 }
+
+.text-lg {
+  font-size: 1.125rem;
+  /* Tăng kích thước chữ lên 1.125rem */
+  color: #333;
+  /* Đổi màu chữ thành màu đen */
+}
+
 .font-semibold {
-  
-  font-weight: 600; /* Đặt độ đậm cho phông chữ */
-  color: #555; /* Đổi màu chữ thành màu xám đậm */
-}.pl-4 li {
-  
-  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi mục danh sách */
+
+  font-weight: 600;
+  /* Đặt độ đậm cho phông chữ */
+  color: #555;
+  /* Đổi màu chữ thành màu xám đậm */
 }
-  p {
-  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi đoạn văn */
-}.text-sm {
-  text-align: center; /* Căn giữa nội dung */
-  color: #888; /* Đổi màu chữ thành màu xám nhẹt */
+
+.pl-4 li {
+
+  margin-bottom: 0.5rem;
+  /* Tăng khoảng cách dưới của mỗi mục danh sách */
 }
-ul li{
-  
+
+p {
+  margin-bottom: 0.5rem;
+  /* Tăng khoảng cách dưới của mỗi đoạn văn */
+}
+
+.text-sm {
+  text-align: center;
+  /* Căn giữa nội dung */
+  color: #888;
+  /* Đổi màu chữ thành màu xám nhẹt */
+}
+
+ul li {
+
   display: block;
 }

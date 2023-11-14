@@ -74,15 +74,6 @@
   background-color: #e0e0e0; /* Thay đổi màu nền khi di chuột qua */
 }
 
-.left .range-input {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #000;
-  margin-bottom: 16px;
-  transition: border-color 0.3s ease-in-out;
-}
 
 .left .range-input:hover {
   border-color: #ccc; /* Thay đổi màu viền khi di chuột qua */
