@@ -22,13 +22,13 @@ const LayoutAdmin = () => {
     return (
         
         <div>
-            <div className="bg-white border-b-2 border-black">
+            <div className="bg-white  border-b-2 border-black">
                 <img src="https://img.fcbayern.com/image/upload/t_cms-2x1/f_auto/w_1600,c_fill/q_auto/v1694938726/cms/public/images/fcbayern-com/homepage/Saison-23-24/Gegner/Manchester%20United/160812-manchester-united-logo-ima-169.jpg" height={50} width={50} alt="" />
             </div>
-            <Layout className="h-screen">
+            <Layout className="h-screen ">
 
                 <Sider trigger={null} collapsible collapsed={collapsed}>
-                    <div className="demo-logo-vertical" />
+                    <div className=" demo-logo-vertical" />
 
                     <Menu
                         theme="dark"
@@ -68,7 +68,19 @@ const LayoutAdmin = () => {
                                     <Link to="/admin/tour/image_tour">Quản lý  hình ảnh tour</Link>
                                 </Menu.Item>
                             </Menu.SubMenu>
-
+                            <Menu.SubMenu   key="2-8" title={
+          <Link to="/admin/tour/dat_tour">
+            <span>Quản lý tour</span>
+          </Link>
+        }>
+                                
+                                <Menu.Item key="2-8-1">
+                                    <Link to="/admin/tour/tour_chuathanhtoan">Tour chưa thanh toán</Link>
+                                </Menu.Item>
+                                <Menu.Item key="2-8-2">
+                                    <Link to="/admin/tour/tour_dathanhtoan">Tour đã thanh toán</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
 
 
                         </Menu.SubMenu>

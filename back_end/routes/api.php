@@ -214,7 +214,14 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('dattour')->group(function () {
+        //list all BookingTour
         Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
+        //list BookingTour chưa thanh toán
+        Route::get('/getListBookingTourUnpaid', [ApiDatTourController::class, 'getListBookingTourUnpaid']);
+        //list BookingTour đã thanh toán
+        Route::get('/getListBookingTourPaid', [ApiDatTourController::class, 'getListBookingTourPaid']);
+        // Chi tiết booking tour
+        Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
     });
 });

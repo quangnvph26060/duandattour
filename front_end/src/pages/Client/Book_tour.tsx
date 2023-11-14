@@ -60,11 +60,21 @@ const BookTour = () => {
   const handleAgreeToggle = () => {
     setIsAgreed(!isAgreed);
   };
+  const validateQuantity = (newQuantity: number, newQuantity2: number) => {
+    const totalGuests = newQuantity + newQuantity2;
+    if (totalGuests > datatourArray?.soluong) {
+      alert("Bạn đã nhập quá số lượng cho phép");
+      return false;
+    }
+    return true;
+  };
   // gia ng lon
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    if (validateQuantity(quantity + 1, quantity2)) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const handleDecrement = () => {
@@ -101,6 +111,33 @@ const BookTour = () => {
     }
   }, [quantity, quantity2]);
 
+<<<<<<< HEAD
+=======
+    const handleIncrement2 = () => {
+      if (validateQuantity(quantity, quantity2 + 1)) {
+        setQuantity2(quantity2 + 1);
+      }
+    };
+  
+    const handleDecrement2 = () => {
+      if (quantity2 > 0) {
+        setQuantity2(quantity2 - 1);
+      }
+    };
+    const [soLuongKhach, setSoLuongKhach] = useState(1);
+    useEffect(() => {
+      const newSoLuongKhach = quantity + quantity2;
+      if (newSoLuongKhach !== 1) {
+        setSoLuongKhach(newSoLuongKhach);
+        setFormData({
+          ...formData,
+          so_luong_khach: newSoLuongKhach
+        });
+      }
+    }, [quantity, quantity2]);
+  
+    
+>>>>>>> thaihdph27014
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
@@ -489,7 +526,7 @@ const BookTour = () => {
                 Dịch vụ tùy chọn Option 1{" "}
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
-                Tour trọn gói (? khách){" "}
+                Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
               <div className="name flex gap-3 mt-4">
                 <img

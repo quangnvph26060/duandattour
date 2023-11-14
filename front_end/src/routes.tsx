@@ -47,8 +47,14 @@ import { Route, Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
+<<<<<<< HEAD
 import Giohanguser from "./pages/giohanguser";
 import Doimk from "./pages/changeMk";
+=======
+import ADmin_Qlytourchuathanhtoan from "./pages/Admin/products/Dat_tour/index2";
+import ADmin_Qlytourdathanhtoan from "./pages/Admin/products/Dat_tour/index3";
+
+>>>>>>> thaihdph27014
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -255,6 +261,15 @@ export const router = createBrowserRouter([
         path: "tour/dat_tour",
         element: <ADmin_DatTour />,
       },
+      {
+        path: "tour/tour_chuathanhtoan",
+        element: <ADmin_Qlytourchuathanhtoan />,
+      },
+      {
+        path: "tour/tour_dathanhtoan",
+        element: <ADmin_Qlytourdathanhtoan />,
+      },
+    
     ],
   },
 ]);
