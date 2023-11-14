@@ -41,7 +41,7 @@ const HeaderWebsite = () => {
             <li className='group'>
               <a href="/tour" className='menu-items'>Tour</a>
               {/* Menu phân cấp*/}
-                <div className='flex max-withd gap-10 bg-white p-5 absolute top-full left-15 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+                <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
                   <ul className='p-2'>
                     <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Bắc</a></li>
                     <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Hà Nội</a></li> 
@@ -88,9 +88,6 @@ const HeaderWebsite = () => {
             <li><a href="" className=''>Khuyến mãi</a></li>
             <li><a href="/contact" className=''>Liên hệ</a></li>
           </ul>
-          {/* <ul>
-            <li><a href="">kjhlkjh</a></li>
-          </ul> */}
         </div>
       </nav>
     </div>

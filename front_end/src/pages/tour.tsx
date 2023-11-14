@@ -52,7 +52,7 @@ return (
 
     <div className='flex container mx-auto gap-11 pt-5'>
       {/* Conten left*/}
-      <aside className='w-1/4 bg-gray-100 h-[1300px]'>
+      <aside className='mx-auto container w-1/4 bg-gray-100 h-[1300px]'>
         <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
         <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
         <div className='text-center p-2 py-4 '>
@@ -64,8 +64,8 @@ return (
         <div className='text-center'>
           <button className='bg-white px-4 py-2 rounded-lg border border-black'>Trong nước</button>
         </div>
-        <p className='px-3 py-1 text-xl font-medium'>Loại Hình Tour</p>
-        <div className='px-3 text-center py-1'>
+        <p className='px-3 py-1 text-xl font-medium '>Loại Hình Tour</p>
+        <div className='px-3 text-center py-1 container mx-auto'>
           <select name="" className='rounded-md border border-black w-72 h-9' id="">
             <option value="1">-- Tất cả --</option>
             <option value="2">okok</option>
