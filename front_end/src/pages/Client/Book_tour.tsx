@@ -91,7 +91,9 @@ const BookTour = () => {
   const [quantity2, setQuantity2] = useState(0);
 
   const handleIncrement2 = () => {
-    setQuantity2(quantity2 + 1);
+    if (validateQuantity(quantity, quantity2 + 1)) {
+      setQuantity2(quantity2 + 1);
+    }
   };
 
   const handleDecrement2 = () => {
@@ -111,33 +113,7 @@ const BookTour = () => {
     }
   }, [quantity, quantity2]);
 
-<<<<<<< HEAD
-=======
-    const handleIncrement2 = () => {
-      if (validateQuantity(quantity, quantity2 + 1)) {
-        setQuantity2(quantity2 + 1);
-      }
-    };
-  
-    const handleDecrement2 = () => {
-      if (quantity2 > 0) {
-        setQuantity2(quantity2 - 1);
-      }
-    };
-    const [soLuongKhach, setSoLuongKhach] = useState(1);
-    useEffect(() => {
-      const newSoLuongKhach = quantity + quantity2;
-      if (newSoLuongKhach !== 1) {
-        setSoLuongKhach(newSoLuongKhach);
-        setFormData({
-          ...formData,
-          so_luong_khach: newSoLuongKhach
-        });
-      }
-    }, [quantity, quantity2]);
-  
-    
->>>>>>> thaihdph27014
+
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
@@ -187,6 +163,8 @@ const BookTour = () => {
     }
   }, []);
 
+
+
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
     const ginho = datatourArray?.gia_treem;
@@ -199,6 +177,7 @@ const BookTour = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
   };
 
 
@@ -221,7 +200,6 @@ const BookTour = () => {
         };
         const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
         setPaymentResult(paymentResponse.data);
-
         alert('Đặt tour bằng tiền mặt thành công')
         window.location.href = `/bookingtour/${paymentResponse.data.id_dat_tour}`;
       } catch (error) {
@@ -361,11 +339,13 @@ const BookTour = () => {
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
                   <input
-                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text" value={formData.ten_khach_hang} name='sdt' id='sdt'
-                    onChange={handleChange} defaultValue={token ? formData.ten_khach_hang : ""}
+                    type="text"
+                    id="ten_khach_hang"
+                    name="ten_khach_hang"
+                    value={formData.ten_khach_hang}
+                    onChange={handleChange}
+                    defaultValue={token ? formData.ten_khach_hang : ""}
                   />
-
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"

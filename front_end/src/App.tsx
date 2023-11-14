@@ -4,13 +4,10 @@ import { router } from "./routes";
 const App = () => {
     return (
         <div>
-<<<<<<< HEAD
-                <RouterProvider router={router} /> 
-=======
-            
             <RouterProvider router={router} />
 
->>>>>>> thaihdph27014
+
+
         </div>
     );
 };

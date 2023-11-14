@@ -15,12 +15,12 @@ use App\Http\Controllers\api\ApiLoaiKhachSanController;
 use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
-use App\Http\Controllers\api\ApiMessageController;
 use App\Http\Controllers\Api\ApiSearchController;
+use App\Http\Controllers\Api\ApiAuthController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiAuthController;
+
 
 
 /*
@@ -34,17 +34,6 @@ use App\Http\Controllers\Api\ApiAuthController;
 |
 */
 
-Route::get('demo', function () {
-    dd(gethostbyname(gethostname()));
-});
-// api show user và vai trò của nó 
-Route::get('/showuser', [ApiMessageController::class, 'showuser']);
-// api hiển thị  message
-Route::get('/messages', [ApiMessageController::class, 'showMessage']);
-// them tin nhắn 
-Route::post('/messages', [ApiMessageController::class, 'store']);
-// lấy ra id của tài khoản có vai trò phản hồi tin nhắn 
-Route::get('/findNameRole', [ApiMessageController::class, 'findNameRole']);
 //route payment
 Route::post('/vnpay_payment', [ApiPaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 // lưu kết quả thanh toán vnpay vào DB
@@ -80,13 +69,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
     Route::put('/change_password', [ApiAuthLoginController::class, 'changePassword'])->name('changePassword');
+    Route::put('/forgotPassword', [ApiAuthLoginController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::get('/user', [ApiAuthLoginController::class, 'getToursByUserId']);
 });
-
 
 Route::prefix('register')->group(function () {
     Route::get('/', [ApiAuthController::class, 'index']);
-    Route::post('/dk', [ApiAuthController::class, 'registers']);;
+    Route::post('/dk', [ApiAuthController::class, 'registers']);
+    Route::put('/edit_information', [ApiAuthController::class, 'edit_information']);
 });
+
 
 //permission && role
 
