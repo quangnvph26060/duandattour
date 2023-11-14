@@ -370,7 +370,7 @@ const HomePage = () => {
           ]}
         >
           {names.map((name) => (
-            <div key={name.id} className="slider-item">
+            <div key={name.id} className="slider-item relative">
               <img style={{ height: '400px' }}
                 className="slider-image"
                 src={name.image}

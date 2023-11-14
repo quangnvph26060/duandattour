@@ -9,7 +9,7 @@
     @apply inline-block border-b-4 border-white hover:border-black;
   }
   .mega-menu-items {
-    @apply hover:text-red-500 cursor-pointer px-[2px] text-sm;
+    @apply inline-block hover:text-red-500 cursor-pointer px-[6px] text-sm text-gray-500;
   }  
   .mega-menu-title{
     @apply  font-semibold text-xl mb-5 text-blue-800;
