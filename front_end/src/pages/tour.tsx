@@ -318,7 +318,7 @@ border-[3px] px- py-2  rounded"
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Giá tốt</button>
             </div>
           </div>
-          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm__________________</p>
+          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm___________</p>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
   
       <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách: {formatCurrency(budget)}</p>

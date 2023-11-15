@@ -1,4 +1,4 @@
-/* Thiết lập font chữ và màu chữ chung */
+ 
 body {
   font-family: Arial, sans-serif;
   color: #333;
@@ -6,16 +6,149 @@ body {
 
 h1 {
   font-size: 24px;
-  /* Kích thước chữ tiêu đề */
-  /* Chữ đậm */
+  
   color: #333;
-  /* Màu chữ tiêu đề */
+ 
   text-align: center;
-  /* Căn giữa tiêu đề */
-  /* Các thuộc tính khác tùy chỉnh khác cho tiêu đề của bạn */
+ 
+}
+.bg-white {
+  background-color: #ffffff;
 }
 
-/* Định nghĩa kiểu cho tiêu đề */
+.box-shadow {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-9 {
+  padding: 2.25rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tour-form {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.mr-4 {
+  margin-right: 1rem;
+}
+
+.text-gray-600 {
+  color: #6b7280;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top-1/2 {
+  top: 50%;
+}
+
+.left-3 {
+  left: 0.75rem;
+}
+
+.transform {
+  transform: translateY(-50%);
+}
+
+.text-gray-400 {
+  color: #9ca3af;
+}
+
+.custum {
+  border: 1px solid #f59e0b;
+}
+
+.border-yellow-600 {
+  border-color: #f59e0b;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.pl-8 {
+  padding-left: 2rem;
+}
+
+.focus\:outline-none:focus {
+  outline: none;
+}
+
+.transition-colors {
+  transition-property: color;
+  transition-duration: 0.3s;
+}
+
+.duration-300 {
+  transition-duration: 0.3s;
+}
+
+#arrivalDate {
+  width: 100%;
+}
+
+#destination,
+#departure {
+  width: 100%;
+}
+
+.bg-yellow-600 {
+  background-color: #f59e0b;
+}
+
+.text-white {
+  color: #e9ddddc1;
+}
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: purple;
+  /* Các thuộc tính CSS khác cho phần tử */
+}
+.icontt {
+  
+  color: #e06666; font-weight: bold;
+  font-size: 40px;
+}
+.title {
+  color: #527ad2;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 25px;
+  font-family: 'Arial', sans-serif;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+ 
 h1 {
   font-size: 24px;
   font-weight: bold;

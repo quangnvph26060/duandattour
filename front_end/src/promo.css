@@ -49,7 +49,7 @@
   transition: opacity 0.3s;
   opacity: 0;
 }
-
+ 
 .promotion-item:hover .promotion-item__overlay {
   opacity: 1;
 }
