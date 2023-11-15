@@ -17,7 +17,7 @@ class HoaDonSeeder extends Seeder
             'tong_tien' => 10000,
             'ngay_tao_hoa_don'=>'2023/10/10',
             'id_dat_tour'=>1,
-            'ma_khuyen_mai'=>1,
+          
          
         ]);
     }

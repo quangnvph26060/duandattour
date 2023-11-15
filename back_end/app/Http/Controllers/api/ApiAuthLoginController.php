@@ -83,22 +83,6 @@ class ApiAuthLoginController extends Controller
             ], 500);
         }
     }
-    public function forgotPassword(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-        // $status = Password::$password = Str::random(10);
-        // (
-        //     $request->only('email')
-        // );
-
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => __($status)], 200)
-            : response()->json(['message' => __($status)], 422);
-    }
     public function getToursByUserId()
     {
         $userId = Auth::id();

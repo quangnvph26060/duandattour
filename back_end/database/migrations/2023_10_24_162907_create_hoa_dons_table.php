@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('tong_tien');
             $table->date('ngay_tao_hoa_don');
             $table->foreignId('id_dat_tour')->constrained('dat_tours');
-            $table->foreignId('ma_khuyen_mai')->constrained('khuyen_mais');
+          
             $table->timestamps();
         });
     }

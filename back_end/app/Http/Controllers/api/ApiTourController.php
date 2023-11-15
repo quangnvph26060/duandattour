@@ -32,73 +32,20 @@ class ApiTourController extends Controller
 
     public function getToursByDestination(Request $request, $destination)
     {
-        $tourdiemden = TourModel::with('images')->where('diem_den', $destination)->get();
+        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
         $tourdiemdencout = $tourdiemden->count();
-        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
+        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
     }
 
     public function index()
     {
-        // $tour = TourModel::all();
-
-
-        /////////////////////////
-        // đừng có xóa 
-        //////////////////////////////////////
-
+       
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
-
         if ($tours->isEmpty()) {
             return response()->json(['message' => 'No tours found'], 404);
         }
-
         return response()->json(['data' => $tours]);
-        // $tour = TourModel::all();
-        // lấy ra tất cả
-        // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
-        //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
-        //     ->select('tour.lich_khoi_hanh', 'tour.ngay_ket_thuc', 'hoa_dons.ma_hoa_don')
-        //     ->get();
-        // // lấy ngày kết thúc 
-        // $hoadon = HoaDon::join('dat_tours', 'hoa_dons.id_dat_tour', '=', 'dat_tours.id')
-        // ->join('tour', 'dat_tours.id_tour', '=', 'tour.id')
-        // ->join('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('tour.ngay_ket_thuc')
-        // ->first();
-        // lấy ngày kết thúc ra sử dụng 
-        // $ngayKetThucArray = $hoadon->pluck('ngay_ket_thuc')->toArray();
-        // foreach ($tours as $tour) {
-        //     $lichKhoiHanh = Carbon::parse($tour->lich_khoi_hanh);
-        //     $ngayKetThuc = Carbon::parse($tour->ngay_ket_thuc);
-        //     $soNgayChenhLech = $ngayKetThuc->diffInDays($lichKhoiHanh);
-
-        //     // Lưu số ngày chênh lệch vào thuộc tính của đối tượng tour
-        //     $tour->so_ngay_chenh_lech = $soNgayChenhLech;
-
-        //      $ngayHienTai = Carbon::today(); // Lấy ngày hiện tại (không bao gồm giờ, phút, giây)
-
-        //      $tour->ngay_hien_tai = $ngayHienTai->toDateString();
-
-        // }
-
-        // return response()->json($tours);
-
-        // bảng hoasddwon chưa liên kết với bảng hướng đãn viên 
-        //       $results = DB::table('hoa_dons')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('hoa_dons.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hoadon_id')
-        // ->get();
-        //   return response()->json($results);
-        //bảng hướng dẫn viên chưa liên kết với bảng hóa đơn
-        //   $hdv = DB::table('huong_dan_vien')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'huong_dan_vien.id', '=', 'huong_dan_vien_hoa_dons.hdv_id')
-        // ->select('huong_dan_vien.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hdv_id')
-        // ->get();
-        // return response()->json($hdv);
-
-        // return  TourResoure::collection('tours' => $tours);
+        
     }
 
 

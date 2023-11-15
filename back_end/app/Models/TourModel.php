@@ -10,7 +10,6 @@ use App\Models\LichTrinhModel;
 use App\Models\TourPhuongTienModel;
 use App\Models\TourKhachSanModel;
 use App\Models\DatTour;
-use App\Models\LoaiTourModel;
 
 class TourModel extends Model
 {
@@ -30,6 +29,40 @@ class TourModel extends Model
         'ma_loai_tour',
         'ma_hdv'
     ];
+    // public function tourImages()
+    // {
+    //     return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
+    // }
+    // public function images()
+    // {
+    //     return $this->belongsToMany(ImageModel::class, 'tour_images', 'tour_id', 'image_id');
+    // }
+
+    // public function tourPhuongTien()
+    // {
+    //     return $this->hasMany(TourPhuongTienModel::class, 'id_tour', 'id');
+    // }
+    // public function phuongTien()
+    // {
+    //     return $this->belongsToMany(LoaiPhuongTienModel::class, 'tour_phuong_tien', 'id_tour', 'ma_loai_phuong_tien');
+    // }
+    // public function tourkhachSan()
+    // {
+    //     return $this->hasMany(TourKhachSanModel::class, 'id_tour', 'id');
+    // }
+    // public function khachSan()
+    // {
+    //     return $this->belongsToMany(LoaiKhachSanModel::class, 'tour_khach_san', 'id_tour', 'ma_loai_khach_san');
+    // }
+    // public function lichTRinh()
+    // {
+    //     return $this->hasMany(LichTrinhModel::class, 'id_tour', 'id');
+    // }
+
+    // public function DatTour()
+    // {
+    //     return $this->hasMany(DatTour::class, 'id_tour');
+    // }
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');

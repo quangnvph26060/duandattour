@@ -26,7 +26,6 @@ class LoaiTourModel extends Model
     {
         return $this->hasMany(TourModel::class, 'ma_loai_tour');
     }
-
     public function locations()
     {
         return $this->hasMany(DiaDiemModel::class);

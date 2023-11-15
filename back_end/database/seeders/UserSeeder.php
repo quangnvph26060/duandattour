@@ -75,5 +75,10 @@ class UserSeeder extends Seeder
         if ($user && $role) {
             $user->assignRole($role);
         }
+        $user = User::find(2);
+        $role = Role::where('name', 'customer_feedback')->first();
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
     }
 }
