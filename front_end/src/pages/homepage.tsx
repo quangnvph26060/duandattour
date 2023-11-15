@@ -129,22 +129,7 @@ const HomePage = () => {
             maxExpiryDate: secondsDiff,
           };
         });
-  
-        const maxExpiryDates = expiryDates.map((expiry) => expiry.maxExpiryDate);
-        const maxExpiryDatedemo = Math.max(...maxExpiryDates);
-        setMaxExpiryDates(maxExpiryDatedemo);
-        setRemainingTime(maxExpiryDatedemo);
-        console.log(maxExpiryDatedemo);
-  
-        const expiryDatesByTour = expiryDates.reduce((acc, expiry) => {
-          if (!acc[expiry.tourId]) {
-            acc[expiry.tourId] = [];
-          }
-          acc[expiry.tourId].push(expiry.maxExpiryDate);
-          return acc;
-        }, {});
-  
-        console.log(expiryDatesByTour);
+
       })
       .catch((error) => {
         console.log(error);
