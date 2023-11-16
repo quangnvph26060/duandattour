@@ -117,7 +117,6 @@ const DetailPage = (props: Props) => {
             ) : (
               <p>Không có hình ảnh cho tour này.</p>
             )}
-           
             {/* {images && images.length > 0 ? (
             <div>
               {" "}

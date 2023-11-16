@@ -15,7 +15,7 @@ class ApiPermissionsController extends Controller
     public function index()
     {
         $permissions   = User::with('roles', 'roles.permissions')->get();
-        return response()->json($permissions);
+        return response()->json(['data' => $permissions]);
     }
     // hiển thị vai trò 
     public function PhanVaiTro($id)
