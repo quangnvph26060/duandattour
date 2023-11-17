@@ -8,6 +8,7 @@ use App\Models\LoaiTourModel;
 use App\Models\TourModel;
 
 use App\Models\DatTour;
+use App\Models\Discount;
 use App\Models\HoaDon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -108,5 +109,24 @@ class ApiTourController extends Controller
                 'message' => 'Không tìm thấy thông tin'
             ], 404);
         }
+    }
+
+    public function getlisttourKM() {
+        $tourKM = TourModel::with('discounts','images')->where('trang_thai',1)->get();
+        $tourKMWithDiscounts = [];
+        
+        foreach ($tourKM as $tour) {
+            if ($tour->discounts->isNotEmpty()) {
+                $expiryDates = $tour->discounts->pluck('expiry_date');
+                $maxExpiryDate = $expiryDates->max();
+                $now = Carbon::now();
+                $expiryDate = Carbon::parse($maxExpiryDate);
+                $countdown = $expiryDate->diffInSeconds($now);
+                $tour->max_expiry_date = $maxExpiryDate;
+                $tourKMWithDiscounts[] = $tour;
+            }
+        }
+        
+        return response()->json(['tourKM' => $tourKMWithDiscounts], 200);
     }
 }

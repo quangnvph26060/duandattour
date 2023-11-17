@@ -87,8 +87,10 @@ Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestinati
 Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
 //api láy all điểm đi của tour làm chức năng search
 Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
-
-
+//api search
+Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
+// api List tour kM
+Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

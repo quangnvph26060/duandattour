@@ -23,6 +23,7 @@
     "pnpm": "^8.8.0",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
+    "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-modal": "^3.16.1",
