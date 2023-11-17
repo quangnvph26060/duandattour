@@ -16,19 +16,22 @@ import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
   
+
+
+  const success = () => {
+     message.success('Trạng thái đã được chuyển đổi thành công');
+     setTimeout(() => {
+      window.location.reload();
+    }, 999); // Tải lại trang sau 1 giây (có thể điều chỉnh thời gian tùy ý)
+  };
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
     if (checked) {
       success();
+ 
     }
   
   };
-
-  const success = () => {
-     message.success('Trạng thái đã được chuyển đổi thành công');
-    
-  };
- 
 
     // 1 useGetdattour
         const {data:Data} = useGetQuanlydattourQuery()
@@ -43,7 +46,7 @@ const ADmin_DatTour = (props: Props) => {
               if(response){
                 success();
               }
-              // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
+           
             })
             .catch(error => {
               console.error('API error:', error);
@@ -125,27 +128,34 @@ const ADmin_DatTour = (props: Props) => {
             dataIndex: "so_luong_khach",
             key: "so_luong_khach",
         },
-          {
+        
+            {
               title: "Trạng thái",
+              dataIndex: "trang_thai",
+              key: "trang_thai",
+              render: (trang_thai) => (trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán")
+            },
+            {
+              title: "Action",
               dataIndex: "trang_thai",
               key: "trang_thai",
               render: (trang_thai, { key: id }: any) => {
                 const check = trang_thai === 0 ? false : true;
                 console.log(id);
-        
+          
                 return (
                   <Switch
                     defaultChecked={check}
                     onChange={(checked) => {
                       updateStatus(id);
-                    
+                   
                     }}
                   />
+                
                 );
-                //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
+             
               },
             },
-
 
        
     ];
@@ -202,7 +212,7 @@ const ADmin_DatTour = (props: Props) => {
 
             </header>
             {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
-            {<Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 10 }} />}
+            {<Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 5 }} />}
          
      <Modal
   visible={modalVisible}
