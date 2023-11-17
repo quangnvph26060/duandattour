@@ -11,9 +11,9 @@ type Props = {};
 const Admin_Khachhang: React.FC<Props> = () => {
   const { data: userdata, error, isLoading } = useGetUserQuery();
 
-  const tourArray = userdata || [];
-  const [userData, setUserData] = useState<IUser[]>([]);
 
+  const tourArray = userdata?.data || [];
+  const [userData, setUserData] = useState<IUser[]>([]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -97,7 +97,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
     {
       title: "Action",
       render: ({ key: id }: any) => (
-        localStorage.getItem("role") == 'admin'? <div className="flex space-x-2">
+        localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
           </Button>
@@ -105,7 +105,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
           <Button type="primary" danger>
             <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
           </Button>
-        </div> :""
+        </div> : ""
       ),
     },
   ];

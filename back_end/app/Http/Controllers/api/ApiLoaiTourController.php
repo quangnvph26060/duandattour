@@ -7,6 +7,7 @@ use App\Http\Requests\LoaiTourRequest;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 // {
 
@@ -76,7 +77,11 @@ class ApiLoaiTourController extends Controller
     public function store(Request $request)
     {
         $loaiTour = $request->all();
-
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+        }
         // Kiểm tra trước khi thêm
         $existingRecord = DB::table('loai_tour')
             ->where('ten_loai_tour', $loaiTour['ten_loai_tour'])
@@ -92,7 +97,12 @@ class ApiLoaiTourController extends Controller
             return response()->json(['message' => 'Khôi phục bản ghi thành công']);
         } else {
             // Bản ghi không tồn tại hoặc chưa bị xóa, bạn có thể tạo một bản ghi mới
-            return LoaiTourModel::create($loaiTour);
+            return LoaiTourModel::create(
+                [
+                    'image' => $imagePath,
+                    'ten_loai_tour' => $request->ten_loai_tour
+                ]
+            );
         }
     }
 
@@ -116,14 +126,36 @@ class ApiLoaiTourController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $loaiTourModel = LoaiTourModel::find($id);
+    
         if (!$loaiTourModel) {
             return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
         }
-        return $loaiTourModel->update($request->all());
+    
+        // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            
+            // Xóa ảnh hiện tại nếu có
+            if ($loaiTourModel->image) {
+                Storage::disk('public')->delete($loaiTourModel->image);
+            }
+            
+            // Lưu trữ ảnh mới
+            $imagePath = $image->store('images', 'public');
+    
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            $loaiTourModel->image = $imagePath;
+        }
+        
+        // Cập nhật các trường dữ liệu khác
+        $loaiTourModel->ten_loai_tour = $request->input('ten_loai_tour');
+        
+        // Lưu các thay đổi
+        $loaiTourModel->save();
+    
+        return response()->json(['message' => 'Cập nhật thành công']);
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -142,19 +174,19 @@ class ApiLoaiTourController extends Controller
 
         $menuPhanCap = $loaiTours->map(function ($loaiTour) {
             $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
-            $uniqueDiemDen=[];
+            $uniqueDiemDen = [];
             foreach ($diemDens as $value) {
                 $lowerValue = strtolower($value);
                 $found = false;
-               
+
                 foreach ($uniqueDiemDen as $uniqueValue) {
-                    
+
                     if (strtolower($uniqueValue) === $lowerValue) {
                         $found = true;
-                        break;   
+                        break;
                     }
                 }
-                
+
                 if (!$found) {
                     $uniqueDiemDen[] = $value;
                 }
@@ -163,7 +195,6 @@ class ApiLoaiTourController extends Controller
                     'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),
                     'diemDens' => $uniqueDiemDen,
                 ];
-
             }
         });
 

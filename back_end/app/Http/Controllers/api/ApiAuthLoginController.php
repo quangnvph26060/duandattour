@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\DatTour;
+use App\Models\TourModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class ApiAuthLoginController extends Controller
 {
@@ -45,6 +48,12 @@ class ApiAuthLoginController extends Controller
         return response()->json(['data' => $user], 200);
     }
 
+    public function logout()
+    {
+        Auth::user()->tokens()->delete();
+
+        return response()->json(['message' => 'Đăng xuất thành công !!'], 200);
+    }
     public function changePassword(Request $request)
     {
         $userId = Auth::id();
@@ -74,11 +83,22 @@ class ApiAuthLoginController extends Controller
             ], 500);
         }
     }
-
-    public function logout()
+    public function getToursByUserId()
     {
-        Auth::user()->tokens()->delete();
+        $userId = Auth::id();
+        // $bookings = DatTour::with('ThanhToan', 'tours.images', 'tours.loaiTours')->where('ma_khach_hang', $userId)->get();
+        // return response()->json(['data' => $bookings], 200);
 
-        return response()->json(['message' => 'Đăng xuất thành công !!'], 200);
+        $userBookings = DatTour::where('ma_khach_hang', $userId)->with('ThanhToan', 'tours.images', 'tours.loaiTours')->get();
+
+        // Lấy thông tin ma_loai_tour từ id_tour
+        // foreach ($userBookings as $booking) {
+        //     $idTour = $booking->id_tour;
+        //     $maLoaiTour = TourModel::with()->find($idTour);
+
+        //     $booking->ma_loai_tour = $maLoaiTour;
+        // }
+
+        return response()->json(['data' => $userBookings], 200);
     }
 }

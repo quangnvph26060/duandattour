@@ -21,8 +21,9 @@ const AdminLoai_tour = (props: Props) => {
     // const navigate = useNavigate();
     const tourArray = tourdata?.data || [];
 
-    const dataSource = tourArray.map(({ id, ten_loai_tour }: ILoaiTour) => ({
+    const dataSource = tourArray.map(({ id,image ,ten_loai_tour }: ILoaiTour) => ({
         key: id,
+        image,
         ten_loai_tour
     }));
 
@@ -33,6 +34,18 @@ const AdminLoai_tour = (props: Props) => {
             title: "ID loại tour",
             dataIndex: "key",
             key: "key",
+        },
+        {
+            title: "Ảnh loại tour",
+            dataIndex: "image",
+            key: "image",
+            render: (image: string) => (
+                <img
+                  src={`http://localhost:8000/storage/${image}`}
+                  alt="img"
+                  style={{ width: '50px', cursor: 'pointer' }}
+                />
+            ),
         },
         {
             title: "Tên loại tour",

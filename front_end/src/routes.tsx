@@ -58,6 +58,10 @@ import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
 import ADmin_Qlytourchuathanhtoan from "./pages/Admin/products/Dat_tour/index2";
 import ADmin_Qlytourdathanhtoan from "./pages/Admin/products/Dat_tour/index3";
 import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
+import Giohanguser from "./pages/giohanguser";
+import Giohanguser1 from "./pages/giohanguser1";
+import Giohanguser2 from "./pages/giohanguser2";
+import Doimk from "./pages/changeMk";
 export const router = createBrowserRouter([
   
   {
@@ -107,6 +111,22 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <QLuser />,
+      },
+      {
+        path: "/giohanguser",
+        element: <Giohanguser />
+      },
+      {
+        path: "/giohanguser1",
+        element: <Giohanguser1 />
+      },
+      {
+        path: "/giohanguser2",
+        element: <Giohanguser2 />
+      },
+      {
+        path: "/changeMk",
+        element: <Doimk />
       },
     ],
   },

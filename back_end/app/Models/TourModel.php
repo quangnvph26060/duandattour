@@ -43,6 +43,10 @@ class TourModel extends Model
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
     }
+    public function loaiTours()
+    {
+        return $this->belongsto(LoaiTourModel::class, 'ma_loai_tour');
+    }
     public function images()
     {
         return $this->belongsToMany(ImageModel::class, 'tour_images', 'tour_id', 'image_id');
@@ -73,5 +77,4 @@ class TourModel extends Model
     {
         return $this->hasMany(DatTour::class, 'id_tour');
     }
-    
 }

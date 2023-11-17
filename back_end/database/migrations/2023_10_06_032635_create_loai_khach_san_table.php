@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('loai_khach_san', function (Blueprint $table) {
             $table->id();
-            $table->string('loai_khach_san');
+            $table->string('image')->nullable();
+            $table->string('ten_khach_san')->nullable();
+            $table->string('dia_chi')->nullable();
+            $table->integer('so_sao')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

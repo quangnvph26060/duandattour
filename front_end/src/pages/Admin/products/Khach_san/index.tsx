@@ -28,9 +28,12 @@ const ADmin_khachsan = (props: Props) => {
    
     const khachsanArray = khachsandata?.data || [];
     
-    const dataSource = khachsanArray.map(({ id,loai_khach_san}: IKhachSan) => ({
+    const dataSource = khachsanArray.map(({ id,image,ten_khach_san,dia_chi,so_sao}: IKhachSan) => ({
         key: id,
-        loai_khach_san
+        image,
+        ten_khach_san,
+        dia_chi,
+        so_sao
     }));
     
     const columns = [
@@ -40,9 +43,31 @@ const ADmin_khachsan = (props: Props) => {
             key: "key",
         },
         {
-            title: "Loại khách sạn",
-            dataIndex:"loai_khach_san",
-            key: "loai_khach_san",
+            title: "Image",
+            dataIndex:"image",
+            key: "image",
+            render: (image: string) => (
+                <img
+                  src={`http://localhost:8000/storage/${image}`}
+                  alt="img"
+                  style={{ width: '50px', cursor: 'pointer' }}
+                />
+            ),
+        },
+        {
+            title: "Tên khách sạn",
+            dataIndex:"ten_khach_san",
+            key: "ten_khach_san",
+        },
+        {
+            title: "Địa chỉ",
+            dataIndex:"dia_chi",
+            key: "dia_chi",
+        },
+        {
+            title: "Số sao",
+            dataIndex:"so_sao",
+            key: "so_sao",
         },
        
         

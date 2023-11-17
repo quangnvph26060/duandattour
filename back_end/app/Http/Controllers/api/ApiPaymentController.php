@@ -122,7 +122,7 @@ class ApiPaymentController extends Controller
     {
         $paymentData = $request->all();
         if ($paymentData['payment_method'] === 'cash') {
-           
+
             $latestDatTour = DatTour::latest('created_at')->first();
             if ($latestDatTour->trang_thai == '0') {
                 // rồi làm quản lý đặt tour thì cập nhật lại trang thái thì mới vào vào bảng thanh toán 
@@ -141,13 +141,14 @@ class ApiPaymentController extends Controller
         }
         return response()->json(['error' => 'Payment failed'], 400);
     }
-    public function getBookingTour($id) {
+    public function getBookingTour($id)
+    {
         $bookingtour = DatTour::find($id);
-        if($bookingtour){
-            $bookings = DatTour::with('ThanhToan','tours')->find($id);
-            return response()->json(['data'=>$bookings],200);
+        if ($bookingtour) {
+            $bookings = DatTour::with('ThanhToan', 'tours')->find($id);
+            return response()->json(['data' => $bookings], 200);
         }
         // return response()->json(['booking'=>$bookingtour],200);
-        return response()->json(['message'=>'Không tìm thấy booking tour'],404);
+        return response()->json(['message' => 'Không tìm thấy booking tour'], 404);
     }
 }

@@ -7,6 +7,8 @@ use App\Http\Resources\LoaiKhachSanResoure;
 use App\Models\LoaiKhachSanModel;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ApiLoaiKhachSanController extends Controller
 {
@@ -27,10 +29,36 @@ class ApiLoaiKhachSanController extends Controller
      */
     public function store(Request $request)
     {
-        // tạo loại phương tiện mới
-        $khachsans = LoaiKhachSanModel::create($request->all());
-        // trả về thông tin vừa thêm
-        return new LoaiKhachSanResoure($khachsans);
+        $loaiKS = $request->all();
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+        }
+        // Kiểm tra trước khi thêm
+        $existingRecord = DB::table('loai_khach_san')
+            ->where('ten_khach_san', $loaiKS['ten_khach_san'])
+            ->whereNotNull('deleted_at')
+            ->first();
+
+        if ($existingRecord) {
+            // Bản ghi đã tồn tại và đã bị xóa, bạn có thể khôi phục nó
+            DB::table('loai_khach_san')
+                ->where('id', $existingRecord->id)
+                ->update(['deleted_at' => null]);
+
+            return response()->json(['message' => 'Khôi phục bản ghi thành công']);
+        } else {
+            // Bản ghi không tồn tại hoặc chưa bị xóa, bạn có thể tạo một bản ghi mới
+            return LoaiKhachSanModel::create(
+                [
+                    'image' => $imagePath,
+                    'ten_khach_san' => $request->ten_khach_san,
+                    'dia_chi'=> $request->dia_chi,
+                    'so_sao'=>$request->so_sao
+                ]
+            );
+        }
     }
 
     /**
@@ -54,15 +82,36 @@ class ApiLoaiKhachSanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $khachsan = LoaiKhachSanModel::find($id);
-        if ($khachsan) {
-            $khachsan->update($request->all());
-            return new LoaiKhachSanResoure($khachsan);
-        } else {
-            return  response()->json([
-                'message' => 'Không tìm thấy thông tin'
-            ], 404);
+        $loaiks = LoaiKhachSanModel::find($id);
+    
+        if (!$loaiks) {
+            return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
         }
+    
+        // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            
+            // Xóa ảnh hiện tại nếu có
+            if ($loaiks->image) {
+                Storage::disk('public')->delete($loaiks->image);
+            }
+            
+            // Lưu trữ ảnh mới
+            $imagePath = $image->store('hinh', 'public');
+    
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            $loaiks->image = $imagePath;
+        }
+        
+        // Cập nhật các trường dữ liệu khác
+        $loaiks->ten_khach_san = $request->input('ten_khach_san');
+        $loaiks->dia_chi = $request->input('dia_chi');
+        $loaiks->so_sao = $request->input('so_sao');
+        // Lưu các thay đổi
+        $loaiks->save();
+    
+        return response()->json(['message' => 'Cập nhật thành công']);
     }
 
     /**
