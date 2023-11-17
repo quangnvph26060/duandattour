@@ -4,23 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TourModel extends Model
+use Illuminate\Notifications\Notifiable;
+// use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
+class UsersModel extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $table = "user";
+    use  HasFactory, SoftDeletes, Notifiable;
+    use HasRoles;
+    protected $table = "users";
     protected $fillable = [
-        'ten_tour',
-        'diem_di',
-        'diem_den',
-        'lich_khoi_hanh',
-        'thoi_gian',
-        'diem_khoi_hanh',
-        'anh',
-        'soluong',
-        'trang_thai',
-        'ma_loai_tour',
-        'ma_hdv'
+        'name',
+        'image',
+        'dia_chi',
+        'email',
+        'sdt',
+        'cccd',
+        'password'
+
     ];
 }

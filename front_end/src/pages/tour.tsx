@@ -1,16 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import '../tour.css'
+import { IPour } from "../interface/home";
 import { Link } from 'react-router-dom';
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import AiOutlineShoppingCart from 'react-icons'
-import logo from '../img/logo.jpg'
-import anh1 from '../img/anh1.jpg'
-import anh2 from '../img/anh2.jpg'
-import anh3 from '../img/anh3.jpg'
-import ticket from "../img/ticket.png"
-import shopping from "../img/shopping.png"
 import anh4 from "../img/anh4.jpg"
 import star from "../img/star.png"
 import line from "../img/line.png"
@@ -20,32 +15,83 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
-
-
-const rounded = {
-  borderRadius: '25px',
-};
+const rounded = { borderRadius: '25px' };
+import logo from '../img/logo.jpg';
 const TourPage = () => {
-  // const images = [
-  //     {
-  //         id: 1,
-  //         name:'product-1',
-  //         imagePath: qq
-  //     }
-  // ]
+  const [budget, setBudget] = useState(0);
+
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+    return formatter.format(value);
+  };
+
+  const handleBudgetChange = (event) => {
+    const newBudget = event.target.value;
+    setBudget(newBudget);
+  };
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tours, setTours] = useState<IPour[]>([]);
+  const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+        setTours(response.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setError("Error retrieving tours.");
+      }
+    };
+
+    fetchTours();
+  }, []);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = () => {
+    const filteredTours = tours.filter((tour) =>
+      tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredTours(filteredTours);
+    setSearched(true); // Đánh dấu đã tìm kiếm
+  };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setFilteredTours([]);
+    setSearched(false); // Đánh dấu chưa tìm kiếm
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
+
   return (
     <div className=''>
-      <header>
-       
-      </header>
-      <p className='container mx-auto py-1'>Du lịch -- Tìm kiếm tour du lịch</p>
+      {/*  */}
 
+      {/*  */}
 
-      <div className='flex container mx-auto gap-11 pt-5'>
+      <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside className='w-1/4 bg-gray-100 h-[1300px]'>
+        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1450px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
-          <h2 className='bg-blue-600 text-2xl font-medium text-white px-4 py-1'>Tour</h2>
+          <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Poly Tour</h2>
           <div className='text-center p-2 py-4 '>
             <select className='rounded-md border border-black'>
               <option value="1">Du lịch</option>
@@ -59,21 +105,130 @@ const TourPage = () => {
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
               <option value="1">-- Tất cả --</option>
-              <option value="2">okok</option>
+              <option value="2">Du lịch sinh thái.</option>
+              <option value="2">Du lịch văn hóa.</option>
+              <option value="2">Du lịch nghỉ dưỡng.</option>
+              <option value="2">Du lịch giải trí</option>
+              <option value="2">Du lịch thể thao.</option>
+              <option value="2">Du lịch khám phá</option>
+              <option value="2">Du lịch mạo hiểm</option>
+              <option value="2">Du lịch kết hợp</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Điểm đi</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
-              <option value="1">-- Tất cả --</option>
-              <option value="2">okok</option>
+              <option value="">Chọn Điểm đi</option>
+              <option value="Hà Nội">Hà Nội</option>
+              <option value="Hồ Chí Minh">Hồ Chí Minh (TP.HCM)</option>
+              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Đà Nẵng">Đà Nẵng</option>
+              <option value="Cần Thơ">Cần Thơ</option>
+              <option value="An Giang">An Giang</option>
+              <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+              <option value="Bắc Giang">Bắc Giang</option>
+              <option value="Bắc Kạn">Bắc Kạn</option>
+              <option value="Bạc Liêu">Bạc Liêu</option>
+              <option value="Bắc Ninh">Bắc Ninh</option>
+              <option value="Bến Tre">Bến Tre</option>
+              <option value="Bình Định">Bình Định</option>
+              <option value="Bình Dương">Bình Dương</option>
+              <option value="Bình Phước">Bình Phước</option>
+              <option value="Bình Thuận">Bình Thuận</option>
+              <option value="Cà Mau">Cà Mau</option>
+              <option value="Cao Bằng">Cao Bằng</option>
+              <option value="Đắk Lắk">Đắk Lắk</option>
+              <option value="Đắk Nông">Đắk Nông</option>
+              <option value="Điện Biên">Điện Biên</option>
+              <option value="Đồng Nai">Đồng Nai</option>
+              <option value="Đồng Tháp">Đồng Tháp</option>
+              <option value="Gia Lai">Gia Lai</option>
+              <option value="Hà Giang">Hà Giang</option>
+              <option value="Hà Nam">Hà Nam</option>
+              <option value="Hà Tĩnh">Hà Tĩnh</option>
+              <option value="Hải Dương">Hải Dương</option>
+              <option value="Hậu Giang">Hậu Giang</option>
+              <option value="Hòa Bình">Hòa Bình</option>
+              <option value="Hưng Yên">Hưng Yên</option>
+              <option value="Khánh Hòa">Khánh Hòa</option>
+              <option value="Kiên Giang">Kiên Giang</option>
+              <option value="Kon Tum">Kon Tum</option>
+              <option value="Lai Châu">Lai Châu</option>
+              <option value="Lâm Đồng">Lâm Đồng</option>
+              <option value="Lạng Sơn">Lạng Sơn</option>
+              <option value="Lào Cai">Lào Cai</option>
+              <option value="Long An">Long An</option>
+              <option value="Nam Định">Nam Định</option>
+              <option value="Nghệ An">Nghệ An</option>
+              <option value="Ninh Bình">Ninh Bình</option>
+              <option value="Ninh Thuận">Ninh Thuận</option>
+              <option value="Phú Thọ">Phú Thọ</option>
+              <option value="Phú Yên">Phú Yên</option>
+              <option value="Quảng Bình">Quảng Bình</option>
+              <option value="Quảng Nam">Quảng Nam</option>
+              <option value="Quảng Ngãi">Quảng Ngãi</option>
+              <option value="Quảng Ninh">Quảng Ninh</option>
+              <option value="Quảng Trị">Quảng Trị</option>
+              <option value="Sóc Trăng">Sóc Trăng</option>
+              <option value="Sơn La">Sơn La</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Điểm đến</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
-              <option value="1">-- Chọn điểm đến --</option>
-              <option value="2">okok</option>
+              <option value="">Chọn Điểm đến</option>
+              <option value="Hà Nội">Hà Nội</option>
+              <option value="Hồ Chí Minh">Hồ Chí Minh (TP.HCM)</option>
+              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Đà Nẵng">Đà Nẵng</option>
+              <option value="Cần Thơ">Cần Thơ</option>
+              <option value="An Giang">An Giang</option>
+              <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+              <option value="Bắc Giang">Bắc Giang</option>
+              <option value="Bắc Kạn">Bắc Kạn</option>
+              <option value="Bạc Liêu">Bạc Liêu</option>
+              <option value="Bắc Ninh">Bắc Ninh</option>
+              <option value="Bến Tre">Bến Tre</option>
+              <option value="Bình Định">Bình Định</option>
+              <option value="Bình Dương">Bình Dương</option>
+              <option value="Bình Phước">Bình Phước</option>
+              <option value="Bình Thuận">Bình Thuận</option>
+              <option value="Cà Mau">Cà Mau</option>
+              <option value="Cao Bằng">Cao Bằng</option>
+              <option value="Đắk Lắk">Đắk Lắk</option>
+              <option value="Đắk Nông">Đắk Nông</option>
+              <option value="Điện Biên">Điện Biên</option>
+              <option value="Đồng Nai">Đồng Nai</option>
+              <option value="Đồng Tháp">Đồng Tháp</option>
+              <option value="Gia Lai">Gia Lai</option>
+              <option value="Hà Giang">Hà Giang</option>
+              <option value="Hà Nam">Hà Nam</option>
+              <option value="Hà Tĩnh">Hà Tĩnh</option>
+              <option value="Hải Dương">Hải Dương</option>
+              <option value="Hậu Giang">Hậu Giang</option>
+              <option value="Hòa Bình">Hòa Bình</option>
+              <option value="Hưng Yên">Hưng Yên</option>
+              <option value="Khánh Hòa">Khánh Hòa</option>
+              <option value="Kiên Giang">Kiên Giang</option>
+              <option value="Kon Tum">Kon Tum</option>
+              <option value="Lai Châu">Lai Châu</option>
+              <option value="Lâm Đồng">Lâm Đồng</option>
+              <option value="Lạng Sơn">Lạng Sơn</option>
+              <option value="Lào Cai">Lào Cai</option>
+              <option value="Long An">Long An</option>
+              <option value="Nam Định">Nam Định</option>
+              <option value="Nghệ An">Nghệ An</option>
+              <option value="Ninh Bình">Ninh Bình</option>
+              <option value="Ninh Thuận">Ninh Thuận</option>
+              <option value="Phú Thọ">Phú Thọ</option>
+              <option value="Phú Yên">Phú Yên</option>
+              <option value="Quảng Bình">Quảng Bình</option>
+              <option value="Quảng Nam">Quảng Nam</option>
+              <option value="Quảng Ngãi">Quảng Ngãi</option>
+              <option value="Quảng Ninh">Quảng Ninh</option>
+              <option value="Quảng Trị">Quảng Trị</option>
+              <option value="Sóc Trăng">Sóc Trăng</option>
+              <option value="Sơn La">Sơn La</option>
             </select>
           </div>
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
@@ -132,12 +287,14 @@ const TourPage = () => {
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Giá tốt</button>
             </div>
           </div>
-          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm______________________________</p>
-          <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách</p>
+          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm___________</p>
+          <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
+
+          <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách: {formatCurrency(budget)}</p>
           <div className='px-3 pt-1'>
-            <input className='w-60' type="range" />
+            <input className='w-60' type="range" min="0" max="200000000" onChange={handleBudgetChange} />
           </div>
-          <p className='px-3'>0đ - 200.000.000đ</p>
+          <p className='px-3'>0đ - {formatCurrency(200000000)}</p>
           <p className='px-3 text-lg font-medium py-1'>Thông tin vận chuyển</p>
           <div className='flex gap-3 py-1 pt-2 container justify-center'>
             <div className=''>
@@ -147,109 +304,56 @@ const TourPage = () => {
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Ô tô</button>
             </div>
           </div>
-          <h2 className='px-3 text-lg font-medium py-1'>Hiển Thị những chuyến đi có</h2>
-          <div className='px-3 pb-5'>
-            <input type="radio" value="" name="" id="" />Khuyến mãi
-            <br />
-            <input type="radio" value="" name="" id="" />Còn chỗ
-          </div>
+          <button className="bt mt-4 mb-6 ml-7">Hiển thị những chuyến đi có</button>
+
         </aside>
 
         {/*conten-right*/}
-
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
-          <div className='grid grid-cols-3 gap-7'>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
+          <div className="content">
+            <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
+            <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {displayedTours.map((tour) => (
 
-              <img src={anh1} alt="anh1" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>ĐÀ NẴNG - HUẾ - ĐẦM LẬP AN - LA VÀNG - ĐỘNG PHONG NHA & THIÊN ĐƯỜNG - KDL BÀ NÀ - CẦU VÀNG...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-220923VU-F</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 p-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
+                <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
+
+                  {tour.images.map((image) => (
+                    <img
+                      key={image.id}
+                      className="mt-4 rounded-lg w-full h-60 object-cover"
+                      src={`http://localhost:8000/storage/${image.image_path}`}
+                      alt={`Ảnh ${tour.ten_tour}`}
+                    />
+                  ))}
+                  <div className="product-details mt-4">
+                    <div className="info-row data">
+                      <p>{tour.lich_khoi_hanh}</p>-
+                      <p>{tour.soluong} ngày</p>
+                    </div>
+                    <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                      <h3 className="text-lg font-bold">{tour.ten_tour}</h3>
+                    </Link>
+                    <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
+                    <p className='text mt-2'>{tour.mo_ta}</p>
+
+                    <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
+
+                    <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
+                      Giảm 6%
+                    </button>
+                    <button
+                      id="countdown-btn" style={{ color: 'revert' }}
+                      className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
+                    >
+                      Đặt Ngay
+                    </button>
+
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
 
-              <img src={anh2} alt="anh2" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>22/09/2023 - 5N4Đ - Giờ đi: 05:20</p>
-              <p className='font-bold py-2 px-1'>Huế - La Vang - Động Thiên Đường -
-                KDL Bà Nà - Cầu Vàng - Hội An - Đà Nẵng - Thưởng Thức Ca Hò Huế trên...</p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN3398-140-225423VU-V</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              <p className='text-base font-medium px-4 pt-1'>Giá cũ: 7,990,000₫</p>
-              <div className='flex gap-16 justify-between px-4 pb-1'>
-                <p className='text-lg font-semibold text-red-500'>7,190,000₫</p>
-                <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div>
-              </div>
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
-            <div className='py-4 bg-neutral-100 rounded-lg'>
-
-              <img src={anh3} alt="anh3" className='h-[315px] w-max rounded-lg' />
-              <p className='px-1'>23/09/2023 - Trong ngày - Giờ đi: 16:00</p>
-              <p className='font-bold py-2 px-1'>Trải nghiệm đặc sản: Tour xuyên rừng - KDL Đất Mũi Cà Mau - Áp dụng cho nhóm 6 khách trở lên </p>
-              <p className='px-4'>MÃ TOUR :</p>
-              <div className='flex gap-3 px-4'>
-                <img src={ticket} className='w-10' alt="ticket" />
-                <p className='text-sm pt-3 font-medium'>NDSGN4568-140-220923VU-V</p>
-              </div>
-              <div className='flex gap-2 py-2 px-4'>
-                <p className='text-sm'>Nơi khởi hành: </p>
-                <p className='font-medium text-sm'>TP.Hồ Chí Minh</p>
-              </div>
-              {/* <p className='text-base font-medium pt-1'>Giá cũ: 7,990,000₫</p> */}
-              {/* <div className='flex gap-16 pb-1'> */}
-
-              <p className='text-lg font-semibold text-red-500 px-4'>1,190,000₫</p>
-              {/* <div className='bg-red-400 py-2 px-5 rounded-xl text-white'>10% Giảm</div> */}
-              {/* </div> */}
-              <div className='flex justify-between px-4 gap-10 pt-3'>
-                <button className=' flex gap-2 hover:bg-teal-500 bg-red-400 py-2 px-3 rounded-xl'>
-                  <img src={shopping} alt="shopping" className='w-5' />
-                  <p className='text-white text-sm'>Đặt ngay</p>
-                </button>
-                <button className='border border-sky-500 py-2 px-5 rounded-xl'>
-                  <p className='text-sm'>Xem chi tiết</p>
-                </button>
-              </div>
-            </div>
           </div>
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
@@ -411,7 +515,92 @@ const TourPage = () => {
       </div>
 
       {/* Footer */}
-      <footer></footer>
+      <footer className="mt-15  text-center bg-gray-100">
+        <div className="flex flex-wrap justify-center">
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4 ">Điểm đến</h3>
+            <ul className="list-disc pl-4">
+              <li>Hà Nội</li>
+              <li>Hồ Chí Minh</li>
+              <li>Đà Nẵng</li>
+              <li>Hội An</li>
+              <li>Nha Trang</li>
+              <li>Phú Quốc</li>
+              <li>Đà Lạt</li>
+              <li>Sapa</li>
+              <li>Phan Thiết</li>
+              <li>Hạ Long</li>
+              <li>Vũng Tàu</li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Liên hệ</h3>
+            <p>Email: Polytour@gmail.com</p>
+            <p>Tìm kiếm thông tin</p>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Hỗ trợ</h3>
+            <p>Mạng xã hội</p>
+            <p>037 763 8662</p>
+            <p>Từ 8:00 - 22:00 hàng ngày</p>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Thông tin</h3>
+            <ul className="list-disc pl-4">
+              <li>Tạp chí du lịch</li>
+              <li>Cẩm nang du lịch</li>
+              <li>Tin tức</li>
+              <li>Sitemap</li>
+              <li>FAQs</li>
+              <li>Chính sách riêng tư</li>
+              <li>Thỏa thuận sử dụng</li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/5">
+            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Dòng tour</h3>
+            <ul className="list-disc pl-4">
+              <li>Cao cấp</li>
+              <li>Tiêu chuẩn</li>
+              <li>Tiết kiệm</li>
+              <li>Giá tốt</li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-wrap mt-8">
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Liên kết</h3>
+            <ul className="list-disc pl-4">
+              <li><a href="/">Trang chủ</a></li>
+              <li><a href="/about">Giới thiệu</a></li>
+              <li><a href="/services">Dịch vụ</a></li>
+              <li><a href="/contact">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Theo dõi chúng tôi</h3>
+            <ul className="flex justify-center mb-4">
+              <li className="mr-4"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-twitter"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-instagram"></i></a></li>
+              <li className="mr-4"><a href="#"><i className="fab fa-youtube"></i></a></li>
+            </ul>
+            <p className="text-sm">Theo dõi chúng tôi để cập nhật thông tin mới nhất về du lịch.</p>
+          </div>
+          <div className="w-fullmd:w-1/2 lg:w-1/3">
+            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Đăng ký nhận tin</h3>
+            <p>Đăng ký để nhận thông tin du lịch, khuyến mãi và tin tức mới nhất.</p>
+            <form className="mt-4 mr-5">
+              <input type="email" placeholder="Nhập địa chỉ email" className="w-full py-2 px-4  rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500" />
+              <button type="submit" className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none">Đăng ký</button>
+            </form>
+          </div>
+        </div>
+        <div className="mt-8">
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Your Website. All rights reserved
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

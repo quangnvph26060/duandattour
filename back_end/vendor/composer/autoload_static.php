@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
+class ComposerStaticInitcd06c096284075e0fde76526cc082bdb
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -530,14 +530,19 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\DattourCommand' => __DIR__ . '/../..' . '/app/Console/Commands/DattourCommand.php',
+        'App\\Console\\Commands\\DiscountMessage' => __DIR__ . '/../..' . '/app/Console/Commands/DiscountMessage.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Demo' => __DIR__ . '/../..' . '/app/Http/Controllers/Demo.php',
+        'App\\Http\\Controllers\\api\\ApiDiscountController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiDiscountController.php',
         'App\\Http\\Controllers\\api\\ApiImagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiImagesController.php',
         'App\\Http\\Controllers\\api\\ApiLichTrinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLichTrinhController.php',
         'App\\Http\\Controllers\\api\\ApiLoaiKhachSanController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLoaiKhachSanController.php',
         'App\\Http\\Controllers\\api\\ApiLoaiPhuongTienController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLoaiPhuongTienController.php',
+        'App\\Http\\Controllers\\api\\ApiMessageController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiMessageController.php',
+        'App\\Http\\Controllers\\api\\ApiPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiPaymentController.php',
         'App\\Http\\Controllers\\api\\ApiPermissionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiPermissionsController.php',
         'App\\Http\\Controllers\\api\\ApiTourImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourImageController.php',
         'App\\Http\\Controllers\\api\\ApiTourKhachSanController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourKhachSanController.php',
@@ -565,8 +570,10 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Http\\Resources\\TourPhuongTienResource' => __DIR__ . '/../..' . '/app/Http/Resources/TourPhuongTienResource.php',
         'App\\Http\\Resources\\TourResoure' => __DIR__ . '/../..' . '/app/Http/Resources/TourResoure.php',
         'App\\Mail\\RegisterHuongDanVien' => __DIR__ . '/../..' . '/app/Mail/RegisterHuongDanVien.php',
+        'App\\Mail\\RegisterUser' => __DIR__ . '/../..' . '/app/Mail/RegisterUser.php',
         'App\\Models\\DatTour' => __DIR__ . '/../..' . '/app/Models/DatTour.php',
         'App\\Models\\DiaDiemModel' => __DIR__ . '/../..' . '/app/Models/DiaDiemModel.php',
+        'App\\Models\\Discount' => __DIR__ . '/../..' . '/app/Models/Discount.php',
         'App\\Models\\HoaDon' => __DIR__ . '/../..' . '/app/Models/HoaDon.php',
         'App\\Models\\HuongDanVienHoaDon' => __DIR__ . '/../..' . '/app/Models/HuongDanVienHoaDon.php',
         'App\\Models\\HuongDanVienModel' => __DIR__ . '/../..' . '/app/Models/HuongDanVienModel.php',
@@ -576,11 +583,16 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Models\\LoaiKhachSanModel' => __DIR__ . '/../..' . '/app/Models/LoaiKhachSanModel.php',
         'App\\Models\\LoaiPhuongTienModel' => __DIR__ . '/../..' . '/app/Models/LoaiPhuongTienModel.php',
         'App\\Models\\LoaiTourModel' => __DIR__ . '/../..' . '/app/Models/LoaiTourModel.php',
+        'App\\Models\\Message' => __DIR__ . '/../..' . '/app/Models/Message.php',
+        'App\\Models\\ThanhToan' => __DIR__ . '/../..' . '/app/Models/ThanhToan.php',
+        'App\\Models\\ThanhToanDetail' => __DIR__ . '/../..' . '/app/Models/ThanhToanDetail.php',
+        'App\\Models\\TourDiscount' => __DIR__ . '/../..' . '/app/Models/TourDiscount.php',
         'App\\Models\\TourImagesModel' => __DIR__ . '/../..' . '/app/Models/TourImagesModel.php',
         'App\\Models\\TourKhachSanModel' => __DIR__ . '/../..' . '/app/Models/TourKhachSanModel.php',
         'App\\Models\\TourModel' => __DIR__ . '/../..' . '/app/Models/TourModel.php',
         'App\\Models\\TourPhuongTienModel' => __DIR__ . '/../..' . '/app/Models/TourPhuongTienModel.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UsersModel' => __DIR__ . '/../..' . '/app/Models/UsersModel.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -1663,6 +1675,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Bus\\BatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BatchRepository.php',
         'Illuminate\\Bus\\Batchable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Batchable.php',
         'Illuminate\\Bus\\BusServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BusServiceProvider.php',
+        'Illuminate\\Bus\\ChainedBatch' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/ChainedBatch.php',
         'Illuminate\\Bus\\DatabaseBatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/DatabaseBatchRepository.php',
         'Illuminate\\Bus\\Dispatcher' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Dispatcher.php',
         'Illuminate\\Bus\\Events\\BatchDispatched' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Events/BatchDispatched.php',
@@ -1843,6 +1856,8 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Contracts\\Encryption\\Encrypter' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Encryption/Encrypter.php',
         'Illuminate\\Contracts\\Encryption\\StringEncrypter' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Encryption/StringEncrypter.php',
         'Illuminate\\Contracts\\Events\\Dispatcher' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Events/Dispatcher.php',
+        'Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Events/ShouldDispatchAfterCommit.php',
+        'Illuminate\\Contracts\\Events\\ShouldHandleEventsAfterCommit' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Events/ShouldHandleEventsAfterCommit.php',
         'Illuminate\\Contracts\\Filesystem\\Cloud' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Filesystem/Cloud.php',
         'Illuminate\\Contracts\\Filesystem\\Factory' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Filesystem/Factory.php',
         'Illuminate\\Contracts\\Filesystem\\FileNotFoundException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Filesystem/FileNotFoundException.php',
@@ -1882,6 +1897,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Contracts\\Queue\\ShouldBeUnique' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/ShouldBeUnique.php',
         'Illuminate\\Contracts\\Queue\\ShouldBeUniqueUntilProcessing' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/ShouldBeUniqueUntilProcessing.php',
         'Illuminate\\Contracts\\Queue\\ShouldQueue' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/ShouldQueue.php',
+        'Illuminate\\Contracts\\Queue\\ShouldQueueAfterCommit' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/ShouldQueueAfterCommit.php',
         'Illuminate\\Contracts\\Redis\\Connection' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Redis/Connection.php',
         'Illuminate\\Contracts\\Redis\\Connector' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Redis/Connector.php',
         'Illuminate\\Contracts\\Redis\\Factory' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Redis/Factory.php',
@@ -1978,6 +1994,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Database\\DetectsLostConnections' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/DetectsLostConnections.php',
         'Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastableModelEventOccurred.php',
         'Illuminate\\Database\\Eloquent\\BroadcastsEvents' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastsEvents.php',
+        'Illuminate\\Database\\Eloquent\\BroadcastsEventsAfterCommit' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastsEventsAfterCommit.php',
         'Illuminate\\Database\\Eloquent\\Builder' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php',
         'Illuminate\\Database\\Eloquent\\Casts\\ArrayObject' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Casts/ArrayObject.php',
         'Illuminate\\Database\\Eloquent\\Casts\\AsArrayObject' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Casts/AsArrayObject.php',
@@ -2815,7 +2832,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Laravel\\Prompts\\Concerns\\FakesInputOutput' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/FakesInputOutput.php',
         'Laravel\\Prompts\\Concerns\\Fallback' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Fallback.php',
         'Laravel\\Prompts\\Concerns\\Interactivity' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Interactivity.php',
-        'Laravel\\Prompts\\Concerns\\ReducesScrollingToFitTerminal' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/ReducesScrollingToFitTerminal.php',
+        'Laravel\\Prompts\\Concerns\\Scrolling' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Scrolling.php',
         'Laravel\\Prompts\\Concerns\\Termwind' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Termwind.php',
         'Laravel\\Prompts\\Concerns\\Themes' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Themes.php',
         'Laravel\\Prompts\\Concerns\\Truncation' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Truncation.php',
@@ -3224,6 +3241,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'League\\Flysystem\\PathTraversalDetected' => __DIR__ . '/..' . '/league/flysystem/src/PathTraversalDetected.php',
         'League\\Flysystem\\PortableVisibilityGuard' => __DIR__ . '/..' . '/league/flysystem/src/PortableVisibilityGuard.php',
         'League\\Flysystem\\ProxyArrayAccessToProperties' => __DIR__ . '/..' . '/league/flysystem/src/ProxyArrayAccessToProperties.php',
+        'League\\Flysystem\\ResolveIdenticalPathConflict' => __DIR__ . '/..' . '/league/flysystem/src/ResolveIdenticalPathConflict.php',
         'League\\Flysystem\\StorageAttributes' => __DIR__ . '/..' . '/league/flysystem/src/StorageAttributes.php',
         'League\\Flysystem\\SymbolicLinkEncountered' => __DIR__ . '/..' . '/league/flysystem/src/SymbolicLinkEncountered.php',
         'League\\Flysystem\\UnableToCheckDirectoryExistence' => __DIR__ . '/..' . '/league/flysystem/src/UnableToCheckDirectoryExistence.php',
@@ -3353,6 +3371,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
         'Monolog\\Attribute\\AsMonologProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php',
+        'Monolog\\Attribute\\WithMonologChannel' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/WithMonologChannel.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
@@ -3515,6 +3534,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Nette\\Utils\\Html' => __DIR__ . '/..' . '/nette/utils/src/Utils/Html.php',
         'Nette\\Utils\\IHtmlString' => __DIR__ . '/..' . '/nette/utils/src/compatibility.php',
         'Nette\\Utils\\Image' => __DIR__ . '/..' . '/nette/utils/src/Utils/Image.php',
+        'Nette\\Utils\\ImageColor' => __DIR__ . '/..' . '/nette/utils/src/Utils/ImageColor.php',
         'Nette\\Utils\\ImageException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\ImageType' => __DIR__ . '/..' . '/nette/utils/src/Utils/ImageType.php',
         'Nette\\Utils\\Json' => __DIR__ . '/..' . '/nette/utils/src/Utils/Json.php',
@@ -3523,6 +3543,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Nette\\Utils\\Paginator' => __DIR__ . '/..' . '/nette/utils/src/Utils/Paginator.php',
         'Nette\\Utils\\Random' => __DIR__ . '/..' . '/nette/utils/src/Utils/Random.php',
         'Nette\\Utils\\Reflection' => __DIR__ . '/..' . '/nette/utils/src/Utils/Reflection.php',
+        'Nette\\Utils\\ReflectionMethod' => __DIR__ . '/..' . '/nette/utils/src/Utils/ReflectionMethod.php',
         'Nette\\Utils\\RegexpException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Strings' => __DIR__ . '/..' . '/nette/utils/src/Utils/Strings.php',
         'Nette\\Utils\\Type' => __DIR__ . '/..' . '/nette/utils/src/Utils/Type.php',
@@ -3955,6 +3976,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'PHPUnit\\Framework\\MockObject\\MockObject' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Runtime/Interface/MockObject.php',
         'PHPUnit\\Framework\\MockObject\\MockObjectApi' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Runtime/Api/MockObjectApi.php',
         'PHPUnit\\Framework\\MockObject\\MockObjectInternal' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Runtime/Interface/MockObjectInternal.php',
+        'PHPUnit\\Framework\\MockObject\\NeverReturningMethodException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/NeverReturningMethodException.php',
         'PHPUnit\\Framework\\MockObject\\ProxiedCloneMethod' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Runtime/Api/ProxiedCloneMethod.php',
         'PHPUnit\\Framework\\MockObject\\ReflectionException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/ReflectionException.php',
         'PHPUnit\\Framework\\MockObject\\ReturnValueGenerator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Runtime/ReturnValueGenerator.php',
@@ -6565,9 +6587,9 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -112,7 +112,7 @@ const Admin_Acountkhachhang_Permisssions: React.FC = () => {
     return (
         <div className="container">
             <header className="mb-4">
-                <h2 className="font-bold text-2xl">Phân Vai Trò</h2>
+                <h2 className="font-bold text-2xl">Phân Quyền</h2>
             </header>
             <Form
                 className="tour-form"

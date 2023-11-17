@@ -5,11 +5,14 @@ import App from "./App.tsx";
 import persistor, { store } from "./app/store";
 import "./index.css";
 import "./page.css"
+import { ContextProvider } from "./context/ContextProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <App />
-        </PersistGate>
+      <PersistGate loading={null} persistor={persistor}>
+        <ContextProvider> {/* Bổ sung ContextProvider ở đây */}
+          <App />
+        </ContextProvider>
+      </PersistGate>
     </Provider>
-);
+  );

@@ -99,7 +99,7 @@ const ADmin_DatTour = (props: Props) => {
             title: 'Tour được đặt',
             dataIndex: 'tours',
             key: 'tours',
-            onCell: () => ({
+onCell: () => ({
               style: { cursor: 'pointer', textDecoration: '' },
             }),
             render: (text, record) => {
@@ -207,7 +207,7 @@ const ADmin_DatTour = (props: Props) => {
     
     return (
         <div>
-            <header className="mb-4 flex justify-between items-center">
+<header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
 
             </header>
@@ -248,4 +248,4 @@ const ADmin_DatTour = (props: Props) => {
     );
 }
 
-export default ADmin_DatTour;
+export default ADmin_DatTour; 

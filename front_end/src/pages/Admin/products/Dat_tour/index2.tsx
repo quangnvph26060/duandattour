@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { useGetQuanlydattourQuery, useGetQuanlydattourchuathanhtoanQuery } from "../../../../api/qlydattour";
 import { Modal, Descriptions } from "antd";
-
+import './index.css';
 const ADmin_Qlytourchuathanhtoan = (props: Props) => {
   
     const onChange = (checked: boolean) => {
@@ -84,7 +84,9 @@ const ADmin_Qlytourchuathanhtoan = (props: Props) => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  const openNewTab = ()=> {
+    window.open('https://sandbox.vnpayment.vn/merchantv2/Users/Login.htm?ReturnUrl=%2fmerchantv2%2fUsers%2fLogout.htm', '_blank');
+  };
     const columns = [
         {
             title: "Mã đặt tour",
@@ -197,6 +199,7 @@ const ADmin_Qlytourchuathanhtoan = (props: Props) => {
         <div>
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
+                <Button type="primary" onClick={openNewTab} className="custom-button">Button</Button>
 
             </header>
             {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}

@@ -20,6 +20,7 @@ class DatTourSeeder extends Seeder
             'sdt' => '094569999',
             'cccd' => '0912482935734',
             'ngay_dat' => '2023/10/10',
+            'ngay_het_han' => '2023/10/11',
             'dia_chi' => 'bình đà',
             'so_luong_khach' => 4,
           
