@@ -150,7 +150,7 @@ const DetailPage = (props: Props) => {
               <p className="max-w-[500px]">
                 {datatourArray?.mo_ta}
               </p>
-              <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
+              <div className="h-[230px] w-[2/3] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Khởi hành {datatourArray?.lich_khoi_hanh}
                 </p>
@@ -176,7 +176,7 @@ const DetailPage = (props: Props) => {
                 </p>
               </div>
             </div>
-            <div className="grid mr-[120px] grid-cols-4 gap-5">
+            <div className="grid grid-cols-4 gap-5">
               <div className="">
                 <h2 className="text-blue-600">
                   <FaFlag />
