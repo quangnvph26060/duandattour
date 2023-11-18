@@ -356,7 +356,7 @@ const HomePage = () => {
       </div> */}
       <MessageChatBox />
 
-      <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
+      {/* <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
           className="product-list1 grid gap-4 grid-cols-1"
           dots={true}
@@ -383,7 +383,7 @@ const HomePage = () => {
         >
           {names.map((name) => (
             <div key={name.id} className="slider-item">
-              <img style={{ height: '400px' }}
+              <img style={{ height: '100px' }}
                 className="slider-image"
                 src={name.image}
 
@@ -391,7 +391,7 @@ const HomePage = () => {
             </div>
           ))}
         </Slider>
-      </div>
+      </div> */}
       <div className="bg-white box-shadow rounded-lg  p-9 mx-auto" style={{ width: '1200px' }}>
         <h1 className="title">PolyTour Trong Nước</h1>
         <div className="tour-form mt-2 flex items-center">
