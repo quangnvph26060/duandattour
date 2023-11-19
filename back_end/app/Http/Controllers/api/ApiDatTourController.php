@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ApiDatTourController extends Controller
 {
     //
+
     public function getDatTour(Request $request, $id)
     {
         $tour = TourModel::with('images', 'phuongTien', 'khachSan',)->find($id);;
@@ -176,5 +177,9 @@ class ApiDatTourController extends Controller
             return response()->json(['message' => 'Cập nhập chưa thanh toán thành công!!'], 200);
         }
         // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+    }
+    public function CountTour(Request $request){
+        $countTour = DatTour::where('ma_khach_hang', $request->input('id'))->where('trang_thai', 1)->count();
+        return response()->json(['count' => $countTour]);
     }
 }
