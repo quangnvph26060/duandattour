@@ -32,10 +32,12 @@ const AdminProduct = (props: Props) => {
     const loaitourArrary = loaitourdata?.data || [];
     const huongdanvienArrary = huongdanviendata?.data || [];
     const dataSource = tourArray.map((
-        { id, ten_tour, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
+        { id, ten_tour, image_path, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
             diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
             trang_thai, ma_loai_tour }: ITour): {
                 key: number; soluong: number; ten_tour: string;
+                image_path: string;
+
                 diem_khoi_hanh: string; diem_den: string;
                 gia_nguoilon: any; gia_treem: any; mo_ta: any; diem_di: string;
                 lich_khoi_hanh: Date; ngay_ket_thuc: string,
@@ -44,6 +46,7 @@ const AdminProduct = (props: Props) => {
                 key: id,
                 soluong,
                 ten_tour,
+                image_path,
                 diem_khoi_hanh,
                 diem_den,
                 gia_nguoilon, gia_treem,
@@ -55,6 +58,8 @@ const AdminProduct = (props: Props) => {
                 ma_loai_tour,
             }));
 
+
+
     const columns = [
         {
             title: "ID",
@@ -65,6 +70,18 @@ const AdminProduct = (props: Props) => {
             title: "Tour du lịch",
             dataIndex: "ten_tour",
             key: "ten_tour",
+        },
+        {
+            title: "Ảnh loại tour",
+            dataIndex: "image_path",
+            key: "image_path",
+            render: (image_path: string) => (
+                <img
+                    src={`http://localhost:8000/storage/${image_path}`}
+                    alt="img"
+                    style={{ width: '50px', cursor: 'pointer' }}
+                />
+            ),
         },
         {
             title: "Điểm đi",

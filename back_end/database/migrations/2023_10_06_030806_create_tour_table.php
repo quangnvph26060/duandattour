@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tour', function (Blueprint $table) {
             $table->id(); // Sử dụng trường tự tăng làm khóa chính
             $table->string('ten_tour');
+            $table->string('image_path');
             $table->string('diem_di');
             $table->string('diem_den');
             $table->date('lich_khoi_hanh');
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->string('diem_khoi_hanh');
             $table->integer('gia_nguoilon');
             $table->integer('gia_treem');
-            $table->integer('gia_khuyen_mai');
+            // $table->integer('gia_khuyen_mai');
             $table->text('mo_ta');
             $table->integer('soluong');
             $table->tinyInteger('trang_thai')->default(0);
