@@ -334,8 +334,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      {/* <FontAwesomeIcon icon={faMapMarkerAlt} /> */}
-
+   
       <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
           className="product-list1 grid gap-4 grid-cols-1"
@@ -376,7 +375,7 @@ const HomePage = () => {
       <h1 className="title">PolyTour Trong Nước</h1>
         <div className="tour-form mt-2 flex items-center">
           <div className="flex items-center mr-4">
-            <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
+            <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đi:</label>
             <div className="relative">
               <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
                 <span>&#128197;</span>
@@ -468,7 +467,7 @@ const HomePage = () => {
             <select style={{ backgroundColor: '  #F0FFF0' }} id="departure" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
               <option value="Hà Nội">Hà Nội</option>
               <option value="Hcm">Hồ Chí Minh </option>
-              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Hải Phòng">Hải Phòng </option>
               <option value="Đà Nẵng">Đà Nẵng</option>
               <option value="Cần Thơ">Cần Thơ</option>
               <option value="An Giang">An Giang</option>

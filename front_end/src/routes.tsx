@@ -48,11 +48,7 @@ import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/pe
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import PromotionPage from "./pages/PromotionPage";
 export const router = createBrowserRouter([
-  {
 
-      path: "/tour",
-      element: <TourPage />,
-  },
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -102,6 +98,11 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <QLuser />,
       },
+      {
+
+        path: "/tour",
+        element: <TourPage />,
+    },
  
     ],
   },
