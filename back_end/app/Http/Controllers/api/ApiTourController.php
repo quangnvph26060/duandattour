@@ -31,11 +31,12 @@ class ApiTourController extends Controller
         return response()->json(['data' => $tour]);
     }
 
-    public function getToursByDestination(Request $request, $destination)
+    public function getToursByDestination(Request $request)
     {
-        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
+        $query = $request->input('diem_den');
+        $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
         $tourdiemdencout = $tourdiemden->count();
-        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
+        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
 
     public function index()

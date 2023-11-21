@@ -81,7 +81,7 @@ Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
-Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+Route::get('/getToursByDestination', [ApiTourController::class, 'getToursByDestination']);
 
 //api láy all điểm đến của tour làm chức năng search
 Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);

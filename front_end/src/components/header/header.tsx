@@ -40,19 +40,22 @@ const HeaderWebsite = () => {
   }
   const menuData = Data?.menuPhanCap || []
 
-  console.log(menuData);
-  let loaiTour = '';
-  let diemDens = [];
+
+  let loaiTour: string[] = [];
+  let diemDens: string[] = []
 
   if (menuData) {
     // Lặp qua mảng data để trích xuất thông tin
     menuData.forEach((item) => {
       if (item && item.loaiTour) {
-        loaiTour = item.loaiTour.ten_loai_tour;
-        diemDens = item.diemDens;
+        loaiTour.push(item.loaiTour.ten_loai_tour); // Thêm tên loại tour vào mảng
+        diemDens = [...diemDens, ...item.diemDens]; // Thêm tất cả địa điểm vào mảng
       }
     });
   }
+  console.log(loaiTour);
+  console.log(diemDens);
+  
   return <div> <div className="menu flex items-center justify-between">
     <div className='flex'>
       <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
@@ -64,22 +67,33 @@ const HeaderWebsite = () => {
          
             <li className='group'>
               <a href="/tour" className='menu-items'>Tour</a>
-              {/* Menu phân cấp*/}
-              <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+         
+              {/* <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
              
 
-                <ul className='p-2'>
-                  <li className='py-1'><a href="" className='mega-menu-title'>{loaiTour}</a></li>
+                <ul className='p-2 gap-10'>
+                  <li className='py-1'>
+                    <a href="" className='mega-menu-title'>{loaiTour}</a>
+                    </li>
                   <ul>
-        {diemDens.map((diemDen, diemDenIndex) => (
-            <li key={diemDenIndex} className='py-2 pt-1'><a href="" className='mega-menu-items'> {diemDen}</a></li>
-    
-        ))}
+   {diemDens}
       </ul>
                
                 
                 </ul>
-              </div>
+              </div> */}
+            {/* Menu phân cấp*/}
+            <div className='flex max-withd bg-white container mx- auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+                  <ul className='p-2'>
+                    <li className='py-1 flex gap-10'>   <a href="" className='mega-menu-title'>{loaiTour}</a></li>
+                    <li className='py-1 flex gap-10'>   <a href="" className='mega-menu-title'>{diemDens}</a></li>
+                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                  </ul>
+
+                 
+
+               
+                </div>
               {/* Menu phân cấp*/}
             </li>
             <li><a href="/news" className=''>Tin tức</a></li>

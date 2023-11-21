@@ -26,7 +26,7 @@ const ADmin_DatTour = (props: Props) => {
 
   const success = () => {
     message.success('Trạng thái đã được chuyển đổi thành công');
-
+      window.location.reload
   };
 
 
@@ -127,6 +127,12 @@ const ADmin_DatTour = (props: Props) => {
     },
     {
       title: "Trạng thái",
+      dataIndex: "trang_thai",
+      key: "trang_thai",
+      render: (trang_thai) => (trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán")
+    },
+    {
+      title: "Hành động ",
       dataIndex: "trang_thai",
       key: "trang_thai",
       render: (trang_thai, { key: id }: any) => {

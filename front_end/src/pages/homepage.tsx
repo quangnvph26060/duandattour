@@ -24,12 +24,7 @@ import hq from '../img/aaaaa.webp'
 import { BiMap } from 'react-icons/bi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import MessageChatBox from './Client/Message/Message';
-import { useStateContext } from "../context/ContextProvider";
-const rounded = {
-  borderRadius: '25px',
-};
+
 const HomePage = () => {
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -38,81 +33,66 @@ const HomePage = () => {
     });
     return formatter.format(value);
   };
-  // const { user, setUser, userid, setUserId } = useStateContext();
-  // console.log(user);
-  // test
+  const [messageHistory, setMessageHistory] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isChatVisible, setIsChatVisible] = useState(false);
+  const messageListRef = useRef(null);
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messageHistory]);
+  const handleToggleChat = () => {
+    setIsChatVisible(prevState => !prevState);
+  };
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== '') {
+      const newMessage = {
+        text: inputValue,
+        sender: 'user',
+        timestamp: new Date().getTime(),
+      };
+      setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+      setInputValue('');
+      sendAutoReply(inputValue);
+    }
+  };
 
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const sendAutoReply = userMessage => {
+    let autoReply;
+    if (userMessage.includes('loại tour')) {
+      autoReply =
+        'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
+    } else {
+      autoReply =
+        'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
+    }
+    const newMessage = {
+      text: autoReply,
+      sender: 'assistant',
+      timestamp: new Date().getTime(),
+    };
+    setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+  };
+
+  const formatTimestamp = timestamp => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+  };
   // boxchat
-  // const [messageHistory, setMessageHistory] = useState([]);
-  // const [inputValue, setInputValue] = useState('');
-  // const [isChatVisible, setIsChatVisible] = useState(false);
-  // const messageListRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (messageListRef.current) {
-  //     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-  //   }
-  // }, [messageHistory]);
-
-  // const handleToggleChat = () => {
-  //   setIsChatVisible(prevState => !prevState);
-  // };
-
-  // const handleSendMessage = () => {
-  //   if (inputValue.trim() !== '') {
-  //     const newMessage = {
-  //       text: inputValue,
-  //       sender: 'user',
-  //       timestamp: new Date().getTime(),
-  //     };
-  //     setMessageHistory(prevHistory => [...prevHistory, newMessage]);
-  //     setInputValue('');
-  //     sendAutoReply(inputValue);
-  //   }
-  // };
-
-  // const handleKeyDown = event => {
-  //   if (event.key === 'Enter') {
-  //     handleSendMessage();
-  //   }
-  // };
-
-  // const sendAutoReply = userMessage => {
-  //   let autoReply;
-  //   if (userMessage.includes('loại tour')) {
-  //     autoReply =
-  //       'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
-  //   } else {
-  //     autoReply =
-  //       'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
-  //   }
-  //   const newMessage = {
-  //     text: autoReply,
-  //     sender: 'assistant',
-  //     timestamp: new Date().getTime(),
-  //   };
-  //   setMessageHistory(prevHistory => [...prevHistory, newMessage]);
-  // };
-
-  // const formatTimestamp = timestamp => {
-  //   const date = new Date(timestamp);
-  //   const hours = date.getHours();
-  //   const minutes = date.getMinutes();
-  //   return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-  // };
-  // boxchat
-  const [remainingTime, setRemainingTime] = useState(60); // 5 minutes in seconds
+  const [remainingTime, setRemainingTime] = useState(15 * 3600); // 5 minutes in seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setRemainingTime((prevTime) =>{
-        let newTime = prevTime - 5;
-        console.log(newTime); // Hiển thị thông điệp lên console
-        if(newTime === 0){
-         // alert('đúng mẹ rồi ');
-        }
-        return newTime;
-      } );
+      setRemainingTime(prevTime => prevTime - 1);
     }, 1000);
 
     return () => {
@@ -312,7 +292,7 @@ const HomePage = () => {
   return (
 
     <div className="bg-white rounded-lg shadow p-4">
-      {/* <div className="  ">
+      <div className="  ">
         {isChatVisible && (
           <div className="chat-box">
             <div className="chat-header">
@@ -353,10 +333,9 @@ const HomePage = () => {
             <FontAwesomeIcon icon={faFacebookMessenger} style={{ color: 'blue', fontSize: '30px' }} />
           </div>
         </div>
-      </div> */}
-      <MessageChatBox />
-
-      {/* <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
+      </div>
+   
+      <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
           className="product-list1 grid gap-4 grid-cols-1"
           dots={true}
@@ -383,7 +362,7 @@ const HomePage = () => {
         >
           {names.map((name) => (
             <div key={name.id} className="slider-item">
-              <img style={{ height: '100px' }}
+              <img style={{ height: '400px' }}
                 className="slider-image"
                 src={name.image}
 
@@ -391,12 +370,12 @@ const HomePage = () => {
             </div>
           ))}
         </Slider>
-      </div> */}
+      </div>
       <div className="bg-white box-shadow rounded-lg  p-9 mx-auto" style={{ width: '1200px' }}>
-        <h1 className="title">PolyTour Trong Nước</h1>
+      <h1 className="title">PolyTour Trong Nước</h1>
         <div className="tour-form mt-2 flex items-center">
           <div className="flex items-center mr-4">
-            <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
+            <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đi:</label>
             <div className="relative">
               <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
                 <span>&#128197;</span>
@@ -407,7 +386,7 @@ const HomePage = () => {
                 className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
               />
             </div>
-
+           
           </div>
           <div className="flex items-center mr-4">
             <div className="flex items-center mr-4">
@@ -425,10 +404,10 @@ const HomePage = () => {
             </div>
           </div>
           <div className="flex items-center mr-4">
-            <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>
+            <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>  
             <select style={{ backgroundColor: '  #F0FFF0' }} id="destination"
-              className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
-              <option value="Hà Nội"> Hà Nội</option>
+             className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
+              <option  value="Hà Nội"> Hà Nội</option>
               <option value="Hcm">Hồ Chí Minh </option>
               <option value="Hải Phòng">Hải Phòng</option>
               <option value="Đà Nẵng">Đà Nẵng</option>
@@ -484,11 +463,11 @@ const HomePage = () => {
             </select>
           </div>
           <div className="flex items-center mr-4">
-            <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label>
+            <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label> 
             <select style={{ backgroundColor: '  #F0FFF0' }} id="departure" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
               <option value="Hà Nội">Hà Nội</option>
               <option value="Hcm">Hồ Chí Minh </option>
-              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Hải Phòng">Hải Phòng </option>
               <option value="Đà Nẵng">Đà Nẵng</option>
               <option value="Cần Thơ">Cần Thơ</option>
               <option value="An Giang">An Giang</option>
@@ -565,7 +544,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/*  */}
+
       <div className="content">
         <div className="content">
           <h2 className='mt-5 mb-5 home-page__title '>KHÁM PHÁ ƯU ĐÃI POLYTOUR!!!</h2>
@@ -629,7 +608,10 @@ const HomePage = () => {
                 <Link to="/:id/tour" className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
-                <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{item.gia_tour}đ</p>
+                <p className='price'>Giá: {formatCurrency(15000000)}</p>
+                <p style={{ color: '#fd5056', fontSize: '18px', fontWeight: '700' }}>
+                  {formatCurrency(item.gia_tour)}
+                </p>
                 <p className='text mt-2'>{item.mo_ta}</p>
 
                 <p className='text mt-2'>Nơi Khởi Hành: {item.diem_khoi_hanh}</p>
