@@ -165,11 +165,6 @@ const AdminProduct = (props: Props) => {
 
             }
         },
-<<<<<<< HEAD
-     
-=======
-
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
         {
             title: "Action",
             key: 'action',

@@ -8,18 +8,9 @@ import { Link } from 'react-router-dom';
 import logo from '../img/logo.jpg';
 import { useGetMenuQuery } from '../../api/menu';
 import { data } from 'autoprefixer';
-<<<<<<< HEAD
-  
-const HeaderWebsite = ({ onLocationSelect }) => {
-  const handleLocationClick = (location) => {
-    // Gọi hàm onLocationSelect để cập nhật địa điểm được chọn
-    onLocationSelect(location);
-  };
-=======
 
 const HeaderWebsite = () => {
 
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
   useEffect(() => {
@@ -66,44 +57,22 @@ const HeaderWebsite = () => {
   // }
   // console.log(loaiTour);
   // console.log(diemDens);
-<<<<<<< HEAD
-  const combinedData = {}; 
-  if (menuData) {
-  
-  
-=======
   const combinedData = {};
   if (menuData) {
 
 
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
     menuData.forEach((item) => {
       if (item && item.loaiTour) {
         const loaiTourName = item.loaiTour.ten_loai_tour;
         const diemDens = item.diemDens;
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
         if (!combinedData[loaiTourName]) {
           // Nếu loại tour chưa tồn tại trong đối tượng, tạo nó
           combinedData[loaiTourName] = [];
         }
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
         // Thêm danh sách điểm đến vào loại tour tương ứng
         combinedData[loaiTourName].push(...diemDens);
       }
     });
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
     console.log(combinedData);
   }
   return <div> <div className="menu flex items-center justify-between">
