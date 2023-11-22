@@ -12,7 +12,7 @@ const { Option } = Select;
 
 type FieldType = {
   id: number;
-  ten_hd: string;
+  name: string;
 
   email: string;
   dia_chi: string;
@@ -26,25 +26,10 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
   const [addHuongDanVien] = useAddUserMutation();
   const navigate = useNavigate();
 
-  // const onFinish = (values: IUser) => {
-  //   addHuongDanVien(values)
-  //     .unwrap()
-  //     .then(() => navigate("/admin/account_huongdanvien"));
-  // };
   const onFinish = (values: IUser) => {
-    const formData = new FormData();
-    formData.append("hinh", values.image.fileList[0].originFileObj);
-   
-  
-    addHuongDanVien(formData)
+    addHuongDanVien(values)
       .unwrap()
-      .then(() => navigate("/admin/account_huongdanvien"))
-      .catch((error) => {
-        console.log(error);
-        // Xử lý lỗi (nếu có)
-      });
-    
-    console.log(values); 
+      .then(() => navigate("/admin/account_huongdanvien"));
   };
 
   return (

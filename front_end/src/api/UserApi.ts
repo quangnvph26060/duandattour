@@ -7,9 +7,10 @@ const UserApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/admin",
     fetchFn: async (...args) => {
-      return fetch(...args);
-    },
-  }),
+
+        return fetch(...args);
+    }
+}),
   endpoints: (builder) => ({
     getUser: builder.query<IUser[], void>({
       query: () => `/user`,
