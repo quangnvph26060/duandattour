@@ -13,6 +13,7 @@ import DiscountApi,{DiscountRedeucer} from "../api/discountApi";
 import TourDiscountApi,{TourDiscountRedeucer} from "../api/TourDiscountApi";
 import CheckingApi,{CheckingReducer} from "../api/Check";
 import MenuApi,{MenuReducer} from "../api/menu";
+import Tourdiadiem,{TourDiadiemReducer} from "../api/tourdiadiem";
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     FLUSH,
@@ -53,7 +54,8 @@ const rootReducer = combineReducers({
     [TourDiscountApi.reducerPath]:TourDiscountRedeucer,
     [CheckingApi.reducerPath]:CheckingReducer,
     [QuanlydattoutApi.reducerPath]:QuanlydattourReducer,
-    [MenuApi.reducerPath]:MenuReducer
+    [MenuApi.reducerPath]:MenuReducer,
+    [Tourdiadiem.reducerPath]:TourDiadiemReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -72,7 +74,7 @@ export const store = configureStore({
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
              HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
              UserApi.middleware,DatourApi.middleware,DiscountApi.middleware,TourDiscountApi.middleware
-             , CheckingApi.middleware,QuanlydattoutApi.middleware,MenuApi.middleware),
+             , CheckingApi.middleware,QuanlydattoutApi.middleware,MenuApi.middleware,Tourdiadiem.middleware),
           
 
 })
