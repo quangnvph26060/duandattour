@@ -9,7 +9,7 @@ import { ITour } from "../../../../interface/tour";
 import { useGetTourQuery, useRemoveTourMutation } from "../../../../api/TourApi";
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
-
+import { Modal, Descriptions } from "antd";
 import { useState } from "react";
 import { Select } from 'antd';
 
@@ -18,6 +18,18 @@ const AdminProduct = (props: Props) => {
     const { data: loaitourdata } = useGetLoaiTourQuery();
     const { data: huongdanviendata } = useGetHuongDanVienQuery();
     const { data: tourdata, error, isLoading } = useGetTourQuery();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedTour, setSelectedTour] = useState<ITour | null>(null);
+
+    const openModal = (record: ITour) => {
+        setSelectedTour(record);
+        setModalVisible(true);
+    };
+
+    const closeModal = () => {
+        setSelectedTour(null);
+        setModalVisible(false);
+    };
     const currentDate = new Date(); // Ngày hiện tại
     const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
         useRemoveTourMutation();
@@ -70,54 +82,49 @@ const AdminProduct = (props: Props) => {
             title: "Tour du lịch",
             dataIndex: "ten_tour",
             key: "ten_tour",
+            render: (text: string, record: ITour) => (
+                <span
+                    style={{ cursor: "pointer", color: "blue" }}
+                    onClick={() => openModal(record)}
+                >
+                    {text}
+                </span>
+            ),
         },
         {
-            title: "Ảnh loại tour",
+            title: "Ảnh tour",
             dataIndex: "image_path",
             key: "image_path",
             render: (image_path: string) => (
                 <img
                     src={`http://localhost:8000/storage/${image_path}`}
                     alt="img"
-                    style={{ width: '50px', cursor: 'pointer' }}
+                    style={{ width: '200px', cursor: 'pointer' }}
                 />
             ),
         },
-        {
-            title: "Điểm đi",
-            dataIndex: "diem_di",
-            key: "diem_di",
-        },
-        {
-            title: "Điểm đến",
-            dataIndex: "diem_den",
-            key: "diem_den",
-        },
-        {
-            title: "Điểm Khởi Hành",
-            dataIndex: "diem_khoi_hanh",
-            key: "diem_khoi_hanh",
-        },
-        {
-            title: "Lịch Khởi Hành",
-            dataIndex: "lich_khoi_hanh",
-            key: "lich_khoi_hanh",
-            render: (lich_khoi_hanh: string | number | Date) => {
-                const departureDate = new Date(lich_khoi_hanh);
-                return departureDate.toLocaleDateString('en-GB');
-            },
-        },
 
 
-        {
-            title: "Lịch Kết Thúc",
-            dataIndex: "ngay_ket_thuc",
-            key: "ngay_ket_thuc",
-            render: (ngay_ket_thuc: string | number | Date) => {
-                const departureDate = new Date(ngay_ket_thuc);
-                return departureDate.toLocaleDateString('en-GB');
-            },
-        },
+        // {
+        //     title: "Lịch Khởi Hành",
+        //     dataIndex: "lich_khoi_hanh",
+        //     key: "lich_khoi_hanh",
+        //     render: (lich_khoi_hanh: string | number | Date) => {
+        //         const departureDate = new Date(lich_khoi_hanh);
+        //         return departureDate.toLocaleDateString('en-GB');
+        //     },
+        // },
+
+
+        // {
+        //     title: "Lịch Kết Thúc",
+        //     dataIndex: "ngay_ket_thuc",
+        //     key: "ngay_ket_thuc",
+        //     render: (ngay_ket_thuc: string | number | Date) => {
+        //         const departureDate = new Date(ngay_ket_thuc);
+        //         return departureDate.toLocaleDateString('en-GB');
+        //     },
+        // },
         {
             title: "Giá Người lớn",
             dataIndex: "gia_nguoilon",
@@ -158,11 +165,7 @@ const AdminProduct = (props: Props) => {
 
             }
         },
-        {
-            title: "Mô Tả",
-            dataIndex: "mo_ta",
-            key: "mo_ta",
-        },
+
         {
             title: "Action",
             key: 'action',
@@ -203,6 +206,49 @@ const AdminProduct = (props: Props) => {
     };
 
     const visibleColumnsData = columns.filter(column => visibleColumns.includes(column.key));
+    const tourDetailsColumns = [
+        {
+            title: 'Điểm Đi',
+            dataIndex: 'diem_di',
+            key: 'diem_di',
+        },
+        {
+            title: 'Điểm Đến',
+            dataIndex: 'diem_den',
+            key: 'diem_den',
+        },
+        {
+            title: 'Ngày Khởi Hành',
+            dataIndex: 'lich_khoi_hanh',
+            key: 'lich_khoi_hanh',
+        },
+        {
+            title: 'Ngày Kết Thúc',
+            dataIndex: 'ngay_ket_thuc',
+            key: 'ngay_ket_thuc',
+        },
+        {
+            title: 'Giá Người Lớn',
+            dataIndex: 'gia_nguoilon',
+            key: 'gia_nguoilon',
+        },
+        {
+            title: 'Giá Trẻ Em',
+            dataIndex: 'gia_treem',
+            key: 'gia_treem',
+        },
+        {
+            title: 'Giá Khuyến Mãi',
+            dataIndex: 'gia_khuyen_mai',
+            key: 'gia_khuyen_mai',
+        },
+        {
+            title: 'Mô Tả',
+            dataIndex: 'mo_ta',
+            key: 'mo_ta',
+        },
+        // Thêm các cột khác tương ứng với thông tin tour
+    ];
     return (
         <div>
 
@@ -239,7 +285,34 @@ const AdminProduct = (props: Props) => {
                     {isLoading ? <Skeleton /> : <Table dataSource={dataSource} pagination={{ pageSize: 10 }} columns={visibleColumnsData} />}
                 </>
             )}
-
+            <Modal
+                visible={modalVisible}
+                onCancel={closeModal}
+                footer={null}
+                className="rounded-md"
+            >
+                {selectedTour && (
+                    <div className="p-4">
+                        <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
+                        <table className="w-full table-auto border-collapse border rounded">
+                            <tbody>
+                                {tourDetailsColumns.map((column) => (
+                                    <tr key={column.key} className="border-b">
+                                        <td className="py-2 px-4 font-semibold">{column.title}</td>
+                                        <td className="py-2 px-4">
+                                            {column.dataIndex === 'images' ? (
+                                                <img src={selectedTour[column.dataIndex][0]} alt="Tour" className="w-full max-h-32 object-cover" />
+                                            ) : (
+                                                selectedTour[column.dataIndex]
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 };
