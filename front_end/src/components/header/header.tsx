@@ -3,9 +3,8 @@ const rounded = {
 };
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../img/logo.jpg';
-
-
+  import logo from '../img/logo.jpg';
+  
 const HeaderWebsite = () => {
 
   const token = localStorage.getItem("token");

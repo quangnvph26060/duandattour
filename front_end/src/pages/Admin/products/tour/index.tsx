@@ -219,7 +219,7 @@ const AdminProduct = (props: Props) => {
                     </div>
                     {isRemoveSuccess && <Alert message="Success Text" type="success" />}
 
-                    {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={visibleColumnsData} />}
+                    {isLoading ? <Skeleton /> : <Table dataSource={dataSource} pagination={{ pageSize: 10 }} columns={visibleColumnsData} />}
                 </>
             )}
 

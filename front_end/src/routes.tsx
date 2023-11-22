@@ -8,7 +8,7 @@ import SignIn from "./auth/signin";
 import DetailPage from "./pages/Client/detail";
 import BookTour from "./pages/Client/Book_tour";
 import Contact from "./pages/Client/contact";
-import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
+
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
@@ -48,6 +48,17 @@ import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 
+import ChatComponent from "./pages/Admin/products/Message/ChatBox";
+import { ContextProvider } from "./context/ContextProvider";
+import AdminGiam_Gia from "./pages/Admin/products/GiamGia";
+import AdminGiam_GiaADD from "./pages/Admin/products/GiamGia/add";
+import AdminGiam_GiaEdit from "./pages/Admin/products/GiamGia/edit";
+import Admin_TourDiscount from "./pages/Admin/products/Tour_GiamGia";
+import Admin_TourDiscountADD from "./pages/Admin/products/Tour_GiamGia/add";
+import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
+import ADmin_Qlytourchuathanhtoan from "./pages/Admin/products/Dat_tour/index2";
+import ADmin_Qlytourdathanhtoan from "./pages/Admin/products/Dat_tour/index3";
+import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -90,7 +101,7 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "booking/:id",
+        path: "bookingtour/:id",
         element: <Info_tour_bocking />,
       },
       {
@@ -246,6 +257,41 @@ export const router = createBrowserRouter([
         path: "tour/dat_tour",
         element: <ADmin_DatTour />,
       },
+      // giảm giá 
+      {
+        path: "tour/discount/",
+        element: <AdminGiam_Gia />,
+      },
+      {
+        path: "tour/discount/add",
+        element: <AdminGiam_GiaADD />,
+      },
+      {
+        path: "tour/discount/edit/:iddiscount",
+        element: <AdminGiam_GiaEdit />,
+      },
+      // tour_discount
+      {
+        path: "tour/tour_discount/",
+        element: <Admin_TourDiscount />,
+      },
+      {
+        path: "tour/tour_discount/add",
+        element: <Admin_TourDiscountADD />,
+      },
+      {
+        path: "tour/tour_discount/edit/:idtourdiscount",
+        element: <Admin_TourDiscountEDIT />,
+      },
+      {
+        path: "tour/tour_chuathanhtoan",
+        element: <ADmin_Qlytourchuathanhtoan />,
+      },
+      {
+        path: "tour/tour_dathanhtoan",
+        element: <ADmin_Qlytourdathanhtoan />,
+      },
+    
     ],
   },
 ]);

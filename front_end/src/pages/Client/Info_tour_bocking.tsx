@@ -1,6 +1,6 @@
 
 import { FaQrcode, FaRegCalendarAlt, FaRegCalendarTimes } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import logo from "./img/logo.jpg"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useGetCheckbooktourQuery } from "../../api/Check";
+import { data } from "autoprefixer";
 type Props = {};
 
 const Info_tour_bocking = () => {
@@ -16,11 +18,11 @@ const Info_tour_bocking = () => {
     witdh: "100px",
     height: "66px",
   };
-  const data = [
-    { id: 1, name: 'Name', dob: '1990-01-01', gender: 'Nam', address: 'Hà Nội', age: 31, room: '101' },
+  // const data = [
+  //   { id: 1, name: 'Name', dob: '1990-01-01', gender: 'Nam', address: 'Hà Nội', age: 31, room: '101' },
 
-    // Add more data as needed
-  ];
+  //   // Add more data as needed
+  // ];
   const [paymentResult, setPaymentResult] = useState(null);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -53,8 +55,16 @@ const Info_tour_bocking = () => {
       });
 
   }, []);
-
-
+////
+const {id} =  useParams<{ id: any }>();
+  const { data: Data } = useGetCheckbooktourQuery(id || "");
+  const DataCheck = Data?.data || [];
+  // console.log('Daata:',DataCheck);
+  const DataTour = DataCheck.tours
+  // console.log(DataTour);
+  const DataThanhtoan = DataCheck.thanh_toan
+  // console.log(DataThanhtoan.tong_tien_tt);
+  
   return (
    
 
@@ -74,30 +84,25 @@ const Info_tour_bocking = () => {
                 <div className="grid grid-cols-3 mt-5   ">
                   <div className="py-5">
                     <p className="text-gray-400 text-[16px]">Họ tên</p>
-                    <p className="text-[16px] text-[#2D4271] font-bold">Name</p>
+                    <p className="text-[16px] text-[#2D4271] font-bold">{DataCheck.ten_khach_hang}</p>
                   </div>
                   <div className="py-5">
                     <p className="text-gray-400 text-[16px]">Email</p>
                     <p className="text-[16px] text-[#2D4271] font-bold">
-                      aa@gmail.com
+                  {DataCheck.email}
                     </p>
                   </div>
                   <div className="py-5">
                     <p className="text-gray-400 text-[16px]">Địa chỉ</p>
-                    <p className="text-[16px] text-[#2D4271] font-bold">hà nội</p>
+                    <p className="text-[16px] text-[#2D4271] font-bold">{DataCheck.dia_chi}</p>
                   </div>
                   <div>
                     <p className="text-gray-400 text-[16px]">Di động</p>
                     <p className="text-[16px] text-[#2D4271] font-bold">
-                      0*********0
+                     {DataCheck.sdt}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-gray-400 text-[16px]">Điện thoại</p>
-                    <p className="text-[16px] text-[#2D4271] font-bold">
-                      0*********0
-                    </p>
-                  </div>
+               
                   <div>
                     <p className="text-gray-400 text-[16px]">Ghi chú</p>
                     <p className="text-[16px] text-[#2D4271] font-bold">
@@ -127,7 +132,7 @@ const Info_tour_bocking = () => {
                     <p className="text-[16px] text-[#2D4271] font-bold">
                       Trị giá booking
                     </p>
-                    <p>7,290,000₫</p>
+                    <p>{DataThanhtoan?.tong_tien_tt}</p>
                   </div>
                   <div className="flex gap-5 mt-5">
                     <p className="text-[16px] text-[#2D4271] font-bold">
@@ -137,21 +142,21 @@ const Info_tour_bocking = () => {
                   </div>
                   <div className="flex gap-5 mt-5">
                     <p className="text-[16px] text-[#2D4271] font-bold">
-                      Số tiền còn lại
+                      Trạng thái 
                     </p>
-                    <p>7,290,000₫</p>
+                    <p>{DataCheck?.trang_thai === 0 ? "chưa thanh toán" : DataCheck?.trang_thai}</p>
                   </div>
                   <div className="flex gap-5 mt-5">
                     <p className="text-[16px] text-[#2D4271] font-bold">
                       Ngày đăng ký
                     </p>
-                    <p>07/10/2023 16:59:12</p>
+                    <p>{DataThanhtoan?.ngay_thanh_toan}</p>
                   </div>
                   <div className="flex gap-5 mt-5">
                     <p className="text-[16px] text-[#2D4271] font-bold">
                       Hình thức thanh toán
                     </p>
-                    <p>Tiền mặt</p>
+                    <p>{DataThanhtoan?.pttt}</p>
                   </div>
                   <div className="flex gap-5 mt-5">
                     <p className="text-[16px] text-[#2D4271] font-bold">
@@ -181,8 +186,7 @@ const Info_tour_bocking = () => {
                 <p className="mt-3"></p> <hr />
               </p>
               <p className=" text-[#2D4271] text-base mt-5 font-semibold">
-                Quy Nhơn: Vé máy bay khứ hồi + Phòng tại L'Amor Boutique Quy Nhơn 4
-                sao ( Đã bao gồm ăn sáng)
+            {DataTour?.ten_tour}
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
                 Số booking: 231007278935
@@ -200,7 +204,7 @@ const Info_tour_bocking = () => {
                   <div>
                     <p>Bắt đầu chuyến đi</p>
                     <p className=" text-[#2D4271] text-base font-semibold">
-                      T6, 6 Tháng 10, 2023
+                   {DataTour?.lich_khoi_hanh}
                     </p>
                   </div>
                 </div>
@@ -213,12 +217,12 @@ const Info_tour_bocking = () => {
                   <div>
                     <p>Kết thúc chuyến đi</p>
                     <p className=" text-[#2D4271] text-base font-semibold">
-                      T6, 6 Tháng 10, 2023
+                    {DataTour?.ngay_ket_thuc}
                     </p>
                   </div>
                 </div>
                 <p className=" text-[#2D4271] text-base mt-5 font-semibold">
-                  Nơi khởi hành TP. Hồ Chí Minh
+                  Nơi khởi hành {DataTour?.diem_khoi_hanh}
                 </p>
                 <p className="text-center items-center ml-[50px] text-[200px]">
                   <FaQrcode />
@@ -252,16 +256,12 @@ const Info_tour_bocking = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item) => (
-                    <tr key={item.id}>
-                      <td className="py-2 px-4 border-b">{item.name}</td>
-                      <td className="py-2 px-4 border-b">{item.dob}</td>
-                      <td className="py-2 px-4 border-b">{item.gender}</td>
-                      <td className="py-2 px-4 border-b">{item.address}</td>
-                      <td className="py-2 px-4 border-b">{item.age}</td>
-                      <td className="py-2 px-4 border-b">{item.room}</td>
+                 
+                    <tr key={DataCheck.id}>
+                      <td className="py-2 px-4 border-b">{DataCheck.ten_khach_hang}</td>
+                    
                     </tr>
-                  ))}
+               
                 </tbody>
               </table>
             </div>

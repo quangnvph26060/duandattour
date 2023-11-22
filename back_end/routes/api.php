@@ -16,11 +16,15 @@ use App\Http\Controllers\api\ApiTourKhachSanController;
 use App\Http\Controllers\api\ApiPermissionsController;
 use App\Http\Controllers\api\ApiPaymentController;
 use App\Http\Controllers\api\ApiMessageController;
+use App\Http\Controllers\api\ApiDiscountController;
+use App\Http\Controllers\Api\ApiSearchController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\API\ApiNewsController;
+
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +37,22 @@ use App\Http\Controllers\API\ApiNewsController;
 |
 */
 
-Route::get('demo', function () {
-    dd(gethostbyname(gethostname()));
+// api demo
+Route::get('a',[ApiDatTourController::class,'demo']);
+Route::get('demo',function(){
+    $today= Carbon::today(); // Lấy ngày tháng năm hiện tại
+    $today1 = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
+   return response()->json([
+    'today'=>$today,
+    'today+1'=>$today1,
+   ]);
 });
+Route::get('abc',[ApiDiscountController::class,'abc']);
+//end api demo
+
+
+// api mã giảm giá 
+Route::post('check_coupon',[ApiDiscountController::class,'check_coupon']);
 // api show user và vai trò của nó 
 Route::get('/showuser', [ApiMessageController::class, 'showuser']);
 // api hiển thị  message
@@ -57,16 +74,26 @@ Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
 
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
-// dat tour
+Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
 Route::post('postDattour', [ApiDatTourController::class, 'createDatTour']);
+
+Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
 Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+
+//api láy all điểm đến của tour làm chức năng search
+Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
+//api láy all điểm đi của tour làm chức năng search
+Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/deltailuser', [ApiAuthLoginController::class, 'delailUser']);
     Route::delete('logout', [ApiAuthLoginController::class, 'logout'])->name('logout');
 });
 
@@ -101,10 +128,22 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
         });
     });
 });
-
-//api phương tiện
+// api giảm giá 
 Route::prefix('admin')->group(function () {
-
+    Route::prefix('discount')->group(function () {
+        Route::get('/', [ApiDiscountController::class, 'showDiscount']);
+        Route::post('/', [ApiDiscountController::class, 'store']);
+        Route::get('/{id}', [ApiDiscountController::class, 'show']);
+        Route::put('update/{id}', [ApiDiscountController::class, 'update']);
+        Route::delete('/{id}', [ApiDiscountController::class, 'destroy']);
+    });
+    Route::prefix('tour_discount')->group(function () {
+        Route::get('/', [ApiDiscountController::class, 'tour_discount']);
+        Route::post('/', [ApiDiscountController::class, 'tour_discount_add']);
+        Route::get('/{id}', [ApiDiscountController::class, 'tour_discount_show']);
+        Route::put('update/{id}', [ApiDiscountController::class, 'tour_discount_update']);
+        Route::delete('/{id}', [ApiDiscountController::class, 'tour_discount_delete']);
+    });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
         Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
@@ -212,5 +251,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiNewsController::class, 'show']);
         Route::put('/{id}', [ApiNewsController::class, 'update']);
         Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
+    });
+
+    Route::prefix('dattour')->group(function () {
+        //list all BookingTour
+        Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
+        //list BookingTour chưa thanh toán
+        Route::get('/getListBookingTourUnpaid', [ApiDatTourController::class, 'getListBookingTourUnpaid']);
+        //list BookingTour đã thanh toán
+        Route::get('/getListBookingTourPaid', [ApiDatTourController::class, 'getListBookingTourPaid']);
+        // Chi tiết booking tour
+        Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
+        Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
     });
 });
