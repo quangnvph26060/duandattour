@@ -31,22 +31,22 @@ class ApiTourController extends Controller
         return response()->json(['data' => $tour]);
     }
 
-    public function getToursByDestination(Request $request, $destination)
+    public function getToursByDestination(Request $request)
     {
-        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
+        $query = $request->input('diem_den');
+        $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
         $tourdiemdencout = $tourdiemden->count();
-        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
+        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
 
     public function index()
     {
-       
+
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
         if ($tours->isEmpty()) {
             return response()->json(['message' => 'No tours found'], 404);
         }
         return response()->json(['data' => $tours]);
-        
     }
 
 
@@ -111,10 +111,11 @@ class ApiTourController extends Controller
         }
     }
 
-    public function getlisttourKM() {
-        $tourKM = TourModel::with('discounts','images')->where('trang_thai',1)->get();
+    public function getlisttourKM()
+    {
+        $tourKM = TourModel::with('discounts', 'images')->where('trang_thai', 1)->get();
         $tourKMWithDiscounts = [];
-        
+
         foreach ($tourKM as $tour) {
             if ($tour->discounts->isNotEmpty()) {
                 $expiryDates = $tour->discounts->pluck('expiry_date');
@@ -123,10 +124,15 @@ class ApiTourController extends Controller
                 $expiryDate = Carbon::parse($maxExpiryDate);
                 $countdown = $expiryDate->diffInSeconds($now);
                 $tour->max_expiry_date = $maxExpiryDate;
+                
                 $tourKMWithDiscounts[] = $tour;
             }
         }
-        
-        return response()->json(['tourKM' => $tourKMWithDiscounts], 200);
+        $responseData = [
+            'code' => 200,
+            'data' => $tourKMWithDiscounts,
+        ];
+
+        return response()->json($responseData, 200);
     }
 }

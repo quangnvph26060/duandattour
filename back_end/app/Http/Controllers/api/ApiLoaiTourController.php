@@ -171,33 +171,33 @@ class ApiLoaiTourController extends Controller
     public function getMenuPhanCap()
     {
         $loaiTours = LoaiTourModel::all();
-
+        
         $menuPhanCap = $loaiTours->map(function ($loaiTour) {
             $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
             $uniqueDiemDen = [];
             foreach ($diemDens as $value) {
                 $lowerValue = strtolower($value);
                 $found = false;
-
+    
                 foreach ($uniqueDiemDen as $uniqueValue) {
-
+    
                     if (strtolower($uniqueValue) === $lowerValue) {
                         $found = true;
                         break;
                     }
                 }
-
+    
                 if (!$found) {
                     $uniqueDiemDen[] = $value;
                 }
-
-                return [
-                    'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),
-                    'diemDens' => $uniqueDiemDen,
-                ];
             }
+    
+            return [
+                'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),
+                'diemDens' => $uniqueDiemDen,
+            ];
         });
-
+    
         return response()->json(['menuPhanCap' => $menuPhanCap], 200);
     }
 }
