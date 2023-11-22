@@ -1,17 +1,25 @@
+
+
 const rounded = {
   borderRadius: '25px',
 };
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-  import logo from '../img/logo.jpg';
+import logo from '../img/logo.jpg';
 import { useGetMenuQuery } from '../../api/menu';
 import { data } from 'autoprefixer';
+<<<<<<< HEAD
   
 const HeaderWebsite = ({ onLocationSelect }) => {
   const handleLocationClick = (location) => {
     // Gọi hàm onLocationSelect để cập nhật địa điểm được chọn
     onLocationSelect(location);
   };
+=======
+
+const HeaderWebsite = () => {
+
+>>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
   useEffect(() => {
@@ -32,8 +40,8 @@ const HeaderWebsite = ({ onLocationSelect }) => {
         });
     }
   }, [token])
-  const { data:Data, error, isLoading } = useGetMenuQuery();
-  
+  const { data: Data, error, isLoading } = useGetMenuQuery();
+
   if (isLoading) {
     return <div>Đang tải dữ liệu...</div>;
   }
@@ -58,25 +66,44 @@ const HeaderWebsite = ({ onLocationSelect }) => {
   // }
   // console.log(loaiTour);
   // console.log(diemDens);
+<<<<<<< HEAD
   const combinedData = {}; 
   if (menuData) {
   
   
+=======
+  const combinedData = {};
+  if (menuData) {
+
+
+>>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
     menuData.forEach((item) => {
       if (item && item.loaiTour) {
         const loaiTourName = item.loaiTour.ten_loai_tour;
         const diemDens = item.diemDens;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
         if (!combinedData[loaiTourName]) {
           // Nếu loại tour chưa tồn tại trong đối tượng, tạo nó
           combinedData[loaiTourName] = [];
         }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
         // Thêm danh sách điểm đến vào loại tour tương ứng
         combinedData[loaiTourName].push(...diemDens);
       }
     });
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 24fd2b6cc9fbd1d6b0b0e3ce8c2ced2791ab766b
     console.log(combinedData);
   }
   return <div> <div className="menu flex items-center justify-between">
@@ -87,31 +114,31 @@ const HeaderWebsite = ({ onLocationSelect }) => {
         <div className='max-w-7xl flex justify-between items-center mx-auto relative'>
           <ul className='flex  text-[#2D4271] max-w-7xl gap-12'>
             <li><a href="/" className=''>PolyTour</a></li>
-         
+
             <li className='group'>
               <a href="/tour" className='menu-items'>Tour</a>
-         
-          
-            {/* Menu phân cấp*/}
-            <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
-  <ul className='p-2 gap-16 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
-    {Object.keys(combinedData).map((loaiTourName) => (
-      <li className='py-1 pr-4' key={loaiTourName}> {/* Thêm pr-4 để tạo khoảng cách giữa các loại tour */}
-        <a href='' className='mega-menu-title'>{loaiTourName}</a>
-        <ul className='sub-menu'>
-          {combinedData[loaiTourName].map((diemDen) => (
-            <li className='py-2' key={diemDen}>
-              <Link to="">{diemDen}</Link>
-            </li>
-          ))}
-        </ul>
-      </li>
-    ))}
-    <li className='py-3'>
-      <a href='' className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a>
-    </li>
-  </ul>
-</div>
+
+
+              {/* Menu phân cấp*/}
+              <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+                <ul className='p-2 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
+                  {Object.keys(combinedData).map((loaiTourName) => (
+                    <li className='py-1 pr-4' key={loaiTourName}> {/* Thêm pr-4 để tạo khoảng cách giữa các loại tour */}
+                      <a href='' className='mega-menu-title'>{loaiTourName}</a>
+                      <ul className='sub-menu'>
+                        {combinedData[loaiTourName].map((diemDen) => (
+                          <li className='py-2' key={diemDen}>
+                            <a href='' className='mega-menu-items'>{diemDen}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                  <li className='py-3'>
+                    <a href='' className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a>
+                  </li>
+                </ul>
+              </div>
 
               {/* Menu phân cấp*/}
 

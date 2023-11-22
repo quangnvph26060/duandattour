@@ -26,7 +26,7 @@ const ADmin_DatTour = (props: Props) => {
 
   const success = () => {
     message.success('Trạng thái đã được chuyển đổi thành công');
-      window.location.reload
+    window.location.reload
   };
 
 
@@ -108,6 +108,18 @@ const ADmin_DatTour = (props: Props) => {
           </span>
         );
       },
+    },
+    {
+      title: "Ảnh tour",
+      dataIndex: "image_path",
+      key: "image_path",
+      render: (text, record) => (
+        <img
+          src={`http://localhost:8000/storage/${record.tours.image_path}`}
+          alt="img"
+          style={{ width: '200px', cursor: 'pointer' }}
+        />
+      ),
     },
     {
       title: "Ngày đặt",
