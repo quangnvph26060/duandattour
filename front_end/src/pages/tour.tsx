@@ -64,6 +64,14 @@ const TourPage = () => {
       console.log(response.data.tourdiemden);
       setTour(response.data.tourdiemden);
     })
+    if(diem_den===undefined){
+      axios
+      .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
+      .then((response)=>{
+        console.log(response.data.tourdiemden);
+        setTour(response.data.tourdiemden);
+      })
+    }
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
