@@ -93,7 +93,7 @@ export const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "tour/:idTour",
+        path: "tours/:idTour",
         element: <DetailPage />,
       },
       {

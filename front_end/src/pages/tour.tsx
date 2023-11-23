@@ -64,11 +64,17 @@ const TourPage = () => {
       console.log(response.data.tourdiemden);
       setTour(response.data.tourdiemden);
     })
+    if(diem_den===undefined){
+      axios
+      .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
+      .then((response)=>{
+        console.log(response.data.tourdiemden);
+        setTour(response.data.tourdiemden);
+      })
+    }
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
-
-  console.log(diem_den);
   // const getTour = () => {
   //   axios
   //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
@@ -340,30 +346,30 @@ const TourPage = () => {
           <div className="content">
             <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
             <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {tourdiemden.map((tour) => (
+              {tourdiemden?.map((tour) => (
 
                 <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
 
-                  {tour.images.map((image) => (
+                  {tour.images?.map((image) => (
                     <img
                       key={image.id}
                       className="mt-4 rounded-lg w-full h-60 object-cover"
                       src={`http://localhost:8000/storage/${image.image_path}`}
-                      alt={`Ảnh ${tour.ten_tour}`}
+                      alt={`Ảnh ${tour?.ten_tour}`}
                     />
                   ))}
                   <div className="product-details mt-4">
                     <div className="info-row data">
-                      <p>{tour.lich_khoi_hanh}</p>-
-                      <p>{tour.soluong} ngày</p>
+                      <p>{tour?.lich_khoi_hanh}</p>-
+                      <p>{tour?.soluong} ngày</p>
                     </div>
                     <Link to="/:id/tour" className="text-blue-500 hover:underline">
-                      <h3 className="text-lg font-bold">{tour.ten_tour}</h3>
+                      <h3 className="text-lg font-bold">{tour?.ten_tour}</h3>
                     </Link>
-                    <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
-                    <p className='text mt-2'>{tour.mo_ta}</p>
+                    <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour?.gia_tour}đ</p>
+                    <p className='text mt-2'>{tour?.mo_ta}</p>
 
-                    <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
+                    <p className='text mt-2'>Nơi Khởi Hành: {tour?.diem_khoi_hanh}</p>
 
                     <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
                       Giảm 6%
