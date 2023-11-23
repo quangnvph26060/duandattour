@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\NewsModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ApiNewsController extends Controller
 {
@@ -38,33 +40,49 @@ class ApiNewsController extends Controller
         return response()->json($news);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-  
-        
         $news = NewsModel::find($id);
-
-        if (!$news) {
-            return response()->json(['message' => 'Không tìm thấy bài viết'], 404);
-        }
-
-        // Update 'name' field
        
+        $news->tieu_de = $request->input('tieu_de');
+        $news->noi_dung = $request->input('noi_dung');
+        $news->ngay_dang = $request->input('ngay_dang');
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
 
+            // Xóa ảnh hiện tại nếu có
+            if ($news->image_path) {
+                Storage::disk('public')->delete($news->image);
+            }
 
-        // Update image if provided
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/hinh', $imageName); // Save image to storage
-            $news->image = $imageName;
+            // Lưu trữ ảnh mới
+            $imagePath = $image->store('image_path', 'public');
+
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            $news->image = $imagePath;
         }
-        
-        $news->tieu_de =$request->tieu_de;
-        $news->ngay_dang =$request->ngay_dang;
-        $news->noi_dung =$request->noi_dung;
+     
+        // Lưu các thay đổi
         $news->save();
+        return response()->json(['message' => 'Cập nhật thành công']);
 
-        return response()->json(['message' => 'Cập nhật thành công', 'data' => $news], 200);
+        if ($news) {
+            $news->update($request->all());
+        } else {
+            return  response()->json([
+                'message' => 'Không tìm thấy thong tin'
+            ], 404);
+        }
+    }
+    public function destroy(string $id){
+        $news=NewsModel::find($id);
+        if(!$news){
+            return response()->json([
+                'message'=>'Không tìm thấy tin tức'
+            ],404);
+        }
+        return $news->delete();
+
+
     }
 }

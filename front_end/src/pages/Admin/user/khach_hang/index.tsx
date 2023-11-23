@@ -62,6 +62,13 @@ const Admin_Khachhang: React.FC<Props> = () => {
       title: "Ảnh đại diện",
       dataIndex: "image",
       key: "image",
+      render: (image: string) => (
+        <img
+          src={`http://localhost:8000/storage/${image}`}
+          alt="img"
+          style={{ width: '100px', cursor: 'pointer' }}
+        />
+    ),
     },
     {
       title: "Địa chỉ",

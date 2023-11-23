@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('noi_dung');
             $table->date('ngay_dang');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

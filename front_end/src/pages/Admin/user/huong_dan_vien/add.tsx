@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
+import { Form, Button, Input, DatePicker, Select } from "antd";
 import { AiOutlineLoading3Quarters, AiOutlineUpload } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddHuongDanVienMutation } from "../../../../api/HuongDanVienApi";
-import { IHuongDanVien } from "../../../../interface/huongDanVien";
 import { IUser } from "../../../../interface/user";
 import { useAddUserMutation } from "../../../../api/UserApi";
+import { Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-
 const { Option } = Select;
 
 type FieldType = {
@@ -27,7 +25,16 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
   const navigate = useNavigate();
 
   const onFinish = (values: IUser) => {
-    addHuongDanVien(values)
+    const formData = new FormData();
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("dia_chi", values.dia_chi);
+    formData.append("sdt", values.sdt);
+    formData.append("cccd", values.cccd);
+    formData.append("password", values.password);
+
+    addHuongDanVien(formData)
       .unwrap()
       .then(() => navigate("/admin/account_huongdanvien"));
   };
@@ -65,14 +72,14 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
         </Form.Item>
 
         <Form.Item
-          label="image"
+          label="Hình ảnh"
           name="hinh"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
           <Upload
-            accept="image/*"
+            accept="image/*" // Chỉ chấp nhận các định dạng ảnh
             listType="picture"
-            beforeUpload={() => false}
+            beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
           >
             <Button icon={<UploadOutlined />} type="button">
               Chọn ảnh
@@ -118,7 +125,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
           name="password"
           rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
         >
-          <Input type="password" />
+          <Input />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
