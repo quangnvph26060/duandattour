@@ -14,7 +14,7 @@ class HoaDon extends Model
         'tong_tien',
         'ngay_tao_hoa_don',
         'id_dat_tour',
-        'ma_khuyen_mai',
+        
     ];
 
    

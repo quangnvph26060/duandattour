@@ -11,6 +11,7 @@ use App\Models\DatTour;
 use App\Models\HoaDon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\DB;
 
@@ -30,75 +31,22 @@ class ApiTourController extends Controller
         return response()->json(['data' => $tour]);
     }
 
-    public function getToursByDestination(Request $request, $destination)
+    public function getToursByDestination(Request $request)
     {
-        $tourdiemden = TourModel::with('images')-> where('diem_den',$destination)->get();
+        $query = $request->input('diem_den');
+        $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
         $tourdiemdencout = $tourdiemden->count();
-        return response() ->json(['tourdiemden'=> $tourdiemden,'tourdiemdencout'=> $tourdiemdencout],200);
+        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
 
     public function index()
     {
-       // $tour = TourModel::all();
-
-
-        /////////////////////////
-        // đừng có xóa 
-        //////////////////////////////////////
 
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
-
         if ($tours->isEmpty()) {
             return response()->json(['message' => 'No tours found'], 404);
         }
-
         return response()->json(['data' => $tours]);
-        // $tour = TourModel::all();
-        // lấy ra tất cả
-        // $tours = TourModel::join('dat_tours', 'tour.id', '=', 'dat_tours.id_tour')
-        //     ->join('hoa_dons', 'dat_tours.id', '=', 'hoa_dons.id_dat_tour')
-        //     ->select('tour.lich_khoi_hanh', 'tour.ngay_ket_thuc', 'hoa_dons.ma_hoa_don')
-        //     ->get();
-        // // lấy ngày kết thúc 
-        // $hoadon = HoaDon::join('dat_tours', 'hoa_dons.id_dat_tour', '=', 'dat_tours.id')
-        // ->join('tour', 'dat_tours.id_tour', '=', 'tour.id')
-        // ->join('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('tour.ngay_ket_thuc')
-        // ->first();
-        // lấy ngày kết thúc ra sử dụng 
-        // $ngayKetThucArray = $hoadon->pluck('ngay_ket_thuc')->toArray();
-        // foreach ($tours as $tour) {
-        //     $lichKhoiHanh = Carbon::parse($tour->lich_khoi_hanh);
-        //     $ngayKetThuc = Carbon::parse($tour->ngay_ket_thuc);
-        //     $soNgayChenhLech = $ngayKetThuc->diffInDays($lichKhoiHanh);
-
-        //     // Lưu số ngày chênh lệch vào thuộc tính của đối tượng tour
-        //     $tour->so_ngay_chenh_lech = $soNgayChenhLech;
-
-        //      $ngayHienTai = Carbon::today(); // Lấy ngày hiện tại (không bao gồm giờ, phút, giây)
-
-        //      $tour->ngay_hien_tai = $ngayHienTai->toDateString();
-
-        // }
-
-        // return response()->json($tours);
-
-        // bảng hoasddwon chưa liên kết với bảng hướng đãn viên 
-        //       $results = DB::table('hoa_dons')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'hoa_dons.id', '=', 'huong_dan_vien_hoa_dons.hoadon_id')
-        // ->select('hoa_dons.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hoadon_id')
-        // ->get();
-        //   return response()->json($results);
-        //bảng hướng dẫn viên chưa liên kết với bảng hóa đơn
-        //   $hdv = DB::table('huong_dan_vien')
-        // ->leftJoin('huong_dan_vien_hoa_dons', 'huong_dan_vien.id', '=', 'huong_dan_vien_hoa_dons.hdv_id')
-        // ->select('huong_dan_vien.*')
-        // ->whereNull('huong_dan_vien_hoa_dons.hdv_id')
-        // ->get();
-        // return response()->json($hdv);
-
-        // return  TourResoure::collection('tours' => $tours);
     }
 
 
@@ -107,9 +55,19 @@ class ApiTourController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+        }
         $lich_khoi_hanh = Carbon::parse($request->lich_khoi_hanh)->format('Y-m-d');
+        $ngay_ket_thuc = Carbon::parse($request->ngay_ket_thuc)->format('Y-m-d');
         $requestData = $request->all();
         $requestData['lich_khoi_hanh'] = $lich_khoi_hanh;
+        $requestData['ngay_ket_thuc'] = $ngay_ket_thuc;
+        $requestData['image_path'] = $imagePath;
         $tour = TourModel::create($requestData);
         // Trả về thông tin vừa thêm
         return new TourResoure($tour);
@@ -136,6 +94,40 @@ class ApiTourController extends Controller
     public function update(Request $request, string $id)
     {
         $tour = TourModel::find($id);
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
+
+            // Xóa ảnh hiện tại nếu có
+            if ($tour->image_path) {
+                Storage::disk('public')->delete($tour->image);
+            }
+
+            // Lưu trữ ảnh mới
+            $imagePath = $image->store('image_path', 'public');
+
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            $tour->image = $imagePath;
+        }
+        $tour->ten_tour = $request->input('ten_tour');
+        $tour->diem_di = $request->input('diem_di');
+        $tour->diem_den = $request->input('diem_den');
+        $tour->lich_khoi_hanh = $request->input('lich_khoi_hanh');
+        $tour->ngay_ket_thuc = $request->input('ngay_ket_thuc');
+        $tour->diem_khoi_hanh = $request->input('diem_khoi_hanh');
+        $tour->gia_nguoilon = $request->input('ten_tour');
+        $tour->gia_treem = $request->input('gia_treem');
+        $tour->mo_ta = $request->input('mo_ta');
+        $tour->soluong = $request->input('soluong');
+        $tour->trang_thai = $request->input('trang_thai');
+        $tour->ma_loai_tour = $request->input('ma_loai_tour');
+        // Lưu các thay đổi
+        $tour->save();
+
+        return response()->json(['message' => 'Cập nhật thành công']);
+
+
+
+
         if ($tour) {
             $tour->update($request->all());
         } else {
@@ -144,6 +136,43 @@ class ApiTourController extends Controller
             ], 404);
         }
     }
+
+
+
+    public function updatef(Request $request, string $id)
+    {
+        $loaiTourModel = LoaiTourModel::find($id);
+
+        if (!$loaiTourModel) {
+            return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
+        }
+
+        // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Xóa ảnh hiện tại nếu có
+            if ($loaiTourModel->image) {
+                Storage::disk('public')->delete($loaiTourModel->image);
+            }
+
+            // Lưu trữ ảnh mới
+            $imagePath = $image->store('images', 'public');
+
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            $loaiTourModel->image = $imagePath;
+        }
+
+        // Cập nhật các trường dữ liệu khác
+        $loaiTourModel->ten_loai_tour = $request->input('ten_loai_tour');
+
+        // Lưu các thay đổi
+        $loaiTourModel->save();
+
+        return response()->json(['message' => 'Cập nhật thành công']);
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -162,4 +191,5 @@ class ApiTourController extends Controller
             ], 404);
         }
     }
+    
 }

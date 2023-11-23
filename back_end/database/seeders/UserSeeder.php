@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         Role::create(['name' => 'nhan_vien']);
         Role::create(['name' => 'khach_hang']);
         Role::create(['name' => 'huong_dan_vien']);
+        Role::create(['name' => 'customer_feedback']);  //  Customer Feedback
         Permission::create(['name' => 'add_tour']); // tạo Permission
         Permission::create(['name' => 'add_loaitour']); // tạo Permission
         Permission::create(['name' => 'add_diadiem']); // tạo Permission
@@ -71,6 +72,11 @@ class UserSeeder extends Seeder
         ]);
         $user = User::find(1);
         $role = Role::where('name', 'admin')->first();
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
+        $user = User::find(2);
+        $role = Role::where('name', 'customer_feedback')->first();
         if ($user && $role) {
             $user->assignRole($role);
         }

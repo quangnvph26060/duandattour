@@ -32,6 +32,12 @@ border: burlywood;
   display: flex;
   align-items: center;
 }
+.chat-messages .message-timestamp {
+  font-size: smaller;
+  float: left;
+  color: #000000;
+}
+
 .text{
   font-size: 15px;
   color: #2d4271;
