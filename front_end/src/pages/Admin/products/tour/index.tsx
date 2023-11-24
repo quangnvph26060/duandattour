@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Select } from 'antd';
 
 const AdminProduct = (props: Props) => {
+    
     const { Option } = Select;
     const { data: loaitourdata } = useGetLoaiTourQuery();
     const { data: huongdanviendata } = useGetHuongDanVienQuery();
@@ -105,26 +106,7 @@ const AdminProduct = (props: Props) => {
         },
 
 
-        // {
-        //     title: "Lịch Khởi Hành",
-        //     dataIndex: "lich_khoi_hanh",
-        //     key: "lich_khoi_hanh",
-        //     render: (lich_khoi_hanh: string | number | Date) => {
-        //         const departureDate = new Date(lich_khoi_hanh);
-        //         return departureDate.toLocaleDateString('en-GB');
-        //     },
-        // },
-
-
-        // {
-        //     title: "Lịch Kết Thúc",
-        //     dataIndex: "ngay_ket_thuc",
-        //     key: "ngay_ket_thuc",
-        //     render: (ngay_ket_thuc: string | number | Date) => {
-        //         const departureDate = new Date(ngay_ket_thuc);
-        //         return departureDate.toLocaleDateString('en-GB');
-        //     },
-        // },
+     
         {
             title: "Giá Người lớn",
             dataIndex: "gia_nguoilon",
@@ -248,13 +230,18 @@ const AdminProduct = (props: Props) => {
         },
         // Thêm các cột khác tương ứng với thông tin tour
     ];
+    const calculateTotalTours = (dataSource) => {
+        return dataSource.length;
+      };
+      const totalTours = calculateTotalTours(dataSource);
     return (
         <div>
 
             <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-2xl">Quản lý tour</h2>
+                <h2 className="font-bold text-3xl">Quản lý tour</h2>
+  
                 <Button type="primary" danger>
-                    <Link to="/admin/tour/add" className="flex items-center space-x-2">
+                    <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
                         <AiOutlinePlus />
                         Tạo mới tour
                     </Link>
@@ -264,7 +251,8 @@ const AdminProduct = (props: Props) => {
             {isLoading ? <Skeleton /> : (
                 <>
                     <div>
-                        <h3>Hiển thị cột</h3>
+                    <h3 className="text-lg text-orange-600">Tổng số :  {totalTours} tour</h3>
+                        <h3 className=" mt-2 text-lg">Hiển thị cột</h3>
                         <Select
                             mode="multiple"
                             placeholder="Chọn cột hiển thị"

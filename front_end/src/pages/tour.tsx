@@ -33,28 +33,7 @@ const TourPage = () => {
     setBudget(newBudget);
   };
 
-  // const [searchTerm, setSearchTerm] = useState("");
-  // // const [tours, setTours] = useState<IPour[]>([]);
-  // const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
 
-  // useEffect(() => {
-  //   const fetchTours = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
-  //       setTours(response.data.data);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //       setError("Error retrieving tours.");
-  //     }
-  //   };
-
-  //   fetchTours();
-  // }, []);
   const [tourdiemden, setTour] = useState([]);
   const { diem_den } = useParams<{ diem_den: any }>();
   useEffect(() => {
@@ -75,43 +54,10 @@ const TourPage = () => {
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
-  // const getTour = () => {
-  //   axios
-  //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
-  //     .then((response)=>{
-  //       console.log(response.data.tourdiemden);
-  //       setTour(response.data.tourdiemden);
-  //     })
-  // }
-  // useEffect(() => {
-  //   getTour();
-  // }, []);
 
 
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
 
-  // const handleSearch = () => {
-  //   const filteredTours = tours.filter((tour) =>
-  //     tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-
-  //   setFilteredTours(filteredTours);
-  //   setSearched(true); // Đánh dấu đã tìm kiếm
-  // };
-
-  // const handleResetSearch = () => {
-  //   setSearchTerm("");
-  //   setFilteredTours([]);
-  //   setSearched(false); // Đánh dấu chưa tìm kiếm
-  // };
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
-
-  // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
+ 
 
   return (
     <div className=''>
