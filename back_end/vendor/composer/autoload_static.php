@@ -360,8 +360,8 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -590,6 +590,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'App\\Models\\LoaiPhuongTienModel' => __DIR__ . '/../..' . '/app/Models/LoaiPhuongTienModel.php',
         'App\\Models\\LoaiTourModel' => __DIR__ . '/../..' . '/app/Models/LoaiTourModel.php',
         'App\\Models\\Message' => __DIR__ . '/../..' . '/app/Models/Message.php',
+        'App\\Models\\NewsModel' => __DIR__ . '/../..' . '/app/Models/NewsModel.php',
         'App\\Models\\ThanhToan' => __DIR__ . '/../..' . '/app/Models/ThanhToan.php',
         'App\\Models\\ThanhToanDetail' => __DIR__ . '/../..' . '/app/Models/ThanhToanDetail.php',
         'App\\Models\\TourDiscount' => __DIR__ . '/../..' . '/app/Models/TourDiscount.php',
@@ -733,6 +734,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'Database\\Seeders\\TourPhuongTienSeeder' => __DIR__ . '/../..' . '/database/seeders/TourPhuongTienSeeder.php',
         'Database\\Seeders\\TourSeeder' => __DIR__ . '/../..' . '/database/seeders/TourSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
+        'Database\\Seeders\\news' => __DIR__ . '/../..' . '/database/seeders/news.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
