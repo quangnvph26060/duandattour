@@ -85,7 +85,7 @@ const HeaderWebsite = () => {
               <a href="/">PolyTour</a>
               <a href="/tour">Tour</a>
               <a href="/news">Tin tức</a>
-              <a href="">Khuyến mãi</a>
+              <a href="/promo">Khuyến mãi</a>
               <a href="/contact">Liên hệ</a>
             </ul>
           </nav>

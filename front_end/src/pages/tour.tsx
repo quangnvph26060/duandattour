@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 import '../tour.css'
 import { IPour } from "../interface/home";
 import { Link } from 'react-router-dom';
@@ -17,7 +18,25 @@ import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
-const TourPage = () => {
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
+const TourPage : React.FC = () => {
+  const location = useLocation();
+  const matchedResults: Tour[] = location.state?.matchedResults || [];
+
+  useEffect(() => {
+    // Thực hiện bất kỳ tác vụ nào bạn muốn với matchedResults
+  }, [matchedResults]);
   const [budget, setBudget] = useState(0);
 
   const formatCurrency = (value) => {
@@ -39,7 +58,7 @@ const TourPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
-
+  
   useEffect(() => {
     const fetchTours = async () => {
       try {
@@ -338,12 +357,49 @@ border-[3px] px- py-2  rounded"
           <button className="bt mt-4 mb-6 ml-7">Hiển thị những chuyến đi có</button>
         
         </aside>
-
-        {/*conten-right*/}
+        
+        {/*conten-right*/ }
+        {/* đây và dưới */}
         <article className='w-3/4'>
-          <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-            <div className="content">
-              <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
+          <div className="content">
+              <h2 className="mt-5 mb-5 home-page__title">Kết quả tìm kiếm tour du lịch</h2>
+              <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {matchedResults.map((tour) => (
+                  <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
+                    {tour.images.map((image) => (
+                      <img
+                        key={image.id}
+                        className="mt-4 rounded-lg w-full h-60 object-cover"
+                        src={`http://localhost:8000/storage/${image.image_path}`}
+                        alt={`Ảnh ${tour.ten_tour}`}
+                      />))}
+                    <div className="product-details mt-4">
+                      <div className="info-row data">
+                        <p>{tour.lich_khoi_hanh}</p>-
+                        <p>{tour.soluong} ngày</p>
+                      </div>
+                      <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                        <h3 className="text-lg font-bold">{tour.ten_tour}</h3></Link>
+                      <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
+                      <p className='text mt-2'>{tour.mo_ta}</p>
+                      <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
+                      <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
+                        Giảm 6%
+                      </button>
+                      <button
+                        id="countdown-btn" style={{ color:'revert' }}
+                        className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded">
+                        Đặt Ngay
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+          </div>
+{/* nơi hiển thị kết quả tìm kiếm  */}
+{/* đây tìm kiếm ở home */}
+<div className="content">
+              <h2 className="mt-5 mb-5 home-page__title">Các tour đang tìm phổ biến</h2>
               <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {displayedTours.map((tour) => (
 

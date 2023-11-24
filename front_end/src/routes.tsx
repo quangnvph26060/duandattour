@@ -42,13 +42,20 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+
 import { Route,Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import PromotionPage from "./pages/PromotionPage";
+import TestPage from "./pages/test";
+import TestT from "./pages/test2";
 export const router = createBrowserRouter([
+  {
 
+        path: "/tour",
+        element: <TourPage />,
+    },
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -57,9 +64,10 @@ export const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
+   
       {
-        path: "news",
-        element: <News />,
+        path: "tt",
+        element: <TestT />,
       },
      
       {
@@ -98,12 +106,11 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <QLuser />,
       },
+    
       {
-
-        path: "/tour",
-        element: <TourPage />,
-    },
- 
+        path: "t",
+        element: <TestPage />,
+      }
     ],
   },
 
