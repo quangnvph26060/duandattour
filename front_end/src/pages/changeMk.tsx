@@ -95,6 +95,19 @@ const Dmkuser = () => {
             console.error('Lỗi khi đổi mật khẩu:', error);
         }
     };
+    const handleForgotPassword = async () => {
+        try {
+            const response = await axios.post('http://your-api-url/forgot-password', {
+                email: usersId.email, // Sử dụng email đã lưu
+            });
+
+            console.log(response.data.message);
+            // Hiển thị thông báo cho người dùng
+        } catch (error) {
+            console.error('Lỗi khi yêu cầu quên mật khẩu:', error.response.data.message);
+            // Xử lý lỗi và hiển thị thông báo cho người dùng
+        }
+    };
     return (
         <div>
             {/*  */}
@@ -130,7 +143,7 @@ const Dmkuser = () => {
                                 </a>
 
                             </div>
-                            <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đơn đặt chỗ</h3></a>
+                            <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt</h3></a>
                             <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
                             <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
@@ -162,7 +175,7 @@ const Dmkuser = () => {
                                             />
                                         </div>
                                         <div className="col d-inline-flex align-items-center py-2">
-                                            <a className="font-medium pl-28 text-blue-500" href="#">Quên mật khẩu?</a>
+                                            <a className="font-medium pl-28 text-blue-500" onSubmit={handleForgotPassword} href="#">Quên mật khẩu?</a>
                                         </div>
                                     </div>
                                     <div className="mb-3 row flex gap-32">

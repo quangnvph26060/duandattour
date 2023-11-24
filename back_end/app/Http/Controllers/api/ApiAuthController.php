@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\UserResources;
 use Illuminate\Http\Request;
 use App\Models\UsersModel;
+use App\Models\User;
 use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -28,15 +29,7 @@ class ApiAuthController extends Controller
     }
     public function registers(Request $request)
     {
-        // // $request->validate([
-        // //     // 'name' => 'required|string|max:255',
-        // //     // // 'image' => 'required|string',
-        // //     // 'dia_chi' => 'required|string|max:255',
-        // //     // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        // //     // 'sdt' => 'required|string|max:255',
-        // //     // 'cccd' => 'required|string|max:255',
-        // //     // 'password' => 'required|string|min:6',
-        // // ]);
+
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             $imagePath = uploadFile('hinh', $request->file('hinh'));
         } else {
@@ -58,5 +51,36 @@ class ApiAuthController extends Controller
         Mail::to($user->email)->send(new RegisterUser($user));
 
         return response()->json(['message' => 'Đăng ký tài khoản thành công!!']);
+    }
+    public function edit_information(Request $request)
+    {
+        $userId = Auth::id();
+        $user = User::where('id', $userId)->first();
+        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
+            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+        }
+        $success = $user->update([
+            'name' => $request->name,
+            'image' => $imagePath,
+            'dia_chi' => $request->dia_chi,
+            'email' => $request->email,
+            'sdt' => $request->sdt,
+            'cccd' => $request->cccd,
+        ]);
+
+        if ($success) {
+            return response()->json([
+                'message' => 'Thay đổi password thành công'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Không thể cập nhật password'
+            ], 500);
+        }
+
+
+        return response()->json(['data' => $user], 200);
     }
 }

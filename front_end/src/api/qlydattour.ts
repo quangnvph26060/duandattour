@@ -19,13 +19,23 @@ const QuanlydattoutApi = createApi({
             query: () => `/getListBookingTour`,
             providesTags: ['getListBookingTour']
         }),
-    
+        getQuanlydattourchuathanhtoan: builder.query<IQuanlyDattour[], void>({
+            query: () => `/getListBookingTourUnpaid`,
+            providesTags: ['getListBookingTour']
+        }),
+        getListBookingTourPaid: builder.query<IQuanlyDattour[], void>({
+            query: () => `/getListBookingTourPaid`,
+            providesTags: ['getListBookingTour']
+        }),
+ 
+
 
     })
 });
 export const {
-useGetQuanlydattourQuery
-
+useGetQuanlydattourQuery,
+useGetQuanlydattourchuathanhtoanQuery,
+useGetListBookingTourPaidQuery
 } = QuanlydattoutApi;
 export const QuanlydattourReducer = QuanlydattoutApi.reducer;
 export default QuanlydattoutApi;

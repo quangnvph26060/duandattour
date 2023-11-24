@@ -41,47 +41,47 @@ const HeaderWebsite = () => {
             <li className='group'>
               <a href="/tour" className='menu-items'>Tour</a>
               {/* Menu phân cấp*/}
-                <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
-                  <ul className='p-2'>
-                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Bắc</a></li>
-                    <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Hà Nội</a></li> 
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Hạ Long</a></li>
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Bắc Ninh</a></li>
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Phú Thọ</a></li>
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Ninh Bình</a></li>
-                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                  </ul>
+              <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
+                <ul className='p-2'>
+                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Bắc</a></li>
+                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Hà Nội</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Hạ Long</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Bắc Ninh</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Phú Thọ</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Ninh Bình</a></li>
+                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                </ul>
 
-                  <ul className='p-2'>
-                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Trung</a></li>
-                    <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Huế</a></li> 
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Quảng Trị</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Bình</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Đà Nẵng</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Nam</a></li>
-                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                  </ul>
+                <ul className='p-2'>
+                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Trung</a></li>
+                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Huế</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Trị</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Bình</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Đà Nẵng</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Nam</a></li>
+                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                </ul>
 
-                  <ul className='p-2'>
-                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Tây Nam Bộ</a></li>
-                    <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Phú Quốc</a></li> 
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Tiền Giang</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Cần Thơ</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Vĩnh Long</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Sóc Trăng</a></li>
-                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                  </ul>
+                <ul className='p-2'>
+                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Tây Nam Bộ</a></li>
+                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Phú Quốc</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Tiền Giang</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Cần Thơ</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Vĩnh Long</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Sóc Trăng</a></li>
+                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                </ul>
 
-                  <ul className='p-2'>
-                    <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Đông Nam Bộ</a></li>
-                    <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Đồng Nai</a></li> 
-                    <li className='py-2'><a href=""className='mega-menu-items'>Du lịch Bà Rịa-Vũng Tàu</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Côn Đảo</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch TP. Hồ Chí Minh</a></li>
-                    <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Tây Ninh</a></li>
-                    <li className='py-3'><a href=""className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                  </ul>
-                </div>
+                <ul className='p-2'>
+                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Đông Nam Bộ</a></li>
+                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Đồng Nai</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Bà Rịa-Vũng Tàu</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Côn Đảo</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch TP. Hồ Chí Minh</a></li>
+                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Tây Ninh</a></li>
+                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                </ul>
+              </div>
               {/* Menu phân cấp*/}
             </li>
             <li><a href="/news" className=''>Tin tức</a></li>

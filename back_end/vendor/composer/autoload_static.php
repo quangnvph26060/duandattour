@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
+class ComposerStaticInitcd06c096284075e0fde76526cc082bdb
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -359,8 +359,8 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -533,6 +533,8 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Actions\\ElaborateSummary' => __DIR__ . '/..' . '/laravel/pint/app/Actions/ElaborateSummary.php',
         'App\\Actions\\FixCode' => __DIR__ . '/..' . '/laravel/pint/app/Actions/FixCode.php',
         'App\\Commands\\DefaultCommand' => __DIR__ . '/..' . '/laravel/pint/app/Commands/DefaultCommand.php',
+        'App\\Console\\Commands\\DattourCommand' => __DIR__ . '/../..' . '/app/Console/Commands/DattourCommand.php',
+        'App\\Console\\Commands\\DiscountMessage' => __DIR__ . '/../..' . '/app/Console/Commands/DiscountMessage.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Contracts\\PathsRepository' => __DIR__ . '/..' . '/laravel/pint/app/Contracts/PathsRepository.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -541,6 +543,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Fixers\\LaravelPhpdocAlignmentFixer' => __DIR__ . '/..' . '/laravel/pint/app/Fixers/LaravelPhpdocAlignmentFixer.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Demo' => __DIR__ . '/../..' . '/app/Http/Controllers/Demo.php',
+        'App\\Http\\Controllers\\api\\ApiDiscountController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiDiscountController.php',
         'App\\Http\\Controllers\\api\\ApiImagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiImagesController.php',
         'App\\Http\\Controllers\\api\\ApiLichTrinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLichTrinhController.php',
         'App\\Http\\Controllers\\api\\ApiLoaiKhachSanController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiLoaiKhachSanController.php',
@@ -578,6 +581,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Mail\\RegisterUser' => __DIR__ . '/../..' . '/app/Mail/RegisterUser.php',
         'App\\Models\\DatTour' => __DIR__ . '/../..' . '/app/Models/DatTour.php',
         'App\\Models\\DiaDiemModel' => __DIR__ . '/../..' . '/app/Models/DiaDiemModel.php',
+        'App\\Models\\Discount' => __DIR__ . '/../..' . '/app/Models/Discount.php',
         'App\\Models\\HoaDon' => __DIR__ . '/../..' . '/app/Models/HoaDon.php',
         'App\\Models\\HuongDanVienHoaDon' => __DIR__ . '/../..' . '/app/Models/HuongDanVienHoaDon.php',
         'App\\Models\\HuongDanVienModel' => __DIR__ . '/../..' . '/app/Models/HuongDanVienModel.php',
@@ -589,6 +593,8 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'App\\Models\\LoaiTourModel' => __DIR__ . '/../..' . '/app/Models/LoaiTourModel.php',
         'App\\Models\\Message' => __DIR__ . '/../..' . '/app/Models/Message.php',
         'App\\Models\\ThanhToan' => __DIR__ . '/../..' . '/app/Models/ThanhToan.php',
+        'App\\Models\\ThanhToanDetail' => __DIR__ . '/../..' . '/app/Models/ThanhToanDetail.php',
+        'App\\Models\\TourDiscount' => __DIR__ . '/../..' . '/app/Models/TourDiscount.php',
         'App\\Models\\TourImagesModel' => __DIR__ . '/../..' . '/app/Models/TourImagesModel.php',
         'App\\Models\\TourKhachSanModel' => __DIR__ . '/../..' . '/app/Models/TourKhachSanModel.php',
         'App\\Models\\TourModel' => __DIR__ . '/../..' . '/app/Models/TourModel.php',
@@ -1687,6 +1693,7 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
         'Illuminate\\Bus\\BatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BatchRepository.php',
         'Illuminate\\Bus\\Batchable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Batchable.php',
         'Illuminate\\Bus\\BusServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/BusServiceProvider.php',
+        'Illuminate\\Bus\\ChainedBatch' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/ChainedBatch.php',
         'Illuminate\\Bus\\DatabaseBatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/DatabaseBatchRepository.php',
         'Illuminate\\Bus\\Dispatcher' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Dispatcher.php',
         'Illuminate\\Bus\\Events\\BatchDispatched' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Events/BatchDispatched.php',
@@ -6711,9 +6718,9 @@ class ComposerStaticInit17043cd9a12c24781122a35116c43b7f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit17043cd9a12c24781122a35116c43b7f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcd06c096284075e0fde76526cc082bdb::$classMap;
 
         }, null, ClassLoader::class);
     }

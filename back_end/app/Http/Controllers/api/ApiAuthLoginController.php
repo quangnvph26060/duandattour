@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\DatTour;
+use App\Models\TourModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class ApiAuthLoginController extends Controller
 {
@@ -79,5 +82,23 @@ class ApiAuthLoginController extends Controller
                 'message' => 'Không thể cập nhật password'
             ], 500);
         }
+    }
+    public function getToursByUserId()
+    {
+        $userId = Auth::id();
+        // $bookings = DatTour::with('ThanhToan', 'tours.images', 'tours.loaiTours')->where('ma_khach_hang', $userId)->get();
+        // return response()->json(['data' => $bookings], 200);
+
+        $userBookings = DatTour::where('ma_khach_hang', $userId)->with('ThanhToan', 'tours.images', 'tours.loaiTours')->get();
+
+        // Lấy thông tin ma_loai_tour từ id_tour
+        // foreach ($userBookings as $booking) {
+        //     $idTour = $booking->id_tour;
+        //     $maLoaiTour = TourModel::with()->find($idTour);
+
+        //     $booking->ma_loai_tour = $maLoaiTour;
+        // }
+
+        return response()->json(['data' => $userBookings], 200);
     }
 }

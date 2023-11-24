@@ -45,6 +45,39 @@ const BookTour = () => {
     setIsChecked(true);
     setIsChecked1(false);
   };
+  // giảm giá 
+  const [inputValue, setInputValue] = useState('');
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+
+  };
+  console.log(inputValue);
+
+  const [couponData, setCouponData] = useState("");
+  const [error, setError] = useState("");
+  useEffect(() => {
+
+    // Gửi yêu cầu HTTP POST đến API
+    axios.post('http://localhost:8000/api/check_coupon', { name_coupon: inputValue, tourid: idTour })
+      .then((response) => {
+        // Xử lý phản hồi từ server
+        setError(response.data.message); // lỗi từ serve
+        setCouponData(response.data.session.coupon);
+        // Tiếp tục xử lý dữ liệu phản hồi từ server
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có
+        console.error(error);// Hiển thị thông tin lỗi từ phản hồi của server
+      });
+    if (inputValue === '') {
+
+      setCouponData("")
+    }
+  }, [inputValue]);
+
+
+
 
 
   const [isChecked1, setIsChecked1] = useState(false);// chuyển khoản 
@@ -60,11 +93,21 @@ const BookTour = () => {
   const handleAgreeToggle = () => {
     setIsAgreed(!isAgreed);
   };
+  const validateQuantity = (newQuantity: number, newQuantity2: number) => {
+    const totalGuests = newQuantity + newQuantity2;
+    if (totalGuests > datatourArray?.soluong) {
+      alert("Bạn đã nhập quá số lượng cho phép");
+      return false;
+    }
+    return true;
+  };
   // gia ng lon
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    if (validateQuantity(quantity + 1, quantity2)) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const handleDecrement = () => {
@@ -81,7 +124,9 @@ const BookTour = () => {
   const [quantity2, setQuantity2] = useState(0);
 
   const handleIncrement2 = () => {
-    setQuantity2(quantity2 + 1);
+    if (validateQuantity(quantity, quantity2 + 1)) {
+      setQuantity2(quantity2 + 1);
+    }
   };
 
   const handleDecrement2 = () => {
@@ -100,6 +145,7 @@ const BookTour = () => {
       });
     }
   }, [quantity, quantity2]);
+
 
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
@@ -149,13 +195,25 @@ const BookTour = () => {
       });
     }
   }, []);
-
+  // tính tổng tiền 
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
-    const ginho = datatourArray?.gia_treem;
-    const totalPrice = quantity * gialon + quantity2 * ginho;
+    const gianho = datatourArray?.gia_treem;
+    let totalPrice = quantity * gialon + quantity2 * gianho;
+
+    if (couponData.length > 0) {
+      couponData.forEach((item) => {
+        console.log(item.discount_condition);
+        if (item.discount_condition == 1) {
+          totalPrice -= item.percentage;
+        } else {
+          totalPrice = totalPrice * (100 - item.percentage) / 100;
+        }
+      });
+    }
+
     return totalPrice;
-  }
+  };
   const images = datatourArray?.images || [];
   // console.log(images);
 
@@ -166,6 +224,8 @@ const BookTour = () => {
 
 
   const [paymentResult, setPaymentResult] = useState(null);
+  const [IdDatTour, setIdDatTour] = useState("");
+
   //  khi bấm đặt hàng thì nó thực thi handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -182,9 +242,9 @@ const BookTour = () => {
           vnp_Amount: calculateTotalPrice(),
           payment_method: 'cash',
         };
-        const paymentResponse = await axios.post('http://localhost:8000/api/cash', requestData);
+        const paymentResponse =
+          await axios.post('http://localhost:8000/api/cash', requestData);
         setPaymentResult(paymentResponse.data);
-
         alert('Đặt tour bằng tiền mặt thành công')
         window.location.href = `/bookingtour/${paymentResponse.data.id_dat_tour}`;
       } catch (error) {
@@ -199,22 +259,25 @@ const BookTour = () => {
       const addTourResponse = await addTour(formData).unwrap();
       setIsLoading(false);
       setResponseMessage(addTourResponse.message);
-      // lưu vào bảng thanh toán 
-      const requestData = {
-        redirect: true,
-        vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
-        vnp_OrderInfo: 'mô tả',
-        vnp_OrderType: 'atm',
-        vnp_Amount: calculateTotalPrice() * 100,
-      };
-      axios
-        .post('http://localhost:8000/api/vnpay_payment', requestData)
-        .then(response => {
+      await setIdDatTour(addTourResponse.createDatTour.id);
+
+      if (addTourResponse.createDatTour.id) {
+        const requestData = {
+          redirect: true,
+          vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
+          vnp_OrderInfo: 'mô tả',
+          vnp_OrderType: 'atm',
+          vnp_Amount: calculateTotalPrice() * 100,
+          id_dat_tour: addTourResponse.createDatTour.id
+        };
+
+        try {
+          const response = await axios.post('http://localhost:8000/api/vnpay_payment', requestData);
           window.location.href = response.data.data;
-        })
-        .catch(error => {
+        } catch (error) {
           console.error(error);
-        });
+        }
+      }
     }
 
   };
@@ -268,10 +331,23 @@ const BookTour = () => {
                 Ngày kết thúc {datatourArray?.ngay_ket_thuc}
               </p>
               <p className="mt-1 text-[#2D4271] text-[16px] font-medium">
-                Nơi khởi hành {datatourArray?.diem_khoi_hanh}
+                Nơi khởi hành: {datatourArray?.diem_khoi_hanh}
               </p>
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
-                Số chỗ còn nhận {datatourArray?.soluong}
+                Số chỗ còn nhận: {datatourArray?.soluong}
+              </p>
+              <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
+                Dịch vụ tùy chọn:
+                {
+                  datatourArray &&
+                  datatourArray.phuong_tien &&
+                  datatourArray.phuong_tien.map(item => item.loai_phuong_tien)
+                } + Khách Sạn
+                {
+                  datatourArray &&
+                  datatourArray.khach_san &&
+                  datatourArray.khach_san.map(item => item.loai_khach_san)
+                }
               </p>
             </div>
           </div>
@@ -324,11 +400,13 @@ const BookTour = () => {
                 <div className=" py-10 px-5">
                   <p className="text-[#2D4271] mb-1">Họ tên</p>
                   <input
-                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text" value={formData.ten_khach_hang} name='sdt' id='sdt'
-                    onChange={handleChange} defaultValue={token ? formData.ten_khach_hang : ""}
+                    type="text"
+                    id="ten_khach_hang"
+                    name="ten_khach_hang"
+                    value={formData.ten_khach_hang}
+                    onChange={handleChange}
+                    defaultValue={token ? formData.ten_khach_hang : ""}
                   />
-
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
@@ -486,17 +564,30 @@ const BookTour = () => {
                 Tóm tắt chuyến đi
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
-                Dịch vụ tùy chọn Option 1{" "}
+                Dịch vụ tùy chọn:{
+                  datatourArray &&
+                  datatourArray.phuong_tien &&
+                  datatourArray.phuong_tien.map(item => item.loai_phuong_tien)
+                } + Khách Sạn
+                {
+                  datatourArray &&
+                  datatourArray.khach_san &&
+                  datatourArray.khach_san.map(item => item.loai_khach_san)
+                } {" "}
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
-                Tour trọn gói (? khách){" "}
+                Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
               <div className="name flex gap-3 mt-4">
-                <img
-                  src="https://media.travel.com.vn/tour/tfd_221208112659_971842.jpg"
-                  style={img}
-                  alt=""
-                />
+                {images && images.length > 0 ? (
+                  <div>
+                    {/* {images.map((image) => ( */}
+                    <img key={images[0].id} style={img} src={`http://localhost:8000/storage/${images[0].image_path}`} />
+                    {/* ))} */}
+                  </div>
+                ) : (
+                  <p>Không có hình ảnh cho tour này.</p>
+                )}
                 <p className=" text-[#2D4271] text-base font-semibold">
                   {datatourArray?.ten_tour}
                 </p>
@@ -543,6 +634,21 @@ const BookTour = () => {
                   </p>
                   <p className="text-red-400">{quantity2} x {datatourArray?.gia_treem} </p>
                 </div>
+                <input
+                  type="text"
+                  placeholder='Mã Giảm Giá'
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  style={{
+                    padding: "8px",
+                    fontSize: "14px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    width: "380px",
+                    marginTop: "10px",
+                  }}
+                />
+
                 {/* <div className="flex mt-6 justify-between">
                   <p className=" text-[#2D4271] text-base font-normal">
                     Mã giảm giá
@@ -566,11 +672,35 @@ const BookTour = () => {
                 <p className="mx-auto mt-5">
                   <hr />
                 </p>
+                {couponData.length > 0 ? couponData.map((item, index) => (
+                  <div className="flex mt-6 justify-between">
+                    <p className="text-[#2D4271] text-[15px] font-semibold">Tên Giảm Giá:</p>
+                    <p key={index} className="text-red-400 text-[14px]">{item.discount_name}</p>
+
+                  </div>
+                )) : ""}
+                {couponData.length > 0 ? couponData.map((item, index) => (
+                  <div className="flex mt-6 justify-between">
+                    <p className="text-[#2D4271] text-[15px] font-semibold">Số Tiền Giảm:</p>
+                    <p key={index} className="text-red-400 text-[14px]">
+                      {item.discount_condition == 1 ? item.percentage + "K" : item.percentage + "%"}
+                    </p>
+
+                  </div>
+                )) : ""}
                 <div className="flex mt-6 justify-between">
-                  <p className=" text-[#2D4271] text-[28px] font-semibold">
+                  <p className="text-[#2D4271] text-[28px] font-semibold">
                     Tổng cộng
                   </p>
-                  <p className="text-red-400 text-[28px]   "> {calculateTotalPrice()} VNĐ </p>
+                  {couponData.length > 0 ? (
+                    <p className="text-red-400 text-[28px]">
+                      {calculateTotalPrice()} VNĐ
+                    </p>
+                  ) : (
+                    <p className="text-red-400 text-[28px]">
+                      {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
+                    </p>
+                  )}
                 </div>
                 {/* <p className="text-[200px] ml-10">
                   <FaQrcode />
@@ -587,6 +717,9 @@ const BookTour = () => {
             </div>
           </div>
         </form>
+
+
+
 
       </div>
     </div>
