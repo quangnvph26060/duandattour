@@ -1,12 +1,10 @@
 <x-mail::message>
-# Introduction
+# Loại thông tin {{$data->loai_thong_tin}}
 
-The body of your message.
+{{$data->noi_dung}}
 
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
 
-Thanks,<br>
+
+Thanks, {{$data->ho_ten}}<br>
 {{ config('app.name') }}
 </x-mail::message>

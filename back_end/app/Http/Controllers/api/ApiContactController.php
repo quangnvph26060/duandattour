@@ -27,8 +27,8 @@ class ApiContactController extends Controller
             'noi_dung' => $request->get('noi_dung')
         ]);
 
-        Mail::to('trongnam032003@gmail.com')->send(new ContactMail ($contact));
-        return response()->json(['message' => 'Đăng ký tài khoản thành công!!']);
+        Mail::to('trongnam032003@gmail.com')->send(new ContactMail($contact['email'], $contact));
+        return response()->json(['message' => 'Bạn đã gửi mail thành công!!']);
     }
 
     public function getcontact (){
