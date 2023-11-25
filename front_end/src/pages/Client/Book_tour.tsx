@@ -281,6 +281,7 @@ const BookTour = () => {
     }
 
   };
+console.log(datatourArray);
 
   return (
     <div className="container mx-auto">
@@ -288,17 +289,23 @@ const BookTour = () => {
       {/* header trên thôn tin dưới */}
       <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-          <div className="img-book w-1/3">
-            {images && images.length > 0 ? (
-              <div>
-                {/* {images.map((image) => ( */}
-                <img key={images[0].id} src={`http://localhost:8000/storage/${images[0].image_path}`} />
-                {/* ))} */}
-              </div>
-            ) : (
-              <p>Không có hình ảnh cho tour này.</p>
-            )}
-          </div>
+        <div className="img-book w-1/3">
+  {datatourArray.images && datatourArray.images.length > 0 ? (
+    <div>
+      {datatourArray.images.map((image) => (
+        <img
+          key={image.id}
+          style={img}
+          src={`http://localhost:8000/storage/${image.image_path}`}
+          alt={`Image ${image.id}`}
+        />
+      ))}
+    </div>
+  ) : (
+    <p>Không có hình ảnh cho tour này.</p>
+  )}
+</div>
+
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
               <div className="rate   flex gap-2">
@@ -578,6 +585,7 @@ const BookTour = () => {
               <p className=" text-[#2D4271] text-base font-semibold">
                 Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
+      
               <div className="name flex gap-3 mt-4">
                 {images && images.length > 0 ? (
                   <div>

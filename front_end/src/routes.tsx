@@ -81,6 +81,10 @@ export const router = createBrowserRouter([
         element: <TourPage />,
       },
       {
+        path: "tour/:diem_den",
+        element: <TourPage />,
+      },
+      {
         path: "signin",
         element: <SignIn />,
       },
@@ -89,7 +93,7 @@ export const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "tour/:idTour",
+        path: "tours/:idTour",
         element: <DetailPage />,
       },
       {

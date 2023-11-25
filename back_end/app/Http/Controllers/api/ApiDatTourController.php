@@ -145,7 +145,6 @@ class ApiDatTourController extends Controller
         $updateStatus = DatTour::find($id);
         if ($updateStatus->trang_thai == 0) {
             $thantoandata = ThanhToan::where('id_dat_tour', $id)->first();
-            // dd($thantoandata);
             if ($thantoandata) {
                 ThanhToanDetail::create([
                     'ma_giao_dich' => $thantoandata->ma_giao_dich,

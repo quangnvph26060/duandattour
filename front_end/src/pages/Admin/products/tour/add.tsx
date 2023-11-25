@@ -6,39 +6,74 @@ import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
 import { ITour } from "../../../../interface/tour";
 import { useAddTourMutation } from '../../../../api/TourApi';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import { Upload } from 'antd';
+import { UploadOutlined } from "@ant-design/icons";
+// import ImgCrop from 'antd-img-crop';
+import { PlusOutlined } from '@ant-design/icons';
+
+
 const { Option } = Select;
 type FieldType = {
   id: number;
   ten_tour: string;
+  image_path: string;
   diem_di: string;
   diem_den: string;
   lich_khoi_hanh: string;
-  thoi_gian: string;
+  ngay_ket_thuc: string;
   diem_khoi_hanh: string;
-  anh: string;
   mo_ta: string;
-  gia_tour: number;
+  gia_nguoilon: number;
+  gia_treem: number;
   soluong: number;
   trang_thai: number;
   ma_loai_tour: number;
-  ma_hdv: number;
+
 };
 
 const AdminTourAdd: React.FC = () => {
+  const [editorData, setEditorData] = useState('');
+
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  };
   const [addTour] = useAddTourMutation();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
-  const onFinish = (values: ITour) => {
-   
-    addTour(values)
+
+
+
+  const onFinish = (values: FieldType) => {
+    const formData = new FormData();
+
+    // Kiểm tra nếu có hình ảnh được chọn
+    if (values.hinh && values.hinh.fileList.length > 0) {
+      // Lưu hình ảnh vào formData
+      formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    }
+    formData.append("ten_tour", values.ten_tour);
+    formData.append("diem_di", values.diem_di);
+    formData.append("diem_den", values.diem_den);
+    formData.append("diem_khoi_hanh", values.diem_khoi_hanh);
+    formData.append("gia_nguoilon", values.gia_nguoilon);
+    formData.append("gia_treem", values.gia_treem);
+    formData.append("soluong", values.soluong);
+    formData.append("ma_loai_tour", values.ma_loai_tour);
+    values.mo_ta = editorData;
+    formData.append("mo_ta", values.mo_ta);
+
+    addTour(formData) // Sử dụng formData chứa hình ảnh
       .unwrap()
       .then(() => navigate("/admin/tour"))
       .catch((error) => {
         setErrors(error.data.message);
-        setLoading(false);
-
       });
   };
+
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -48,7 +83,7 @@ const AdminTourAdd: React.FC = () => {
   const [provinces2, setProvinces2] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
 
- 
+
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/')
       .then((response) => {
@@ -106,6 +141,23 @@ const AdminTourAdd: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          label="Hình ảnh"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*" // Chỉ chấp nhận các định dạng ảnh
+            listType="picture"
+            beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+        </Form.Item>
+
+
+        <Form.Item
           label="Điểm khởi hành"
           name="diem_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng chọn điểm khởi hành!' }]}
@@ -157,15 +209,32 @@ const AdminTourAdd: React.FC = () => {
           <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
-          label="Thời gian"
-          name="thoi_gian"
+          label="Ngày kết thúc"
+          name="ngay_ket_thuc"
           rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
         >
-          <Input />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
-          label="Giá Tour"
-          name="gia_tour"
+          label="Giá Người lớn"
+          name="gia_nguoilon"
+          rules={[
+            // { required: true, message: 'Vui lòng nhập giá tour!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (value >= 1000000) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Giá tour phải lớn hơn hoặc bằng 1,000,000'));
+              },
+            }),
+          ]}
+        >
+          <InputNumber min={1000000} parser={value => value.replace(/\$\s?|(,*)/g, '')} />
+        </Form.Item>
+        <Form.Item
+          label="Giá Trẻ em"
+          name="gia_treem"
           rules={[
             // { required: true, message: 'Vui lòng nhập giá tour!' },
             ({ getFieldValue }) => ({
@@ -185,7 +254,17 @@ const AdminTourAdd: React.FC = () => {
           name="mo_ta"
           rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
         >
-          <Input.TextArea />
+          <CKEditor
+            editor={ClassicEditor}
+            // config={{
+            //   extraPlugins: [EasyImage],
+            //   // Cấu hình thêm plugin Easy Image
+
+            // }}
+            data={editorData}
+            onChange={handleEditorChange}
+          />
+
         </Form.Item>
         <Form.Item
           label="Số Lượng"
@@ -207,7 +286,7 @@ const AdminTourAdd: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-      
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Thêm

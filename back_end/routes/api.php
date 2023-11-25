@@ -20,9 +20,12 @@ use App\Http\Controllers\api\ApiDiscountController;
 use App\Http\Controllers\Api\ApiSearchController;
 
 use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiContactController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\ApiNewsController;
 
 use Carbon\Carbon;
 
@@ -91,6 +94,9 @@ Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
 Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
 // api List tour kM
 Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
+// api contact
+Route::get('/getcontact', [ApiContactController::class, 'getcontact']);
+Route::post('/contact', [ApiContactController::class, 'sendContactForm'])->name('contact');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -159,6 +165,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
         Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
         Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+        Route::post('/',[ApiPermissionsController::class,'store']);
+        Route::get('/{id}',[ApiPermissionsController::class,'show']);
+        Route::put('/{id}',[ApiPermissionsController::class,'update']);
+        Route::delete('/{id}',[ApiPermissionsController::class,'destroy']);
+        
+        
+        
     });
 
     Route::prefix('images')->group(function () {
@@ -244,6 +257,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiTourPhuongTienController::class, 'show']);
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
+    });
+    Route::prefix('news')->group(function () {
+        Route::get('/', [ApiNewsController::class, 'index']);
+        Route::post('/', [ApiNewsController::class, 'store']);
+        Route::get('/{id}', [ApiNewsController::class, 'show']);
+        Route::put('/{id}', [ApiNewsController::class, 'update']);
+        Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
     });
 
     Route::prefix('dattour')->group(function () {

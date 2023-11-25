@@ -84,10 +84,60 @@ const HomePage = () => {
     });
     return formatter.format(value);
   };
-  // const { user, setUser, userid, setUserId } = useStateContext();
-  // console.log(user);
-  // test
+  const [messageHistory, setMessageHistory] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isChatVisible, setIsChatVisible] = useState(false);
+  const messageListRef = useRef(null);
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messageHistory]);
+  const handleToggleChat = () => {
+    setIsChatVisible(prevState => !prevState);
+  };
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== '') {
+      const newMessage = {
+        text: inputValue,
+        sender: 'user',
+        timestamp: new Date().getTime(),
+      };
+      setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+      setInputValue('');
+      sendAutoReply(inputValue);
+    }
+  };
 
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const sendAutoReply = userMessage => {
+    let autoReply;
+    if (userMessage.includes('loại tour')) {
+      autoReply =
+        'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
+    } else {
+      autoReply =
+        'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
+    }
+    const newMessage = {
+      text: autoReply,
+      sender: 'assistant',
+      timestamp: new Date().getTime(),
+    };
+    setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+  };
+
+  const formatTimestamp = timestamp => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+  };
   // boxchat
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [inputValue, setInputValue] = useState('');
@@ -372,7 +422,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-white rounded-lg shadow p-4">
-      {/* <div className="  ">
+      <div className="  ">
         {isChatVisible && (
           <div className="chat-box">
             <div className="chat-header">
@@ -413,7 +463,7 @@ const HomePage = () => {
             <FontAwesomeIcon icon={faFacebookMessenger} style={{ color: 'blue', fontSize: '30px' }} />
           </div>
         </div>
-      </div> */}
+      </div>
       <MessageChatBox />
 
       <div
@@ -575,7 +625,7 @@ const HomePage = () => {
             >
               <option value="Hà Nội">Hà Nội</option>
               <option value="Hcm">Hồ Chí Minh </option>
-              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Hải Phòng">Hải Phòng </option>
               <option value="Đà Nẵng">Đà Nẵng</option>
               <option value="Cần Thơ">Cần Thơ</option>
               <option value="An Giang">An Giang</option>
@@ -654,7 +704,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/*  */}
       <div className="content">
         <div className="content">
           <h2 className="mt-5 mb-5 home-page__title ">

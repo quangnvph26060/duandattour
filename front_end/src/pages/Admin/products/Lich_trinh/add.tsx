@@ -1,36 +1,42 @@
 import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useNavigate } from 'react-router-dom';
 import { useGetTourQuery } from '../../../../api/TourApi';
-import { useAddLichTrinhMutation, useRemoveLichTrinhMutation } from '../../../../api/LichTrinhApi';
+import { useAddLichTrinhMutation } from '../../../../api/LichTrinhApi';
 import { ILichTrinh } from '../../../../interface/lichtrinh';
 
 const { Option } = Select;
 
-type FieldType = {
-  id: number;
-  tieu_de: string;
-  noi_dung: string;
-  thoi_gian: string;
-  id_tour: number;
-};
-
 const Admin_LichtrinhADD: React.FC = () => {
+  const [editorData, setEditorData] = useState('');
+
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  };
+
   const navigate = useNavigate();
   const { data: tourdata } = useGetTourQuery();
-  const tourArrary = tourdata?.data || [];
+  const tourArray = tourdata?.data || [];
   const [addLichTrinh] = useAddLichTrinhMutation();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
+
+  const disabledDate = (current) => {
+    const currentDate = new Date();
+    return current && current < currentDate.setHours(0, 0, 0, 0);
+  };
+
   const onFinish = (values: ILichTrinh) => {
+    values.noi_dung = editorData;
     addLichTrinh(values)
       .unwrap()
       .then(() => navigate("/admin/tour/lich_trinh"))
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);
-
       });
   };
 
@@ -61,27 +67,27 @@ const Admin_LichtrinhADD: React.FC = () => {
         <Form.Item
           label="Nội dung"
           name="noi_dung"
-          rules={[
-            { required: true, message: 'Vui lòng nhập nội dung' },
-            { min: 3, message: 'Nội dung ít nhất 3 ký tự' },
-          ]}
         >
-          <Input />
+          <CKEditor
+            editor={ClassicEditor}
+            data={editorData}
+            onChange={handleEditorChange}
+          />
         </Form.Item>
         <Form.Item
-          label="Thời gian"
-          name="thoi_gian"
-          rules={[{ required: true, message: 'Vui lòng chọn thời gian!' }]}
+          label="Lịch khởi hành"
+          name="lich_khoi_hanh"
+          rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
           label="ID Tour"
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
-            {tourArrary.map((option) => (
+          <Select defaultValue="Chọn" style={{ width: 400 }}>
+            {tourArray.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
           </Select>
