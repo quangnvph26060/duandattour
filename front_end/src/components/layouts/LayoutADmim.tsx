@@ -10,9 +10,10 @@ import {
     AiOutlineMenu,
     AiFillSchedule
 } from "react-icons/ai";
-import { MdCategory, MdDiscount, MdFeedback } from "react-icons/md";
+import { MdCategory, MdDiscount, MdFeedback, MdPermMedia } from "react-icons/md";
+import { TfiWrite } from "react-icons/tfi";
 
-import { FaCar, FaHotel, FaLuggageCart, FaShoppingCart, FaSuitcase, FaUser, FaUserCheck, FaUserTag, FaWindowClose } from "react-icons/fa"
+import { FaBook, FaCar, FaHotel, FaLuggageCart, FaNewspaper, FaShoppingCart, FaSuitcase, FaUser, FaUserCheck, FaUserTag, FaWindowClose } from "react-icons/fa"
 import { Link, Outlet } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
@@ -127,6 +128,17 @@ const LayoutAdmin = () => {
                             </Menu.Item>
 
                         </Menu.SubMenu>
+                        <Menu.SubMenu key="5" icon={<MdPermMedia />} title="Truyền thông ">
+                        <Menu.SubMenu icon={<FaNewspaper />  } key="5-1" title="Bài viết">
+                                <Menu.Item icon={<TfiWrite />} key="5-1-1">
+                                    <Link to="/admin/post/danhmuc_post">Danh mục bài viết</Link>
+                                </Menu.Item>
+                                <Menu.Item icon={<FaBook />} key="5-1-2">
+                                    <Link to="/admin/post/bai_viet">Danh sách bài viết</Link>
+                                </Menu.Item>
+                            </Menu.SubMenu>
+
+                        </Menu.SubMenu>
 
                     </Menu>
 
@@ -150,7 +162,7 @@ const LayoutAdmin = () => {
                         <div className="flex gap-3 items-center">
                             {/* Hiển thị thông tin người dùng */}
                             <span className="ml-2">
-            <i  className="text-xl fas fa-bell"></i> {/* Thay 'fas fa-bell' bằng class của biểu tượng thông báo */}
+            <i  className="text-xl fas fa-bell"></i> 
         </span>
                             <img className=" w-[30px] h-[30px] rounded-full"
               src={`http://localhost:8000/storage/${usersId.image}`}

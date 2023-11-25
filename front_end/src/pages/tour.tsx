@@ -18,6 +18,7 @@ import anh15 from "../img/anh15.jpg"
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 const TourPage = () => {
+  
   const [budget, setBudget] = useState(0);
 
   const formatCurrency = (value) => {

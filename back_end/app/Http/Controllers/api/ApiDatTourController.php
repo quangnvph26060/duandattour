@@ -157,10 +157,10 @@ class ApiDatTourController extends Controller
                     'id_dat_tour' =>  $id,
                 ]);
                 HoaDon::create([
-                    'ma_hoa_don'=>Str::random(10),
-                    'tong_tien'=>$thantoandata->tong_tien_tt,
-                     'ngay_tao_hoa_don'=>date('Y-m-d H:i:s'),
-                    'id_dat_tour'=>$id,
+                    'ma_hoa_don' => Str::random(10),
+                    'tong_tien' => $thantoandata->tong_tien_tt,
+                    'ngay_tao_hoa_don' => date('Y-m-d H:i:s'),
+                    'id_dat_tour' => $id,
                 ]);
                 $thantoandata->delete();
 
@@ -171,9 +171,27 @@ class ApiDatTourController extends Controller
                 return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
             }
         } else if ($updateStatus->trang_thai == 1) {
-            $updateStatus->trang_thai = 0;
-            $updateStatus->save();
-            return response()->json(['message' => 'Cập nhập chưa thanh toán thành công!!'], 200);
+            $thantoandata = ThanhToanDetail::where('id_dat_tour', $id)->first();
+            $hoadondata = HoaDon::where('id_dat_tour', $id)->first();
+            if ($thantoandata) {
+                ThanhToan::create([
+                    'ma_giao_dich' => $thantoandata->ma_giao_dich,
+                    'tong_tien_tt' => $thantoandata->tong_tien_tt,
+                    'pttt' => $thantoandata->pttt,
+                    'ma_phan_hoi' => null,
+                    'ghi_chu' => null,
+                    'ma_ngan_hang' => null,
+                    'ngay_thanh_toan' => date('Y-m-d H:i:s'),
+                    'id_dat_tour' =>  $id,
+                ]);
+                $hoadondata->delete();
+                $thantoandata->delete();
+
+                // Cập nhật trạng thái của đơn đặt tour
+                $updateStatus->trang_thai = 0;
+                $updateStatus->save();
+                return response()->json(['message' => 'Cập nhập chưa thanh toán thành công!!'], 200);
+            }
         }
         // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
     }

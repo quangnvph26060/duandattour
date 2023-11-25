@@ -16,39 +16,64 @@ import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
 
+const navigate = useNavigate()
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
     if (checked) {
       success();
+      
     }
 
   };
 
   const success = () => {
     message.success('Trạng thái đã được chuyển đổi thành công');
-    window.location.reload
+    
   };
 
 
   // 1 useGetdattour
-  const { data: Data } = useGetQuanlydattourQuery()
+  const { data: Data,refetch } = useGetQuanlydattourQuery()
   const DataQuanly = Data?.data || []
+  const [dataQuanly, setDataQuanly] = useState<IQuanlyDattour[]>([]);
 
   const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
   const [selectedId, setSelectedId] = useState("");
+  useEffect(() => {
+    setDataQuanly(DataQuanly);
+  }, [DataQuanly]);
   const updateStatus = (id) => {
     setSelectedId(id);
+ 
+  
+    
     axios.put(`http://127.0.0.1:8000/api/admin/dattour/updateStatus/${id}`)
       .then(response => {
         if (response) {
+         
+          const message = response.data.message;
+
+          if (message === 'Xác nhận đơn đặt tour thành công') {
+            // Chuyển hướng đến trang đã thanh toán
+            navigate("/admin/tour/tour_dathanhtoan"); // Thay thế "/paid" bằng đường dẫn thực tế của trang đã thanh toán
+          } else if (message === 'Cập nhập chưa thanh toán thành công!!') {
+            // Chuyển hướng đến trang chưa thanh toán
+            navigate("/admin/tour/tour_chuathanhtoan"); // Thay thế "/unpaid" bằng đường dẫn thực tế của trang chưa thanh toán
+          }
+         
+         
           success();
+        refetch()
         }
         // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
+     
+        
       })
       .catch(error => {
         console.error('API error:', error);
         // Xử lý lỗi nếu có
       });
+   
   }
   // Lấy dữ liệu cho trang hiện tại
 
@@ -66,6 +91,7 @@ const ADmin_DatTour = (props: Props) => {
 
 
   //  const dattour = dattour?.data || [];
+
 
   const dataSource = DataQuanly.map(({ id, ten_khach_hang, ngay_dat, trang_thai, id_tour, so_luong_khach, ten_tour, tours }: IQuanlyDattour) => ({
     key: id, ngay_dat, trang_thai, id_tour, so_luong_khach, ten_khach_hang, ten_tour: Tourinfo.ten_tour, tours
