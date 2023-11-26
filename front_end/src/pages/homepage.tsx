@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { format, differenceInSeconds, addSeconds } from "date-fns";
 import "../page.css";
 import "../messenger.css";
 import { Link } from "react-router-dom";
@@ -21,10 +22,58 @@ import tt from "../img/5.webp";
 import yy from "../img/6.webp";
 import he from "../img/bbbbb.webp";
 import hq from "../img/aaaaa.webp";
-import network from "../img/networking.png";
 import { BiMap } from "react-icons/bi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import MessageChatBox from "./Client/Message/Message";
+import { useStateContext } from "../context/ContextProvider";
+import axios from "axios";
+const rounded = {
+  borderRadius: "25px",
+};
+const Countdown = ({ expiryDate }) => {
+  const [remainingTime, setRemainingTime] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const expiryDateTime = new Date(expiryDate);
+      const currentDateTime = new Date();
+      currentDateTime.setHours(currentDateTime.getHours() + 7); // Điều chỉnh sang múi giờ GMT+7
+
+      const distance = differenceInSeconds(expiryDateTime, currentDateTime);
+
+      if (distance > 0) {
+        const adjustedDistance = Math.floor(distance);
+
+        const days = Math.floor(adjustedDistance / (24 * 60 * 60));
+        const hours = Math.floor((adjustedDistance % (24 * 60 * 60)) / (60 * 60));
+        const minutes = Math.floor((adjustedDistance % (60 * 60)) / 60);
+        const seconds = Math.floor(adjustedDistance % 60);
+
+        const formattedDays = String(days).padStart(2, "0");
+        const formattedHours = String(hours).padStart(2, "0");
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(seconds).padStart(2, "0");
+
+        const timeRemaining = `Còn ${formattedDays} ngày ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        setRemainingTime(timeRemaining);
+      } else {
+        setRemainingTime("Còn 00 ngày 00:00:00");
+        clearInterval(interval);
+        performNewTask();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [expiryDate]);
+
+  const performNewTask = () => {
+    console.log("Thời gian đếm ngược đã đạt 0. Thực hiện tác vụ mới.");
+  };
+  return <div>{remainingTime}</div>;
+};
+
 
 const HomePage = () => {
   const formatCurrency = (value) => {
@@ -35,7 +84,7 @@ const HomePage = () => {
     return formatter.format(value);
   };
   const [messageHistory, setMessageHistory] = useState([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isChatVisible, setIsChatVisible] = useState(false);
   const messageListRef = useRef(null);
   useEffect(() => {
@@ -44,84 +93,176 @@ const HomePage = () => {
     }
   }, [messageHistory]);
   const handleToggleChat = () => {
-    setIsChatVisible((prevState) => !prevState);
+    setIsChatVisible(prevState => !prevState);
   };
   const handleSendMessage = () => {
-    if (inputValue.trim() !== "") {
+    if (inputValue.trim() !== '') {
       const newMessage = {
         text: inputValue,
-        sender: "user",
+        sender: 'user',
         timestamp: new Date().getTime(),
       };
-      setMessageHistory((prevHistory) => [...prevHistory, newMessage]);
-      setInputValue("");
+      setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+      setInputValue('');
       sendAutoReply(inputValue);
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
       handleSendMessage();
     }
   };
 
-  const sendAutoReply = (userMessage) => {
+  const sendAutoReply = userMessage => {
     let autoReply;
-    if (userMessage.includes("loại tour")) {
+    if (userMessage.includes('loại tour')) {
       autoReply =
-        "Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?";
+        'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
     } else {
       autoReply =
-        "Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.";
+        'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
     }
     const newMessage = {
       text: autoReply,
-      sender: "assistant",
+      sender: 'assistant',
       timestamp: new Date().getTime(),
     };
-    setMessageHistory((prevHistory) => [...prevHistory, newMessage]);
+    setMessageHistory(prevHistory => [...prevHistory, newMessage]);
   };
 
-  const formatTimestamp = (timestamp) => {
+  const formatTimestamp = timestamp => {
     const date = new Date(timestamp);
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
   };
   // boxchat
-  const [remainingTime, setRemainingTime] = useState(15 * 3600); // 5 minutes in seconds
+  // const [messageHistory, setMessageHistory] = useState([]);
+  // const [inputValue, setInputValue] = useState('');
+  // const [isChatVisible, setIsChatVisible] = useState(false);
+  // const messageListRef = useRef(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => prevTime - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   if (messageListRef.current) {
+  //     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  //   }
+  // }, [messageHistory]);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  // const handleToggleChat = () => {
+  //   setIsChatVisible(prevState => !prevState);
+  // };
 
-  // Chuyển đổi giây thành chuỗi định dạng "hh:mm:ss"
-  const formatTime = (time) => {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
+  // const handleSendMessage = () => {
+  //   if (inputValue.trim() !== '') {
+  //     const newMessage = {
+  //       text: inputValue,
+  //       sender: 'user',
+  //       timestamp: new Date().getTime(),
+  //     };
+  //     setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+  //     setInputValue('');
+  //     sendAutoReply(inputValue);
+  //   }
+  // };
 
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
-  const [data, settour] = useState([]);
+  // const handleKeyDown = event => {
+  //   if (event.key === 'Enter') {
+  //     handleSendMessage();
+  //   }
+  // };
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/admin/tour/")
-      .then((response) => response.json())
-      .then((result) => {
-        settour(result.data);
+  // const sendAutoReply = userMessage => {
+  //   let autoReply;
+  //   if (userMessage.includes('loại tour')) {
+  //     autoReply =
+  //       'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
+  //   } else {
+  //     autoReply =
+  //       'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
+  //   }
+  //   const newMessage = {
+  //     text: autoReply,
+  //     sender: 'assistant',
+  //     timestamp: new Date().getTime(),
+  //   };
+  //   setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+  // };
+
+  // const formatTimestamp = timestamp => {
+  //   const date = new Date(timestamp);
+  //   const hours = date.getHours();
+  //   const minutes = date.getMinutes();
+  //   return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+  // };
+  // boxchat
+  // const [remainingTime, setRemainingTime] = useState(60); // 5 minutes in seconds
+
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setRemainingTime((prevTime) =>{
+  //       let newTime = prevTime - 5;
+  //       console.log(newTime); // Hiển thị thông điệp lên console
+  //       if(newTime === 0){
+  //        // alert('đúng mẹ rồi ');
+  //       }
+  //       return newTime;
+  //     } );
+  //   }, 1000);
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
+
+  // // Chuyển đổi giây thành chuỗi định dạng "hh:mm:ss"
+  // const formatTime = time => {
+  //   const hours = Math.floor(time / 3600);
+  //   const minutes = Math.floor((time % 3600) / 60);
+  //   const seconds = time % 60;
+
+  //   return `${hours.toString().padStart(2, '0')}:${minutes
+  //     .toString()
+  //     .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  // };
+  // const [data, settour] = useState([]);
+
+  // useEffect(() => {
+  //   fetch('http://127.0.0.1:8000/api/admin/tour/')
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       settour(result.data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }, []);
+  const [tourKM, setTourKM] = useState([]);
+
+  const getTourKM = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/listtourKM")
+      .then((response) => {
+        console.log(response.data.data);
+        const tourKMData = response.data.data.map((tour) => {
+          const maxExpiryDate = tour.max_expiry_date
+            ? new Date(tour.max_expiry_date)
+            : null;
+          return {
+            ...tour,
+            max_expiry_date: maxExpiryDate,
+          };
+        });
+
+        setTourKM(tourKMData);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    getTourKM();
   }, []);
 
   const sales = [
@@ -277,7 +418,6 @@ const HomePage = () => {
       image: aa,
     },
   ];
-
   return (
     <div className="bg-white rounded-lg shadow block-all">
       <div className="  ">
@@ -637,7 +777,7 @@ const HomePage = () => {
           ƯU ĐÃI TOUR GIỜ CHÓT!
         </h2>
         <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:m-10 m-0">
-          {data.map((item) => (
+          {tourKM.map((item) => (
             <div
               key={item.id}
               className="bg-gray-100 p-4 rounded-lg flex flex-col items-center"
@@ -688,7 +828,9 @@ const HomePage = () => {
                   style={{ color: "#4D4AEF" }}
                   className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
                 >
-                  Còn 00 ngày {formatTime(remainingTime)}
+                  {/* Còn 00 ngày {formatTime(remainingTime)} */}
+                  <Countdown expiryDate={item.max_expiry_date} />
+                  {/* {item.max_expiry_date} */}
                 </button>
               </div>
             </div>
@@ -884,171 +1026,9 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <footer className="mt-15  text-center bg-gray-100">
-        <div className="flex flex-wrap justify-center">
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="mt-5 text-lg font-semibold mb-4 "
-            >
-              Điểm đến
-            </h3>
-            <ul className="list-disc pl-4">
-              <li>Hà Nội</li>
-              <li>Hồ Chí Minh</li>
-              <li>Đà Nẵng</li>
-              <li>Hội An</li>
-              <li>Nha Trang</li>
-              <li>Phú Quốc</li>
-              <li>Đà Lạt</li>
-              <li>Sapa</li>
-              <li>Phan Thiết</li>
-              <li>Hạ Long</li>
-              <li>Vũng Tàu</li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="mt-5 text-lg font-semibold mb-4"
-            >
-              Liên hệ
-            </h3>
-            <p>Email: Polytour@gmail.com</p>
-            <p>Tìm kiếm thông tin</p>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="mt-5 text-lg font-semibold mb-4"
-            >
-              Hỗ trợ
-            </h3>
-            <p>Mạng xã hội</p>
-            <p>037 763 8662</p>
-            <p>Từ 8:00 - 22:00 hàng ngày</p>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="mt-5 text-lg font-semibold mb-4"
-            >
-              Thông tin
-            </h3>
-            <ul className="list-disc pl-4">
-              <li>Tạp chí du lịch</li>
-              <li>Cẩm nang du lịch</li>
-              <li>Tin tức</li>
-              <li>Sitemap</li>
-              <li>FAQs</li>
-              <li>Chính sách riêng tư</li>
-              <li>Thỏa thuận sử dụng</li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="mt-5 text-lg font-semibold mb-4"
-            >
-              Dòng tour
-            </h3>
-            <ul className="list-disc pl-4">
-              <li>Cao cấp</li>
-              <li>Tiêu chuẩn</li>
-              <li>Tiết kiệm</li>
-              <li>Giá tốt</li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex flex-wrap mt-8">
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="text-lg font-semibold mb-4"
-            >
-              Liên kết
-            </h3>
-            <ul className="list-disc pl-4">
-              <li>
-                <a href="/">Trang chủ</a>
-              </li>
-              <li>
-                <a href="/about">Giới thiệu</a>
-              </li>
-              <li>
-                <a href="/services">Dịch vụ</a>
-              </li>
-              <li>
-                <a href="/contact">Liên hệ</a>
-              </li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="text-lg font-semibold mb-4"
-            >
-              Theo dõi chúng tôi
-            </h3>
-            <ul className="flex justify-center mb-4">
-              <li className="mr-4">
-                <a href="#">
-                  <i className="fab fa-facebook-f"></i>
-                </a>
-              </li>
-              <li className="mr-4">
-                <a href="#">
-                  <i className="fab fa-twitter"></i>
-                </a>
-              </li>
-              <li className="mr-4">
-                <a href="#">
-                  <i className="fab fa-instagram"></i>
-                </a>
-              </li>
-              <li className="mr-4">
-                <a href="#">
-                  <i className="fab fa-youtube"></i>
-                </a>
-              </li>
-            </ul>
-            <p className="text-sm">
-              Theo dõi chúng tôi để cập nhật thông tin mới nhất về du lịch.
-            </p>
-          </div>
-          <div className="w-fullmd:w-1/2 lg:w-1/3">
-            <h3
-              style={{ color: "#2d4271" }}
-              className="text-lg font-semibold mb-4"
-            >
-              Đăng ký nhận tin
-            </h3>
-            <p>
-              Đăng ký để nhận thông tin du lịch, khuyến mãi và tin tức mới nhất.
-            </p>
-            <form className="mt-4 mr-5">
-              <input
-                type="email"
-                placeholder="Nhập địa chỉ email"
-                className="w-full py-2 px-4  rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
-              />
-              <button
-                type="submit"
-                className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
-              >
-                Đăng ký
-              </button>
-            </form>
-          </div>
-        </div>
-        <div className="mt-8">
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Your Website. All rights reserved
-          </p>
-        </div>
-      </footer>
+
     </div>
   );
 };
 
-export default HomePage;  
+export default HomePage;

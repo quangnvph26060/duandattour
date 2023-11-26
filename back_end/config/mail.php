@@ -42,6 +42,8 @@ return [
             'encryption' => 'tls',
             'username' => 'trongnam032003@gmail.com',
             'password' => 'qdygobjvshvvluzn',
+            // 'username' => env('MAIL_USERNAME'), // Sử dụng biến môi trường
+            // 'password' => env('MAIL_PASSWORD'), // Sử dụng biến môi trường
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
