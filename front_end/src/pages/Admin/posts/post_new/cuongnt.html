@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Reset CSS */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
+
+    #col-right {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 20px auto;
+        width: 80%;
+        padding: 20px;
+    }
+
+    .col-wrap {
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .tablenav {
+        margin-bottom: 20px;
+    }
+
+    .wp-list-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .wp-list-table th,
+    .wp-list-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .wp-list-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+
+    .wp-list-table tbody td {
+        background-color: #fff;
+    }
+
+    .wp-list-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .wp-list-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .pagination-links {
+        margin-top: 10px;
+    }
+
+    .pagination-links .button {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #555;
+        padding: 5px 10px;
+        text-decoration: none;
+        margin: 0 3px;
+        border-radius: 3px;
+    }
+
+    .pagination-links .button.disabled {
+        color: #aaa;
+        pointer-events: none;
+    }
+
+    .pagination-links .button:hover {
+        background-color: #f5f5f5;
+    }
+
+    .form-wrap {
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .form-wrap p {
+        margin-bottom: 10px;
+    }
+
+    .form-wrap a {
+        color: #0073aa;
+    }
+</style>
+
+<body>
+    <div id="col-right">
+        <div class="col-wrap">
+
+
+            <form id="posts-filter" method="post">
+                <input type="hidden" name="taxonomy" value="category">
+                <input type="hidden" name="post_type" value="post">
+
+                <input type="hidden" id="_wpnonce" name="_wpnonce" value="66afa5959a"><input type="hidden"
+                    name="_wp_http_referer"
+                    value="/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=name&amp;order=asc">
+                <div class="tablenav top">
+
+                    <div class="alignleft actions bulkactions">
+                        <label for="bulk-action-selector-top" class="screen-reader-text">Lựa chọn thao tác hàng
+                            loạt</label><select name="action" id="bulk-action-selector-top">
+                            <option value="-1">Hành động</option>
+                            <option value="delete">Xóa</option>
+                        </select>
+                        <input type="submit" id="doaction" class="button action" value="Áp dụng">
+                    </div>
+                    <div class="tablenav-pages one-page"><span class="displaying-num">1 mục</span>
+                        <span class="pagination-links"><span class="tablenav-pages-navspan button disabled"
+                                aria-hidden="true">«</span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>
+                            <span class="paging-input"><label for="current-page-selector"
+                                    class="screen-reader-text">Trang hiện tại</label><input class="current-page"
+                                    id="current-page-selector" type="text" name="paged" value="1" size="1"
+                                    aria-describedby="table-paging"><span class="tablenav-paging-text"> trên <span
+                                        class="total-pages">1</span></span></span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">»</span></span>
+                    </div>
+                    <br class="clear">
+                </div>
+                <h2 class="screen-reader-text">Danh sách chuyên mục</h2>
+                <table class="wp-list-table widefat fixed striped table-view-list tags">
+                    <caption class="screen-reader-text">Table ordered by Name. Ascending.</caption>
+                    <thead>
+                        <tr>
+                            <td id="cb" class="manage-column column-cb check-column"><input id="cb-select-all-1"
+                                    type="checkbox">
+                                <label for="cb-select-all-1"><span class="screen-reader-text">Chọn toàn
+                                        bộ</span></label>
+                            </td>
+                            <th scope="col" id="name" class="manage-column column-name column-primary sorted asc"
+                                aria-sort="ascending" abbr="Tên"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=name&amp;order=desc"><span>Tên</span><span
+                                        class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span></a></th>
+                            <th scope="col" id="description" class="manage-column column-description sortable desc"
+                                abbr="Mô tả"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=description&amp;order=asc"><span>Mô
+                                        tả</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a></th>
+                            <th scope="col" id="slug" class="manage-column column-slug sortable desc" abbr="Đường dẫn">
+                                <a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=slug&amp;order=asc"><span>Đường
+                                        dẫn</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a>
+                            </th>
+                            <th scope="col" id="posts" class="manage-column column-posts num sortable desc" abbr="Lượt">
+                                <a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=count&amp;order=asc"><span>Lượt</span><span
+                                        class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="the-list" data-wp-lists="list:tag">
+                        <tr id="tag-1" class="level-0">
+                            <th scope="row" class="check-column">&nbsp;</th>
+                            <td class="name column-name has-row-actions column-primary" data-colname="Tên"><strong><a
+                                        class="row-title"
+                                        href="http://localhost/wordpress/wp-admin/term.php?taxonomy=category&amp;tag_ID=1&amp;post_type=post&amp;wp_http_referer=%2Fwordpress%2Fwp-admin%2Fedit-tags.php%3Ftaxonomy%3Dcategory%26orderby%3Dname%26order%3Dasc"
+                                        aria-label="“Chưa phân loại” (Chỉnh sửa)">Chưa phân loại</a></strong><br>
+                                <div class="hidden" id="inline_1">
+                                    <div class="name">Chưa phân loại</div>
+                                    <div class="slug">khong-phan-loai</div>
+                                    <div class="parent">0</div>
+                                </div>
+                                <div class="row-actions"><span class="edit"><a
+                                            href="http://localhost/wordpress/wp-admin/term.php?taxonomy=category&amp;tag_ID=1&amp;post_type=post&amp;wp_http_referer=%2Fwordpress%2Fwp-admin%2Fedit-tags.php%3Ftaxonomy%3Dcategory%26orderby%3Dname%26order%3Dasc"
+                                            aria-label="Sửa “Chưa phân loại”">Chỉnh sửa</a> | </span><span
+                                        class="inline hide-if-no-js"><button type="button"
+                                            class="button-link editinline" aria-label="Chỉnh sửa nhanh “Chưa phân loại”"
+                                            aria-expanded="false">Sửa nhanh</button> | </span><span class="view"><a
+                                            href="http://localhost/wordpress/category/khong-phan-loai/"
+                                            aria-label="Xem lưu trữ “Chưa phân loại”">Xem</a></span></div><button
+                                    type="button" class="toggle-row"><span class="screen-reader-text">Hiển thị chi
+                                        tiết</span></button>
+                            </td>
+                            <td class="description column-description" data-colname="Mô tả"><span
+                                    aria-hidden="true">—</span><span class="screen-reader-text">Không có mô tả</span>
+                            </td>
+                            <td class="slug column-slug" data-colname="Đường dẫn">khong-phan-loai</td>
+                            <td class="posts column-posts" data-colname="Lượt"><a
+                                    href="edit.php?category_name=khong-phan-loai">1</a></td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td class="manage-column column-cb check-column"><input id="cb-select-all-2"
+                                    type="checkbox">
+                                <label for="cb-select-all-2"><span class="screen-reader-text">Chọn toàn
+                                        bộ</span></label>
+                            </td>
+                            <th scope="col" class="manage-column column-name column-primary sorted asc"
+                                aria-sort="ascending" abbr="Tên"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=name&amp;order=desc"><span>Tên</span><span
+                                        class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span></a></th>
+                            <th scope="col" class="manage-column column-description sortable desc" abbr="Mô tả"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=description&amp;order=asc"><span>Mô
+                                        tả</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a></th>
+                            <th scope="col" class="manage-column column-slug sortable desc" abbr="Đường dẫn"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=slug&amp;order=asc"><span>Đường
+                                        dẫn</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a></th>
+                            <th scope="col" class="manage-column column-posts num sortable desc" abbr="Lượt"><a
+                                    href="http://localhost/wordpress/wp-admin/edit-tags.php?taxonomy=category&amp;orderby=count&amp;order=asc"><span>Lượt</span><span
+                                        class="sorting-indicators"><span class="sorting-indicator asc"
+                                            aria-hidden="true"></span><span class="sorting-indicator desc"
+                                            aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                                        ascending.</span></a></th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+                <div class="tablenav bottom">
+
+                    <div class="alignleft actions bulkactions">
+                        <label for="bulk-action-selector-bottom" class="screen-reader-text">Lựa chọn thao tác hàng
+                            loạt</label><select name="action2" id="bulk-action-selector-bottom">
+                            <option value="-1">Hành động</option>
+                            <option value="delete">Xóa</option>
+                        </select>
+                        <input type="submit" id="doaction2" class="button action" value="Áp dụng">
+                    </div>
+                    <div class="tablenav-pages one-page"><span class="displaying-num">1 mục</span>
+                        <span class="pagination-links"><span class="tablenav-pages-navspan button disabled"
+                                aria-hidden="true">«</span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>
+                            <span class="screen-reader-text">Trang hiện tại</span><span id="table-paging"
+                                class="paging-input"><span class="tablenav-paging-text">1 trên <span
+                                        class="total-pages">1</span></span></span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>
+                            <span class="tablenav-pages-navspan button disabled" aria-hidden="true">»</span></span>
+                    </div>
+                    <br class="clear">
+                </div>
+
+            </form>
+
+            <div class="form-wrap edit-term-notes">
+                <p>
+                    Xóa chuyên mục sẽ không xóa bài viết trong chuyên mục đó. Thay vì thế, bài viết sẽ được chuyển đến
+                    chuyên mục mặc định <strong>Chưa phân loại</strong>. Chuyên mục mặc định không thể xóa.</p>
+                <p>
+                    Nhóm phân loại có thể được lựa chọn chuyển đổi thành thẻ đánh dấu với <a
+                        href="http://localhost/wordpress/wp-admin/import.php">công cụ chuyển đổi nhóm phân loại và thẻ
+                        đánh dấu</a>. </p>
+            </div>
+        </div>
+    </div>
+    <form id="posts-filter" method="get">
+
+        <p class="search-box">
+            <label class="screen-reader-text" for="post-search-input">Tìm các bài viết:</label>
+            <input type="search" id="post-search-input" name="s" value="">
+            <input type="submit" id="search-submit" class="button" value="Tìm các bài viết">
+        </p>
+
+        <input type="hidden" name="post_status" class="post_status_page" value="all">
+        <input type="hidden" name="post_type" class="post_type_page" value="post">
+
+
+
+        <input type="hidden" id="_wpnonce" name="_wpnonce" value="c8108867be"><input type="hidden"
+            name="_wp_http_referer"
+            value="/wordpress/wp-admin/edit.php?s&amp;post_status=all&amp;post_type=post&amp;action=-1&amp;m=0&amp;cat=0&amp;filter_action=L%E1%BB%8Dc&amp;paged=1&amp;action2=-1">
+        <div class="tablenav top">
+
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">Lựa chọn thao tác hàng
+                    loạt</label><select name="action" id="bulk-action-selector-top">
+                    <option value="-1">Hành động</option>
+                    <option value="edit" class="hide-if-no-js">Chỉnh sửa</option>
+                    <option value="trash">Bỏ vào thùng rác</option>
+                </select>
+                <input type="submit" id="doaction" class="button action" value="Áp dụng">
+            </div>
+            <div class="alignleft actions">
+                <label for="filter-by-date" class="screen-reader-text">Lọc theo ngày</label>
+                <select name="m" id="filter-by-date">
+                    <option selected="selected" value="0">Tất cả các ngày</option>
+                    <option value="202311">Tháng Mười Một 2023</option>
+                </select>
+                <label class="screen-reader-text" for="cat">Lọc theo danh mục</label><select name="cat" id="cat"
+                    class="postform">
+                    <option value="0" selected="selected">Tất cả chuyên mục</option>
+                    <option class="level-0" value="1">Chưa phân loại</option>
+                </select>
+                <input type="submit" name="filter_action" id="post-query-submit" class="button" value="Lọc">
+            </div>
+            <div class="tablenav-pages one-page"><span class="displaying-num">1 mục</span>
+                <span class="pagination-links"><span class="tablenav-pages-navspan button disabled"
+                        aria-hidden="true">«</span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>
+                    <span class="paging-input"><label for="current-page-selector" class="screen-reader-text">Trang hiện
+                            tại</label><input class="current-page" id="current-page-selector" type="text" name="paged"
+                            value="1" size="1" aria-describedby="table-paging"><span class="tablenav-paging-text"> trên
+                            <span class="total-pages">1</span></span></span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">»</span></span>
+            </div>
+            <br class="clear">
+        </div>
+        <h2 class="screen-reader-text">Danh sách bài viết</h2>
+        <table class="wp-list-table widefat fixed striped table-view-list posts">
+            <caption class="screen-reader-text">Table ordered by Date. Descending.</caption>
+            <thead>
+                <tr>
+                    <td id="cb" class="manage-column column-cb check-column"><input id="cb-select-all-1"
+                            type="checkbox">
+                        <label for="cb-select-all-1"><span class="screen-reader-text">Chọn toàn bộ</span></label>
+                    </td>
+                    <th scope="col" id="title" class="manage-column column-title column-primary sortable desc"
+                        abbr="Tiêu đề"><span>Tiêu
+                            đề</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                aria-hidden="true"></span><span class="sorting-indicator desc"
+                                aria-hidden="true"></span></span> <span class="screen-reader-text">Sort
+                            ascending.</span></a></th>
+                    <th scope="col" id="author" class="manage-column column-author">Tác giả</th>
+                    <th scope="col" id="categories" class="manage-column column-categories">Chuyên mục</th>
+                    <th scope="col" id="tags" class="manage-column column-tags">Thẻ</th>
+                    <th scope="col" id="comments" class="manage-column column-comments num sortable desc"
+                        abbr="Bình luận"><a><span><span class="vers comment-grey-bubble" title="Bình luận"
+                                    aria-hidden="true"></span><span class="screen-reader-text">Bình
+                                    luận</span></span><span class="sorting-indicators"><span
+                                    class="sorting-indicator asc" aria-hidden="true"></span><span
+                                    class="sorting-indicator desc" aria-hidden="true"></span></span> <span
+                                class="screen-reader-text">Sort
+                                ascending.</span></a></th>
+                    <th scope="col" id="date" class="manage-column column-date sorted desc" aria-sort="descending"
+                        abbr="Thời gian"><span>Thời
+                            gian</span><span class="sorting-indicators"><span class="sorting-indicator asc"
+                                aria-hidden="true"></span><span class="sorting-indicator desc"
+                                aria-hidden="true"></span></span></a></th>
+                </tr>
+            </thead>
+
+            <tbody id="the-list">
+                <tr id="post-1"
+                    class="iedit author-self level-0 post-1 type-post status-publish format-standard has-post-thumbnail hentry category-khong-phan-loai post">
+                    <th scope="row" class="check-column"> <input id="cb-select-1" type="checkbox" name="post[]"
+                            value="1">
+
+                    </th>
+                    <td class="title column-title has-row-actions column-primary page-title" data-colname="Tiêu đề">
+                        <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span>
+                        </div>
+                        <strong><a class="row-title" href="">Chào tất cả mọi người!</a></strong>
+
+
+
+                    </td>
+                    <td class="author column-author" data-colname="Tác giả"><a href="">cuongntph27274</a></td>
+                    <td class="categories column-categories" data-colname="Chuyên mục"><a href="">Chưa phân loại</a>
+                    </td>
+                    <td class="tags column-tags" data-colname="Thẻ"><span aria-hidden="true">—</span><span
+                            class="screen-reader-text">Không có thẻ nào</span></td>
+                    <td class="comments column-comments" data-colname="Bình luận">
+
+                    </td>
+                    <td class="date column-date" data-colname="Thời gian">Đã xuất bản<br>21/11/2023 lúc 2:56 chiều</td>
+                </tr>
+            </tbody>
+
+
+
+        </table>
+        <div class="tablenav bottom">
+
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-bottom" class="screen-reader-text">Lựa chọn thao tác hàng
+                    loạt</label><select name="action2" id="bulk-action-selector-bottom">
+                    <option value="-1">Hành động</option>
+                    <option value="edit" class="hide-if-no-js">Chỉnh sửa</option>
+                    <option value="trash">Bỏ vào thùng rác</option>
+                </select>
+                <input type="submit" id="doaction2" class="button action" value="Áp dụng">
+            </div>
+            <div class="alignleft actions">
+            </div>
+            <div class="tablenav-pages one-page"><span class="displaying-num">1 mục</span>
+                <span class="pagination-links"><span class="tablenav-pages-navspan button disabled"
+                        aria-hidden="true">«</span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>
+                    <span class="screen-reader-text">Trang hiện tại</span><span id="table-paging"
+                        class="paging-input"><span class="tablenav-paging-text">1 trên <span
+                                class="total-pages">1</span></span></span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>
+                    <span class="tablenav-pages-navspan button disabled" aria-hidden="true">»</span></span>
+            </div>
+            <br class="clear">
+        </div>
+
+    </form>
+</body>
+
+</html>

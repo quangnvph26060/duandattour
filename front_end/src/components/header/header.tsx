@@ -85,7 +85,7 @@ const HeaderWebsite = () => {
             <li><a href="/" className=''>PolyTour</a></li>
 
             <li className='group'>
-            <Link to={'tour'} className='menu-items'>Tour</Link>
+              <Link to={'tour'} className='menu-items'>Tour</Link>
               {/* Menu phân cấp*/}
               <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
                 <ul className='p-2 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
@@ -95,7 +95,7 @@ const HeaderWebsite = () => {
                       <ul className='sub-menu'>
                         {combinedData[loaiTourName].map((diemDen) => (
                           <li className='py-2' key={diemDen}>
-                           <Link to={`/tour/${diemDen}`} className='mega-menu-items'>{diemDen}</Link>
+                            <Link to={`/tour/${diemDen}`} className='mega-menu-items'>{diemDen}</Link>
                           </li>
                         ))}
                       </ul>
