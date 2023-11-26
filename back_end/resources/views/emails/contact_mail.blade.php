@@ -1,6 +1,8 @@
 <x-mail::message>
-# Loại thông tin {{$data->loai_thong_tin}}
-
+# {{$data->loai_thong_tin}}  <br>
+Họ tên: {{$data->ho_ten}} <br>
+Email: {{$data->email}} <br>
+Số điện thoại: {{$data->sdt}} <br>
 {{$data->noi_dung}}
 
 

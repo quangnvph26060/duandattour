@@ -35,6 +35,14 @@ class ApiTourController extends Controller
     {
         $query = $request->input('diem_den');
         $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
+        foreach($tourdiemden as $tourdiemdens){
+          
+            $tourttcount = DatTour::where('trang_thai',1)
+            ->where('id_tour',$tourdiemdens->id)
+            ->count();
+            $tourdiemdens->tourttcount = $tourttcount;
+        }
+       
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -208,6 +216,14 @@ class ApiTourController extends Controller
                 
                 $tourKMWithDiscounts[] = $tour;
             }
+        }
+
+        foreach($tourKMWithDiscounts as $tourKMs){
+          
+            $tourttcount = DatTour::where('trang_thai',1)
+            ->where('id_tour',$tourKMs->id)
+            ->count();
+            $tourKMs->tourttcount = $tourttcount;
         }
         $responseData = [
             'code' => 200,

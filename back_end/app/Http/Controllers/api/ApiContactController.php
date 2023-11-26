@@ -16,7 +16,7 @@ class ApiContactController extends Controller
        
 
         $contact =  contactModel::create([
-            'loai_thong_tin'     => $request->get('loai_thong_tin'),
+            'loai_thong_tin'=> $request->get('loai_thong_tin'),
             'ho_ten'    => $request->get('ho_ten'),
             'email' => $request->get('email'),
             'sdt' => $request->get('sdt'),
