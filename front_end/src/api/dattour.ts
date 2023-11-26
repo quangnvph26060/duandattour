@@ -14,7 +14,7 @@ const DatourApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-       
+
         getDattourbyId: builder.query<IDattour, number >({
             query: (id) => `/getDatTour/${id}` ,
             providesTags: ['getDatTour']

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->default('default.jpg'); // Thêm dòng này vào tệp migration 
             $table->string('dia_chi');
             $table->string('email')->unique();
             $table->string('sdt');
