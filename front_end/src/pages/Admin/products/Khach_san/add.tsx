@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
-import { Form, Button, Input, DatePicker, Select,message,Alert } from 'antd';
+import { Form, Button, Input, DatePicker, Select,message,Alert,Upload } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import { useAddKhachSanMutation,useRemoveKhachSanMutation } from '../../../../api/KhachSanApi';
 import { IKhachSan } from '../../../../interface/khachsan';
@@ -8,7 +9,10 @@ const { Option } = Select;
 
 type FieldType = {
   id: number;
-  loai_khach_san: string;
+  image: string;
+  ten_khach_san: string;
+  dia_chi: string;
+  so_sao: string
 };
 
 const ADmin_KhachsanADD: React.FC = () => {
@@ -17,7 +21,12 @@ const ADmin_KhachsanADD: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const onFinish = (values: IKhachSan) => {
-    addKhachsan(values)
+    const formData = new FormData();
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("ten_khach_san", values.ten_khach_san);
+    formData.append("dia_chi", values.dia_chi);
+    formData.append("so_sao", values.so_sao);
+    addKhachsan(formData)
     .unwrap()
     .then(()=>navigate("/admin/tour/loai_khach_san"))
     // Handle form submission logic here
@@ -43,12 +52,50 @@ const ADmin_KhachsanADD: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
+          <Form.Item
+          label="Image"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+        </Form.Item>
         <Form.Item
-          label="Loại khách sạn"
-          name="loai_khach_san"
+          label="Tên khách sạn"
+          name="ten_khach_san"
           rules={[
-            { required: true, message: 'Vui lòng nhập loại khách sạn!' },
+            { required: true, message: 'Vui lòng nhập tên khách sạn!' },
             { min: 3, message: ' Khách sạn ít nhất 3 ký tự' },
+          ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Địa chỉ"
+          name="dia_chi"
+          rules={[
+            { required: true, message: 'Vui lòng nhập địa chỉ khách sạn!' },
+            { min: 3, message: ' Khách sạn ít nhất 3 ký tự' },
+          ]}
+          validateStatus={errors ? 'error' : ''}
+          help={errors}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Số sao"
+          name="so_sao"
+          rules={[
+            { required: true, message: 'Vui lòng nhập số sao khách sạn!' },
           ]}
           validateStatus={errors ? 'error' : ''}
           help={errors}

@@ -61,11 +61,11 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import Giohanguser from "./pages/giohanguser";
 import Giohanguser1 from "./pages/giohanguser1";
 import Giohanguser2 from "./pages/giohanguser2";
-import Doimk from "./pages/changeMk";
 import Dmkuser from "./pages/changeMk";
 
 
 export const router = createBrowserRouter([
+  
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -83,6 +83,10 @@ export const router = createBrowserRouter([
         element: <TourPage />,
       },
       {
+        path: "tour/:diem_den",
+        element: <TourPage />,
+      },
+      {
         path: "signin",
         element: <SignIn />,
       },
@@ -91,7 +95,7 @@ export const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "tour/:idTour",
+        path: "tours/:idTour",
         element: <DetailPage />,
       },
       {
@@ -140,7 +144,8 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     element: localStorage.getItem("role") === 'admin' ||
-      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+      localStorage.getItem("role") === 'nhan_vien' ||
+      localStorage.getItem("role") === 'customer_feedback' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
@@ -224,7 +229,10 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
-
+      {
+        path: 'customer_feedback',
+        element: <ChatComponent />
+      },
       // {
       //   path: "customer_account/add",
       //   element: <Admin_Acountkhachhang_Roles />,
@@ -317,7 +325,7 @@ export const router = createBrowserRouter([
         path: "tour/tour_dathanhtoan",
         element: <ADmin_Qlytourdathanhtoan />,
       },
-
+    
     ],
   },
 ]);

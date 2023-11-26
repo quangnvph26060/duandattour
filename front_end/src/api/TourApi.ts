@@ -51,7 +51,7 @@ const TourApi = createApi({
             providesTags: ['Tour']
         }),
         book: builder.query<Itourdetail, number >({
-            query: (id) => `/booktour/${id}` ,
+            query: (id) => `/booktour/${id}`,
             providesTags: ['Tour']
         })
      

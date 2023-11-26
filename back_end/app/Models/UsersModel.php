@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 // use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Spatie\Permission\Traits\HasRoles;
 class UsersModel extends Model
 {
     use  HasFactory, SoftDeletes, Notifiable;
+    use HasRoles;
     protected $table = "users";
     protected $fillable = [
         'name',

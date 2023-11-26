@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class ApiAuthController extends Controller
 {
@@ -44,10 +46,11 @@ class ApiAuthController extends Controller
             'sdt' => $request->sdt,
             'cccd' => $request->cccd,
             'password' => Hash::make($request->password),
-
         ]);
-
-
+       
+        // Gán vai trò cho tài khoản đăng ký
+        $role = Role::where('name', 'khach_hang')->where('guard_name', 'web')->first();
+    $user->roles()->sync([$role->id]);
         Mail::to($user->email)->send(new RegisterUser($user));
 
         return response()->json(['message' => 'Đăng ký tài khoản thành công!!']);

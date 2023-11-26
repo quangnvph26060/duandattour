@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:discountmessage')->everyMinute();
         $schedule->command('app:dattour-command')->everyMinute();
-       
+        $schedule->command('app:status-tour-command')->everyMinute();
     }
 
     /**

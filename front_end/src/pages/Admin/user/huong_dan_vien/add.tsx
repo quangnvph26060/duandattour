@@ -4,6 +4,7 @@ import { AiOutlineLoading3Quarters, AiOutlineUpload } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAddHuongDanVienMutation } from '../../../../api/HuongDanVienApi';
 import { IHuongDanVien } from '../../../../interface/huongDanVien';
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -57,7 +58,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Ảnh"
           name="image"
           rules={[{ required: true, message: 'Vui lòng chọn ảnh!' }]}
@@ -75,6 +76,21 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
             beforeUpload={() => false}
           >
             <Button icon={<AiOutlineUpload />}>Chọn ảnh</Button>
+          </Upload>
+        </Form.Item> */}
+        <Form.Item
+          label="image"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
           </Upload>
         </Form.Item>
         <Form.Item

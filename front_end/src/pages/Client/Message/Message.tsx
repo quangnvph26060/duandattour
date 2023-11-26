@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import '../../../page.css'
-import '../../../messenger.css';
+
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -133,9 +132,9 @@ const MessageChatBox = () => {
     <div className="  ">
       {isChatVisible && (
         <div className="chat-box">
-          <div className="chat-header bg-blue-500 px-5 py-3 rounded-md">
+          <div className=" bg-red-500 px-5 py-3 rounded-md">
             <img src={logo} alt="logo" width="30px" />
-            <h3 className="chat-title">PolyTour</h3>
+            <h3 className="chat-title">aaaaaa</h3>
           </div>
           <div className="message-list">
             {alertMessager()}

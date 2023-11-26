@@ -55,8 +55,8 @@ const Info_tour_bocking = () => {
       });
 
   }, []);
-  ////
-  const { id } = useParams<{ id: any }>();
+////
+const {id} =  useParams<{ id: any }>();
   const { data: Data } = useGetCheckbooktourQuery(id || "");
   const DataCheck = Data?.data || [];
   // console.log('Daata:',DataCheck);

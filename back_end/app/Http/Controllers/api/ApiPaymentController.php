@@ -13,7 +13,7 @@ class ApiPaymentController extends Controller
     public function vnpay_payment(Request $request)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost:5173/bookingtour/" . $request->input('id_dat_tour'); // bên react
+        $vnp_Returnurl = "http://localhost:5173/bookingtour/".$request->input('id_dat_tour'); // bên react
         $vnp_TmnCode = "EAJULQG0"; // Mã website tại VNPAY
         $vnp_HashSecret = "FRGFBFYWLNQEFGLSYIPFMIDTRDAOZODT"; // Chuỗi bí mật
         $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã đơn hàng (có thể thay đổi theo nhu cầu)

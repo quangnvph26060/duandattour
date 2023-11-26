@@ -1,10 +1,15 @@
+
+
 const rounded = {
   borderRadius: '25px',
 };
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../img/logo.jpg';
-
+import { useGetMenuQuery } from '../../api/menu';
+import { data } from 'autoprefixer';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const HeaderWebsite = () => {
 
@@ -28,61 +33,98 @@ const HeaderWebsite = () => {
         });
     }
   }, [token])
+  const { data: Data, error, isLoading } = useGetMenuQuery();
+
+  const parentCallback  = () => {
+    console.log("parentCallback");
+  }
+
+  function reloadTour(e) {
+    axios
+        .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
+        .then((response) => {
+          console.log(response.data.tourdiemden);
+          console.log("123", response.data.tourdiemden);
+        })
+  }
+  
+  if (isLoading) {
+    return <div>Đang tải dữ liệu...</div>;
+  }
+
+  if (error) {
+    return <div>Có lỗi xảy ra: {error.message}</div>;
+  }
+  const menuData = Data?.menuPhanCap || []
 
 
+  let loaiTour: string[] = [];
+  let diemDens: string[] = []
+
+
+  // if (menuData) {
+  //   // Lặp qua mảng data để trích xuất thông tin
+  //   menuData.forEach((item) => {
+  //     if (item && item.loaiTour) {
+  //       loaiTour.push(item.loaiTour.ten_loai_tour); // Thêm tên loại tour vào mảng
+  //       diemDens = [...diemDens, ...item.diemDens]; // Thêm tất cả địa điểm vào mảng
+  //     }
+  //   });
+  // }
+  // console.log(loaiTour);
+  // console.log(diemDens);
+  const combinedData = {};
+  if (menuData) {
+
+
+    menuData.forEach((item) => {
+      if (item && item.loaiTour) {
+        const loaiTourName = item.loaiTour.ten_loai_tour;
+        const diemDens = item.diemDens;
+        if (!combinedData[loaiTourName]) {
+          // Nếu loại tour chưa tồn tại trong đối tượng, tạo nó
+          combinedData[loaiTourName] = [];
+        }
+        // Thêm danh sách điểm đến vào loại tour tương ứng
+        combinedData[loaiTourName].push(...diemDens);
+      }
+    });
+    console.log(combinedData);
+  }
   return <div> <div className="menu flex items-center justify-between">
     <div className='flex'>
       <a href="/"><img style={rounded} src={logo} alt="logo" width="100px" /></a>
 
       <nav className='font-semibold p-4 pt-8 pl-18'>
         <div className='max-w-7xl flex justify-between items-center mx-auto relative'>
-          <ul className='flex text-[#2D4271] max-w-7xl gap-12'>
+          <ul className='flex  text-[#2D4271] max-w-7xl gap-12'>
             <li><a href="/" className=''>PolyTour</a></li>
+
             <li className='group'>
-              <a href="/tour" className='menu-items'>Tour</a>
+            <Link to={'tour'} className='menu-items' onClick={e => reloadTour(e)}>Tour</Link>
               {/* Menu phân cấp*/}
               <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
-                <ul className='p-2'>
-                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Bắc</a></li>
-                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Hà Nội</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Hạ Long</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Bắc Ninh</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Phú Thọ</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Ninh Bình</a></li>
-                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                </ul>
-
-                <ul className='p-2'>
-                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Trung</a></li>
-                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Huế</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Trị</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Bình</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Đà Nẵng</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Quảng Nam</a></li>
-                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                </ul>
-
-                <ul className='p-2'>
-                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Tây Nam Bộ</a></li>
-                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Phú Quốc</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Tiền Giang</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Cần Thơ</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Vĩnh Long</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Sóc Trăng</a></li>
-                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
-                </ul>
-
-                <ul className='p-2'>
-                  <li className='py-1'><a href="" className='mega-menu-title'>Tour Miền Đông Nam Bộ</a></li>
-                  <li className='py-2 pt-3'><a href="" className='mega-menu-items'>Du lịch Đồng Nai</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Bà Rịa-Vũng Tàu</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Côn Đảo</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch TP. Hồ Chí Minh</a></li>
-                  <li className='py-2'><a href="" className='mega-menu-items'>Du lịch Tây Ninh</a></li>
-                  <li className='py-3'><a href="" className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a></li>
+                <ul className='p-2 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
+                  {Object.keys(combinedData).map((loaiTourName) => (
+                    <li className='py-1 pr-4' key={loaiTourName}> {/* Thêm pr-4 để tạo khoảng cách giữa các loại tour */}
+                      <a href='' className='mega-menu-title'>{loaiTourName}</a>
+                      <ul className='sub-menu'>
+                        {combinedData[loaiTourName].map((diemDen) => (
+                          <li className='py-2' key={diemDen}>
+                           <Link to={`/tour/${diemDen}`} className='mega-menu-items'>{diemDen}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                  <li className='py-3'>
+                    <a href='' className='mega-menu-items underline decoration-3 text-blue-600'>Xem tất cả</a>
+                  </li>
                 </ul>
               </div>
+
               {/* Menu phân cấp*/}
+
             </li>
             <li><a href="/news" className=''>Tin tức</a></li>
             <li><a href="" className=''>Khuyến mãi</a></li>

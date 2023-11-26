@@ -26,7 +26,7 @@ const ADmin_DatTour = (props: Props) => {
 
   const success = () => {
     message.success('Trạng thái đã được chuyển đổi thành công');
-
+    window.location.reload
   };
 
 
@@ -110,6 +110,18 @@ const ADmin_DatTour = (props: Props) => {
       },
     },
     {
+      title: "Ảnh tour",
+      dataIndex: "image_path",
+      key: "image_path",
+      render: (text, record) => (
+        <img
+          src={`http://localhost:8000/storage/${record.tours.image_path}`}
+          alt="img"
+          style={{ width: '200px', cursor: 'pointer' }}
+        />
+      ),
+    },
+    {
       title: "Ngày đặt",
       dataIndex: "ngay_dat",
       key: "ngay_dat",
@@ -127,6 +139,12 @@ const ADmin_DatTour = (props: Props) => {
     },
     {
       title: "Trạng thái",
+      dataIndex: "trang_thai",
+      key: "trang_thai",
+      render: (trang_thai) => (trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán")
+    },
+    {
+      title: "Hành động ",
       dataIndex: "trang_thai",
       key: "trang_thai",
       render: (trang_thai, { key: id }: any) => {

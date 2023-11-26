@@ -38,21 +38,21 @@ use Carbon\Carbon;
 */
 
 // api demo
-Route::get('a', [ApiDatTourController::class, 'demo']);
-Route::get('demo', function () {
-    $today = Carbon::today(); // Lấy ngày tháng năm hiện tại
+Route::get('a',[ApiDatTourController::class,'demo']);
+Route::get('demo',function(){
+    $today= Carbon::today(); // Lấy ngày tháng năm hiện tại
     $today1 = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-    return response()->json([
-        'today' => $today,
-        'today+1' => $today1,
-    ]);
+   return response()->json([
+    'today'=>$today,
+    'today+1'=>$today1,
+   ]);
 });
-Route::get('abc', [ApiDiscountController::class, 'abc']);
+Route::get('abc',[ApiDiscountController::class,'abc']);
 //end api demo
 
 
 // api mã giảm giá 
-Route::post('check_coupon', [ApiDiscountController::class, 'check_coupon']);
+Route::post('check_coupon',[ApiDiscountController::class,'check_coupon']);
 // api show user và vai trò của nó 
 Route::get('/showuser', [ApiMessageController::class, 'showuser']);
 // api hiển thị  message
@@ -81,14 +81,16 @@ Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
-Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+Route::get('/getToursByDestination', [ApiTourController::class, 'getToursByDestination']);
 
 //api láy all điểm đến của tour làm chức năng search
 Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
 //api láy all điểm đi của tour làm chức năng search
 Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
-
-
+//api search
+Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
+// api List tour kM
+Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
