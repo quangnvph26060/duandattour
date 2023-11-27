@@ -57,4 +57,15 @@ class ApiSearchController extends Controller
     
         return response()->json(['data' => $uniqueDiemDi], 200);
     }
+
+    public function searchTour(Request $request) {
+        $query = TourModel::query();
+        // dd($query);
+        if($request->has('diem_di')){
+            $diem_di = $request->input('diem_di');
+            $query->where('diem_di',$diem_di);
+        }
+        $tour = $query->get();
+        return response()->json(['data'=>$tour],200);
+    }
 }

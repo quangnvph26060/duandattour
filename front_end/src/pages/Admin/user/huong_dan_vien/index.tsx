@@ -13,7 +13,6 @@ const Admin_Account_huongdanvien = (props: Props) => {
 
     const { data: huongDanVienData, error, isLoading } = useGetHuongDanVienQuery();
     const [removeHuongDanVien, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveHuongDanVienMutation();
-
     const confirm = (id: any) => {
         removeHuongDanVien(id);
         

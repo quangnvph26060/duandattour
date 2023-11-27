@@ -20,9 +20,13 @@ use App\Http\Controllers\api\ApiDiscountController;
 use App\Http\Controllers\Api\ApiSearchController;
 use App\Http\Controllers\Api\ApiFavoriteController;
 use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiHuongDanVienTourController;
+
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\ApiNewsController;
 
 use Carbon\Carbon;
 
@@ -84,14 +88,16 @@ Route::get('bookingtour/{id}', [ApiPaymentController::class, 'getBookingTour']);
 //api list ra danh sách menu
 Route::get('menu-phan-cap', [ApiLoaiTourController::class, 'getMenuPhanCap']);
 // api show tour theo cái menu ở trên có cả đếm xem có bao nhiêu tour
-Route::get('/get/{destination}', [ApiTourController::class, 'getToursByDestination']);
+Route::get('/getToursByDestination', [ApiTourController::class, 'getToursByDestination']);
 
 //api láy all điểm đến của tour làm chức năng search
 Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
 //api láy all điểm đi của tour làm chức năng search
 Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
-
-
+//api search
+Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
+// api List tour kM
+Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -143,7 +149,10 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 });
 // api giảm giá 
 Route::prefix('admin')->group(function () {
-
+    // phân hướng dẫn viên cho tour đó 
+    Route::prefix('hdvtour')->group(function(){
+        Route::post('/', [ApiHuongDanVienTourController::class, 'store']);
+    });
 
     
     Route::prefix('discount')->group(function () {
@@ -168,6 +177,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
         Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
         Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
+        Route::post('/',[ApiPermissionsController::class,'store']);
+        Route::get('/{id}',[ApiPermissionsController::class,'show']);
+        Route::put('/{id}',[ApiPermissionsController::class,'update']);
+        Route::delete('/{id}',[ApiPermissionsController::class,'destroy']);
+        
+        
+        
     });
 
     Route::prefix('images')->group(function () {
@@ -253,6 +269,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiTourPhuongTienController::class, 'show']);
         Route::put('/{id}', [ApiTourPhuongTienController::class, 'update']);
         Route::delete('/{id}', [ApiTourPhuongTienController::class, 'destroy']);
+    });
+    Route::prefix('news')->group(function () {
+        Route::get('/', [ApiNewsController::class, 'index']);
+        Route::post('/', [ApiNewsController::class, 'store']);
+        Route::get('/{id}', [ApiNewsController::class, 'show']);
+        Route::put('/{id}', [ApiNewsController::class, 'update']);
+        Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
     });
 
     Route::prefix('dattour')->group(function () {
