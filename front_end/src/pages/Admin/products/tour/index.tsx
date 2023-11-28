@@ -13,7 +13,7 @@ import { Modal, Descriptions } from "antd";
 import { useState } from "react";
 import { Select } from 'antd';
 import { width } from "@fortawesome/free-solid-svg-icons/fa0";
-
+import { Spin } from 'antd';
 import './css.css'
 const AdminProduct = (props: Props) => {
     
@@ -334,8 +334,8 @@ const AdminProduct = (props: Props) => {
                         </Select>
                     </div>
                     {isRemoveSuccess && <Alert message="Xóa thành công" type="success"  />}
-
-                    {isLoading ? <Skeleton /> : <Table className="" dataSource={dataSource} pagination={{ pageSize: 3 }} columns={visibleColumnsData} />}
+                 
+                    {isLoading ?     <Skeleton /> : <Table  className="" dataSource={dataSource}  pagination={{ pageSize: 3 }} columns={visibleColumnsData} />}
                 </>
             )}
             <Modal
