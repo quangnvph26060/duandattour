@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Console\Commands;
-use Carbon\Carbon;
 
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class DiscountMessage extends Command
 {
@@ -27,9 +27,10 @@ class DiscountMessage extends Command
      */
     public function handle()
     {
-        $currentDate = Carbon::now()->toDateString();
+        $currentDateTime = Carbon::now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'); // chuyển sang múi giờ chuẩn giờ hiện tại
         DB::table('discounts')
-            ->whereDate('expiry_date', '<', $currentDate)
+            ->where('expiry_date', '<', $currentDateTime)
             ->delete();
     }
+    
 }

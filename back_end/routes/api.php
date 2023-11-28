@@ -20,6 +20,7 @@ use App\Http\Controllers\api\ApiDiscountController;
 use App\Http\Controllers\Api\ApiSearchController;
 
 use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiContactController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -93,6 +94,9 @@ Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
 Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
 // api List tour kM
 Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
+// api contact
+Route::get('/getcontact', [ApiContactController::class, 'getcontact']);
+Route::post('/contact', [ApiContactController::class, 'sendContactForm'])->name('contact');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
