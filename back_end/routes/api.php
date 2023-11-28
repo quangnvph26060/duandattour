@@ -109,6 +109,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/change_password', [ApiAuthLoginController::class, 'changePassword'])->name('changePassword');
     Route::put('/forgotPassword', [ApiAuthLoginController::class, 'forgotPassword'])->name('forgotPassword');
     Route::get('/ToursByUserId', [ApiAuthLoginController::class, 'getToursByUserId']);
+    Route::prefix('hdvtour')->group(function(){
+        Route::get('/', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
+    });
 });
 
 Route::prefix('register')->group(function () {
