@@ -81,6 +81,10 @@ export const router = createBrowserRouter([
         element: <TourPage />,
       },
       {
+        path: "tour/:diem_den",
+        element: <TourPage />,
+      },
+      {
         path: "signin",
         element: <SignIn />,
       },
@@ -89,7 +93,7 @@ export const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "tour/:idTour",
+        path: "tours/:idTour",
         element: <DetailPage />,
       },
       {
@@ -135,7 +139,8 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: localStorage.getItem("role") === 'admin' ||
       localStorage.getItem("role") === 'nhan_vien' ||
-      localStorage.getItem("role") === 'customer_feedback' ? <LayoutAdmin /> : <Navigate to="/" />,
+      localStorage.getItem("role") === 'customer_feedback' ||
+      localStorage.getItem("role") === 'huong_dan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
       { index: true, element: <Navigate to="dashboard" /> },

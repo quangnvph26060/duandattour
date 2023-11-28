@@ -6,6 +6,7 @@ export  interface IUser {
     email: string;
     sdt: string;
     cccd: string;
+    password:string;
     email_verified_at: string | null;
     created_at: string | null;
     updated_at: string | null;

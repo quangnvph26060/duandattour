@@ -37,6 +37,35 @@
   font-size: 30px;
 }
 
+  .hideText {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  
+  .showText {
+    max-height: 100px; /* or any value you want for max-height */
+    overflow: hidden;
+    transition: max-height 0.3s ease-in;
+  }
+  
+  .icon-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .icon-button:hover {
+    color: blue; /* Màu khi hover */
+  }
+  
+  
+  .eye-cursor {
+    cursor: pointer;
+  }
 /*book*/
 
 .hh {

@@ -146,11 +146,11 @@ const DetailPage = (props: Props) => {
 
           </div>
           <div className="Description justify-between flex ml-[120px] mt-5 py-4">
-            <div className="Desc text-[#2D4271] text-[15px]">
+            <div className="Desc w-2/5 text-[#2D4271] text-[15px]">
               <p className="max-w-[500px]">
                 {datatourArray?.mo_ta}
               </p>
-              <div className="h-[230px] w-[530] border rounded-md mt-3 bg-white py-5 px-5">
+              <div className="h-[230px] w-[2/3] border rounded-md mt-3 bg-white py-5 px-5">
                 <p className="mt-1 text-[#2D4271] text-[18px] font-medium">
                   Khởi hành {datatourArray?.lich_khoi_hanh}
                 </p>
@@ -176,7 +176,7 @@ const DetailPage = (props: Props) => {
                 </p>
               </div>
             </div>
-            <div className="grid mr-[120px] grid-cols-4 gap-5">
+            <div className="grid w-1/2 grid-cols-4 gap-5">
               <div className="">
                 <h2 className="text-blue-600">
                   <FaFlag />
