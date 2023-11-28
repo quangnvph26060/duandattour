@@ -124,14 +124,7 @@ const LayoutAdmin = () => {
               <Menu.Item icon={<MdFeedback />} key="2-7">
                 <Link to="/admin/customer_feedback">Customer Feedback</Link>
               </Menu.Item>
-              <Menu.SubMenu key="2-8" title="Quản lý hình ảnh">
-                <Menu.Item key="2-8-1">
-                  <Link to="/admin/tour/image/">Danh sách hình ảnh</Link>
-                </Menu.Item>
-                <Menu.Item key="2-8-2">
-                  <Link to="/admin/tour/image_tour">Quản lý hình ảnh tour</Link>
-                </Menu.Item>
-              </Menu.SubMenu>
+
               <Menu.SubMenu
                 icon={<MdDiscount />}
                 key="2-9"
@@ -187,10 +180,9 @@ const LayoutAdmin = () => {
               </Menu.SubMenu>
             </Menu.SubMenu>
             <Menu.Item icon={<FaPowerOff />} key="5-1-2">
-               <button onClick={handleLogout}>Đăng xuất</button>
-                </Menu.Item>
+              <button onClick={handleLogout}>Đăng xuất</button>
+            </Menu.Item>
           </Menu>
-          
         </Sider>
 
         <Layout>
@@ -209,22 +201,20 @@ const LayoutAdmin = () => {
               }}
             />
             {usersId && (
-           <div className="flex gap-3 items-center">
-           {/* Hiển thị thông tin người dùng */}
-           <span className="ml-2">
-             <i className="text-xl fas fa-bell"></i>
-           </span>
-           <div className="relative">
-             <img
-               className="w-[30px] h-[30px] rounded-full cursor-pointer"
-               src={`http://localhost:8000/storage/${usersId.image}`}
-               alt="img"
-             />
-      
-           </div>
-           <p className="mr-5 font-medium">{usersId.name}</p>
-         </div>
-         
+              <div className="flex gap-3 items-center">
+                {/* Hiển thị thông tin người dùng */}
+                <span className="ml-2">
+                  <i className="text-xl fas fa-bell"></i>
+                </span>
+                <div className="relative">
+                  <img
+                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                    src={`http://localhost:8000/storage/${usersId.image}`}
+                    alt="img"
+                  />
+                </div>
+                <p className="mr-5 font-medium">{usersId.name}</p>
+              </div>
             )}
           </Header>
           <Content

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
@@ -15,9 +15,9 @@ import {
 } from "react-icons/fa";
 import { useDattourMutation, useGetDattourbyIdQuery } from "../../api/dattour";
 import { Tour } from "antd";
-import { Dattour } from '../../interface/Dattour';
-import logo from "./img/logo.jpg"
-import axios from 'axios';
+import { Dattour } from "../../interface/Dattour";
+import logo from "./img/logo.jpg";
+import axios from "axios";
 type Props = {};
 
 const img = {
@@ -34,7 +34,6 @@ const initialFormData = {
   ngay_dat: "",
   so_luong_khach: 1,
   ma_khach_hang: "",
-
 };
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
@@ -45,21 +44,23 @@ const BookTour = () => {
     setIsChecked(true);
     setIsChecked1(false);
   };
-  // giảm giá 
-  const [inputValue, setInputValue] = useState('');
+  // giảm giá
+  const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
-
   };
   console.log(inputValue);
 
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {
-
     // Gửi yêu cầu HTTP POST đến API
-    axios.post('http://localhost:8000/api/check_coupon', { name_coupon: inputValue, tourid: idTour })
+    axios
+      .post("http://localhost:8000/api/check_coupon", {
+        name_coupon: inputValue,
+        tourid: idTour,
+      })
       .then((response) => {
         // Xử lý phản hồi từ server
         setError(response.data.message); // lỗi từ serve
@@ -68,19 +69,14 @@ const BookTour = () => {
       })
       .catch((error) => {
         // Xử lý lỗi nếu có
-        console.error(error);// Hiển thị thông tin lỗi từ phản hồi của server
+        console.error(error); // Hiển thị thông tin lỗi từ phản hồi của server
       });
-    if (inputValue === '') {
-
-      setCouponData("")
+    if (inputValue === "") {
+      setCouponData("");
     }
   }, [inputValue]);
 
-
-
-
-
-  const [isChecked1, setIsChecked1] = useState(false);// chuyển khoản 
+  const [isChecked1, setIsChecked1] = useState(false); // chuyển khoản
 
   const handleRadioChange1 = () => {
     setIsChecked1(!isChecked1);
@@ -114,11 +110,10 @@ const BookTour = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
     } else {
-      alert("tối thiểu số hành khách là 1")
-      setQuantity(1)
+      alert("tối thiểu số hành khách là 1");
+      setQuantity(1);
     }
   };
-
 
   // gia tre em
   const [quantity2, setQuantity2] = useState(0);
@@ -141,11 +136,10 @@ const BookTour = () => {
       setSoLuongKhach(newSoLuongKhach);
       setFormData({
         ...formData,
-        so_luong_khach: newSoLuongKhach
+        so_luong_khach: newSoLuongKhach,
       });
     }
   }, [quantity, quantity2]);
-
 
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
@@ -154,8 +148,11 @@ const BookTour = () => {
 
   // Lấy token từ localStorage
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const [formData, setFormData] = useState({ initialFormData, id_tour: idTour });
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [formData, setFormData] = useState({
+    initialFormData,
+    id_tour: idTour,
+  });
   const [responseMessage, setResponseMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [addTour] = useDattourMutation(); // Sử dụng hàm addTour từ API
@@ -180,10 +177,9 @@ const BookTour = () => {
             dia_chi: userData.dia_chi,
 
             ma_khach_hang: userData.id,
-            id_tour: idTour
+            id_tour: idTour,
           });
           console.log(userData);
-
         })
         .catch((error) => {
           console.error(error);
@@ -195,7 +191,7 @@ const BookTour = () => {
       });
     }
   }, []);
-  // tính tổng tiền 
+  // tính tổng tiền
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
     const gianho = datatourArray?.gia_treem;
@@ -207,7 +203,7 @@ const BookTour = () => {
         if (item.discount_condition == 1) {
           totalPrice -= item.percentage;
         } else {
-          totalPrice = totalPrice * (100 - item.percentage) / 100;
+          totalPrice = (totalPrice * (100 - item.percentage)) / 100;
         }
       });
     }
@@ -222,7 +218,6 @@ const BookTour = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-
   const [paymentResult, setPaymentResult] = useState(null);
   const [IdDatTour, setIdDatTour] = useState("");
 
@@ -232,7 +227,7 @@ const BookTour = () => {
     setIsLoading(true);
 
     if (isChecked) {
-      // tiền mặt 
+      // tiền mặt
       try {
         const addTourResponse = await addTour(formData).unwrap();
         setIsLoading(false);
@@ -240,12 +235,14 @@ const BookTour = () => {
         // Xử lý kết quả thành công
         const requestData = {
           vnp_Amount: calculateTotalPrice(),
-          payment_method: 'cash',
+          payment_method: "cash",
         };
-        const paymentResponse =
-          await axios.post('http://localhost:8000/api/cash', requestData);
+        const paymentResponse = await axios.post(
+          "http://localhost:8000/api/cash",
+          requestData
+        );
         setPaymentResult(paymentResponse.data);
-        alert('Đặt tour bằng tiền mặt thành công')
+        alert("Đặt tour bằng tiền mặt thành công");
         window.location.href = `/bookingtour/${paymentResponse.data.id_dat_tour}`;
       } catch (error) {
         setIsLoading(false);
@@ -265,46 +262,47 @@ const BookTour = () => {
         const requestData = {
           redirect: true,
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
-          vnp_OrderInfo: 'mô tả',
-          vnp_OrderType: 'atm',
+          vnp_OrderInfo: "mô tả",
+          vnp_OrderType: "atm",
           vnp_Amount: calculateTotalPrice() * 100,
-          id_dat_tour: addTourResponse.createDatTour.id
+          id_dat_tour: addTourResponse.createDatTour.id,
         };
 
         try {
-          const response = await axios.post('http://localhost:8000/api/vnpay_payment', requestData);
+          const response = await axios.post(
+            "http://localhost:8000/api/vnpay_payment",
+            requestData
+          );
           window.location.href = response.data.data;
         } catch (error) {
           console.error(error);
         }
       }
     }
-
   };
-console.log(datatourArray);
+  console.log(datatourArray);
 
   return (
     <div className="container mx-auto">
-
       {/* header trên thôn tin dưới */}
       <div className="info mt-14 mx-auto w-10/12 ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-        <div className="img-book w-1/3">
-  {datatourArray.images && datatourArray.images.length > 0 ? (
-    <div>
-      {datatourArray.images.map((image) => (
-        <img
-          key={image.id}
-          style={img}
-          src={`http://localhost:8000/storage/${image.image_path}`}
-          alt={`Image ${image.id}`}
-        />
-      ))}
-    </div>
-  ) : (
-    <p>Không có hình ảnh cho tour này.</p>
-  )}
-</div>
+          <div className="img-book w-1/3">
+            {datatourArray.images && datatourArray.images.length > 0 ? (
+              <div>
+                {datatourArray.images.map((image) => (
+                  <img
+                    key={image.id}
+                    style={img}
+                    src={`http://localhost:8000/storage/${image.image_path}`}
+                    alt={`Image ${image.id}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>Không có hình ảnh cho tour này.</p>
+            )}
+          </div>
 
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
@@ -345,16 +343,15 @@ console.log(datatourArray);
               </p>
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
                 Dịch vụ tùy chọn:
-                {
-                  datatourArray &&
+                {datatourArray &&
                   datatourArray.phuong_tien &&
-                  datatourArray.phuong_tien.map(item => item.loai_phuong_tien)
-                } + Khách Sạn
-                {
-                  datatourArray &&
+                  datatourArray.phuong_tien.map(
+                    (item) => item.loai_phuong_tien
+                  )}{" "}
+                + Khách Sạn
+                {datatourArray &&
                   datatourArray.khach_san &&
-                  datatourArray.khach_san.map(item => item.loai_khach_san)
-                }
+                  datatourArray.khach_san.map((item) => item.loai_khach_san)}
               </p>
             </div>
           </div>
@@ -391,17 +388,20 @@ console.log(datatourArray);
           Thông tin liên lạc
         </p>
         <form onSubmit={handleSubmit}>
-
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
               <input
                 className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                type="hidden" value={formData.ma_khach_hang} onChange={handleChange}
+                type="hidden"
+                value={formData.ma_khach_hang}
+                onChange={handleChange}
               />
               <input
                 className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                type="hidden" value={formData.id_tour} name='id_tour' onChange={handleChange}
-
+                type="hidden"
+                value={formData.id_tour}
+                name="id_tour"
+                onChange={handleChange}
               />
               <div className="flex justify-center h-[200px] rounded  bg-[#f9f9f9]">
                 <div className=" py-10 px-5">
@@ -417,7 +417,10 @@ console.log(datatourArray);
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="number" value={formData.sdt} name='sdt' id='sdt'
+                    type="number"
+                    value={formData.sdt}
+                    name="sdt"
+                    id="sdt"
                     onChange={handleChange}
                   />
                 </div>
@@ -425,13 +428,19 @@ console.log(datatourArray);
                   <p className="text-[#2D4271] mb-1">Email </p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text" value={formData.email} name='email' id='email'
+                    type="text"
+                    value={formData.email}
+                    name="email"
+                    id="email"
                     onChange={handleChange}
                   />
                   <p className="text-[#2D4271] mb-1">Địa chỉ</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
-                    type="text" value={formData.dia_chi} name='dia_chi' id='dia_chi'
+                    type="text"
+                    value={formData.dia_chi}
+                    name="dia_chi"
+                    id="dia_chi"
                     onChange={handleChange}
                   />
                 </div>
@@ -446,11 +455,26 @@ console.log(datatourArray);
                     <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
                       <label htmlFor="quantity">Người lớn</label>
                       <div className="flex gap-3">
-                        <button type="button" onClick={handleIncrement} className="icon-button">
+                        <button
+                          type="button"
+                          onClick={handleIncrement}
+                          className="icon-button"
+                        >
                           +
                         </button>
-                        <input type="text" className="w-[10px]" name="quantity" id="quantity" value={quantity} readOnly />
-                        <button type="button" onClick={handleDecrement} className="icon-button">
+                        <input
+                          type="text"
+                          className="w-[10px]"
+                          name="quantity"
+                          id="quantity"
+                          value={quantity}
+                          readOnly
+                        />
+                        <button
+                          type="button"
+                          onClick={handleDecrement}
+                          className="icon-button"
+                        >
                           -
                         </button>
                       </div>
@@ -467,18 +491,32 @@ console.log(datatourArray);
                     <div className="flex h-[50px] border items-center p-3 rounded-[10px] w-[400px] justify-between">
                       <label htmlFor="quantity2">Trẻ em</label>
                       <div className="flex gap-3">
-                        <button type="button" onClick={handleIncrement2} className="icon-button">
+                        <button
+                          type="button"
+                          onClick={handleIncrement2}
+                          className="icon-button"
+                        >
                           +
                         </button>
-                        <input type="text" className="w-[10px]" name="quantity2" id="quantity2" value={quantity2} readOnly />
-                        <button type="button" onClick={handleDecrement2} className="icon-button">
+                        <input
+                          type="text"
+                          className="w-[10px]"
+                          name="quantity2"
+                          id="quantity2"
+                          value={quantity2}
+                          readOnly
+                        />
+                        <button
+                          type="button"
+                          onClick={handleDecrement2}
+                          className="icon-button"
+                        >
                           -
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
               <div className="thanhstoan mt-10">
                 <p className="mt-5 text-[#2D4271] text-[28px] font-bold">
@@ -499,7 +537,7 @@ console.log(datatourArray);
                         <input
                           className="r-0"
                           type="radio"
-                          // tiền mặt 
+                          // tiền mặt
                           checked={isChecked}
                           onChange={handleRadioChange}
                         />
@@ -571,26 +609,32 @@ console.log(datatourArray);
                 Tóm tắt chuyến đi
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
-                Dịch vụ tùy chọn:{
-                  datatourArray &&
+                Dịch vụ tùy chọn:
+                {datatourArray &&
                   datatourArray.phuong_tien &&
-                  datatourArray.phuong_tien.map(item => item.loai_phuong_tien)
-                } + Khách Sạn
-                {
-                  datatourArray &&
+                  datatourArray.phuong_tien.map(
+                    (item) => item.loai_phuong_tien
+                  )}{" "}
+                + Khách Sạn
+                {datatourArray &&
                   datatourArray.khach_san &&
-                  datatourArray.khach_san.map(item => item.loai_khach_san)
-                } {" "}
+                  datatourArray.khach_san.map(
+                    (item) => item.loai_khach_san
+                  )}{" "}
               </p>
               <p className=" text-[#2D4271] text-base font-semibold">
                 Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
-      
+
               <div className="name flex gap-3 mt-4">
                 {images && images.length > 0 ? (
                   <div>
                     {/* {images.map((image) => ( */}
-                    <img key={images[0].id} style={img} src={`http://localhost:8000/storage/${images[0].image_path}`} />
+                    <img
+                      key={images[0].id}
+                      style={img}
+                      src={`http://localhost:8000/storage/${images[0].image_path}`}
+                    />
                     {/* ))} */}
                   </div>
                 ) : (
@@ -634,17 +678,22 @@ console.log(datatourArray);
                   <p className=" text-[#2D4271] text-base font-normal">
                     Người lớn
                   </p>
-                  <p className="text-red-400"> {quantity} x {datatourArray?.gia_nguoilon}</p>
+                  <p className="text-red-400">
+                    {" "}
+                    {quantity} x {datatourArray?.gia_nguoilon}
+                  </p>
                 </div>
                 <div className="flex mt-6 justify-between">
                   <p className=" text-[#2D4271] text-base font-normal">
                     Trẻ em
                   </p>
-                  <p className="text-red-400">{quantity2} x {datatourArray?.gia_treem} </p>
+                  <p className="text-red-400">
+                    {quantity2} x {datatourArray?.gia_treem}{" "}
+                  </p>
                 </div>
                 <input
                   type="text"
-                  placeholder='Mã Giảm Giá'
+                  placeholder="Mã Giảm Giá"
                   value={inputValue}
                   onChange={handleInputChange}
                   style={{
@@ -680,22 +729,32 @@ console.log(datatourArray);
                 <p className="mx-auto mt-5">
                   <hr />
                 </p>
-                {couponData.length > 0 ? couponData.map((item, index) => (
-                  <div className="flex mt-6 justify-between">
-                    <p className="text-[#2D4271] text-[15px] font-semibold">Tên Giảm Giá:</p>
-                    <p key={index} className="text-red-400 text-[14px]">{item.discount_name}</p>
-
-                  </div>
-                )) : ""}
-                {couponData.length > 0 ? couponData.map((item, index) => (
-                  <div className="flex mt-6 justify-between">
-                    <p className="text-[#2D4271] text-[15px] font-semibold">Số Tiền Giảm:</p>
-                    <p key={index} className="text-red-400 text-[14px]">
-                      {item.discount_condition == 1 ? item.percentage + "K" : item.percentage + "%"}
-                    </p>
-
-                  </div>
-                )) : ""}
+                {couponData.length > 0
+                  ? couponData.map((item, index) => (
+                      <div className="flex mt-6 justify-between">
+                        <p className="text-[#2D4271] text-[15px] font-semibold">
+                          Tên Giảm Giá:
+                        </p>
+                        <p key={index} className="text-red-400 text-[14px]">
+                          {item.discount_name}
+                        </p>
+                      </div>
+                    ))
+                  : ""}
+                {couponData.length > 0
+                  ? couponData.map((item, index) => (
+                      <div className="flex mt-6 justify-between">
+                        <p className="text-[#2D4271] text-[15px] font-semibold">
+                          Số Tiền Giảm:
+                        </p>
+                        <p key={index} className="text-red-400 text-[14px]">
+                          {item.discount_condition == 1
+                            ? item.percentage + "K"
+                            : item.percentage + "%"}
+                        </p>
+                      </div>
+                    ))
+                  : ""}
                 <div className="flex mt-6 justify-between">
                   <p className="text-[#2D4271] text-[28px] font-semibold">
                     Tổng cộng
@@ -706,7 +765,9 @@ console.log(datatourArray);
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
-                      {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
+                      {quantity * datatourArray?.gia_nguoilon +
+                        quantity2 * datatourArray?.gia_treem}{" "}
+                      VNĐ
                     </p>
                   )}
                 </div>
@@ -720,15 +781,10 @@ console.log(datatourArray);
                 >
                   Đặt ngay
                 </button>
-
               </div>
             </div>
           </div>
         </form>
-
-
-
-
       </div>
     </div>
   );
