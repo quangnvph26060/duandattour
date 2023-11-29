@@ -22,12 +22,28 @@ import anh15 from "../img/anh15.jpg"
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 import { useLocation } from "react-router-dom"
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 
-const TourPage = (props) => {
+const TourPage : React.FC = () => {
+  const location = useLocation();
+  const matchedResults: Tour[] = location.state?.matchedResults || [];
 
-  // console.log("props: ", props);
-
+  useEffect(() => {
+    // Thực hiện bất kỳ tác vụ nào bạn muốn với matchedResults
+  }, [matchedResults]);
   const [budget, setBudget] = useState(0);
+ 
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -399,32 +415,40 @@ const TourPage = (props) => {
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
 
 
-          <div className='grid grid-cols-3 gap-7 container mx-auto'>
-            {(selectedDayRange ? filteredTours : tourdiemden).map((items) => (
-              <div key={items.id}>
-                <div className='py-4 bg-neutral-100 rounded-lg'>
-                {items.images.map((image) => (
-                <img
-                  key={image.id}
-                  className="mt-4 rounded-lg w-full h-60 object-cover"
-                  src={`http://localhost:8000/storage/${image.image_path}`}
-                  alt={`Ảnh ${items.ten_tour}`}
-                />
-              ))}
-                  <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
-                  <p className='font-bold py-2 px-1'>{items.ten_tour}</p>
-                  <div className='flex gap-2 py-2 px-4'>
-                    <p className='text-sm'>Nơi khởi hành: </p>
-                    <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+         <div className="content">
+              <h2 className="mt-5 mb-5 home-page__title">Kết quả tìm kiếm tour du lịch</h2>
+              <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {matchedResults.map((tour) => (
+                  <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
+                    {tour.images.map((image) => (
+                      <img
+                        key={image.id}
+                        className="mt-4 rounded-lg w-full h-60 object-cover"
+                        src={`http://localhost:8000/storage/${image.image_path}`}
+                        alt={`Ảnh ${tour.ten_tour}`}
+                      />))}
+                    <div className="product-details mt-4">
+                      <div className="info-row data">
+                        <p>{tour.lich_khoi_hanh}</p>-
+                        <p>{tour.soluong} ngày</p>
+                      </div>
+                      <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                        <h3 className="text-lg font-bold">{tour.ten_tour}</h3></Link>
+                      <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
+                      {/* <p className='text mt-2'>{tour.mo_ta}</p> */}
+                      <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
+                      <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
+                        Giảm 6%
+                      </button>
+                      <button
+                        id="countdown-btn" style={{ color:'revert' }}
+                        className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded">
+                        Đặt Ngay
+                      </button>
+                    </div>
                   </div>
-                  <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
-                  <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                    <p className='text-lg font-semibold text-red-500'>{items.gia_nguoilon}₫</p>
-                    <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
           </div>
 
           <div className='ml-auto py-4 pt-6'>
