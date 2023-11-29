@@ -403,6 +403,14 @@ const TourPage = (props) => {
             {(selectedDayRange ? filteredTours : tourdiemden).map((items) => (
               <div key={items.id}>
                 <div className='py-4 bg-neutral-100 rounded-lg'>
+                {items.images.map((image) => (
+                <img
+                  key={image.id}
+                  className="mt-4 rounded-lg w-full h-60 object-cover"
+                  src={`http://localhost:8000/storage/${image.image_path}`}
+                  alt={`Ảnh ${items.ten_tour}`}
+                />
+              ))}
                   <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <p className='font-bold py-2 px-1'>{items.ten_tour}</p>
                   <div className='flex gap-2 py-2 px-4'>

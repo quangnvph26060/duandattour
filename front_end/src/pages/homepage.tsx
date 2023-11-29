@@ -137,106 +137,7 @@ const HomePage = () => {
     const minutes = date.getMinutes();
     return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
   };
-  // boxchat
-  // const [messageHistory, setMessageHistory] = useState([]);
-  // const [inputValue, setInputValue] = useState('');
-  // const [isChatVisible, setIsChatVisible] = useState(false);
-  // const messageListRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (messageListRef.current) {
-  //     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-  //   }
-  // }, [messageHistory]);
-
-  // const handleToggleChat = () => {
-  //   setIsChatVisible(prevState => !prevState);
-  // };
-
-  // const handleSendMessage = () => {
-  //   if (inputValue.trim() !== '') {
-  //     const newMessage = {
-  //       text: inputValue,
-  //       sender: 'user',
-  //       timestamp: new Date().getTime(),
-  //     };
-  //     setMessageHistory(prevHistory => [...prevHistory, newMessage]);
-  //     setInputValue('');
-  //     sendAutoReply(inputValue);
-  //   }
-  // };
-
-  // const handleKeyDown = event => {
-  //   if (event.key === 'Enter') {
-  //     handleSendMessage();
-  //   }
-  // };
-
-  // const sendAutoReply = userMessage => {
-  //   let autoReply;
-  //   if (userMessage.includes('loại tour')) {
-  //     autoReply =
-  //       'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
-  //   } else {
-  //     autoReply =
-  //       'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
-  //   }
-  //   const newMessage = {
-  //     text: autoReply,
-  //     sender: 'assistant',
-  //     timestamp: new Date().getTime(),
-  //   };
-  //   setMessageHistory(prevHistory => [...prevHistory, newMessage]);
-  // };
-
-  // const formatTimestamp = timestamp => {
-  //   const date = new Date(timestamp);
-  //   const hours = date.getHours();
-  //   const minutes = date.getMinutes();
-  //   return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-  // };
-  // boxchat
-  // const [remainingTime, setRemainingTime] = useState(60); // 5 minutes in seconds
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setRemainingTime((prevTime) =>{
-  //       let newTime = prevTime - 5;
-  //       console.log(newTime); // Hiển thị thông điệp lên console
-  //       if(newTime === 0){
-  //        // alert('đúng mẹ rồi ');
-  //       }
-  //       return newTime;
-  //     } );
-  //   }, 1000);
-
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
-
-  // // Chuyển đổi giây thành chuỗi định dạng "hh:mm:ss"
-  // const formatTime = time => {
-  //   const hours = Math.floor(time / 3600);
-  //   const minutes = Math.floor((time % 3600) / 60);
-  //   const seconds = time % 60;
-
-  //   return `${hours.toString().padStart(2, '0')}:${minutes
-  //     .toString()
-  //     .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  // };
-  // const [data, settour] = useState([]);
-
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:8000/api/admin/tour/')
-  //     .then(response => response.json())
-  //     .then(result => {
-  //       settour(result.data);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }, []);
   const [tourKM, setTourKM] = useState([]);
 
   const getTourKM = () => {
@@ -545,10 +446,10 @@ const HomePage = () => {
                   Số ngày
                 </label>
                 <select name="" id="" className="h-[26px] text-[#2d4271] font-bold">
-                  <option value="">1 ngày</option>
-                  <option value="">3 ngày</option>
-                  <option value="">5 ngày</option>
-                  <option value="">7 ngày</option>
+                  <option value="1">1 ngày</option>
+                  <option value="3">3 ngày</option>
+                  <option value="5">5 ngày</option>
+                  <option value="7">7 ngày</option>
                 </select>
               </div>
             </div>
