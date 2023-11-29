@@ -10,11 +10,12 @@ import { useGetTourQuery, useRemoveTourMutation } from "../../../../api/TourApi"
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
 import { Modal, Descriptions } from "antd";
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Select } from 'antd';
+import axios from "axios";
 
 const AdminProduct = (props: Props) => {
-    
+
     const { Option } = Select;
     const { data: loaitourdata } = useGetLoaiTourQuery();
     const { data: huongdanviendata } = useGetHuongDanVienQuery();
@@ -40,8 +41,6 @@ const AdminProduct = (props: Props) => {
     };
 
     const tourArray = tourdata?.data || [];
-    console.log(tourArray);
-
     const loaitourArrary = loaitourdata?.data || [];
     const huongdanvienArrary = huongdanviendata?.data || [];
     const dataSource = tourArray.map((
@@ -70,14 +69,24 @@ const AdminProduct = (props: Props) => {
                 trang_thai,
                 ma_loai_tour,
             }));
-
-        
-
+    const [HDVArrary, setHDVArrary] = useState([]);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const columns = [
         {
             title: "ID",
             dataIndex: "key",
             key: "key",
+        },
+        {
+            title: "Khu Vực",
+            dataIndex: "ma_loai_tour",
+            key: "ma_loai_tour",
+            render: (ma_loai_tour: number) => {
+                const loaiTour = loaitourArrary.find((item: { id: number; }) => item.id === ma_loai_tour);
+                return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
+
+            }
         },
         {
             title: "Tour du lịch",
@@ -104,9 +113,46 @@ const AdminProduct = (props: Props) => {
                 />
             ),
         },
+        {
+            title: "Ngày đi",
+            dataIndex: "lich_khoi_hanh",
+            key: "lich_khoi_hanh",
 
+        },
+        {
+            title: "Ngày kết thúc",
+            dataIndex: "ngay_ket_thuc",
+            key: "ngay_ket_thuc",
 
-     
+        },
+        {
+            title: "Ngươi Hướng Dẫn Viên",
+            render: (_, record) => {
+                    useEffect(()=>{},[alert('123')]);
+                axios.post('http://127.0.0.1:8000/api/admin/hdvtour', 
+                { start_date: record.lich_khoi_hanh, end_date: record.ngay_ket_thuc })
+                .then(response => {
+                    let hdvDate = response.data.user;
+                 
+
+                    setHDVArrary(hdvDate);
+                })
+                .catch(error => {
+                    // Xử lý lỗi
+                    console.error(error);
+                });
+                return (
+                    <Select style={{ width: "200px" }} placeholder="Cập nhật hướng dẫn viên">
+                        {HDVArrary.map((item) => (
+                            <Option key={item.id} value={item.name}>
+                                {item.name}
+                            </Option>
+                        ))}
+                    </Select>
+                );
+
+            },
+        },
         {
             title: "Giá Người lớn",
             dataIndex: "gia_nguoilon",
@@ -122,6 +168,7 @@ const AdminProduct = (props: Props) => {
             dataIndex: "soluong",
             key: "soluong",
         },
+
         {
             title: 'Trạng Thái',
             dataIndex: 'trang_thai',
@@ -137,16 +184,7 @@ const AdminProduct = (props: Props) => {
             },
         },
 
-        {
-            title: "Khu Vực",
-            dataIndex: "ma_loai_tour",
-            key: "ma_loai_tour",
-            render: (ma_loai_tour: number) => {
-                const loaiTour = loaitourArrary.find((item: { id: number; }) => item.id === ma_loai_tour);
-                return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
 
-            }
-        },
         {
             title: "Action",
             key: 'action',
@@ -187,6 +225,8 @@ const AdminProduct = (props: Props) => {
     };
 
     const visibleColumnsData = columns.filter(column => visibleColumns.includes(column.key));
+
+
     const tourDetailsColumns = [
         {
             title: 'Điểm Đi',
@@ -230,16 +270,18 @@ const AdminProduct = (props: Props) => {
         },
         // Thêm các cột khác tương ứng với thông tin tour
     ];
+
+
     const calculateTotalTours = (dataSource) => {
         return dataSource.length;
-      };
-      const totalTours = calculateTotalTours(dataSource);
+    };
+    const totalTours = calculateTotalTours(dataSource);
     return (
         <div>
 
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-3xl">Quản lý tour</h2>
-  
+
                 <Button type="primary" danger>
                     <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
                         <AiOutlinePlus />
@@ -251,7 +293,7 @@ const AdminProduct = (props: Props) => {
             {isLoading ? <Skeleton /> : (
                 <>
                     <div>
-                    <h3 className="text-lg text-orange-600">Tổng số :  {totalTours} tour</h3>
+                        <h3 className="text-lg text-orange-600">Tổng số :  {totalTours} tour</h3>
                         <h3 className=" mt-2 text-lg">Hiển thị cột</h3>
                         <Select
                             mode="multiple"

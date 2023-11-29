@@ -156,7 +156,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
 Route::prefix('admin')->group(function () {
     // phân hướng dẫn viên cho tour đó 
     Route::prefix('hdvtour')->group(function(){
-        Route::post('/', [ApiHuongDanVienTourController::class, 'store']);
+        Route::get('/', [ApiHuongDanVienTourController::class, 'store']);
         Route::get('/getListHDVTour', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
     });
 

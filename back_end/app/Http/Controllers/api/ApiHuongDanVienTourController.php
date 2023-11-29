@@ -6,15 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HuongDanVienTour;
 use App\Models\TourModel;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
+=======
+use App\Models\User;
+>>>>>>> b37d55e22b4a449d48816bd0b3395f51ccb54f66
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Auth;
 
 class ApiHuongDanVienTourController extends Controller
 {
     // lọc ra những id hướng dẫn viên chưa có tour đó 
     public function store(Request $request)
     {
-       
+
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         // Tạo một đối tượng Carbon từ ngày bắt đầu
@@ -30,8 +36,22 @@ class ApiHuongDanVienTourController extends Controller
             ->whereNotIn('start_date', $dateArray)
             ->whereNotIn('end_date', $dateArray)
             ->get();
-        return response()->json($result);
+        $permissions   = User::with('roles', 'roles.permissions')->get();
+        $matchedPermissions = [];
+        foreach ($result as $hdv) {
+            $hdvId = $hdv->hdv_id;
+
+            foreach ($permissions as $user) {
+                if ($user->id == $hdvId) {
+                    $matchedPermissions[] = $user;
+                    break;
+                }
+            }
+        }
+        $uniquePermissions = array_unique($matchedPermissions);
+        return response()->json(['hdv' => $result, 'user' => $permissions,'user' => $uniquePermissions]);
     }
+<<<<<<< HEAD
 
     // list huong dan vien
     public function getListHDVTour(){
@@ -69,4 +89,20 @@ class ApiHuongDanVienTourController extends Controller
             return response()->json(['message'=>'Lỗi không thể cập nhật'],404);
         }
     }
+=======
+    // public function getListHDVTour(){
+    //     $user = Auth::user();
+    //     if($user){
+    //          $hdvTour = HuongDanVienTour::where('hdv_id',$user->id)->get();
+    //         $demo = [];
+    //             foreach($hdvTour as $item){
+    //                 $demo[] =$item->tour_id;
+    //             }
+
+    //          $tour = TourModel::whereIn('id', $demo)->get();
+    //          return response()->json($tour,200);
+    //     }
+
+    // }
+>>>>>>> b37d55e22b4a449d48816bd0b3395f51ccb54f66
 }

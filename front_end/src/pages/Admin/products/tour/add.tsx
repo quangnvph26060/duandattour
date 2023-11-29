@@ -119,6 +119,7 @@ const AdminTourAdd: React.FC = () => {
 
 
   // test chọn ngày đi và kết thúc 
+
   const [HDVArrary, setHDVArrary] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -138,8 +139,6 @@ const AdminTourAdd: React.FC = () => {
     axios.post('http://127.0.0.1:8000/api/admin/hdvtour', { start_date: startDate, end_date: endDate })
       .then(response => {
         let hdvDate = response.data;
-
-
         axios.get('http://127.0.0.1:8000/api/admin/user')
           .then(response => {
             let ShowUserAll = response.data;
@@ -154,9 +153,13 @@ const AdminTourAdd: React.FC = () => {
                   }
                 }
               });
-            });
-            
 
+
+            });
+
+            setHDVArrary(matchingRecords);
+            console.log(HDVArrary);
+            
           })
           .catch(error => {
             // Xử lý lỗi
@@ -169,12 +172,25 @@ const AdminTourAdd: React.FC = () => {
         console.error(error);
       });
   };
-
+  // const handleSelectChange = (selectedRecordId) => {
+  //   // Xử lý các thao tác sau khi lựa chọn được thay đổi, sử dụng giá trị selectedRecordId
+  //   // Ví dụ: Gọi hàm xử lý atnd với selectedRecordId
+  //   yourATNDFunction(selectedRecordId);
+  // };
   return (
     <div className="container">
       <header className="mb-4">
         <h2 className="font-bold text-2xl">Tạo mới tour</h2>
       </header>
+      {/* <Select >
+        
+        { HDVArrary.length>0&&HDVArray.map((record) => (
+          <Option key={record.id} value={record.id}>
+            
+            {record.id} - {record.name}
+          </Option>
+        ))}
+      </Select> */}
       <Form
         className="tour-form"
         name="basic"
