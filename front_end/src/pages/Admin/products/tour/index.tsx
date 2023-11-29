@@ -41,35 +41,142 @@ const AdminProduct = (props: Props) => {
     };
 
     const tourArray = tourdata?.data || [];
+
+    const tour = () => {
+        const [hdvtour, sethdvtour] = useState([]);
+        useEffect(() => {
+            axios.get('http://127.0.0.1:8000/api/admin/hdvtour/')
+                .then((response) => {
+                    sethdvtour(response.data.hdv);
+
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }, []);
+
+
+        const [tourHDVArray, setTourHDVArray] = useState([]);
+        useEffect(() => {
+            const fetchHDVData = async (a, b) => {
+                if (a && b) {
+                    try {
+                        const response = await axios.post('http://127.0.0.1:8000/api/admin/hdvtour', {
+                            start_date: a,
+                            end_date: b
+                        });
+                        const hdvDate = response.data.hdv_abc;
+
+                        return hdvDate;
+                    } catch (error) {
+                        // Xử lý lỗi
+                        console.error(error);
+                        return [];
+                    }
+                }
+            };
+
+            const fetchData = async () => {
+                const tempArray = [];
+                for (let i = 0; i < tourArray.length; i++) {
+                    const item = tourArray[i];
+                    const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc);
+                    tempArray.push(hdvData);
+                }
+                setTourHDVArray(tempArray);
+            };
+
+            fetchData();
+        }, [tourArray]);
+
+        return (
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        {/* <th>Ma Loai Tour</th>
+                <th>Image Path</th> */}
+                        <th>Lich Khoi Hanh</th>
+                        <th>Ngay Ket Thuc</th>
+                        <th>Hướng dẫn viên</th>
+                        <th>Gia Nguoi Lon</th>
+                        <th>Gia Tre Em</th>
+                        <th>So Luong</th>
+                        <th>Trang Thai</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tourArray.map((item, index) => (
+                        <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td>{item.ten_tour}</td>
+                            {/* <td>{item.ma_loai_tour}</td>
+                  <td>{item.image_path}</td> */}
+                            <td>{item.lich_khoi_hanh}</td>
+                            <td>{item.ngay_ket_thuc}</td>
+                            <td>
+                                <select>
+                                    <option value="">Chọn</option>
+                                    {tourHDVArray[index]?.map((hdvItem) => {
+                                        const selected = hdvtour.filter((itemhdv) => itemhdv.hdv_id == hdvItem.id
+                                            && typeof (itemhdv.start_date) == typeof (item.lich_khoi_hanh)
+                                            && typeof (itemhdv.end_date) == typeof (item.ngay_ket_thuc)).length > 0;
+
+                                        return (
+                                            <option
+                                                key={hdvItem.id}
+                                                value={hdvItem.id}
+                                                selected={selected ? "selected" : ""}
+                                            >
+                                                {hdvItem.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </td>
+                            <td>{item.gia_nguoilon}</td>
+                            <td>{item.gia_treem}</td>
+                            <td>{item.soluong}</td>
+                            <td>{item.trang_thai}</td>
+                            <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        );
+    };
     const loaitourArrary = loaitourdata?.data || [];
     const huongdanvienArrary = huongdanviendata?.data || [];
-    const dataSource = tourArray.map((
-        { id, ten_tour, image_path, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
-            diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
-            trang_thai, ma_loai_tour }: ITour): {
-                key: number; soluong: number; ten_tour: string;
-                image_path: string;
+    const dataSource = tourArray?.map(({
+        id, ten_tour, image_path, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
+        diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
+        trang_thai, ma_loai_tour
+    }: ITour) => ({
+        key: id,
+        soluong,
+        ten_tour,
+        image_path,
+        diem_khoi_hanh,
+        diem_den,
+        gia_nguoilon,
+        gia_treem,
+        mo_ta,
+        diem_di,
+        lich_khoi_hanh,
+        ngay_ket_thuc,
+        trang_thai,
+        ma_loai_tour,
+    }));
 
-                diem_khoi_hanh: string; diem_den: string;
-                gia_nguoilon: any; gia_treem: any; mo_ta: any; diem_di: string;
-                lich_khoi_hanh: Date; ngay_ket_thuc: string,
-                trang_thai: number; ma_loai_tour: number; ma_hdv: number;
-            } => ({
-                key: id,
-                soluong,
-                ten_tour,
-                image_path,
-                diem_khoi_hanh,
-                diem_den,
-                gia_nguoilon, gia_treem,
-                mo_ta,
-                diem_di,
-                lich_khoi_hanh,
-                ngay_ket_thuc,
-                trang_thai,
-                ma_loai_tour,
-            }));
-    const [HDVArrary, setHDVArrary] = useState([]);
+
+
+
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const columns = [
@@ -83,9 +190,8 @@ const AdminProduct = (props: Props) => {
             dataIndex: "ma_loai_tour",
             key: "ma_loai_tour",
             render: (ma_loai_tour: number) => {
-                const loaiTour = loaitourArrary.find((item: { id: number; }) => item.id === ma_loai_tour);
+                const loaiTour = loaitourArrary?.find((item: { id: number }) => item.id === ma_loai_tour);
                 return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
-
             }
         },
         {
@@ -117,42 +223,18 @@ const AdminProduct = (props: Props) => {
             title: "Ngày đi",
             dataIndex: "lich_khoi_hanh",
             key: "lich_khoi_hanh",
-
         },
         {
             title: "Ngày kết thúc",
             dataIndex: "ngay_ket_thuc",
             key: "ngay_ket_thuc",
-
         },
-        {
-            title: "Ngươi Hướng Dẫn Viên",
-            render: (_, record) => {
-                    useEffect(()=>{},[alert('123')]);
-                axios.post('http://127.0.0.1:8000/api/admin/hdvtour', 
-                { start_date: record.lich_khoi_hanh, end_date: record.ngay_ket_thuc })
-                .then(response => {
-                    let hdvDate = response.data.user;
-                 
-
-                    setHDVArrary(hdvDate);
-                })
-                .catch(error => {
-                    // Xử lý lỗi
-                    console.error(error);
-                });
-                return (
-                    <Select style={{ width: "200px" }} placeholder="Cập nhật hướng dẫn viên">
-                        {HDVArrary.map((item) => (
-                            <Option key={item.id} value={item.name}>
-                                {item.name}
-                            </Option>
-                        ))}
-                    </Select>
-                );
-
-            },
-        },
+        // {
+        //     title: "Ngươi Hướng Dẫn Viên",
+        //     render: (_: any, record: { lich_khoi_hanh: any, ngay_ket_thuc: any }) => {
+        //         return abc(record.lich_khoi_hanh, record.ngay_ket_thuc);
+        //     },
+        // },
         {
             title: "Giá Người lớn",
             dataIndex: "gia_nguoilon",
@@ -279,6 +361,7 @@ const AdminProduct = (props: Props) => {
     return (
         <div>
 
+            {tour()}
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-3xl">Quản lý tour</h2>
 

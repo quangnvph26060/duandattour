@@ -119,20 +119,6 @@ Route::prefix('register')->group(function () {
     Route::post('/dk', [ApiAuthController::class, 'registers']);
     Route::put('/edit_information', [ApiAuthController::class, 'edit_information']);
 });
-
-
-//permission && role
-
-// Route::get('/', [ApiPermissionsController::class, 'index']);
-// Route::get('/phanvaitro/{id}', [ApiPermissionsController::class, 'PhanVaiTro']);
-// Route::get('/phanquyen/{id}', [ApiPermissionsController::class, 'PhanQuyen']);
-// Route::post('/add_role', [ApiPermissionsController::class, 'add_role'])->name('add_role');
-// Route::post('/add_permission', [ApiPermissionsController::class, 'add_permission'])->name('add_permission');
-// Route::post('insert_roles/{id}', [ApiPermissionsController::class, 'InsertRoles'])->name('user.insertroles');
-// Route::post('insert_permission/{id}', [ApiPermissionsController::class, 'InsertPermission'])->name('user.insert_permission');
-// end  permission && role
-
-
 // show chỗ đoạn menu
 Route::get('/ShowLoaiTour', [ApiLoaiTourController::class, 'ShowLoaiTour']);
 
@@ -155,6 +141,8 @@ Route::prefix('admin')->group(function () {
     // phân hướng dẫn viên cho tour đó 
     Route::prefix('hdvtour')->group(function(){
         Route::post('/', [ApiHuongDanVienTourController::class, 'store']);
+        Route::get('/', [ApiHuongDanVienTourController::class, 'allHuongDanVienTOur']);
+        Route::post('/handleHuongDanVien', [ApiHuongDanVienTourController::class, 'handleHuongDanVien']);
     });
 
     
