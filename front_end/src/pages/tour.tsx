@@ -19,13 +19,15 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
+import { useNavigate } from 'react-router-dom';
+
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
-import { useLocation} from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 const TourPage = (props) => {
 
-// console.log("props: ", props);
+  // console.log("props: ", props);
 
   const [budget, setBudget] = useState(0);
 
@@ -89,7 +91,7 @@ const TourPage = (props) => {
       axios
         .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
         .then((response) => {
-          console.log(response.data.tourdiemden);
+          console.log('123jhgkjg', response.data.tourdiemden);
           setTour(response.data.tourdiemden);
         })
     }
@@ -135,34 +137,74 @@ const TourPage = (props) => {
   // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
 
   //Hiếu
-  const [selectedDayRange, setSelectedDayRange] = useState(null);
-  const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+
   const [filteredTours, setFilteredTours] = useState([]);
+    const [selectedDayRange, setSelectedDayRange] = useState(null);
 
-  const handleButtonClick = (dayRange) => {
-    setSelectedDayRange(dayRange);
+    const handleButtonClick = (dayRange) => {
+        // Đặt phạm vi ngày đã chọn
+        setSelectedDayRange(dayRange);
 
-    // Filter tours based on the selected day range logic
-    const filteredTours = tourdiemden.filter((tour) => {
-      const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
-      // Adjust this logic based on your specific filtering criteria
-      switch (dayRange) {
-        case '1-3':
-          return numberOfDays >= 1 && numberOfDays <= 3;
-        case '4-7':
-          return numberOfDays >= 4 && numberOfDays <= 7;
-        case '8-14':
-          return numberOfDays >= 8 && numberOfDays <= 14;
-        case '14+':
-          return numberOfDays > 14;
-        default:
-          return true; // If no day range is selected, show all tours
-      }
-    });
+        // Lọc các chuyến tham quan dựa trên phạm vi ngày đã chọn
+        const filteredTours = tourdiemden.filter((tour) => {
+            const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
 
-    // Update the state with the filtered tours
-    setFilteredTours(filteredTours);
-  };
+            if (dayRange === '1-3' && numberOfDays >= 1 && numberOfDays <= 3) {
+                return true;
+            } else if (dayRange === '4-7' && numberOfDays >= 4 && numberOfDays <= 7) {
+                return true;
+            } else if (dayRange === '8-14' && numberOfDays >= 8 && numberOfDays <= 14) {
+                return true;
+            } else if (dayRange === '14+' && numberOfDays > 14) {
+                return true;
+            }
+
+            return false;
+        });
+
+
+        // Đặt các chuyến tham quan đã lọc
+        setFilteredTours(filteredTours);
+    };
+
+
+    const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+    const filterToursByNumberOfPeople = (tour, selectedNumberOfPeople) => {
+        if (!selectedNumberOfPeople) {
+            return true; // No number of people selected, so the tour should be included
+        }
+
+        if (selectedNumberOfPeople === 1 && tour.soluong === 1) {
+            return true;
+        } else if (selectedNumberOfPeople === 2 && tour.soluong === 2) {
+            return true;
+        } else if (selectedNumberOfPeople === '3-5' && tour.soluong >= 3 && tour.soluong <= 5) {
+            return true;
+        } else if (selectedNumberOfPeople === 999 && tour.soluong > 5) {
+            return true;
+        }
+
+        return false;
+    };
+
+    const handleNumberOfPeopleClick = (numberOfPeople) => {
+        // Đặt số lượng người đã chọn
+        console.log(numberOfPeople)
+        setSelectedNumberOfPeople(numberOfPeople);
+
+        // Lọc các chuyến tham quan dựa trên số lượng người đã chọn
+        const filteredTours = tourdiemden.filter((tour) =>
+            filterToursByNumberOfPeople(tour, numberOfPeople)
+        );
+
+        // Đặt các chuyến tham quan đã lọc
+        setFilteredTours(filteredTours);
+    };
+
+
+
+
+
 
 
 
@@ -318,21 +360,20 @@ const TourPage = (props) => {
           </div>
 
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
-
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
+              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>1 đến 3 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>4 đến 7 ngày</button>
+              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>4 đến 7 ngày</button>
             </div>
           </div>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>8 đến 14 ngày</button>
+              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>8 đến 14 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>trên 14 ngày</button>
+              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>trên 14 ngày</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Ngày đi</p>
@@ -342,38 +383,21 @@ const TourPage = (props) => {
           <p className='px-3 text-lg font-medium py-1'>Số người</p>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>1 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>1 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>2 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>2 người</button>
             </div>
           </div>
           <div className='flex gap-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(3)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>3 - 5 người</button>
+              <button onClick={() => handleNumberOfPeopleClick('3-5')} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>3 - 5 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(5)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>5+ người</button>
+              <button onClick={() => handleNumberOfPeopleClick(999)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>5+ người</button>
             </div>
           </div>
-          <p className='px-3 text-lg font-medium py-1'>Dòng Tour</p>
-          <div className='flex gap-2 py-2 container justify-center'>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Cao cấp</button>
-            </div>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiêu chuẩn</button>
-            </div>
-          </div>
-          <div className='flex gap-2 container justify-center'>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiết kiệm</button>
-            </div>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Giá tốt</button>
-            </div>
-          </div>
-          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm___________</p>
+          <p className='px-3 text-lg font-medium py-3 mt-3'>Bộ lọc tìm kiếm___________</p>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
 
           <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách: {formatCurrency(budget)}</p>
@@ -398,26 +422,38 @@ const TourPage = (props) => {
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
 
-
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
-            {(selectedDayRange ? filteredTours : tourdiemden).map((items) => (
+            {(selectedDayRange || selectedNumberOfPeople
+              ? filteredTours
+              : tourdiemden
+            ).map((items) => (
               <div key={items.id}>
+                {/* ... (your existing code) */}
                 <div className='py-4 bg-neutral-100 rounded-lg'>
                   <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <p className='font-bold py-2 px-1'>{items.ten_tour}</p>
+                  <p className='font-bold py-2 px-1'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>
                     <p className='text-sm'>Nơi khởi hành: </p>
                     <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
                   </div>
-                  <p className='text-base font-medium pt-1 px-4'>Giá cũ: 7,990,000₫</p>
+                  <p className='text-base font-medium pt-1 px-4'>Giá trẻ em: {items.gia_treem}₫</p>
                   <div className='grid grid-cols-2 justify-between px-4 p-1'>
                     <p className='text-lg font-semibold text-red-500'>{items.gia_nguoilon}₫</p>
                     <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
                   </div>
                 </div>
+                <button
+                  onClick={() => addToCart(items)}
+                  className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2'
+                >
+                  Thêm vào giỏ hàng
+                </button>
               </div>
             ))}
           </div>
+
+
 
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>

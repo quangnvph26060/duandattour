@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import '../page.css'
 import '../messenger.css';
 import { Link } from 'react-router-dom';
@@ -24,8 +25,60 @@ import hq from '../img/aaaaa.webp'
 import { BiMap } from 'react-icons/bi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
+import { useNavigate } from 'react-router-dom';
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 
 const HomePage = () => {
+  const [searchResults, setSearchResults] = useState<Tour[]>([]);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDepartureDate, setSelectedDepartureDate] = useState('');
+  const [selectedDestination, setSelectedDestination] = useState('');
+  const [selectedDeparture, setSelectedDeparture] = useState('');
+  const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
+  const navigate = useNavigate();
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/admin/tour/', {
+        params: {
+          ngayDen: selectedDate,
+          lichKhoiHanh: selectedDepartureDate,
+          diemDen: selectedDestination,
+          diemDi: selectedDeparture
+        }
+      });
+
+      setSearchResults(response.data.data);
+
+      const filteredResults = response.data.data.filter((tour: Tour) =>
+        tour.ngay_ket_thuc.includes(selectedDate) &&
+        tour.lich_khoi_hanh.includes(selectedDepartureDate) &&
+        tour.diem_den === selectedDestination &&
+        tour.diem_di === selectedDeparture
+      );
+
+      setMatchedResults(filteredResults);
+
+      if (filteredResults.length > 0) {
+        // Chuyển trang khi có kết quả tìm kiếm chính xác
+        navigate('/tour', { state: { matchedResults: filteredResults } });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+ 
+
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -361,7 +414,7 @@ const HomePage = () => {
           ]}
         >
           {names.map((name) => (
-            <div key={name.id} className="slider-item relative">
+            <div key={name.id} className="slider-item">
               <img style={{ height: '400px' }}
                 className="slider-image"
                 src={name.image}
@@ -371,43 +424,131 @@ const HomePage = () => {
           ))}
         </Slider>
       </div>
-      <div className="bg-white box-shadow rounded-lg  p-9 mx-auto" style={{ width: '1200px' }}>
+      <div className="bg-white box-shadow rounded-lg p-9 mx-auto" style={{ width: '1200px' }}>
       <h1 className="title">PolyTour Trong Nước</h1>
-        <div className="tour-form mt-2 flex items-center">
-          <div className="flex items-center mr-4">
-            <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đi:</label>
-            <div className="relative">
-              <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
-                <span>&#128197;</span>
-              </label>
-              <input style={{ backgroundColor: '  #F0FFF0' }}
-                type="date"
-                id="arrivalDate"
-                className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
-              />
-            </div>
-           
+      <div className="tour-form mt-2 flex items-center">
+        <div className="flex items-center mr-4">
+          <label htmlFor="departureDate" className="mr-2 text-gray-600">
+            Ngày Đi:
+          </label>
+          <div className="relative">
+            <label
+              htmlFor="departureDate"
+              className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400"
+            >
+              <span>&#128197;</span>
+            </label>
+            <input
+              style={{ backgroundColor: ' #F0FFF0' }}
+              type="date"
+              id="departureDate"
+              className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
+              value={selectedDepartureDate}
+              onChange={(e) => setSelectedDepartureDate(e.target.value)}
+            />
           </div>
-          <div className="flex items-center mr-4">
-            <div className="flex items-center mr-4">
-              <label htmlFor="arrivalDate" className="mr-2 text-gray-600">Ngày đến:</label>
-              <div className="relative">
-                <label htmlFor="arrivalDate" className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
-                  <span>&#128197;</span>
-                </label>
-                <input style={{ backgroundColor: '  #F0FFF0' }}
-                  type="date"
-                  id="arrivalDate"
-                  className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
-                />
-              </div>
-            </div>
+        </div>
+        <div className="flex items-center mr-4">
+          <label htmlFor="arrivalDate" className="mr-2 text-gray-600">
+            Ngày đến:
+          </label>
+          <div className="relative">
+            <label
+              htmlFor="arrivalDate"
+              className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400"
+            >
+              <span>&#128197;</span>
+            </label>
+            <input
+              style={{ backgroundColor: ' #F0FFF0' }}
+              type="date"
+              id="arrivalDate"
+              className="custum border-yellow-600 rounded px-3 py-2 pl-8 focus:outline-none transition-colors duration-300"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
           </div>
-          <div className="flex items-center mr-4">
-            <label htmlFor="destination" className="mr-2 text-gray-600">Nơi đến:</label>  
-            <select style={{ backgroundColor: '  #F0FFF0' }} id="destination"
-             className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
-              <option  value="Hà Nội"> Hà Nội</option>
+        </div>
+        <div className="flex items-center mr-4">
+          <label htmlFor="destination" className="mr-2 text-gray-600">
+            Điểm Đi:
+          </label>
+          <select
+            style={{ backgroundColor: ' #F0FFF0' }}
+            id="depeparture"
+            className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300"
+            value={selectedDeparture}
+            onChange={(e) => setSelectedDeparture(e.target.value)}
+          >
+            <option  value="Hà Nội"> Hà Nội</option>
+            <option value="Đà Nẵng">Đà Nẵng</option>
+              <option value="Hcm">Hồ Chí Minh </option>
+              <option value="Hải Phòng">Hải Phòng</option>
+              
+              <option value="Cần Thơ">Cần Thơ</option>
+              <option value="An Giang">An Giang</option>
+              <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+              <option value="Bắc Giang">Bắc Giang</option>
+              <option value="Bắc Kạn">Bắc Kạn</option>
+              <option value="Bạc Liêu">Bạc Liêu</option>
+              <option value="Bắc Ninh">Bắc Ninh</option>
+              <option value="Bến Tre">Bến Tre</option>
+              <option value="Bình Định">Bình Định</option>
+              <option value="Bình Dương">Bình Dương</option>
+              <option value="Bình Phước">Bình Phước</option>
+              <option value="Bình Thuận">Bình Thuận</option>
+              <option value="Cà Mau">Cà Mau</option>
+              <option value="Cao Bằng">Cao Bằng</option>
+              <option value="Đắk Lắk">Đắk Lắk</option>
+              <option value="Đắk Nông">Đắk Nông</option>
+              <option value="Điện Biên">Điện Biên</option>
+              <option value="Đồng Nai">Đồng Nai</option>
+              <option value="Đồng Tháp">Đồng Tháp</option>
+              <option value="Gia Lai">Gia Lai</option>
+              <option value="Hà Giang">Hà Giang</option>
+              <option value="Hà Nam">Hà Nam</option>
+              <option value="Hà Tĩnh">Hà Tĩnh</option>
+              <option value="Hải Dương">Hải Dương</option>
+              <option value="Hậu Giang">Hậu Giang</option>
+              <option value="Hòa Bình">Hòa Bình</option>
+              <option value="Hưng Yên">Hưng Yên</option>
+              <option value="Khánh Hòa">Khánh Hòa</option>
+              <option value="Kiên Giang">Kiên Giang</option>
+              <option value="Kon Tum">Kon Tum</option>
+              <option value="Lai Châu">Lai Châu</option>
+              <option value="Lâm Đồng">Lâm Đồng</option>
+              <option value="Lạng Sơn">Lạng Sơn</option>
+              <option value="Lào Cai">Lào Cai</option>
+              <option value="Long An">Long An</option>
+              <option value="Nam Định">Nam Định</option>
+              <option value="Nghệ An">Nghệ An</option>
+              <option value="Ninh Bình">Ninh Bình</option>
+              <option value="Ninh Thuận">Ninh Thuận</option>
+              <option value="Phú Thọ">Phú Thọ</option>
+              <option value="Phú Yên">Phú Yên</option>
+              <option value="Quảng Bình">Quảng Bình</option>
+              <option value="Quảng Nam">Quảng Nam</option>
+              <option value="Quảng Ngãi">Quảng Ngãi</option>
+              <option value="Quảng Ninh">Quảng Ninh</option>
+              <option value="Quảng Trị">Quảng Trị</option>
+              <option value="Sóc Trăng">Sóc Trăng</option>
+              <option value="Sơn La">Sơn La</option>
+
+          </select>
+        </div>
+        <div className="flex items-center mr-4">
+          <label htmlFor="destination" className="mr-2 text-gray-600">
+            Điểm Đến:
+          </label>
+          <select
+            style={{ backgroundColor: ' #F0FFF0' }}
+            id="destination"
+            className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300"
+            value={selectedDestination}
+            onChange={(e) => setSelectedDestination(e.target.value)}
+          >
+            <option value="Hà Nội"> Hà Nội</option>
+            <option  value="Miền Tây"> Miền Tây</option>
               <option value="Hcm">Hồ Chí Minh </option>
               <option value="Hải Phòng">Hải Phòng</option>
               <option value="Đà Nẵng">Đà Nẵng</option>
@@ -460,71 +601,41 @@ const HomePage = () => {
               <option value="Sóc Trăng">Sóc Trăng</option>
               <option value="Sơn La">Sơn La</option>
 
-            </select>
-          </div>
-          <div className="flex items-center mr-4">
-            <label htmlFor="departure" className="mr-2 text-gray-600">Nơi đi:</label> 
-            <select style={{ backgroundColor: '  #F0FFF0' }} id="departure" className="custum border-yellow-600 rounded px-3 py-2 focus:outline-none transition-colors duration-300">
-              <option value="Hà Nội">Hà Nội</option>
-              <option value="Hcm">Hồ Chí Minh </option>
-              <option value="Hải Phòng">Hải Phòng </option>
-              <option value="Đà Nẵng">Đà Nẵng</option>
-              <option value="Cần Thơ">Cần Thơ</option>
-              <option value="An Giang">An Giang</option>
-              <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
-              <option value="Bắc Giang">Bắc Giang</option>
-              <option value="Bắc Kạn">Bắc Kạn</option>
-              <option value="Bạc Liêu">Bạc Liêu</option>
-              <option value="Bắc Ninh">Bắc Ninh</option>
-              <option value="Bến Tre">Bến Tre</option>
-              <option value="Bình Định">Bình Định</option>
-              <option value="Bình Dương">Bình Dương</option>
-              <option value="Bình Phước">Bình Phước</option>
-              <option value="Bình Thuận">Bình Thuận</option>
-              <option value="Cà Mau">Cà Mau</option>
-              <option value="Cao Bằng">Cao Bằng</option>
-              <option value="Đắk Lắk">Đắk Lắk</option>
-              <option value="Đắk Nông">Đắk Nông</option>
-              <option value="Điện Biên">Điện Biên</option>
-              <option value="Đồng Nai">Đồng Nai</option>
-              <option value="Đồng Tháp">Đồng Tháp</option>
-              <option value="Gia Lai">Gia Lai</option>
-              <option value="Hà Giang">Hà Giang</option>
-              <option value="Hà Nam">Hà Nam</option>
-              <option value="Hà Tĩnh">Hà Tĩnh</option>
-              <option value="Hải Dương">Hải Dương</option>
-              <option value="Hậu Giang">Hậu Giang</option>
-              <option value="Hòa Bình">Hòa Bình</option>
-              <option value="Hưng Yên">Hưng Yên</option>
-              <option value="Khánh Hòa">Khánh Hòa</option>
-              <option value="Kiên Giang">Kiên Giang</option>
-              <option value="Kon Tum">Kon Tum</option>
-              <option value="Lai Châu">Lai Châu</option>
-              <option value="Lâm Đồng">Lâm Đồng</option>
-              <option value="Lạng Sơn">Lạng Sơn</option>
-              <option value="Lào Cai">Lào Cai</option>
-              <option value="Long An">Long An</option>
-              <option value="Nam Định">Nam Định</option>
-              <option value="Nghệ An">Nghệ An</option>
-              <option value="Ninh Bình">Ninh Bình</option>
-              <option value="Ninh Thuận">Ninh Thuận</option>
-              <option value="Phú Thọ">Phú Thọ</option>
-              <option value="Phú Yên">Phú Yên</option>
-              <option value="Quảng Bình">Quảng Bình</option>
-              <option value="Quảng Nam">Quảng Nam</option>
-              <option value="Quảng Ngãi">Quảng Ngãi</option>
-              <option value="Quảng Ninh">Quảng Ninh</option>
-              <option value="Quảng Trị">Quảng Trị</option>
-              <option value="Sóc Trăng">Sóc Trăng</option>
-              <option value="Sơn La">Sơn La</option>
-
-            </select>
-          </div>
-
-          <button className="bg-yellow-600 text-white py-3 px-5 rounded ml-2">Search</button>
+          </select>
         </div>
-      </div>
 
+
+        <button
+          className="bg-yellow-600 text-white py-3 px-5 rounded ml-2"
+          onClick={handleSearch}
+        >
+          Search
+        </button>
+      </div>
+      <div>
+        {matchedResults.length > 0 ? (
+          matchedResults.map((tour) => (
+            <div key={tour.id} className="tour-result">
+              <div>
+                <h2>Tour Details</h2>
+                <p><strong>ID:</strong> {tour.id}</p>
+                <p><strong>Tên tour:</strong> {tour.ten_tour}</p>
+                <p><strong>Điểm đi:</strong> {tour.diem_di}</p>
+                <p><strong>Điểm đến:</strong> {tour.diem_den}</p>
+                <p><strong>Lịch khởi hành:</strong> {tour.lich_khoi_hanh}</p>
+                <p><strong>Ngày kết thúc:</strong> {tour.ngay_ket_thuc}</p>
+                <p><strong>Điểm khởi hành:</strong> {tour.diem_khoi_hanh}</p>
+                <p><strong>Giá tour:</strong> {tour.gia_tour}</p>
+                <p><strong>Mô tả:</strong> {tour.mo_ta}</p>
+                <p><strong>Số lượng:</strong> {tour.soluong}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p> </p>
+        )}
+      </div>
+    </div>
       <div className="content">
         <div className="content">
           <h2 className='mt-5 mb-5 home-page__title'>CHƯƠNG TRÌNH ƯU ĐÃI!!!</h2>

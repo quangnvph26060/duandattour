@@ -62,17 +62,11 @@
 
 .left button {
     background-color: #fff;
-    border: 1px solid #000;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease-in-out;
-}
-
-.left button:hover {
-    background-color: #e0e0e0;
-    /* Thay đổi màu nền khi di chuột qua */
 }
 
 

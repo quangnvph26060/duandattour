@@ -62,6 +62,7 @@ import Giohanguser from "./pages/giohanguser";
 import Giohanguser1 from "./pages/giohanguser1";
 import Giohanguser2 from "./pages/giohanguser2";
 import Dmkuser from "./pages/changeMk";
+import Test from "./pages/text";
 
 
 export const router = createBrowserRouter([
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
       {
         path: "tour",
         element: <TourPage />,
+      },
+      {
+        path: "test",
+        element: <Test />,
       },
       {
         path: "tour/:diem_den",

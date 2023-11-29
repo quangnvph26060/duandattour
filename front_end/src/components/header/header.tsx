@@ -39,13 +39,15 @@ const HeaderWebsite = () => {
     console.log("parentCallback");
   }
 
+  // 
+  
   function reloadTour(e) {
-    axios
-        .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
-        .then((response) => {
-          console.log(response.data.tourdiemden);
-          console.log("123", response.data.tourdiemden);
-        })
+    // Prevent the default behavior of the link to avoid navigating before reloading
+    e.preventDefault();
+  
+    
+  // Reload the current page
+    window.location.reload();
   }
   
   if (isLoading) {
@@ -101,7 +103,7 @@ const HeaderWebsite = () => {
             <li><a href="/" className=''>PolyTour</a></li>
 
             <li className='group'>
-            <Link to={'tour'} className='menu-items' onClick={e => reloadTour(e)}>Tour</Link>
+            <Link to={'/tour'} className='menu-items' onClick={reloadTour}>Tour</Link>
               {/* Menu phân cấp*/}
               <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
                 <ul className='p-2 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
