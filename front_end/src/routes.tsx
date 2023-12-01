@@ -51,11 +51,7 @@ import PromotionPage from "./pages/PromotionPage";
 import TestPage from "./pages/test";
 import TestT from "./pages/test2";
 export const router = createBrowserRouter([
-  {
-
-        path: "/tour",
-        element: <TourPage />,
-    },
+  
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -64,7 +60,11 @@ export const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-   
+      {
+
+        path: "/tour",
+        element: <TourPage />,
+    },
       {
         path: "tt",
         element: <TestT />,

@@ -22,7 +22,7 @@ import tt from '../img/5.webp';
 import yy from '../img/6.webp';
 import he from '../img/bbbbb.webp'
 import hq from '../img/aaaaa.webp'
-import { BiMap } from 'react-icons/bi';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +59,6 @@ const HomePage = () => {
       });
 
       setSearchResults(response.data.data);
-
       const filteredResults = response.data.data.filter((tour: Tour) =>
         tour.ngay_ket_thuc.includes(selectedDate) &&
         tour.lich_khoi_hanh.includes(selectedDepartureDate) &&

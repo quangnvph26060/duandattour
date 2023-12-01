@@ -52,7 +52,7 @@ const TourPage : React.FC = () => {
     setBudget(newBudget);
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
+ 
   const [tours, setTours] = useState<IPour[]>([]);
   const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,9 +75,7 @@ const TourPage : React.FC = () => {
     fetchTours();
   }, []);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+
  
   const handleSearch = () => {
     const filteredTours = tours.filter((tour) =>
@@ -88,11 +86,7 @@ const TourPage : React.FC = () => {
     setSearched(true); // Đánh dấu đã tìm kiếm
   };
 
-  const handleResetSearch = () => {
-    setSearchTerm("");
-    setFilteredTours([]);
-    setSearched(false); // Đánh dấu chưa tìm kiếm
-  };
+
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -102,40 +96,7 @@ const TourPage : React.FC = () => {
 
   return (
     <div className=''>
-      {/*  */}
-      <div> <div className="menu flex tours-center justify-between">
-        <div className='flex'>
-          <a href="/"><img style={rounded} src={logo} alt="logo" width="80px" /></a>
-
-          <nav className='font-semibold p-4 pt-6 pl-18'>
-            <ul className='flex text-[#2D4271] gap-12'>
-              <a href="/">PolyTour</a>
-              <a href="/tour">Tour</a>
-              <a href="/news">Tin tức</a>
-              <a href="">Khuyến mãi</a>
-              <a href="/contact">Liên hệ</a>
-            </ul>
-          </nav>
-        </div>
-        <div className="search mt-2   tours-center">
-        <input style={{ width: '220px' }} className="border-yellow-300
-border-[3px] px- py-2  rounded"
-          type="text"
-          placeholder="Search...."
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button> {/* Thêm nút tìm kiếm */}
-        {/* <button onClick={handleResetSearch}>Reset</button> Thêm nút reset */}    
-            <Link to="/signup">
-              <button className="bg-green-500 text-white py-1 px-3 rounded">
-                <i className="fas fa-user"></i>
-              </button>
-            </Link>
-       </div>
-      </div>
-      </div>
-      {/*  */}
+    
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
@@ -381,7 +342,7 @@ border-[3px] px- py-2  rounded"
                       <Link to="/:id/tour" className="text-blue-500 hover:underline">
                         <h3 className="text-lg font-bold">{tour.ten_tour}</h3></Link>
                       <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
-                      <p className='text mt-2'>{tour.mo_ta}</p>
+                      {/* <p className='text mt-2'>{tour.mo_ta}</p> */}
                       <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
                       <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
                         Giảm 6%
@@ -399,7 +360,7 @@ border-[3px] px- py-2  rounded"
 {/* nơi hiển thị kết quả tìm kiếm  */}
 {/* đây tìm kiếm ở home */}
 <div className="content">
-              <h2 className="mt-5 mb-5 home-page__title">Các tour đang tìm phổ biến</h2>
+              <h2 className="mt-5 mb-5 home-page__title">Các tour Liên quan</h2>
               <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {displayedTours.map((tour) => (
 
@@ -422,7 +383,7 @@ border-[3px] px- py-2  rounded"
                         <h3 className="text-lg font-bold">{tour.ten_tour}</h3>
                       </Link>
                       <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
-                      <p className='text mt-2'>{tour.mo_ta}</p>
+                      {/* <p className='text mt-2'>{tour.mo_ta}</p> */}
 
                       <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
 
