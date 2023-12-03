@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\DatTour;
@@ -199,5 +200,10 @@ class ApiDatTourController extends Controller
             }
         }
         // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+    }
+    public function CountTour(Request $request)
+    {
+        $countTour = DatTour::where('ma_khach_hang', $request->input('id'))->where('trang_thai', 1)->count();
+        return response()->json(['count' => $countTour]);
     }
 }
