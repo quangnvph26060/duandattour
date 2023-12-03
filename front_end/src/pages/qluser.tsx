@@ -155,7 +155,7 @@ const QLuser = () => {
                             <div className='py-3'>
                                 <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
                                 <div className='px-10'>
-                                    {role === 'admin' && (
+                                    {(role === 'admin' || role === 'huong_dan_vien' || role === 'nhan_vien' )&& (
                                         <a href="/admin"><p className='text-sm text-red-500 py-1'>Quản lý Website</p></a>
                                     )}
                                     <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>

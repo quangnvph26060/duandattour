@@ -50,8 +50,6 @@ const BookTour = () => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-  console.log(inputValue);
-
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {

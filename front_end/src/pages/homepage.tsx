@@ -769,7 +769,7 @@ const HomePage = () => {
                 <div className="info-row data">
                   <p>{item.lich_khoi_hanh}</p>-<p>{item.soluong} ngày</p>
                 </div>
-                <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                <Link to={`/booktour/${item.id}`} className="text-blue-500 hover:underline">
                   <h3 className="text-lg font-bold">{item.ten_tour}</h3>
                 </Link>
                 <p className="price">Giá: {formatCurrency(15000000)}</p>

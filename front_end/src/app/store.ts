@@ -28,6 +28,7 @@ import {
 import DangNhapApi, { DangNhapReducer } from "../api/dangnhap";
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import QuanlydattoutApi, { QuanlydattourReducer } from "../api/qlydattour";
+import HuongDanVienTourApi from "../api/hdvTourApi";
 
 
 
@@ -55,7 +56,8 @@ const rootReducer = combineReducers({
     [CheckingApi.reducerPath]:CheckingReducer,
     [QuanlydattoutApi.reducerPath]:QuanlydattourReducer,
     [MenuApi.reducerPath]:MenuReducer,
-    [Tourdiadiem.reducerPath]:TourDiadiemReducer
+    [Tourdiadiem.reducerPath]:TourDiadiemReducer,
+    [HuongDanVienTourApi.reducerPath]:HuongDanVienRedeucer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -74,7 +76,7 @@ export const store = configureStore({
             LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
              HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
              UserApi.middleware,DatourApi.middleware,DiscountApi.middleware,TourDiscountApi.middleware
-             , CheckingApi.middleware,QuanlydattoutApi.middleware,MenuApi.middleware,Tourdiadiem.middleware),
+             , CheckingApi.middleware,QuanlydattoutApi.middleware,MenuApi.middleware,Tourdiadiem.middleware,HuongDanVienTourApi.middleware),
           
 
 })
