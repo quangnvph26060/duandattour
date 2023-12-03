@@ -22,6 +22,7 @@ import yy from '../img/6.webp';
 import he from '../img/bbbbb.webp'
 import hq from '../img/aaaaa.webp'
 import { BiMap } from 'react-icons/bi';
+import MessageChatBox from "./Client/Message/Message";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 
@@ -282,49 +283,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-white rounded-lg shadow p-4">
-      <div className="  ">
-        {isChatVisible && (
-          <div className="chat-box">
-            <div className="chat-header">
-              <img src={logo} alt="logo" width="30px" />
-              <h3 className="chat-title">PolyTour</h3>
-            </div>
-            <div className="message-list" ref={messageListRef}>
-              {messageHistory.map((message, index) => (
-                <div key={index} className={`message ${message.sender}`}>
-                  <div className="message-text">{message.text}</div>
-                  <div className="message-timestamp">
-                    {formatTimestamp(message.timestamp)}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="input-area">
-              <div className="input-container">
-                <input
-                  type="text"
-                  placeholder="Nhập tin nhắn..."
-                  className="message-input"
-                  value={inputValue}
-                  onChange={event => setInputValue(event.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <button className="send-button" onClick={handleSendMessage}>
-                  Gửi
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="icon" onClick={handleToggleChat}>
-          <div  >
-            <FontAwesomeIcon icon={faFacebookMessenger} style={{ color: 'blue', fontSize: '30px' }} />
-          </div>
-        </div>
-      </div>
-
+      <MessageChatBox />
       <div className="mt-5 mb-5" style={{ maxWidth: '100%', overflow: 'hidden' }}>
         <Slider
           className="product-list1 grid gap-4 grid-cols-1"

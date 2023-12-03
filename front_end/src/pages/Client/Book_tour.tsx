@@ -52,8 +52,6 @@ const BookTour = () => {
     setInputValue(event.target.value);
 
   };
-  console.log(inputValue);
-
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {
@@ -75,13 +73,7 @@ const BookTour = () => {
       setCouponData("")
     }
   }, [inputValue]);
-
-
-
-
-
   const [isChecked1, setIsChecked1] = useState(false);// chuyển khoản 
-
   const handleRadioChange1 = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);

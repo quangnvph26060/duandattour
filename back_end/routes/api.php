@@ -110,8 +110,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/forgotPassword', [ApiAuthLoginController::class, 'forgotPassword'])->name('forgotPassword');
     Route::get('/ToursByUserId', [ApiAuthLoginController::class, 'getToursByUserId']);
     Route::prefix('hdvtour')->group(function(){
-        Route::get('/', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
+        Route::get('/getListHDVTour', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
+        Route::put('/updateStatustourhdv/{id}', [ApiHuongDanVienTourController::class, 'updateStatustourhdv']);
     });
+
 });
 
 Route::prefix('register')->group(function () {
@@ -143,6 +145,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/', [ApiHuongDanVienTourController::class, 'store']);
         Route::get('/', [ApiHuongDanVienTourController::class, 'allHuongDanVienTOur']);
         Route::post('/handleHuongDanVien', [ApiHuongDanVienTourController::class, 'handleHuongDanVien']);
+        Route::get('/getListHDVTour', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
     });
 
     
@@ -280,4 +283,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
     });
+
+    
 });

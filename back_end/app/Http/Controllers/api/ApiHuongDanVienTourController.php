@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HuongDanVienTour;
 use App\Models\TourModel;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Auth;
+
 
 class ApiHuongDanVienTourController extends Controller
 {
@@ -88,7 +89,7 @@ class ApiHuongDanVienTourController extends Controller
             
         ]);
     }
-    // chọn hướng dẫn viên cho tour đó 
+
     public function handleHuongDanVien(Request $request)
     {
         $id_tour = $request->input('id');
@@ -118,4 +119,44 @@ class ApiHuongDanVienTourController extends Controller
 
         return response()->json(['hdv' => $hdv_tour]);
     }
+
+    // list huong dan vien
+    public function getListHDVTour(){
+        $user = Auth::user();
+        if($user){
+            $hdvTour = HuongDanVienTour::where('hdv_id', $user->id)->get();
+            $hdvTours = [];
+           
+            foreach($hdvTour as $tourhdv){
+                $tour = TourModel::where('id', $tourhdv->tour_id)->first();
+                $tourhdv->ten_tour = $tour->ten_tour; // Thêm trường "ten_tour" vào đối tượng $tourhdv
+                $tourhdv->lich_khoi_hanh = $tour->lich_khoi_hanh;
+                $tourhdv->ngay_ket_thuc = $tour->ngay_ket_thuc;
+                $tourhdv->ten_hdv = $user->name;
+                $hdvTours[] = $tourhdv;
+            }
+          
+            return response()->json(['hdvtour' => $hdvTours], 200);
+        }
+    }
+
+    public function updateStatustourhdv($id)
+    {
+        $updateStatus = HuongDanVienTour::find($id);
+        // dd($updateStatus->status);
+        if($updateStatus->status==0){
+            $updateStatus->status = 1;
+            $updateStatus->save();
+            return response()->json(['message'=>'Cập nhật trạng thái thành công!!'],201);
+        }else if($updateStatus->status==1){
+            $updateStatus->status = 0;
+            $updateStatus->save();
+            return response()->json(['message'=>'Cập nhật trạng thái thành công!!'],201);
+        }else{
+            return response()->json(['message'=>'Lỗi không thể cập nhật'],404);
+        }
+    }
+  
+
+
 }
