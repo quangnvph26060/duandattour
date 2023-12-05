@@ -4,12 +4,13 @@ const rounded = {
   borderRadius: '25px',
 };
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import logo from '../img/logo.jpg';
 import { useGetMenuQuery } from '../../api/menu';
 import { data } from 'autoprefixer';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+
 
 const HeaderWebsite = () => {
 
@@ -41,14 +42,12 @@ const HeaderWebsite = () => {
 
   // 
   
-  function reloadTour(e) {
-    // Prevent the default behavior of the link to avoid navigating before reloading
+  // const navigate = useNavigate();
+
+  const reloadTour = (e) => {
     e.preventDefault();
-  
-    
-  // Reload the current page
     window.location.reload();
-  }
+  };
   
   if (isLoading) {
     return <div>Đang tải dữ liệu...</div>;
@@ -103,7 +102,7 @@ const HeaderWebsite = () => {
             <li><a href="/" className=''>PolyTour</a></li>
 
             <li className='group'>
-            <Link to={'/tour'} className='menu-items' onClick={reloadTour}>Tour</Link>
+            <a onClick={reloadTour} href=""><Link to={'/tour'} className='menu-items'>Tour</Link></a>
               {/* Menu phân cấp*/}
               <div className='flex max-withd bg-white container mx-auto justify-between p-5 absolute top-full left-0 mt-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-0 transition-all duration-500'>
                 <ul className='p-2 flex flex-wrap'> {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}

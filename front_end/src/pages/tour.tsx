@@ -55,7 +55,6 @@ const TourPage = (props) => {
   }
 
 
-
   // const [searchTerm, setSearchTerm] = useState("");
   // // const [tours, setTours] = useState<IPour[]>([]);
   // const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
@@ -139,67 +138,75 @@ const TourPage = (props) => {
   //Hiếu
 
   const [filteredTours, setFilteredTours] = useState([]);
-    const [selectedDayRange, setSelectedDayRange] = useState(null);
+  const [selectedDayRange, setSelectedDayRange] = useState(null);
 
-    const handleButtonClick = (dayRange) => {
-        // Đặt phạm vi ngày đã chọn
-        setSelectedDayRange(dayRange);
+  const handleButtonClick = (dayRange) => {
+    // Đặt phạm vi ngày đã chọn
+    setSelectedDayRange(dayRange);
 
-        // Lọc các chuyến tham quan dựa trên phạm vi ngày đã chọn
-        const filteredTours = tourdiemden.filter((tour) => {
-            const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
+    // Lọc các chuyến tham quan dựa trên phạm vi ngày đã chọn
+    const filteredTours = tourdiemden.filter((tour) => {
+      const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
 
-            if (dayRange === '1-3' && numberOfDays >= 1 && numberOfDays <= 3) {
-                return true;
-            } else if (dayRange === '4-7' && numberOfDays >= 4 && numberOfDays <= 7) {
-                return true;
-            } else if (dayRange === '8-14' && numberOfDays >= 8 && numberOfDays <= 14) {
-                return true;
-            } else if (dayRange === '14+' && numberOfDays > 14) {
-                return true;
-            }
+      if (dayRange === '1-3' && numberOfDays >= 1 && numberOfDays <= 3) {
+        return true;
+      } else if (dayRange === '4-7' && numberOfDays >= 4 && numberOfDays <= 7) {
+        return true;
+      } else if (dayRange === '8-14' && numberOfDays >= 8 && numberOfDays <= 14) {
+        return true;
+      } else if (dayRange === '14+' && numberOfDays > 14) {
+        return true;
+      }
 
-            return false;
-        });
-
-
-        // Đặt các chuyến tham quan đã lọc
-        setFilteredTours(filteredTours);
-    };
+      return false;
+    });
 
 
-    const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
-    const filterToursByNumberOfPeople = (tour, selectedNumberOfPeople) => {
-        if (!selectedNumberOfPeople) {
-            return true; // No number of people selected, so the tour should be included
-        }
+    // Đặt các chuyến tham quan đã lọc
+    setFilteredTours(filteredTours);
+  };
 
-        if (selectedNumberOfPeople === 1 && tour.soluong === 1) {
-            return true;
-        } else if (selectedNumberOfPeople === 2 && tour.soluong === 2) {
-            return true;
-        } else if (selectedNumberOfPeople === '3-5' && tour.soluong >= 3 && tour.soluong <= 5) {
-            return true;
-        } else if (selectedNumberOfPeople === 999 && tour.soluong > 5) {
-            return true;
-        }
 
-        return false;
-    };
+  const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+  const filterToursByNumberOfPeople = (tour, selectedNumberOfPeople) => {
+    if (!selectedNumberOfPeople) {
+      return true; // No number of people selected, so the tour should be included
+    }
 
-    const handleNumberOfPeopleClick = (numberOfPeople) => {
-        // Đặt số lượng người đã chọn
-        console.log(numberOfPeople)
-        setSelectedNumberOfPeople(numberOfPeople);
+    if (selectedNumberOfPeople === 1 && tour.soluong === 1) {
+      return true;
+    } else if (selectedNumberOfPeople === 2 && tour.soluong === 2) {
+      return true;
+    } else if (selectedNumberOfPeople === '3-5' && tour.soluong >= 3 && tour.soluong <= 5) {
+      return true;
+    } else if (selectedNumberOfPeople === 999 && tour.soluong > 5) {
+      return true;
+    }
 
-        // Lọc các chuyến tham quan dựa trên số lượng người đã chọn
-        const filteredTours = tourdiemden.filter((tour) =>
-            filterToursByNumberOfPeople(tour, numberOfPeople)
-        );
+    return false;
+  };
 
-        // Đặt các chuyến tham quan đã lọc
-        setFilteredTours(filteredTours);
-    };
+  const handleNumberOfPeopleClick = (numberOfPeople) => {
+    // Đặt số lượng người đã chọn
+    console.log(numberOfPeople)
+    setSelectedNumberOfPeople(numberOfPeople);
+
+    // Lọc các chuyến tham quan dựa trên số lượng người đã chọn
+    const filteredTours = tourdiemden.filter((tour) =>
+      filterToursByNumberOfPeople(tour, numberOfPeople)
+    );
+
+    // Đặt các chuyến tham quan đã lọc
+    setFilteredTours(filteredTours);
+  };
+
+  //SẢN PHẨM YÊU THÍCH
+  const [hoveredItemId, setHoveredItemId] = useState(null);
+
+  const addToCart = (id) => {
+    // Your addToCart logic
+    console.log(`Adding tour with ID ${id} to the cart`);
+  };
 
 
 
@@ -216,7 +223,7 @@ const TourPage = (props) => {
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1450px]'>
+        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1250px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Poly Tour</h2>
           <div className='text-center p-2 py-4 '>
@@ -228,7 +235,7 @@ const TourPage = (props) => {
           <div className='text-center'>
             <button className='bg-white px-4 py-2 rounded-lg border border-black'>Trong nước</button>
           </div>
-          <p className='px-3 py-1 text-xl font-medium'>Loại Hình Tour</p>
+          <p className='px-3 py-3 text-xl font-medium'>Loại Hình Tour</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
               <option value="1">-- Tất cả --</option>
@@ -431,7 +438,7 @@ const TourPage = (props) => {
                 {/* ... (your existing code) */}
                 <div className='py-4 bg-neutral-100 rounded-lg'>
                   <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
-                  <p className='font-bold py-2 px-1'>{items.ten_tour}</p>
+                  <Link to={""}><p className='font-bold py-2 px-1'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-1'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>
                     <p className='text-sm'>Nơi khởi hành: </p>
@@ -442,13 +449,8 @@ const TourPage = (props) => {
                     <p className='text-lg font-semibold text-red-500'>{items.gia_nguoilon}₫</p>
                     <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
                   </div>
+
                 </div>
-                <button
-                  onClick={() => addToCart(items)}
-                  className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2'
-                >
-                  Thêm vào giỏ hàng
-                </button>
               </div>
             ))}
           </div>

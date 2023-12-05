@@ -84,3 +84,8 @@
 .left .radio-wrapper input[type="radio"] {
     margin-right: 8px;
 }
+.buttonHover:hover {
+  background-color: #3b82f6; /* Change the color to your desired hover color */
+  color: #ffffff; /* Change the text color to your desired hover color */
+  cursor: pointer;
+}

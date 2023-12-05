@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Test() {
     function calculateNumberOfDays(start, end) {
@@ -114,10 +114,195 @@ function Test() {
     //     return hasSelectedDayRange || hasSelectedNumberOfPeople;
     // };
 
+    // const [selectedDepartureLocation, setSelectedDepartureLocation] = useState(null);
+    // const [tourdiemdi, setTourdiemdi] = useState([]);
+    // const [error, setError] = useState<string | null>(null);
+
+    // const handleDepartureLocationChange = (event) => {
+    //     const selectedLocation = event.target.value;
+    //     setSelectedDepartureLocation(selectedLocation);
+    //     setError(null); // Reset error state
+
+    //     // Fetch tours for the selected departure location
+    //     if (selectedLocation) {
+    //         axios
+    //             .get(`http://127.0.0.1:8000/api/getToursByDeparture?diem_di=${selectedLocation}`)
+    //             .then((response) => {
+    //                 console.log(response.data.tourdiemdi);
+    //                 setTourdiemdi(response.data.tourdiemdi);
+    //             })
+    //             .catch((error) => {
+    //                 handleAxiosError(error);
+    //             });
+    //     } else {
+    //         // If no location is selected, show all tours
+    //         setTourdiemdi([]); // Clear tourdiemdi
+    //     }
+    // };
+
+    // const handleAxiosError = (error: AxiosError) => {
+    //     console.error("Axios Error:", error);
+    //     if (error.response) {
+    //         // The request was made and the server responded with a status code
+    //         // that falls out of the range of 2xx
+    //         console.error("Response data:", error.response.data);
+    //         console.error("Response status:", error.response.status);
+    //         console.error("Response headers:", error.response.headers);
+    //         setError(`Request failed with status code ${error.response.status}`);
+    //     } else if (error.request) {
+    //         // The request was made but no response was received
+    //         console.error("No response received:", error.request);
+    //         setError("No response received from the server");
+    //     } else {
+    //         // Something happened in setting up the request that triggered an Error
+    //         console.error("Error setting up the request:", error.message);
+    //         setError("Error setting up the request");
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     // Update filtered tours when tourdiemdi changes
+    //     if (selectedDepartureLocation) {
+    //         setFilteredTours(tourdiemdi);
+    //     } else {
+    //         setFilteredTours(tourdiemden);
+    //     }
+    // }, [tourdiemdi, selectedDepartureLocation]);
+
+
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if (token) {
+            // Gửi yêu cầu API để lấy thông tin người dùng từ token
+            fetch("http://localhost:8000/api/user", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => response.json())
+                .then((userData) => {
+                    setUserId(userData);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [token])
+
+    // const addToCart = (id) => {
+    //     // Your addToCart logic
+    //     console.log(`ID các chuyến tour ${id} to the cart`);
+    //   };
+
+      const addToCart = (id) => {
+
+        // Kiểm tra xem người dùng đã đăng nhập chưa (có token chưa)
+        const token = localStorage.getItem("token");
+    
+        if (!token) {
+            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+            // Thay thế '/login' bằng đường dẫn thực tế của trang đăng nhập của bạn
+            alert("bạn chưa đăng nhập hãy đăng nhập để thêm chuyến tour vào mục yêu thích !")
+            window.location.href = "/signup";
+            return;
+        }
+    
+        // Người dùng đã đăng nhập, tiến hành logic thêm vào giỏ hàng
+        const addToCartEndpoint = ``; // Thay thế bằng địa chỉ API thực tế của bạn
+        console.log(`ID các chuyến tour ${id} to the cart`);
+        // Dữ liệu mẫu, điều chỉnh theo yêu cầu của máy chủ của bạn
+        const payload = {
+            tourId: id,
+            userId: getUserIdFromToken(), // Bạn cần triển khai một hàm để lấy ID người dùng từ token
+        };
+    
+        axios.post(addToCartEndpoint, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            // Xử lý khi thành công, ví dụ: hiển thị thông báo thành công
+            console.log("Đã thêm vào giỏ hàng thành công:", response.data);
+        })
+        .catch((error) => {
+            // Xử lý khi có lỗi, ví dụ: hiển thị thông báo lỗi
+            console.error("Lỗi khi thêm vào giỏ hàng:", error);
+        });
+    };
+    
+    // Bạn cần triển khai một hàm để lấy ID người dùng từ token
+    const getUserIdFromToken = () => {
+        // Triển khai logic để trích xuất ID người dùng từ token
+        // Bạn có thể cần giải mã token JWT hoặc sử dụng ID người dùng được cung cấp bởi hệ thống xác thực của bạn
+        // Trả về ID người dùng
+        return /* ID người dùng */;
+    };
 
 
     return (
         <div>
+            <p className='px-3 text-lg font-medium py-1'>Điểm đi</p>
+            <div className='px-3 text-center py-1'>
+                <select name="destination" className='rounded-md border border-black w-72 h-9'
+                    value="" id="">
+                    <option value="">Chọn Điểm đi</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Hồ Chí Minh">Hồ Chí Minh (TP.HCM)</option>
+                    <option value="Hải Phòng">Hải Phòng</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="An Giang">An Giang</option>
+                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                    <option value="Bắc Giang">Bắc Giang</option>
+                    <option value="Bắc Kạn">Bắc Kạn</option>
+                    <option value="Bạc Liêu">Bạc Liêu</option>
+                    <option value="Bắc Ninh">Bắc Ninh</option>
+                    <option value="Bến Tre">Bến Tre</option>
+                    <option value="Bình Định">Bình Định</option>
+                    <option value="Bình Dương">Bình Dương</option>
+                    <option value="Bình Phước">Bình Phước</option>
+                    <option value="Bình Thuận">Bình Thuận</option>
+                    <option value="Cà Mau">Cà Mau</option>
+                    <option value="Cao Bằng">Cao Bằng</option>
+                    <option value="Đắk Lắk">Đắk Lắk</option>
+                    <option value="Đắk Nông">Đắk Nông</option>
+                    <option value="Điện Biên">Điện Biên</option>
+                    <option value="Đồng Nai">Đồng Nai</option>
+                    <option value="Đồng Tháp">Đồng Tháp</option>
+                    <option value="Gia Lai">Gia Lai</option>
+                    <option value="Hà Giang">Hà Giang</option>
+                    <option value="Hà Nam">Hà Nam</option>
+                    <option value="Hà Tĩnh">Hà Tĩnh</option>
+                    <option value="Hải Dương">Hải Dương</option>
+                    <option value="Hậu Giang">Hậu Giang</option>
+                    <option value="Hòa Bình">Hòa Bình</option>
+                    <option value="Hưng Yên">Hưng Yên</option>
+                    <option value="Khánh Hòa">Khánh Hòa</option>
+                    <option value="Kiên Giang">Kiên Giang</option>
+                    <option value="Kon Tum">Kon Tum</option>
+                    <option value="Lai Châu">Lai Châu</option>
+                    <option value="Lâm Đồng">Lâm Đồng</option>
+                    <option value="Lạng Sơn">Lạng Sơn</option>
+                    <option value="Lào Cai">Lào Cai</option>
+                    <option value="Long An">Long An</option>
+                    <option value="Nam Định">Nam Định</option>
+                    <option value="Nghệ An">Nghệ An</option>
+                    <option value="Ninh Bình">Ninh Bình</option>
+                    <option value="Ninh Thuận">Ninh Thuận</option>
+                    <option value="Phú Thọ">Phú Thọ</option>
+                    <option value="Phú Yên">Phú Yên</option>
+                    <option value="Quảng Bình">Quảng Bình</option>
+                    <option value="Quảng Nam">Quảng Nam</option>
+                    <option value="Quảng Ngãi">Quảng Ngãi</option>
+                    <option value="Quảng Ninh">Quảng Ninh</option>
+                    <option value="Quảng Trị">Quảng Trị</option>
+                    <option value="Sóc Trăng">Sóc Trăng</option>
+                    <option value="Sơn La">Sơn La</option>
+                </select>
+            </div>
+
             <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
             <div className='flex gap-2 py-2 container justify-center'>
                 <div className=''>
@@ -166,15 +351,21 @@ function Test() {
                         {/* ... (your existing code) */}
                         <div className='py-4 bg-neutral-100 rounded-lg'>
                             {/* ... (your existing code) */}
+                            <img src={items.image_path} alt="" />
                             <p className='font-bold py-2 px-1'>Số lượng: {items.soluong} </p>
+                            <p>Điểm đi: {items.diem_di}</p>
                             <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                             {/* ... (your existing code) */}
                         </div>
-                        <button
-                            onClick={() => addToCart(items)}
-                            className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2'
-                        >
-                            Thêm vào giỏ hàng
+                        <button className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 buttonHover'>
+                            <Link
+                                to={`/favorite/`}  // Update the 'to' prop to navigate to the favorite page
+                                className='mega-menu-items'
+                                onClick={() => addToCart(items.id)} // Use items.id directly instead of hoveredItemId
+                            // Optionally, you can add additional logic for navigating to the favorite page if needed
+                            >
+                                Thêm vào sản phẩm yêu thích
+                            </Link>
                         </button>
                     </div>
                 ))}
@@ -183,3 +374,7 @@ function Test() {
     )
 }
 export default Test;
+function setUserId(userData: any) {
+    throw new Error('Function not implemented.');
+}
+
