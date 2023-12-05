@@ -41,6 +41,7 @@ export interface IQuanlyDattour {
         mo_ta: string;
         soluong: number;
         trang_thai: number;
+        image_path:string,
         ma_loai_tour: number;
         created_at: string | null;
         updated_at: string | null;

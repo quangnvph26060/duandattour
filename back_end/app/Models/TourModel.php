@@ -64,6 +64,15 @@ class TourModel extends Model
     // {
     //     return $this->hasMany(DatTour::class, 'id_tour');
     // }
+    public function tourDiscount()
+    {
+        return $this->hasMany(TourDiscount::class, 'tour_id', 'id');
+    }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'tour_discount', 'tour_id', 'discount_id');
+    }  
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
