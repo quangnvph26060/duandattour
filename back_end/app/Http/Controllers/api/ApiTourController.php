@@ -35,6 +35,14 @@ class ApiTourController extends Controller
     {
         $query = $request->input('diem_den');
         $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
+        foreach($tourdiemden as $tourdiemdens){
+          
+            $tourttcount = DatTour::where('trang_thai',1)
+            ->where('id_tour',$tourdiemdens->id)
+            ->count();
+            $tourdiemdens->tourttcount = $tourttcount;
+        }
+       
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -190,6 +198,39 @@ class ApiTourController extends Controller
                 'message' => 'Không tìm thấy thông tin'
             ], 404);
         }
+    }
+
+        public function getlisttourKM()
+    {
+        $tourKM = TourModel::with('discounts', 'images')->where('trang_thai', 1)->get();
+        $tourKMWithDiscounts = [];
+
+        foreach ($tourKM as $tour) {
+            if ($tour->discounts->isNotEmpty()) {
+                $expiryDates = $tour->discounts->pluck('expiry_date');
+                $maxExpiryDate = $expiryDates->max();
+                $now = Carbon::now();
+                $expiryDate = Carbon::parse($maxExpiryDate);
+                $countdown = $expiryDate->diffInSeconds($now);
+                $tour->max_expiry_date = $maxExpiryDate;
+                
+                $tourKMWithDiscounts[] = $tour;
+            }
+        }
+
+        foreach($tourKMWithDiscounts as $tourKMs){
+          
+            $tourttcount = DatTour::where('trang_thai',1)
+            ->where('id_tour',$tourKMs->id)
+            ->count();
+            $tourKMs->tourttcount = $tourttcount;
+        }
+        $responseData = [
+            'code' => 200,
+            'data' => $tourKMWithDiscounts,
+        ];
+
+        return response()->json($responseData, 200);
     }
     
 }

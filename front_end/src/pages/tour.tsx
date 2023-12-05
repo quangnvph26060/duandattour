@@ -24,12 +24,28 @@ import { useNavigate } from 'react-router-dom';
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 import { useLocation } from "react-router-dom"
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 
-const TourPage = (props) => {
+const TourPage: React.FC = () => {
+  const location = useLocation();
+  const matchedResults: Tour[] = location.state?.matchedResults || [];
 
-  // console.log("props: ", props);
-
+  useEffect(() => {
+    // Thực hiện bất kỳ tác vụ nào bạn muốn với matchedResults
+  }, [matchedResults]);
   const [budget, setBudget] = useState(0);
+
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -437,6 +453,16 @@ const TourPage = (props) => {
               <div key={items.id}>
                 {/* ... (your existing code) */}
                 <div className='py-4 bg-neutral-100 rounded-lg'>
+                  <div>
+
+                  </div>
+                  {items.images.map((images) => (
+                    <img
+                      key={image.id}
+                      className="mt-4 rounded-lg w-full h-60 object-cover"
+                      src={`http://localhost:8000/storage/${images.image_path}`}
+                      alt={`Ảnh ${items.ten_tour}`}
+                    />))}
                   <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <Link to={""}><p className='font-bold py-2 px-1'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-1'>Số lượng: {items.soluong} </p>
@@ -449,7 +475,10 @@ const TourPage = (props) => {
                     <p className='text-lg font-semibold text-red-500'>{items.gia_nguoilon}₫</p>
                     <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
                   </div>
-
+                  <div className="px-3 py-2 grid grid-cols-2 gap-7">
+                    <button className="bg-blue-500 px-4 py-2 rounded-lg text-white">Đặt Ngay</button>
+                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white"><a href="">Xem chi tiết</a></button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -464,7 +493,7 @@ const TourPage = (props) => {
 
           <div className='py-3'>
             <div className='w-[860px] bg-gray-100 rounded-lg flex'>
-              <img src={anh4} alt="anh4" className='w-1/3 rounded-lg' />
+              <img src="/src/img/sl.webp" alt="anh4" className='w-1/3 rounded-lg' />
               <div className='w-2/3 flex'>
                 <div className='w-2/3 px-2'>
                   <div className='py-2'>

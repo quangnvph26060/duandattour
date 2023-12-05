@@ -64,8 +64,11 @@ import Giohanguser2 from "./pages/giohanguser2";
 import Dmkuser from "./pages/changeMk";
 import Test from "./pages/text";
 import Favorite from "./pages/favorite";
-
-
+import Doimk from "./pages/changeMk";
+import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
+import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+import Admin_baiviet from "./pages/Admin/Post/bai_viet";
+import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 export const router = createBrowserRouter([
   
   {
@@ -155,7 +158,8 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: localStorage.getItem("role") === 'admin' ||
       localStorage.getItem("role") === 'nhan_vien' ||
-      localStorage.getItem("role") === 'customer_feedback' ? <LayoutAdmin /> : <Navigate to="/" />,
+      localStorage.getItem("role") === 'customer_feedback' ||
+      localStorage.getItem("role") === 'huong_dan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
@@ -335,7 +339,22 @@ export const router = createBrowserRouter([
         path: "tour/tour_dathanhtoan",
         element: <ADmin_Qlytourdathanhtoan />,
       },
-    
+      {
+        path: "post/danhmuc_post",
+        element: <Admin_Danhmuc_baiviet />,
+      },
+      {
+        path: "post/add_danhmuc",
+        element: <Admin_DanhmucADD />,
+      },
+      {
+        path: "post/bai_viet",
+        element: <Admin_baiviet />,
+      },
+      {
+        path: "post/bai_vietADD",
+        element: <ADmin_postADD />,
+      },
     ],
   },
 ]);

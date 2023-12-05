@@ -20,6 +20,9 @@ use App\Http\Controllers\api\ApiDiscountController;
 use App\Http\Controllers\Api\ApiSearchController;
 use App\Http\Controllers\Api\ApiFavoriteController;
 use App\Http\Controllers\Api\ApiAuthController;
+
+use App\Http\Controllers\Api\ApiContactController;
+
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 
 use App\Models\LoaiTourModel;
@@ -98,6 +101,9 @@ Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
 Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
 // api List tour kM
 Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
+// api contact
+Route::get('/getcontact', [ApiContactController::class, 'getcontact']);
+Route::post('/contact', [ApiContactController::class, 'sendContactForm'])->name('contact');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -285,4 +291,7 @@ Route::prefix('admin')->group(function () {
     });
 
     
+
 });
+
+

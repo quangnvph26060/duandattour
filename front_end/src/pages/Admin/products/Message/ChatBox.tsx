@@ -42,6 +42,7 @@ const ChatComponent = () => {
                 const logRoles = user.roles.map(item => {
                     // check user đang nhập có vai trò này không 
                     setIsAdmin(item.name === loggedInUserRole);
+                    debugger;
                 });
 
             });
@@ -64,9 +65,6 @@ const ChatComponent = () => {
         }
     };
     // // thêm tin nhắn
-
-
-
     const sendMessage = async () => {
 
         try {
@@ -83,8 +81,6 @@ const ChatComponent = () => {
     };
     const alertMessager = () => {
         const loggedInUserId = usersId;
-
-
         // Lọc tin nhắn chỉ giữ lại những tin nhắn giữa người dùng đang đăng nhập và người được chọn
         const filteredMessages = messages.filter(
             (message) =>
@@ -106,8 +102,10 @@ const ChatComponent = () => {
         );
     };
     // danh sách user đẻ nhắn tin
-    const optionsUser = () => {
+    const optionsUser = () => { 
+      
         if (isAdmin) {
+           
             return (
                 <div>
                     <div className="user-list">

@@ -35,6 +35,17 @@ class DatabaseSeeder extends Seeder
             DatTourSeeder::class,
             HoaDonSeeder::class,
             HuongDanVienHoaDonSeeder::class,
+            news::class
+
+
+
+
+
+
+
+
+
+
         ]);
     }
 }

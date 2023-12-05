@@ -209,18 +209,18 @@ function Test() {
         }
     
         // Người dùng đã đăng nhập, tiến hành logic thêm vào giỏ hàng
-        const addToCartEndpoint = ``; // Thay thế bằng địa chỉ API thực tế của bạn
         console.log(`ID các chuyến tour ${id} to the cart`);
         // Dữ liệu mẫu, điều chỉnh theo yêu cầu của máy chủ của bạn
         const payload = {
             tourId: id,
             userId: getUserIdFromToken(), // Bạn cần triển khai một hàm để lấy ID người dùng từ token
         };
+        addToFavorites(tourId)
     
-        axios.post(addToCartEndpoint, payload, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+        axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+        headers: {
+        Authorization: `Bearer ${token}`,
+        },
         })
         .then((response) => {
             // Xử lý khi thành công, ví dụ: hiển thị thông báo thành công
@@ -230,6 +230,7 @@ function Test() {
             // Xử lý khi có lỗi, ví dụ: hiển thị thông báo lỗi
             console.error("Lỗi khi thêm vào giỏ hàng:", error);
         });
+        
     };
     
     // Bạn cần triển khai một hàm để lấy ID người dùng từ token
@@ -239,6 +240,23 @@ function Test() {
         // Trả về ID người dùng
         return /* ID người dùng */;
     };
+
+    const addToFavorites = (tourId) => {
+        const token = localStorage.getItem('token'); // Thay YOUR_AUTH_TOKEN bằng token xác thực lưu trữ trong ứng dụng của bạn
+        axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
+            })
+        .then(response => {
+        // Xử lý kết quả thành công
+        console.log(response.data);
+        })
+        .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+        });
+        };
 
 
     return (
@@ -359,9 +377,9 @@ function Test() {
                         </div>
                         <button className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 buttonHover'>
                             <Link
-                                to={`/favorite/`}  // Update the 'to' prop to navigate to the favorite page
+                                to={``}  // Update the 'to' prop to navigate to the favorite page
                                 className='mega-menu-items'
-                                onClick={() => addToCart(items.id)} // Use items.id directly instead of hoveredItemId
+                                onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
                             // Optionally, you can add additional logic for navigating to the favorite page if needed
                             >
                                 Thêm vào sản phẩm yêu thích
