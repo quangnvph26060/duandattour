@@ -418,7 +418,7 @@ const TourPage : React.FC = () => {
          <div className="content">
               <h2 className="mt-5 mb-5 home-page__title">Kết quả tìm kiếm tour du lịch</h2>
               <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {matchedResults.map((tour) => (
+                {tourdiemden.map((tour) => (
                   <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
                     {tour.images.map((image) => (
                       <img
