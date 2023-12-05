@@ -69,12 +69,13 @@ const AdminProduct = (props: Props) => {
     const [tourHDVArray, setTourHDVArray] = useState([]);
     const [hdvDuocChon, setHdvDuocChon] = useState([]);
     useEffect(() => {
-      const fetchHDVData = async (a, b) => {
-        if (a && b) {
+      const fetchHDVData = async (a, b, c) => {
+        if (a && b && c ) {
           try {
             const response = await axios.post('http://127.0.0.1:8000/api/admin/hdvtour', {
               start_date: a,
-              end_date: b
+              end_date: b,
+              id_tour:c
             });
             const hdvDate = response.data;
             console.log(hdvDate);
@@ -96,7 +97,7 @@ const AdminProduct = (props: Props) => {
 
         for (let i = 0; i < tourArray.length; i++) {
           const item = tourArray[i];
-          const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc);
+          const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc,item.id);
           tempArray.push(hdvData);
 
         }
@@ -120,7 +121,6 @@ const AdminProduct = (props: Props) => {
             <th>Image Path</th>
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
-
             <th>Hướng dẫn viên</th>
             <th>Gia Nguoi Lon</th>
             <th>Gia Tre Em</th>
@@ -148,7 +148,6 @@ const AdminProduct = (props: Props) => {
               /></td>
               <td>{item.lich_khoi_hanh}</td>
               <td>{item.ngay_ket_thuc}</td>
-
               {
                 <td>
                   <select className="select-dropdown" onChange={(event) => handleSelectChange(event, item)}>

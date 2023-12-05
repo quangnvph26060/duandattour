@@ -13,7 +13,6 @@ import { Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 // import ImgCrop from 'antd-img-crop';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios';
 
 
 const { Option } = Select;
@@ -131,66 +130,6 @@ const AdminTourAdd: React.FC = () => {
     return current && current < currentDate.setHours(0, 0, 0, 0);
   };
 
-
-  // test chọn ngày đi và kết thúc 
-
-  const [HDVArrary, setHDVArrary] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const handleStartDateChange = (date: any, dateString: any) => {
-    setStartDate(dateString);
-  };
-
-  const handleEndDateChange = (date: any, dateString: any) => {
-    setEndDate(dateString);
-  };
-  useEffect(() => {
-    if (startDate && endDate) {
-      fetchData();
-    }
-  }, [startDate, endDate]);
-  const fetchData = () => {
-    axios.post('http://127.0.0.1:8000/api/admin/hdvtour', { start_date: startDate, end_date: endDate })
-      .then(response => {
-        let hdvDate = response.data;
-        axios.get('http://127.0.0.1:8000/api/admin/user')
-          .then(response => {
-            let ShowUserAll = response.data;
-            const matchingRecords = [];
-            ShowUserAll.data.map((item) => {
-              hdvDate.map((itemhdv) => {
-                // kiểm tra nếu thành công 
-                if (item.id === itemhdv.hdv_id) {
-                  const isDuplicate = matchingRecords.some((record) => record.id === item.id);
-                  if (!isDuplicate) {
-                    matchingRecords.push(item);
-                  }
-                }
-              });
-
-
-            });
-
-            setHDVArrary(matchingRecords);
-            console.log(HDVArrary);
-            
-          })
-          .catch(error => {
-            // Xử lý lỗi
-            console.error(error);
-          });
-
-      })
-      .catch(error => {
-        // Xử lý lỗi
-        console.error(error);
-      });
-  };
-  // const handleSelectChange = (selectedRecordId) => {
-  //   // Xử lý các thao tác sau khi lựa chọn được thay đổi, sử dụng giá trị selectedRecordId
-  //   // Ví dụ: Gọi hàm xử lý atnd với selectedRecordId
-  //   yourATNDFunction(selectedRecordId);
-  // };
   return (
   
     <div className="container">
@@ -295,17 +234,14 @@ const AdminTourAdd: React.FC = () => {
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
-          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
-
-            onChange={handleStartDateChange} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item className='w-full'
           label="Ngày kết thúc"
           name="ngay_ket_thuc"
           rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
         >
-          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
-            onChange={handleEndDateChange} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item 
           label="Giá Người lớn"

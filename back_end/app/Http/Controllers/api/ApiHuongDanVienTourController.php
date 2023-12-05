@@ -19,6 +19,7 @@ class ApiHuongDanVienTourController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $id_tour = $request->input('id_tour');
         // Tạo một đối tượng Carbon từ ngày bắt đầu
         $currentDate = \Carbon\Carbon::parse($startDate);
         // Khởi tạo mảng để lưu trữ các ngày
@@ -28,20 +29,24 @@ class ApiHuongDanVienTourController extends Controller
             $dateArray[] = $currentDate->toDateString();
             $currentDate->addDay();
         }
+
         $isresult = DB::table('hdv_tour')
             ->where('start_date', $startDate)
             ->where('end_date', $endDate)
+            ->where('tour_id',$id_tour)
             ->get();
+
         $result = DB::table('hdv_tour')
             ->whereNotIn('start_date', $dateArray)
             ->whereNotIn('end_date', $dateArray)
             ->get();
 
         $results = DB::table('hdv_tour')->get();
-
+        // tất cả hướng dẫn viên
         $permissions = User::whereHas('roles', function ($query) {
             $query->where('name', 'huong_dan_vien');
         })->with('roles', 'roles.permissions')->get();
+
         $matchedPermissions = [];
         $matchedRecords  = [];
         foreach ($result as $hdv) {
@@ -77,16 +82,9 @@ class ApiHuongDanVienTourController extends Controller
         $matchedRecords  = array_unique($matchedRecords);
         $hdv_abc = collect($uniquePermissions)->concat($matchedRecords)->unique()->all();
 
-        if (count($permissions) > 0 && count($uniquePermissions) > 0) {
-            $combinedArray = collect($permissions)->concat($uniquePermissions)->unique()->all();
-        } else {
-            $combinedArray = collect($matchedRecords)->concat($uniquePermissions)->unique()->all();
-        }
         return response()->json([
             'hdv_duoc_chon'=>$is_array,
-           
             'hdv_abc' => $hdv_abc,
-            
         ]);
     }
 
