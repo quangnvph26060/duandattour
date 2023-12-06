@@ -17,11 +17,10 @@ class LoaiKhachSanSeeder extends Seeder
         DB::table('loai_khach_san')->insert(
             [
                 [
-                    'loai_khach_san' => "5 Sao",
-
-                ],
-                [
-                    'loai_khach_san' => "6 Sao",
+                    'image' => "a.png",
+                    'ten_khach_san'=>"quang bình đà",
+                    'dia_chi'=>"Bình đà",
+                    'so_sao'=>5
 
                 ]
             ]

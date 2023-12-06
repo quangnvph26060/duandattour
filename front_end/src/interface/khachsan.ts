@@ -1,5 +1,8 @@
 export interface IKhachSan {
     id: number;
-    loai_khach_san: string;
+    image: string;
+    ten_khach_san: string;
+    dia_chi: string;
+    so_sao: string;
     
 }

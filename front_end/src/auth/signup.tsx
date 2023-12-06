@@ -12,7 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({}); // Thêm state để lưu trữ các lỗi
-  const { setUser } = useStateContext();
+  // const {setUser, setToken} = useStateContext();
   const rounded = {
     borderRadius: '50%',
   };
@@ -64,7 +64,7 @@ const Login = () => {
         localStorage.setItem("role", role);
         localStorage.setItem("id", response.data.data.id);
         // authContext.storeAuthData(token,role);
-        setUser(response.data.role);
+      //  setUser(response.data.role);
         alert("Đăng nhập thành công");
         window.location.href = 'http://localhost:5173';
 
