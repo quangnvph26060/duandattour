@@ -21,8 +21,9 @@ const AdminLoai_tour = (props: Props) => {
     // const navigate = useNavigate();
     const tourArray = tourdata?.data || [];
 
-    const dataSource = tourArray.map(({ id, ten_loai_tour }: ILoaiTour) => ({
+    const dataSource = tourArray.map(({ id, image, ten_loai_tour }: ILoaiTour) => ({
         key: id,
+        image,
         ten_loai_tour
     }));
 
@@ -35,6 +36,18 @@ const AdminLoai_tour = (props: Props) => {
             key: "key",
         },
         {
+            title: "Ảnh loại tour",
+            dataIndex: "image",
+            key: "image",
+            render: (image: string) => (
+                <img
+                    src={`http://localhost:8000/storage/${image}`}
+                    alt="img"
+                    style={{ width: '200px', cursor: 'pointer' }}
+                />
+            ),
+        },
+        {
             title: "Tên loại tour",
             dataIndex: "ten_loai_tour",
             key: "ten_loai_tour",
@@ -44,7 +57,7 @@ const AdminLoai_tour = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                     {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
+                        {localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -59,7 +72,7 @@ const AdminLoai_tour = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>:""}   
+                        </div> : ""}
                     </>
                 );
             },

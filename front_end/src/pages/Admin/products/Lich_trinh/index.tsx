@@ -103,7 +103,7 @@ const Admin_Lichtrinh = (props: Props) => {
                 </Button>
 
             </header>
-            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
+            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 2 }} />}
         </div>
     );
 };

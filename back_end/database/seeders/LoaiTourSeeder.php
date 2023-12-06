@@ -16,13 +16,16 @@ class LoaiTourSeeder extends Seeder
         DB::table('loai_tour')->insert(
             [
                 [
+                    'image'=>"a.jpg",
                     'ten_loai_tour' => "Miền Bắc"
 
                 ],
                 [
+                    'image'=>"a.jpg",
                     'ten_loai_tour' => "Miền Trung"
                 ],
                 [
+                    'image'=>"a.jpg",
                     'ten_loai_tour' => "Miền Nam"
                 ]
             ]

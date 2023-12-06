@@ -1,148 +1,98 @@
 /* style.css */
-.tour-card {
-  background-color: #f8f8f8;
-  padding: 16px;
-  border-radius: 8px;
-}
 
-.price {
-  color: #fd5056;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.text {
-  margin-top: 8px;
-}
-
-.button-wrapper {
-  background-color: #fd5056;
-  float: right;
-  border-radius: 5px;
-}
-
-#countdown-btn {
-  color: revert;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-2xl {
-  font-size: 2rem;
-}
-
-.font-semibold {
-  font-weight: 600;
-}
-
-.home-page__title {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.product-list {
-  display: grid;
-  gap: 1rem;
-}
-
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
 .left {
-  border-radius: 10px;
-  width:25%;
-  background-color: #fefdfd;
-  padding: 24px;
-  box-sizing: border-box;
-  margin-right: 24px; /* Thêm khoảng cách bên phải */
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    border-radius: 10px;
+    width: 25%;
+    background-color: #fefdfd;
+    padding: 24px;
+    box-sizing: border-box;
+    margin-right: 24px;
+    /* Thêm khoảng cách bên phải */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
-.ct{
-  text-align: center;
-  border-radius: 15px;
+
+.ct {
+    text-align: center;
+    border-radius: 15px;
 }
-.ss{
-  display: flex;
-  justify-content: space-between;
+
+.ss {
+    display: flex;
+    justify-content: space-between;
 }
+
 .left:hover {
- 
-  background-color: #f3ebeb; /* Thay đổi màu nền khi di chuột qua */
+
+    background-color: #f3ebeb;
+    /* Thay đổi màu nền khi di chuột qua */
 }
 
 .left h1 {
-  font-weight: bold;
-  font-size: 28px;
-  margin-bottom: 16px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 16px;
 }
 
 .bt {
-  background-color: rgb(150, 58, 58);
-  color: black;
-  border: 1px solid black;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
+    background-color: rgb(150, 58, 58);
+    color: black;
+    border: 1px solid black;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.bt:hover{
-  background-color: blue;
+.bt:hover {
+    background-color: blue;
 }
 
 
 
 .left .select-wrapper {
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
 .left select {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #000;
-  transition: border-color 0.3s ease-in-out;
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #000;
+    transition: border-color 0.3s ease-in-out;
 }
 
 .left select:hover {
-  border-color: #ccc; /* Thay đổi màu viền khi di chuột qua */
+    border-color: #ccc;
+    /* Thay đổi màu viền khi di chuột qua */
 }
 
 .left button {
-  background-color: #fff;
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease-in-out;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .left button:hover {
-  background-color: #e0e0e0; /* Thay đổi màu nền khi di chuột qua */
+    background-color: #e0e0e0;
+    /* Thay đổi màu nền khi di chuột qua */
 }
 
 
 .left .range-input:hover {
-  border-color: #ccc; /* Thay đổi màu viền khi di chuột qua */
+    border-color: #ccc;
+    /* Thay đổi màu viền khi di chuột qua */
 }
 
 .left .radio-wrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .left .radio-wrapper input[type="radio"] {
-  margin-right: 8px;
+    margin-right: 8px;
 }

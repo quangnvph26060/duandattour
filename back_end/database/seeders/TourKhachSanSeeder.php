@@ -20,12 +20,6 @@ class TourKhachSanSeeder extends Seeder
                     'ma_loai_khach_san' => "1"
 
                 ],
-                [
-                    'id_tour' => "1",
-                    'ma_loai_khach_san' => "2"
-
-
-                ]
             ]
         );
     }

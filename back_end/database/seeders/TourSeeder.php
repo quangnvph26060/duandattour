@@ -15,6 +15,7 @@ class TourSeeder extends Seeder
     {
         DB::table('tour')->insert([
             'ten_tour' => "Buôn Ma Thuột - Pleiku - Kon Tum - Khu Du Lịch Măng Đen - Hồ Lăk",
+            'image_path' => 'a.jpg',
             'diem_di' => 'Đà Nẵng',
             'diem_den' => 'Hà Nội',
             'lich_khoi_hanh' => '2023/12/10',
@@ -22,7 +23,7 @@ class TourSeeder extends Seeder
             'diem_khoi_hanh' => 'Đà Nẵng',
             'gia_nguoilon' => 1000,
             'gia_treem' => 600,
-            'gia_khuyen_mai' => 999,
+            // 'gia_khuyen_mai' => 999,
             'mo_ta' => 'tour ok chưa bro',
             'soluong' =>  3,
             'trang_thai' => '0',
