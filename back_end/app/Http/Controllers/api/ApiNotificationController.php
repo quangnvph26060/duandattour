@@ -10,8 +10,9 @@ class ApiNotificationController extends Controller
 {
     //
     public function getlistNotification(){
-        $notification = NotificationModel::all();
-        return response()->json(['notification'=>$notification],200);
+        $notification = NotificationModel::with('tours')->get();
+        $count = NotificationModel::where('status',0)->count();
+        return response()->json(['notification'=>$notification,'count'=> $count],200);
     }
 
     public function updateStatusNotification()
