@@ -3,6 +3,7 @@ import logo from '../img/logo.jpg'
 import { AiOutlineSearch } from 'react-icons/ai';
 import axios from 'axios'; // Import Axios
 import { Link } from "react-router-dom";
+import "./css.css"
 const rounded = {
     borderRadius: '25px',
 };
@@ -57,26 +58,8 @@ const Giohanguser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
-    // useEffect(() => {
-    //     if (token) {
-    //         fetch('http://127.0.0.1:8000/api/ToursByUserId', {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         })
-    //             .then(response => response.json())
-    //             .then(result => {
-    //                 setUserTours(result.data);
-
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             });
-    //     }
-    // }, [token])
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         // Fetch data from the API
         fetch('http://127.0.0.1:8000/api/ToursByUserId', {
             method: 'GET',
@@ -101,7 +84,6 @@ const Giohanguser = () => {
     const calculateDaysDifference = (ngayKetThuc, lichKhoiHanh) => {
         const ngayKetThucDate = new Date(ngayKetThuc);
         const lichKhoiHanhDate = new Date(lichKhoiHanh);
-
         const millisecondsPerDay = 1000 * 60 * 60 * 24; // Số milliseconds trong một ngày
         const timeDifference = ngayKetThucDate.getTime() - lichKhoiHanhDate.getTime();
         const daysDifference = Math.round(timeDifference / millisecondsPerDay);
@@ -125,8 +107,18 @@ const Giohanguser = () => {
         });
         setToursByLoaiTour(toursByLoaiTourData);
     }, [data]); // Chạy lại khi data thay đổi
-    // console.log(toursByLoaiTour);
-
+    // console.log(toursByLoaiTour); 
+    let isInputVisible = false;
+    const showAlert = (tourId) => {
+        const inputContainer = document.getElementById(`inputContainer-${tourId}`);
+        const isInputVisible = !inputContainer.classList.contains("hidden");
+      
+        if (isInputVisible) {
+          inputContainer.classList.add("hidden");
+        } else {
+          inputContainer.classList.remove("hidden");
+        }
+      };
 
 
 
@@ -199,47 +191,54 @@ const Giohanguser = () => {
                                 </div>
 
                                 {toursByLoaiTour[loaiTour].map((user) => (
-                                    <div key={user.id}><p className='py-3'>{user.tours.lich_khoi_hanh} - {user.tours.ngay_ket_thuc}</p><br />
-                                        < div className='flex border gap-5 px-10 py-5 rounded-lg'  >
-
+                                    <div key={user.id}>
+                                        <p className='py-3'>{user.tours.lich_khoi_hanh} - {user.tours.ngay_ket_thuc}</p>
+                                        <br />
+                                        <div className='flex border gap-5 px-10 py-5 rounded-lg'>
                                             <div>
                                                 <div className='flex gap-4'>
                                                     {user.tours.images.map((image, imgIndex) => (
-                                                        <img src={`http://localhost:8000/storage/${image.image_path}`} style={{
-                                                            width: '200px',
-                                                            height: '250px',
-
-                                                        }} className='w-1/3 rounded-lg' alt="" />
+                                                        <img
+                                                            key={imgIndex}
+                                                            src={`http://localhost:8000/storage/${image.image_path}`}
+                                                            style={{
+                                                                width: '200px',
+                                                                height: '250px',
+                                                            }}
+                                                            className='w-1/3 rounded-lg'
+                                                            alt=""
+                                                        />
                                                     ))}
                                                     <div>
-                                                        <Link to={`http://localhost:5173/bookingtour/${user.id}`} >
+                                                        <Link to={`http://localhost:5173/bookingtour/${user.id}`}>
                                                             <h2 className='text-2xl font-medium'>{user.tours.ten_tour}</h2>
                                                         </Link>
                                                         <div className='py-4'>
                                                             <p className='py-1 font-medium'>Tuyệt vời</p>
                                                             <p>358 Quan tâm</p>
                                                             <div className='flex justify-between'>
-                                                                {/* <p className='py-3'>Số booking: 2HBNDFSBV43476</p> */}
-
                                                                 <div>
                                                                     <p className='text-xl text-red-500 font-medium'> {user.trang_thai === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</p>
                                                                     <p className='text-xl text-red-500 font-medium'>{user.thanh_toan ? `tt ${user.thanh_toan.tong_tien_tt}₫` : '    '}</p>
-
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                         <div>
                                                             <p className='py-4'>{user.so_luong_khach}người {calculateDaysDifference(user.tours.ngay_ket_thuc, user.tours.lich_khoi_hanh)}đêm</p>
                                                         </div>
+                                                        <div>
+                                                            <button onClick={() => showAlert(user.id)}>Viết đánh giá</button>
+                                                            <div id={`inputContainer-${user.id}`} className="hidden">
+                                                                
+                                                                <input type="text" />
+                                                                <button style={{background:"green",color:"white"}}>đánh giá </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-                                            <div />
-
-
-                                        </div></div>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
 

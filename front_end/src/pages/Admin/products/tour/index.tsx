@@ -94,19 +94,13 @@ const AdminProduct = (props: Props) => {
 
       const fetchData = async () => {
         const tempArray = [];
-
         for (let i = 0; i < tourArray.length; i++) {
           const item = tourArray[i];
           const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc,item.id);
           tempArray.push(hdvData);
-
         }
-
         setTourHDVArray(tempArray);
       };
-
-
-
       fetchData();
     }, [tourArray]);
 
