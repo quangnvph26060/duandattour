@@ -200,7 +200,7 @@ class ApiTourController extends Controller
         }
     }
 
-        public function getlisttourKM()
+    public function getlisttourKM()
     {
         $tourKM = TourModel::with('discounts', 'images')->where('trang_thai', 1)->get();
         $tourKMWithDiscounts = [];
