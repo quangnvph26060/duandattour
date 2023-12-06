@@ -7,9 +7,13 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import anh4 from "../img/anh4.jpg"
+import anh2 from '../img/anh2.jpg'
+import anh3 from '../img/anh3.jpg'
 import star from "../img/star.png"
 import line from "../img/line.png"
 import anh5 from "../img/anh5.png"
+import ticket from "../img/ticket.png"
+import shopping from "../img/shopping.png"
 import anh6 from "../img/anh6.png"
 import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
@@ -17,8 +21,29 @@ import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
-const TourPage = () => {
+import { useLocation } from "react-router-dom"
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
+
+const TourPage : React.FC = () => {
+  const location = useLocation();
+  const matchedResults: Tour[] = location.state?.matchedResults || [];
+
+  useEffect(() => {
+    // Thực hiện bất kỳ tác vụ nào bạn muốn với matchedResults
+  }, [matchedResults]);
   const [budget, setBudget] = useState(0);
+ 
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -33,31 +58,129 @@ const TourPage = () => {
     setBudget(newBudget);
   };
 
+  function calculateNumberOfDays(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
+    const timeDifference = Math.abs(endDate - startDate);
+    const numberOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    return numberOfDays;
+  }
+
+
+
+  // const [searchTerm, setSearchTerm] = useState("");
+  // // const [tours, setTours] = useState<IPour[]>([]);
+  // const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState("");
+  // const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
+
+  // useEffect(() => {
+  //   const fetchTours = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+  //       setTours(response.data.data);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       setError("Error retrieving tours.");
+  //     }
+  //   };
+
+  //   fetchTours();
+  // }, []);
   const [tourdiemden, setTour] = useState([]);
   const { diem_den } = useParams<{ diem_den: any }>();
   useEffect(() => {
     axios
-    .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
-    .then((response)=>{
-      console.log(response.data.tourdiemden);
-      setTour(response.data.tourdiemden);
-    })
-    if(diem_den===undefined){
-      axios
-      .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
-      .then((response)=>{
+      .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
+      .then((response) => {
         console.log(response.data.tourdiemden);
         setTour(response.data.tourdiemden);
       })
+    if (diem_den === undefined) {
+      axios
+        .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
+        .then((response) => {
+          console.log(response.data.tourdiemden);
+          setTour(response.data.tourdiemden);
+        })
     }
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
+  // const getTour = () => {
+  //   axios
+  //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
+  //     .then((response)=>{
+  //       console.log(response.data.tourdiemden);
+  //       setTour(response.data.tourdiemden);
+  //     })
+  // }
+  // useEffect(() => {
+  //   getTour();
+  // }, []);
 
 
+  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchTerm(event.target.value);
+  // };
 
- 
+  // const handleSearch = () => {
+  //   const filteredTours = tours.filter((tour) =>
+  //     tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+
+  //   setFilteredTours(filteredTours);
+  //   setSearched(true); // Đánh dấu đã tìm kiếm
+  // };
+
+  // const handleResetSearch = () => {
+  //   setSearchTerm("");
+  //   setFilteredTours([]);
+  //   setSearched(false); // Đánh dấu chưa tìm kiếm
+  // };
+
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
+
+  // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
+
+  //Hiếu
+  const [selectedDayRange, setSelectedDayRange] = useState(null);
+  const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+  const [filteredTours, setFilteredTours] = useState([]);
+
+  const handleButtonClick = (dayRange) => {
+    setSelectedDayRange(dayRange);
+
+    // Filter tours based on the selected day range logic
+    const filteredTours = tourdiemden.filter((tour) => {
+      const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
+      // Adjust this logic based on your specific filtering criteria
+      switch (dayRange) {
+        case '1-3':
+          return numberOfDays >= 1 && numberOfDays <= 3;
+        case '4-7':
+          return numberOfDays >= 4 && numberOfDays <= 7;
+        case '8-14':
+          return numberOfDays >= 8 && numberOfDays <= 14;
+        case '14+':
+          return numberOfDays > 14;
+        default:
+          return true; // If no day range is selected, show all tours
+      }
+    });
+
+    // Update the state with the filtered tours
+    setFilteredTours(filteredTours);
+  };
+
+
 
   return (
     <div className=''>
@@ -209,22 +332,23 @@ const TourPage = () => {
               <option value="Sơn La">Sơn La</option>
             </select>
           </div>
+
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
 
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
+              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
             </div>
             <div className=''>
-              <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>4 đến 7 ngày</button>
+              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>4 đến 7 ngày</button>
             </div>
           </div>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>8 đến 14 ngày</button>
+              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>8 đến 14 ngày</button>
             </div>
             <div className=''>
-              <button className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>trên 14 ngày</button>
+              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>trên 14 ngày</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Ngày đi</p>
@@ -234,18 +358,18 @@ const TourPage = () => {
           <p className='px-3 text-lg font-medium py-1'>Số người</p>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>1 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>1 người</button>
             </div>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>2 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>2 người</button>
             </div>
           </div>
           <div className='flex gap-2 container justify-center'>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>3 - 5 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(3)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>3 - 5 người</button>
             </div>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>5+ người</button>
+              <button onClick={() => handleNumberOfPeopleClick(5)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>5+ người</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Dòng Tour</p>
@@ -282,57 +406,51 @@ const TourPage = () => {
               <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Ô tô</button>
             </div>
           </div>
-          <button className="bt mt-4 mb-6 ml-7">Hiển thị những chuyến đi có</button>
 
         </aside>
 
         {/*conten-right*/}
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className="content">
-            <h2 className="mt-5 mb-5 home-page__title">ƯU ĐÃI TOUR GIỜ CHÓT!</h2>
-            <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {tourdiemden?.map((tour) => (
+          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
 
-                <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
 
-                  {tour.images?.map((image) => (
-                    <img
-                      key={image.id}
-                      className="mt-4 rounded-lg w-full h-60 object-cover"
-                      src={`http://localhost:8000/storage/${image.image_path}`}
-                      alt={`Ảnh ${tour?.ten_tour}`}
-                    />
-                  ))}
-                  <div className="product-details mt-4">
-                    <div className="info-row data">
-                      <p>{tour?.lich_khoi_hanh}</p>-
-                      <p>{tour?.soluong} ngày</p>
+         <div className="content">
+              <h2 className="mt-5 mb-5 home-page__title">Kết quả tìm kiếm tour du lịch</h2>
+              <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {tourdiemden.map((tour) => (
+                  <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
+                    {tour.images.map((image) => (
+                      <img
+                        key={image.id}
+                        className="mt-4 rounded-lg w-full h-60 object-cover"
+                        src={`http://localhost:8000/storage/${image.image_path}`}
+                        alt={`Ảnh ${tour.ten_tour}`}
+                      />))}
+                    <div className="product-details mt-4">
+                      <div className="info-row data">
+                        <p>{tour.lich_khoi_hanh}</p>-
+                        <p>{tour.soluong} ngày</p>
+                      </div>
+                      <Link to="/:id/tour" className="text-blue-500 hover:underline">
+                        <h3 className="text-lg font-bold">{tour.ten_tour}</h3></Link>
+                      <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
+                      {/* <p className='text mt-2'>{tour.mo_ta}</p> */}
+                      <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
+                      <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
+                        Giảm 6%
+                      </button>
+                      <button
+                        id="countdown-btn" style={{ color:'revert' }}
+                        className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded">
+                        Đặt Ngay
+                      </button>
                     </div>
-                    <Link to="/:id/tour" className="text-blue-500 hover:underline">
-                      <h3 className="text-lg font-bold">{tour?.ten_tour}</h3>
-                    </Link>
-                    <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour?.gia_tour}đ</p>
-                    <p className='text mt-2'>{tour?.mo_ta}</p>
-
-                    <p className='text mt-2'>Nơi Khởi Hành: {tour?.diem_khoi_hanh}</p>
-
-                    <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
-                      Giảm 6%
-                    </button>
-                    <button
-                      id="countdown-btn" style={{ color: 'revert' }}
-                      className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
-                    >
-                      Đặt Ngay
-                    </button>
-
                   </div>
-                </div>
-              ))}
-            </div>
-
+                ))}
+              </div>
           </div>
+
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
           </div>
@@ -493,92 +611,7 @@ const TourPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="mt-15  text-center bg-gray-100">
-        <div className="flex flex-wrap justify-center">
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4 ">Điểm đến</h3>
-            <ul className="list-disc pl-4">
-              <li>Hà Nội</li>
-              <li>Hồ Chí Minh</li>
-              <li>Đà Nẵng</li>
-              <li>Hội An</li>
-              <li>Nha Trang</li>
-              <li>Phú Quốc</li>
-              <li>Đà Lạt</li>
-              <li>Sapa</li>
-              <li>Phan Thiết</li>
-              <li>Hạ Long</li>
-              <li>Vũng Tàu</li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Liên hệ</h3>
-            <p>Email: Polytour@gmail.com</p>
-            <p>Tìm kiếm thông tin</p>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Hỗ trợ</h3>
-            <p>Mạng xã hội</p>
-            <p>037 763 8662</p>
-            <p>Từ 8:00 - 22:00 hàng ngày</p>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Thông tin</h3>
-            <ul className="list-disc pl-4">
-              <li>Tạp chí du lịch</li>
-              <li>Cẩm nang du lịch</li>
-              <li>Tin tức</li>
-              <li>Sitemap</li>
-              <li>FAQs</li>
-              <li>Chính sách riêng tư</li>
-              <li>Thỏa thuận sử dụng</li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/5">
-            <h3 style={{ color: '#2d4271' }} className="mt-5 text-lg font-semibold mb-4">Dòng tour</h3>
-            <ul className="list-disc pl-4">
-              <li>Cao cấp</li>
-              <li>Tiêu chuẩn</li>
-              <li>Tiết kiệm</li>
-              <li>Giá tốt</li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex flex-wrap mt-8">
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Liên kết</h3>
-            <ul className="list-disc pl-4">
-              <li><a href="/">Trang chủ</a></li>
-              <li><a href="/about">Giới thiệu</a></li>
-              <li><a href="/services">Dịch vụ</a></li>
-              <li><a href="/contact">Liên hệ</a></li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Theo dõi chúng tôi</h3>
-            <ul className="flex justify-center mb-4">
-              <li className="mr-4"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-              <li className="mr-4"><a href="#"><i className="fab fa-twitter"></i></a></li>
-              <li className="mr-4"><a href="#"><i className="fab fa-instagram"></i></a></li>
-              <li className="mr-4"><a href="#"><i className="fab fa-youtube"></i></a></li>
-            </ul>
-            <p className="text-sm">Theo dõi chúng tôi để cập nhật thông tin mới nhất về du lịch.</p>
-          </div>
-          <div className="w-fullmd:w-1/2 lg:w-1/3">
-            <h3 style={{ color: '#2d4271' }} className="text-lg font-semibold mb-4">Đăng ký nhận tin</h3>
-            <p>Đăng ký để nhận thông tin du lịch, khuyến mãi và tin tức mới nhất.</p>
-            <form className="mt-4 mr-5">
-              <input type="email" placeholder="Nhập địa chỉ email" className="w-full py-2 px-4  rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500" />
-              <button type="submit" className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none">Đăng ký</button>
-            </form>
-          </div>
-        </div>
-        <div className="mt-8">
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Your Website. All rights reserved
-          </p>
-        </div>
-      </footer>
+
     </div>
   )
 }

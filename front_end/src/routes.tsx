@@ -62,6 +62,10 @@ import Giohanguser from "./pages/giohanguser";
 import Giohanguser1 from "./pages/giohanguser1";
 import Giohanguser2 from "./pages/giohanguser2";
 import Doimk from "./pages/changeMk";
+import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
+import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+import Admin_baiviet from "./pages/Admin/Post/bai_viet";
+import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 export const router = createBrowserRouter([
   
   {
@@ -320,7 +324,22 @@ export const router = createBrowserRouter([
         path: "tour/tour_dathanhtoan",
         element: <ADmin_Qlytourdathanhtoan />,
       },
-    
+      {
+        path: "post/danhmuc_post",
+        element: <Admin_Danhmuc_baiviet />,
+      },
+      {
+        path: "post/add_danhmuc",
+        element: <Admin_DanhmucADD />,
+      },
+      {
+        path: "post/bai_viet",
+        element: <Admin_baiviet />,
+      },
+      {
+        path: "post/bai_vietADD",
+        element: <ADmin_postADD />,
+      },
     ],
   },
 ]);
