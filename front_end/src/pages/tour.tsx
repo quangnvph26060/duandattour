@@ -219,24 +219,24 @@ const TourPage: React.FC = () => {
 
   //SẢN PHẨM YÊU THÍCH
   //Thêm tour vào yêu thích
-const addToFavorites = (tourId) => {
-    const token = localStorage.getItem('token'); 
+  const addToFavorites = (tourId) => {
+    const token = localStorage.getItem('token');
 
     axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then(response => {
+      .then(response => {
         // Xử lý kết quả thành công
         console.log(response.data);
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         // Xử lý lỗi
         console.error(error);
         alert("Bạn chưa đăng nhập!");
-    });
-};
+      });
+  };
 
 
   return (
@@ -247,7 +247,7 @@ const addToFavorites = (tourId) => {
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1250px]'>
+        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-white shadow-xl h-[1250px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Poly Tour</h2>
           <div className='text-center p-2 py-4 '>
@@ -257,7 +257,7 @@ const addToFavorites = (tourId) => {
             </select>
           </div>
           <div className='text-center'>
-            <button className='bg-white px-4 py-2 rounded-lg border border-black'>Trong nước</button>
+            <button className='bg-white px-4 py-2 rounded-lg shadow-xl'>Trong nước</button>
           </div>
           <p className='px-3 py-3 text-xl font-medium'>Loại Hình Tour</p>
           <div className='px-3 text-center py-1'>
@@ -393,18 +393,18 @@ const addToFavorites = (tourId) => {
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>1 đến 3 ngày</button>
+              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>1 đến 3 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>4 đến 7 ngày</button>
+              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>4 đến 7 ngày</button>
             </div>
           </div>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>8 đến 14 ngày</button>
+              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>8 đến 14 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>trên 14 ngày</button>
+              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>trên 14 ngày</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Ngày đi</p>
@@ -414,18 +414,18 @@ const addToFavorites = (tourId) => {
           <p className='px-3 text-lg font-medium py-1'>Số người</p>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>1 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>1 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>2 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>2 người</button>
             </div>
           </div>
           <div className='flex gap-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick('3-5')} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>3 - 5 người</button>
+              <button onClick={() => handleNumberOfPeopleClick('3-5')} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>3 - 5 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(999)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white'>5+ người</button>
+              <button onClick={() => handleNumberOfPeopleClick(999)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>5+ người</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-3 mt-3'>Bộ lọc tìm kiếm___________</p>
@@ -439,10 +439,10 @@ const addToFavorites = (tourId) => {
           <p className='px-3 text-lg font-medium py-1'>Thông tin vận chuyển</p>
           <div className='flex gap-3 py-1 pt-2 container justify-center'>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Máy bay</button>
+              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black shadow-xl'>Máy bay</button>
             </div>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Ô tô</button>
+              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black shadow-xl'>Ô tô</button>
             </div>
           </div>
 
@@ -451,33 +451,37 @@ const addToFavorites = (tourId) => {
         {/*conten-right*/}
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
+          <div className='py-5 mb-3'><hr className='bg-black h-[1.5px]' /></div>
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
             {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
               : tourdiemden
             ).map((items) => (
-              <div key={items.id}>
+              <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
                 <div className=' bg-white rounded-t-lg shadow-xl'>
-                  <div className="py-2">
-                    <Link
-                      to={``}  // Update the 'to' prop to navigate to the favorite page
-                      className='mega-menu-items'
-                      onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                    // Optionally, you can add additional logic for navigating to the favorite page if needed
-                    >
-                      {/* Thêm vào sản phẩm yêu thích */}
-                      <i class="fa-regular fa-heart"></i>
-                    </Link>
-                  </div>
-                  {items.images.map((images) => (
+                  {/* {items.images.map((images) => (
                     <img
                       key={image.id}
                       className="mt-4 rounded-lg w-full h-60 object-cover"
                       src={`http://localhost:8000/storage/${images.image_path}`}
                       alt={`Ảnh ${items.ten_tour}`}
-                    />))}
+                    />))} */}
+                  <div className="relative">
+                    <div className="py-2 absolute top-0 left-1">
+                      <Link
+                        to={``}  // Update the 'to' prop to navigate to the favorite page
+                        className='mega-menu-items'
+                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
+                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                      >
+                        {/* Thêm vào sản phẩm yêu thích */}
+                        <i className="fa-regular fa-heart text-white"></i>
+                      </Link>
+                    </div>
+                    <img src="http://localhost:5173/src/img/anh7.png" className="rounded-t-lg mb-3 h-[250px]" alt="" />
+                  </div>
+
                   <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <Link to={""}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
@@ -488,11 +492,11 @@ const addToFavorites = (tourId) => {
                   <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
                   <div className='grid grid-cols-2 justify-between px-4 p-1'>
                     <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
-                    <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
+                    <div className='bg-yellow-300 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
                   </div>
                   <div className="px-3 py-4 grid grid-cols-2 gap-7">
-                    <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white">Đặt Ngay</button>
-                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white"><a href="">Xem chi tiết</a></button>
+                    <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
+                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
                   </div>
                 </div>
               </div>
@@ -539,10 +543,10 @@ const addToFavorites = (tourId) => {
                       </p>
                     </div>
                     <div className='flex gap-11'>
-                      <button className='py-2 px-4 border border-blue-400 text-xs rounded-lg'>
+                      <button className='py-2 px-4 border border-blue-400 text-xs rounded-lg shadow-xl'>
                         Ngày khác
                       </button>
-                      <button className='py-2 px-4 bg-red-500 text-xs rounded-lg text-white'>
+                      <button className='py-2 px-4 bg-red-500 text-xs rounded-lg text-white shadow-xl'>
                         Đặt ngay
                       </button>
                     </div>
