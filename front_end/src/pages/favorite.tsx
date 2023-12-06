@@ -64,21 +64,26 @@ const Favorite = () => {
   }, [token])
 
   const [tourfavorite, setTourfavorite] = useState([]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/favorite');
-        setTourfavorite(response.data.tourfavorite);
-        console.log('Data fetched successfully', response.data.tourfavorite);
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
+    addToFavorites();
+  }, []);
+  const addToFavorites = () => {
+    const token = localStorage.getItem('token');
+    axios.get('http://127.0.0.1:8000/api/favorites', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        setTourfavorite(response.data);
 
-    fetchData();
-  }, []); // Empty dependency array to ensure useEffect runs only once when the component mounts
-
+        console.log(response.data);
+      })
+      .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+      });
+  };
   return (
     <div className='mx-auto container flex gap-5'>
       <aside className='w-1/5 container mx-auto'>
@@ -120,13 +125,24 @@ const Favorite = () => {
         </div>
       </aside>
 
-      <h2 className='w-4/5'>Favorite Tours</h2>
-      {tourfavorite.map((item) => (
-        <div key={item.id}>
-          <p>Tên tour: {item.id}</p>
-          {/* You might need to replace 'tourName' with the actual property name in your data */}
-        </div>
-      ))}
+     
+      <div className="tour-container" style={{display:"flex", gap:"10px"}}>
+        {tourfavorite.map((item) => (
+          <div key={item.id} className="tour-item">
+            <div className="tour-image">
+              <img
+                src={`http://localhost:8000/storage/${item.image_path}`}
+                alt="Tour Image"
+                style={{ width: "200px", cursor: "pointer" }}
+              />
+            </div>
+            <div className="tour-details">
+              <p className="tour-name">Tên tour: {item.ten_tour}</p>
+              {/* Thêm các chi tiết khác về tour tại đây */}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

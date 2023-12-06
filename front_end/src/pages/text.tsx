@@ -195,11 +195,11 @@ function Test() {
     //     console.log(`ID các chuyến tour ${id} to the cart`);
     //   };
 
-      const addToCart = (id) => {
+    const addToCart = (id) => {
 
         // Kiểm tra xem người dùng đã đăng nhập chưa (có token chưa)
         const token = localStorage.getItem("token");
-    
+
         if (!token) {
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             // Thay thế '/login' bằng đường dẫn thực tế của trang đăng nhập của bạn
@@ -207,7 +207,7 @@ function Test() {
             window.location.href = "/signup";
             return;
         }
-    
+
         // Người dùng đã đăng nhập, tiến hành logic thêm vào giỏ hàng
         console.log(`ID các chuyến tour ${id} to the cart`);
         // Dữ liệu mẫu, điều chỉnh theo yêu cầu của máy chủ của bạn
@@ -216,23 +216,23 @@ function Test() {
             userId: getUserIdFromToken(), // Bạn cần triển khai một hàm để lấy ID người dùng từ token
         };
         addToFavorites(tourId)
-    
+
         axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
-        headers: {
-        Authorization: `Bearer ${token}`,
-        },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
-        .then((response) => {
-            // Xử lý khi thành công, ví dụ: hiển thị thông báo thành công
-            console.log("Đã thêm vào giỏ hàng thành công:", response.data);
-        })
-        .catch((error) => {
-            // Xử lý khi có lỗi, ví dụ: hiển thị thông báo lỗi
-            console.error("Lỗi khi thêm vào giỏ hàng:", error);
-        });
-        
+            .then((response) => {
+                // Xử lý khi thành công, ví dụ: hiển thị thông báo thành công
+                console.log("Đã thêm vào giỏ hàng thành công:", response.data);
+            })
+            .catch((error) => {
+                // Xử lý khi có lỗi, ví dụ: hiển thị thông báo lỗi
+                console.error("Lỗi khi thêm vào giỏ hàng:", error);
+            });
+
     };
-    
+
     // Bạn cần triển khai một hàm để lấy ID người dùng từ token
     const getUserIdFromToken = () => {
         // Triển khai logic để trích xuất ID người dùng từ token
@@ -245,18 +245,18 @@ function Test() {
         const token = localStorage.getItem('token'); // Thay YOUR_AUTH_TOKEN bằng token xác thực lưu trữ trong ứng dụng của bạn
         axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
             headers: {
-            Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
-            })
-        .then(response => {
-        // Xử lý kết quả thành công
-        console.log(response.data);
         })
-        .catch(error => {
-        // Xử lý lỗi
-        console.error(error);
-        });
-        };
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+            })
+            .catch(error => {
+                // Xử lý lỗi
+                console.error(error);
+            });
+    };
 
 
     return (

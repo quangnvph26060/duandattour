@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
+use App\Models\TourModel;
 use Illuminate\Http\Request;
 
 class ApiFavoriteController extends Controller
@@ -12,10 +13,17 @@ class ApiFavoriteController extends Controller
     public function index(Request $request)
     {
         $userId = auth()->user()->id;
-
         $userFavorites = Favorite::where('user_id', $userId)->get();
-
-        return response()->json($userFavorites, 200);
+        $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
+        $Favorite = [];
+        foreach($tours as $tour){
+            foreach($userFavorites as $item){
+                if($tour->id == $item->tour_id){
+                   $Favorite[] = $tour;
+                }
+            }
+        }
+        return response()->json($Favorite, 200);
     }
     public function store(Request $request)
     {

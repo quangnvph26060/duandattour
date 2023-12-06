@@ -12,7 +12,6 @@ const rounded = {
 };
 
 const QLuser = () => {
-
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [name, setName] = useState('');
@@ -234,39 +233,7 @@ const QLuser = () => {
                                             <td className="px-6 py-4 text-right mr-4">
                                             </td>
                                         </tr>
-                                        {/* <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Ngày sinh
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-                                            </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Giới tính
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-                                            </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Quốc tịch
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-                                            </td>
-                                        </tr> */}
+                                       
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th
                                                 scope="row"
