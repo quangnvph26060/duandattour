@@ -7,6 +7,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useGetKhachSanQuery, useRemoveKhachSanMutation } from "../../../../api/KhachSanApi";
 import { IKhachSan } from "../../../../interface/khachsan";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 const ADmin_khachsan = (props: Props) => {
 
     const { data: khachsandata, error, isLoading } = useGetKhachSanQuery();
@@ -68,9 +70,21 @@ const ADmin_khachsan = (props: Props) => {
             title: "Số sao",
             dataIndex: "so_sao",
             key: "so_sao",
-            // render: (so_sao) => (so_sao === 1 ? "♥ ♥ ♥" : "Đã thanh toán")
-        },
-
+            render: (so_sao) => {
+              const starIcons = [];
+              for (let i = 1; i <= 5; i++) {
+                const starIcon = (
+                  <FontAwesomeIcon
+                    key={i}
+                    icon={faStar}
+                    style={{ color: i <= so_sao ? 'yellow' : 'transparent' }}
+                  />
+                );
+                starIcons.push(starIcon);
+              }
+              return <div className="star-rating">{starIcons}</div>;
+            },
+          },
 
         {
             title: "Action",

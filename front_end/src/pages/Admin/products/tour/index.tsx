@@ -31,7 +31,7 @@ const AdminProduct = (props: Props) => {
   const confirm = (id: any) => {
 
     removeTour(id);
-
+    
 
 
   };
@@ -118,7 +118,7 @@ const AdminProduct = (props: Props) => {
             <th>ID</th>
             <th>Name</th>
             <th>Ma Loai Tour</th>
-            <th>Image Path</th>
+            <th>Ảnh minh họa</th>
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
             <th>Hướng dẫn viên</th>
@@ -129,7 +129,7 @@ const AdminProduct = (props: Props) => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="font-semibold">
           {tourArray.map((item, index) => (
             <tr key={item.id}>
               <td>{item.id}</td>
@@ -144,7 +144,7 @@ const AdminProduct = (props: Props) => {
               <td> <img
                 src={`http://localhost:8000/storage/${item.image_path}`}
                 alt="img"
-                style={{ width: '200px', cursor: 'pointer' }}
+                style={{ width: '200px', cursor: 'pointer' ,borderRadius:'5px' }}
               /></td>
               <td>{item.lich_khoi_hanh}</td>
               <td>{item.ngay_ket_thuc}</td>
@@ -172,21 +172,23 @@ const AdminProduct = (props: Props) => {
                   </select>
                 </td>
               }
-              <td>{item.gia_nguoilon}</td>
-              <td>{item.gia_treem}</td>
+              <td>{item.gia_nguoilon} VNĐ </td>
+              <td>{item.gia_treem} VNĐ</td>
               <td>{item.soluong}</td>
               <td>
-                {(() => {
-                  const departureDate = new Date(item.lich_khoi_hanh);
-                  const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                  const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                  if (formattedDate < ngayhientai) {
-                    return <span >Đã Hết Hạn</span>
-                  } else {
-                    return <span>Vẫn Hoạt Động</span>
-                  }
-                })()}
-              </td>
+  {(() => {
+    const departureDate = new Date(item.lich_khoi_hanh);
+    const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const isExpired = formattedDate < ngayhientai;
+
+    return (
+      <span className={isExpired ? 'expired-text' : 'active-text'}>
+        {isExpired ? 'Đã Hết Hạn' : 'Vẫn Hoạt Động'}
+      </span>
+    );
+  })()}
+</td>
               <td>
                 {localStorage.getItem("role") === 'admin' && (
                   <div className="flex space-x-2">
@@ -195,10 +197,12 @@ const AdminProduct = (props: Props) => {
                         confirm(item.id);
                       }
                     }}>
-                      Xóa
+                       <i className="fa fa-trash"></i> 
                     </button>
                     <button className="edit-button">
-                      <Link to={`/admin/tour/edit/${item.id}`}>Sửa</Link>
+                      <Link to={`/admin/tour/edit/${item.id}`}>
+                      <i className="fa fa-wrench"></i>
+                      </Link>
                     </button>
                   </div>
                 )}

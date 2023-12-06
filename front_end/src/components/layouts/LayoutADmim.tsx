@@ -90,19 +90,19 @@ const LayoutAdmin = () => {
   };
   return (
     <div>
-      <Layout className="h-screen ">
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Layout className="max-h-fit ">
+        <Sider      width={250} trigger={null} collapsible collapsed={collapsed}>
           <div className=" demo-logo-vertical" />
           <div className="  flex">
             <p className="ml-11 text-white font-medium text-lg font-sans">
               Poly Tour
             </p>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<AiFillFund />}>
+          <Menu className="h-screen" theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+            <Menu.Item className="ml-[-10px]" key="1" icon={<AiFillFund />}>
               <Link to="/admin/tour/dat_tour">Thống kê</Link>
             </Menu.Item>
-            <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
+            <Menu.SubMenu   key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
                 <Link to="/admin/tour">Tất cả các tour</Link>
               </Menu.Item>
@@ -125,22 +125,22 @@ const LayoutAdmin = () => {
                 <Link to="/admin/customer_feedback">Customer Feedback</Link>
               </Menu.Item>
 
-              <Menu.SubMenu
+              <Menu.SubMenu className="ml-[-30px]"
                 icon={<MdDiscount />}
                 key="2-9"
-                title="Quản lý mã giảm giá"
+                title="Mã giảm giá"
               >
                 <Menu.Item key="2-9-1">
-                  <Link to="/admin/tour/discount/">Danh sách mã giảm giá</Link>
+                  <Link to="/admin/tour/discount/">Danh sách mã </Link>
                 </Menu.Item>
                 <Menu.Item key="2-9-2">
                   <Link to="/admin/tour/tour_discount/">
-                    Quản lý giảm giá tour
+                    Quản lý mã 
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>
 
-              <Menu.SubMenu
+              <Menu.SubMenu className="ml-[-30px]"
                 icon={<FaShoppingCart />}
                 key="3"
                 title={
@@ -149,7 +149,7 @@ const LayoutAdmin = () => {
                   </Link>
                 }
               >
-                <Menu.Item icon={<FaWindowClose />} key="3-1">
+                <Menu.Item className="ml-[-5px]" icon={<FaWindowClose />} key="3-1"> 
                   <Link to="/admin/tour/tour_chuathanhtoan">
                     Tour chưa thanh toán
                   </Link>
@@ -219,6 +219,7 @@ const LayoutAdmin = () => {
           </Header>
           <Content
             style={{
+              maxHeight:1000,
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
