@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import {useGetTourByIdQuery} from '../api/TourApi';
 
 const Favorite = () => {
 
@@ -64,23 +65,39 @@ const Favorite = () => {
   }, [token])
 
   const [tourfavorite, setTourfavorite] = useState([]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/favorite');
-        setTourfavorite(response.data.tourfavorite);
-        console.log('Data fetched successfully', response.data.tourfavorite);
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
+    addToFavorites();
+  }, []);
+  const addToFavorites = () => {
+    const token = localStorage.getItem('token');
+    axios.get('http://127.0.0.1:8000/api/favorites', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        setTourfavorite(response.data);
 
-    fetchData();
-  }, []); // Empty dependency array to ensure useEffect runs only once when the component mounts
+        console.log(response.data);
+      })
+      .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+      });
+    console.log('123', tourfavorite)
+  };
+
+  const tourIds = tourfavorite.map(item => item.tour_id);
+  // console.log('sdfdsf',tourIds);
+  const { data: postData, error, isLoading } = useGetTourByIdQuery(tourIds);
+  // console.log('2323',postData)
+  useEffect(() => {
+    // Dòng log này chỉ được gọi khi postData đã được cập nhật
+    console.log('2323', postData);
+  }, [postData]);
 
   return (
-    <div className='mx-auto container flex gap-5'>
+    <div className='mx-auto container flex gap-10 py-8'>
       <aside className='w-1/5 container mx-auto'>
         <div className='border border-gray-300 rounded-lg container mx-auto'>
           <div className='px-4 py-7 flex gap-1'>
@@ -120,13 +137,33 @@ const Favorite = () => {
         </div>
       </aside>
 
-      <h2 className='w-4/5'>Favorite Tours</h2>
-      {tourfavorite.map((item) => (
-        <div key={item.id}>
-          <p>Tên tour: {item.id}</p>
-          {/* You might need to replace 'tourName' with the actual property name in your data */}
+
+      <div className="container mx-auto w-4/5" style={{ display: "flex", gap: "10px" }}>
+        <div>
+          <div className='container mx-auto border border-gray-400 rounded-lg text-center lg:w-[1200px] md:w-[700px] mb:w-[300px]'><h1 className='text-xl font-semibold pb-5 py-4'>Các Tour Đã Lưu</h1></div>
+          <div className='flex gap-4 py-4 container mx-auto'>
+            {tourfavorite.map((item) => (
+              <div key={item.id} className="tour-item bg-white rounded-t-lg w-[330px] shadow-lg">
+                {/* <div className="tour-image">
+                  <img
+                    src={`http://localhost:8000/storage/${item.image_path}`}
+                    alt="Tour Image"
+                    style={{ width: "200px", cursor: "pointer" }}
+                  />
+                </div> */}
+                <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[320px] h-[240px] rounded-t-lg' alt="" />
+                <div className="tour-details">
+                  <p className='py-2 px-3'>id tour : {item.id}</p>
+                  <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Thiên Đường - KDL Bà Nà - Cầu Vàng - Sơn Trà - Hội {item.ten_tour}</p>
+                  <p className='px-3 text-sm text-left'>Nơi khởi hành: {}</p>
+                  <p className='text-right px-5 text-xl text-red-500 font-semibold py-3'>6,390,000₫{}</p>
+                  {/* Thêm các chi tiết khác về tour tại đây */}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

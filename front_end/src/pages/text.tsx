@@ -245,18 +245,18 @@ function Test() {
         const token = localStorage.getItem('token'); // Thay YOUR_AUTH_TOKEN bằng token xác thực lưu trữ trong ứng dụng của bạn
         axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
             headers: {
-            Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
-            })
-        .then(response => {
-        // Xử lý kết quả thành công
-        console.log(response.data);
         })
-        .catch(error => {
-        // Xử lý lỗi
-        console.error(error);
-        });
-        };
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+            })
+            .catch(error => {
+                // Xử lý lỗi
+                console.error(error);
+            });
+    };
 
 
     return (

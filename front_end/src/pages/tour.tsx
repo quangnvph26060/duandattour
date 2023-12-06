@@ -113,6 +113,7 @@ const TourPage: React.FC = () => {
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
+
   // const getTour = () => {
   //   axios
   //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
@@ -217,12 +218,26 @@ const TourPage: React.FC = () => {
   };
 
   //SẢN PHẨM YÊU THÍCH
-  const [hoveredItemId, setHoveredItemId] = useState(null);
+  //Thêm tour vào yêu thích
+const addToFavorites = (tourId) => {
+    const token = localStorage.getItem('token'); 
 
-  const addToCart = (id) => {
-    // Your addToCart logic
-    console.log(`Adding tour with ID ${id} to the cart`);
-  };
+    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    .then(response => {
+        // Xử lý kết quả thành công
+        console.log(response.data);
+        console.log("Đã thêm vào sản phẩm yêu thích!");
+    })
+    .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+        alert("Bạn chưa đăng nhập!");
+    });
+};
 
 
 
@@ -444,7 +459,6 @@ const TourPage: React.FC = () => {
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
-
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
             {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
@@ -452,9 +466,17 @@ const TourPage: React.FC = () => {
             ).map((items) => (
               <div key={items.id}>
                 {/* ... (your existing code) */}
-                <div className='py-4 bg-neutral-100 rounded-lg'>
-                  <div>
-
+                <div className=' bg-white rounded-t-lg shadow-xl'>
+                  <div className="py-2">
+                    <Link
+                      to={``}  // Update the 'to' prop to navigate to the favorite page
+                      className='mega-menu-items'
+                      onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
+                    // Optionally, you can add additional logic for navigating to the favorite page if needed
+                    >
+                      {/* Thêm vào sản phẩm yêu thích */}
+                      <i class="fa-regular fa-heart"></i>
+                    </Link>
                   </div>
                   {items.images.map((images) => (
                     <img
@@ -463,20 +485,20 @@ const TourPage: React.FC = () => {
                       src={`http://localhost:8000/storage/${images.image_path}`}
                       alt={`Ảnh ${items.ten_tour}`}
                     />))}
-                  <p className="px-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
-                  <Link to={""}><p className='font-bold py-2 px-1'>{items.ten_tour}</p></Link>
-                  <p className='font-bold py-2 px-1'>Số lượng: {items.soluong} </p>
+                  <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
+                  <Link to={""}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
+                  <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>
                     <p className='text-sm'>Nơi khởi hành: </p>
                     <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
                   </div>
-                  <p className='text-base font-medium pt-1 px-4'>Giá trẻ em: {items.gia_treem}₫</p>
+                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
                   <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                    <p className='text-lg font-semibold text-red-500'>{items.gia_nguoilon}₫</p>
+                    <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
                     <div className='bg-red-400 py-2 text-center rounded-xl text-white'>10% Giảm</div>
                   </div>
-                  <div className="px-3 py-2 grid grid-cols-2 gap-7">
-                    <button className="bg-blue-500 px-4 py-2 rounded-lg text-white">Đặt Ngay</button>
+                  <div className="px-3 py-4 grid grid-cols-2 gap-7">
+                    <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white">Đặt Ngay</button>
                     <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white"><a href="">Xem chi tiết</a></button>
                   </div>
                 </div>
