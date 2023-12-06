@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {useGetTourByIdQuery} from '../api/TourApi';
+import { useGetTourByIdQuery } from '../api/TourApi';
 
 const Favorite = () => {
 
@@ -99,7 +99,7 @@ const Favorite = () => {
   return (
     <div className='mx-auto container flex gap-10 py-8'>
       <aside className='w-1/5 container mx-auto'>
-<div className='border border-gray-300 rounded-lg container mx-auto'>
+        <div className='border border-gray-300 rounded-lg container mx-auto'>
           <div className='px-4 py-7 flex gap-1'>
             <img
               src={`http://localhost:8000/storage/${usersId.image}`}
@@ -152,11 +152,11 @@ const Favorite = () => {
                   />
                 </div> */}
                 <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[320px] h-[240px] rounded-t-lg' alt="" />
-<div className="tour-details">
-                  <p className='py-2 px-3'>id tour : {item.id}</p>
-                  <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Thiên Đường - KDL Bà Nà - Cầu Vàng - Sơn Trà - Hội {item.ten_tour}</p>
-                  <p className='px-3 text-sm text-left'>Nơi khởi hành: {}</p>
-                  <p className='text-right px-5 text-xl text-red-500 font-semibold py-3'>6,390,000₫{}</p>
+                <div className="tour-details">
+                  <p className='py-2 px-3'>Ngày khởi hành: {item.lich_khoi_hanh}</p>
+                  <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
+                  <p className='px-4 text-sm text-left pb-5'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
+                  <p className='text-right px-5 text-xl text-red-500 font-semibold py-3'>{item.gia_nguoilon}₫</p>
                   {/* Thêm các chi tiết khác về tour tại đây */}
                 </div>
               </div>

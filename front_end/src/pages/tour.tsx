@@ -230,7 +230,6 @@ const addToFavorites = (tourId) => {
     .then(response => {
         // Xử lý kết quả thành công
         console.log(response.data);
-        console.log("Đã thêm vào sản phẩm yêu thích!");
     })
     .catch(error => {
         // Xử lý lỗi
@@ -238,12 +237,6 @@ const addToFavorites = (tourId) => {
         alert("Bạn chưa đăng nhập!");
     });
 };
-
-
-
-
-
-
 
 
   return (
