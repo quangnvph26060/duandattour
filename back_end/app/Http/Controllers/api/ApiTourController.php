@@ -63,8 +63,6 @@ class ApiTourController extends Controller
      */
     public function store(Request $request)
     {
-
-
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             $imagePath = uploadFile('hinh', $request->file('hinh'));
         } else {

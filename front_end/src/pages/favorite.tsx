@@ -99,7 +99,7 @@ const Favorite = () => {
   return (
     <div className='mx-auto container flex gap-10 py-8'>
       <aside className='w-1/5 container mx-auto'>
-        <div className='border border-gray-300 rounded-lg container mx-auto'>
+<div className='border border-gray-300 rounded-lg container mx-auto'>
           <div className='px-4 py-7 flex gap-1'>
             <img
               src={`http://localhost:8000/storage/${usersId.image}`}
@@ -152,7 +152,7 @@ const Favorite = () => {
                   />
                 </div> */}
                 <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[320px] h-[240px] rounded-t-lg' alt="" />
-                <div className="tour-details">
+<div className="tour-details">
                   <p className='py-2 px-3'>id tour : {item.id}</p>
                   <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Thiên Đường - KDL Bà Nà - Cầu Vàng - Sơn Trà - Hội {item.ten_tour}</p>
                   <p className='px-3 text-sm text-left'>Nơi khởi hành: {}</p>
