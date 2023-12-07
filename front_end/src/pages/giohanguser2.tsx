@@ -4,6 +4,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import axios from 'axios'; // Import Axios
 import { Link } from "react-router-dom";
 import "./css.css"
+import { FaStar } from 'react-icons/fa';
 const rounded = {
     borderRadius: '25px',
 };
@@ -112,15 +113,38 @@ const Giohanguser = () => {
     const showAlert = (tourId) => {
         const inputContainer = document.getElementById(`inputContainer-${tourId}`);
         const isInputVisible = !inputContainer.classList.contains("hidden");
-      
+
         if (isInputVisible) {
-          inputContainer.classList.add("hidden");
+            inputContainer.classList.add("hidden");
         } else {
-          inputContainer.classList.remove("hidden");
+            inputContainer.classList.remove("hidden");
         }
-      };
-
-
+    };
+    // lấy số sao đánh giá
+    const [selectedStars, setSelectedStars] = useState(0);
+    const handleStarClick = (rating) => {
+        setSelectedStars(rating);
+    };
+    //  nội dung đánh giá 
+    const [inputValue, setInputValue] = useState('');
+    // xử lý đánh giá 
+    const addToFavorites = () => {
+        const token = localStorage.getItem('token'); 
+        axios.post('http://127.0.0.1:8000/api/evaluate', { so_sao: selectedStars , noi_dung: inputValue}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+                setInputValue("")
+            })
+            .catch(error => {
+                // Xử lý lỗi
+                console.error(error);
+            });
+    };
 
     return (
 
@@ -229,9 +253,28 @@ const Giohanguser = () => {
                                                         <div>
                                                             <button onClick={() => showAlert(user.id)}>Viết đánh giá</button>
                                                             <div id={`inputContainer-${user.id}`} className="hidden">
+                                                               
+                                                                    <div className="rate ml-[120px] mb-5 mt-[-25px] flex gap-2">
+                                                                        <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                            <FaStar onClick={() => handleStarClick(1)} />
+                                                                        </h2>
+                                                                        <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                            <FaStar onClick={() => handleStarClick(2)} />
+                                                                        </h2>
+                                                                        <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                            <FaStar onClick={() => handleStarClick(3)} />
+                                                                        </h2>
+                                                                        <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                            <FaStar onClick={() => handleStarClick(4)} />
+                                                                        </h2>
+                                                                        <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                            <FaStar onClick={() => handleStarClick(5)} />
+                                                                        </h2>
+                                                                    </div>
+                                                                    <input type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} style={{border:"1px solid"}}/>
+                                                              
+                                                                    <button style={{ background: "green", color: "white" }} onClick={addToFavorites}>đánh giá </button>
                                                                 
-                                                                <input type="text" />
-                                                                <button style={{background:"green",color:"white"}}>đánh giá </button>
                                                             </div>
                                                         </div>
                                                     </div>

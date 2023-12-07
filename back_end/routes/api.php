@@ -22,7 +22,7 @@ use App\Http\Controllers\Api\ApiFavoriteController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
-
+use App\Http\Controllers\Api\ApiEvaluateController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -141,6 +141,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
     // add sản phẩm yêu thích 
     Route::get('/favorites', [ApiFavoriteController::class, 'index']);
     Route::post('/favorites', [ApiFavoriteController::class, 'store']);
+    // đánh giá 
+    Route::post('/evaluate', [ApiEvaluateController::class, 'addDanhGia']);
 });
 // api giảm giá 
 Route::prefix('admin')->group(function () {
