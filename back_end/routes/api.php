@@ -143,6 +143,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
     Route::post('/favorites', [ApiFavoriteController::class, 'store']);
     // đánh giá 
     Route::post('/evaluate', [ApiEvaluateController::class, 'addDanhGia']);
+    Route::get('/find_evaluate', [ApiEvaluateController::class, 'findDanhGia']);
 });
 // api giảm giá 
 Route::prefix('admin')->group(function () {

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('id_user');
             $table->string('so_sao');
+            $table->string('id_tour');
             $table->text('noi_dung');
             $table->timestamps();
         });

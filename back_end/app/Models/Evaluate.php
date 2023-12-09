@@ -13,6 +13,7 @@ class Evaluate extends Model
     protected $fillable = [
         'id_user',
         'so_sao',
+        'id_tour',
         'noi_dung'
     ];
 }
