@@ -1,7 +1,7 @@
 
-import {IBookingData} from '../interface/Checjk';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IMenu } from '../interface/menu';
+
 
 export interface LoaiTour {
     id: number;

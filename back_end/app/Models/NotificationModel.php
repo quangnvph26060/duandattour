@@ -16,6 +16,12 @@ class NotificationModel extends Model
         'body',
         'ngay_gio',
         'loai_thong_bao',
+        'id_tour',
         'user_id'
     ];
+
+    public function tours()
+    {
+        return $this->belongsto(TourModel::class, 'id_tour');
+    }
 }

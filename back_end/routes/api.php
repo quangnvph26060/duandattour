@@ -28,7 +28,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ApiNewsController;
-
+use App\Http\Controllers\Api\ApiNotificationController;
 use Carbon\Carbon;
 
 /*
@@ -274,6 +274,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiNewsController::class, 'show']);
         Route::put('/{id}', [ApiNewsController::class, 'update']);
         Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::get('/', [ApiNotificationController::class, 'getlistNotification']);
+        Route::put('/updateStatusNotification', [ApiNotificationController::class, 'updateStatusNotification']);
     });
 
     Route::prefix('dattour')->group(function () {

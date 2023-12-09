@@ -6,12 +6,14 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\DatTour;
 use App\Models\HoaDon;
+use App\Models\NotificationModel;
 use App\Models\ThanhToan;
 use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class ApiDatTourController extends Controller
@@ -58,11 +60,20 @@ class ApiDatTourController extends Controller
         $tourone = TourModel::find($datTour['id_tour']);
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
+            // dd($createDatTour->ten_khach_hang);
             $soluong = $tourone->soluong - $soLuongKhach;
             if ($createDatTour) {
                 $tourone->soluong = $soluong;
                 $tourone->save();
             }
+            // thông báo khi đặt hàng thành công gửi về admin
+            $notification = new NotificationModel();
+            $notification->name_user = $createDatTour->ten_khach_hang;
+            $notification->body = "Có đơn đặt hàng mới!!";
+            $notification->ngay_gio = Date(now());
+            $notification->loai_thong_bao = "Đặt tour";
+            $notification->id_tour = $datTour['id_tour'];
+            $notification->save();
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->timestamp('ngay_gio');
             $table->enum('loai_thong_bao', ['Đặt tour', 'Hủy tour', 'Đăng kí tài khoản'])->default('Đặt tour');
             $table->tinyInteger('status')->default('0');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('id_tour')->constrained('tour');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });
