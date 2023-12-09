@@ -1,6 +1,6 @@
 
 import logo from '../img/logo.jpg'
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -15,10 +15,16 @@ const QLuser = () => {
 
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [idCccd, setIdCccd] = useState('');
+    const [address, setAddress] = useState('');
     const Td = JSON.parse(localStorage.getItem('id'));
 
     const role = localStorage.getItem('role');
     useEffect(() => {
+
         if (token) {
             // Gửi yêu cầu API để lấy thông tin người dùng từ token
             fetch("http://localhost:8000/api/user", {
@@ -30,6 +36,13 @@ const QLuser = () => {
                 .then((response) => response.json())
                 .then((userData) => {
                     setUserId(userData);
+
+                    setName(userData.name);
+                    setEmail(userData.email);
+                    setPhoneNumber(userData.sdt);
+                    setIdCccd(userData.cccd);
+                    setAddress(userData.dia_chi);
+
                 })
                 .catch((error) => {
                     console.error(error);
@@ -64,14 +77,56 @@ const QLuser = () => {
     const [isDivVisible, setDivVisible] = useState(false);
 
     const toggleDiv = () => {
+
         setDivVisible(!isDivVisible);
     };
 
     const closeDiv = () => {
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
         setDivVisible(false);
     };
     // console.log(usersId);
+    const handleUpdate = (e) => {
+        e.preventDefault();
+        const userData = {
+            id: usersId.id,
+            name: name,
+            dia_chi: address, // Sử dụng trường 'dia_chi' thay cho 'address'
+            email: email,
+            sdt: phoneNumber, // Sử dụng trường 'sdt' thay cho 'phoneNumber'
+            cccd: idCccd, // Sử dụng trường 'cccd' thay cho 'idCccd'
+        };
 
+        axios
+            .put('http://127.0.0.1:8000/api/updateUser', userData)
+            .then((response) => {
+                console.log(response.data);
+                console.log('quang');
+                alert('Đã cập nhật thành công');
+                // Xử lý response từ phía server sau khi cập nhật thành công
+            })
+            .catch((error) => {
+                console.error(error);
+                // Xử lý lỗi khi cập nhật không thành công
+            });
+    };
+    const [count, setCount] = useState('');
+    const id = usersId.id;
+    axios.get('http://localhost:8000/api/CountTour', {
+        params: {
+            id: id
+        }
+    })
+        .then(response => {
+            const count = response.data.count;
+            setCount(count);
+            // Xử lý dữ liệu count ở đây
+        })
+        .catch(error => {
+            // Xử lý lỗi ở đây
+        });
 
     return (
         <div>
@@ -100,7 +155,7 @@ const QLuser = () => {
                             <div className='py-3'>
                                 <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
                                 <div className='px-10'>
-                                    {role === 'admin' && (
+                                    {(role === 'admin' || role === 'huong_dan_vien' || role === 'nhan_vien' )&& (
                                         <a href="/admin"><p className='text-sm text-red-500 py-1'>Quản lý Website</p></a>
                                     )}
                                     <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>
@@ -142,7 +197,7 @@ const QLuser = () => {
                                             >
                                                 Họ và Tên
                                             </th>
-                                            <td className="px-6 py-4">M{usersId.name}</td>
+                                            <td className="px-6 py-4">{usersId.name}</td>
                                             <td className=" px-6 py-4 text-right">
 
                                             </td>
@@ -154,7 +209,7 @@ const QLuser = () => {
                                             >
                                                 Tổng số tour đã đi
                                             </th>
-                                            <td className="px-6 py-4">0</td>
+                                            <td className="px-6 py-4">{ count || 0 }</td>
                                             <td className="px-6 py-4 text-right">
 
                                             </td>
@@ -183,7 +238,7 @@ const QLuser = () => {
 
                                             </td>
                                         </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        {/* <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th
                                                 scope="row"
                                                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -218,7 +273,7 @@ const QLuser = () => {
                                             <td className="px-6 py-4 text-right mr-4">
 
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th
                                                 scope="row"
@@ -265,22 +320,18 @@ const QLuser = () => {
                                 Đóng
                             </div>
                         </div>
-
+                        {/* modal */}
                         <form
                             action=""
                             className="px-5 py-3 text-base font-normal text-[#000] mb-8"
+
                         >
                             <label htmlFor="" className="form-edit">
                                 <p>Họ và tên : </p>
-                                <input type="text" placeholder="Họ và tên " />
-                            </label>
-                            <label htmlFor="" className="mt-3 form-edit">
-                                <p className="mt-3">Tổng số tour đã đi : </p>
-                                <input
-                                    type="number"
-                                    placeholder="Tổng số tour đi  "
-                                    className="no-spinners"
-                                    min={0}
+                                <input type="text" placeholder="Họ và tên "
+                                    value={name || ''}
+                                    onChange={(e) => setName(e.target.value)}
+
                                 />
                             </label>
                             <label htmlFor="" className="mt-3 form-edit">
@@ -289,15 +340,19 @@ const QLuser = () => {
                                     type="email"
                                     placeholder="Địa chỉ email  "
                                     className="no-spinners"
+                                    value={email || ''}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </label>
                             <label htmlFor="" className="mt-3 form-edit">
-                                <p className="mt-3">Số điện thoại </p>
+                                <p className="mt-3">Số điện thoại</p>
                                 <input
                                     type="number"
                                     placeholder="Số điện thoại   "
                                     className="no-spinners"
                                     min={0}
+                                    value={phoneNumber || ''}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
                                 />
                             </label>
 
@@ -305,11 +360,13 @@ const QLuser = () => {
                                 <p className="mt-3"> </p>
                             </label>
                             <label htmlFor="" className="mt-3 form-edit">
-                                <p className="mt-3">Cccd : </p>
+                                <p className="mt-3">CMND : </p>
                                 <input
                                     type="number"
                                     placeholder="Căn cước công dân   "
                                     className="no-spinners"
+                                    value={idCccd || ''}
+                                    onChange={(e) => setIdCccd(e.target.value)}
                                 />
                             </label>
                             <label htmlFor="" className="mt-3 form-edit">
@@ -318,14 +375,17 @@ const QLuser = () => {
                                     type="text"
                                     placeholder="Địa chỉ   "
                                     className="no-spinners"
+                                    value={address || ''}
+                                    onChange={(e) => setAddress(e.target.value)}
                                 />
                             </label>
                             <div className="flex justify-center mt-5">
-                                <button className="border py-2 bg-blue-500 text-[#ffffff] w-2/5 text-center rounded-lg">
+                                <button onClick={handleUpdate} className="border py-2 bg-blue-500 text-[#ffffff] w-2/5 text-center rounded-lg">
                                     Cập nhật
                                 </button>
                             </div>
                         </form>
+                        {/* end modal */}
                     </div>
                 </div>
             )}

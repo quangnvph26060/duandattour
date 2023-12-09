@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\api;
+
 use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -29,7 +30,7 @@ class ApiPermissionsController extends Controller
             return response()->json(['error' => 'Invalid file or file upload failed'], 500);
         }
 
-        $user = UsersModel::create([
+        $user = User::create([
             'name' => $request->name,
             'image' => $imagePath,
             'dia_chi' => $request->dia_chi,
@@ -39,8 +40,8 @@ class ApiPermissionsController extends Controller
             'password' => Hash::make($request->password),
 
         ]);
-
-
+        $role = Role::where('name', 'huong_dan_vien')->where('guard_name', 'web')->first();
+        $user->roles()->sync([$role->id]);
         Mail::to($user->email)->send(new RegisterUser($user));
 
         return response()->json(['message' => 'Thêm hướng dẫn viên thành công !!']);
@@ -48,7 +49,7 @@ class ApiPermissionsController extends Controller
 
     public function show(string $id)
     {
-        $User = UsersModel::find($id);
+        $User = User::find($id);
         if (!$User) {
             return response()->json($User);
         }
@@ -56,7 +57,7 @@ class ApiPermissionsController extends Controller
     }
     public function update(Request $request, string $id)
     {
-        $User = UsersModel::find($id);
+        $User = User::find($id);
         if (!$User) {
             return response()->json([
                 'message' => 'Không tìm người dùng'
@@ -66,7 +67,7 @@ class ApiPermissionsController extends Controller
     }
     public function destroy(string $id)
     {
-        $User = UsersModel::find($id);
+        $User = User::find($id);
         if (!$User) {
             return response()->json([
                 'message' => 'Không tìm thấy người dùng '
@@ -155,5 +156,15 @@ class ApiPermissionsController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+    // lấy ra nhưng hướng dẫn viên 
+    public function getHuongDanVien()
+    {
+        $permissions = User::whereHas('roles', function ($query) {
+            $query->where('name', 'huong_dan_vien');
+        })->with(['roles', 'roles.permissions'])->get();
+
+        return response()->json(['data' => $permissions]);
     }
 }
