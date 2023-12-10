@@ -70,29 +70,6 @@ const TourPage: React.FC = () => {
     return numberOfDays;
   }
 
-
-  // const [searchTerm, setSearchTerm] = useState("");
-  // // const [tours, setTours] = useState<IPour[]>([]);
-  // const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
-
-  // useEffect(() => {
-  //   const fetchTours = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
-  //       setTours(response.data.data);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //       setError("Error retrieving tours.");
-  //     }
-  //   };
-
-  //   fetchTours();
-  // }, []);
   const [tourdiemden, setTour] = useState([]);
   const { diem_den } = useParams<{ diem_den: any }>();
   useEffect(() => {
@@ -113,44 +90,6 @@ const TourPage: React.FC = () => {
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
-
-  // const getTour = () => {
-  //   axios
-  //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
-  //     .then((response)=>{
-  //       console.log(response.data.tourdiemden);
-  //       setTour(response.data.tourdiemden);
-  //     })
-  // }
-  // useEffect(() => {
-  //   getTour();
-  // }, []);
-
-
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   const filteredTours = tours.filter((tour) =>
-  //     tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-
-  //   setFilteredTours(filteredTours);
-  //   setSearched(true); // Đánh dấu đã tìm kiếm
-  // };
-
-  // const handleResetSearch = () => {
-  //   setSearchTerm("");
-  //   setFilteredTours([]);
-  //   setSearched(false); // Đánh dấu chưa tìm kiếm
-  // };
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
-
-  // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
 
   //Hiếu
 
@@ -237,6 +176,14 @@ const TourPage: React.FC = () => {
         alert("Bạn chưa đăng nhập!");
       });
   };
+
+  console.log("selectedDayRange:", selectedDayRange);
+console.log("selectedNumberOfPeople:", selectedNumberOfPeople);
+console.log("matchedResults:", matchedResults);
+console.log("filteredTours:", filteredTours);
+console.log("tourdiemden:", tourdiemden);
+
+
 
 
   return (
@@ -451,9 +398,9 @@ const TourPage: React.FC = () => {
         {/*conten-right*/}
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5 mb-3'><hr className='bg-black h-[1.5px]' /></div>
+          <div className='py-5 mb-3'><hr className='bg-black h-[1px]' /></div>
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
-            {(selectedDayRange || selectedNumberOfPeople
+            {(selectedDayRange || selectedNumberOfPeople || matchedResults
               ? filteredTours
               : tourdiemden
             ).map((items) => (
@@ -508,7 +455,7 @@ const TourPage: React.FC = () => {
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
           </div>
-          <div className='py-5'><hr className='bg-black h-[2px]' /></div>
+          <div className='py-5'><hr className='bg-black h-[1px]' /></div>
 
           <div className='py-3'>
             <div className='w-[860px] bg-gray-100 rounded-lg flex'>
