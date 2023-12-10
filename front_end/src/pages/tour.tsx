@@ -455,7 +455,7 @@ const TourPage: React.FC = () => {
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
           {(selectedDayRange || selectedNumberOfPeople 
     ? filteredTours
-    : tourdiemden
+    : matchedResults
   ).map((items) => (
               <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
@@ -471,10 +471,10 @@ const TourPage: React.FC = () => {
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
-                        to={``}  // Update the 'to' prop to navigate to the favorite page
+                        to={``} 
                         className='mega-menu-items'
                         onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                     
                       >
                         {/* Thêm vào sản phẩm yêu thích */}
                         <i className="fa-regular fa-heart text-white"></i>
@@ -504,54 +504,6 @@ const TourPage: React.FC = () => {
             ))}
           </div>
         
-          <div className='grid grid-cols-3 gap-7 container mx-auto'>
-          {matchedResults.map((items) => (
-              <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
-                {/* ... (your existing code) */}
-                <div className=' bg-white rounded-t-lg shadow-xl'>
-                {items.images.map((image) => (
-                      <img
-                        key={image.id}
-                        className="mt-4 rounded-lg w-full h-60 object-cover"
-                        src={`http://localhost:8000/storage/${image.image_path}`}
-                        alt={`Ảnh ${items.ten_tour}`}
-                      />
-                    ))}
-                  <div className="relative">
-                    <div className="py-2 absolute top-0 left-1">
-                      <Link
-                        to={``}  // Update the 'to' prop to navigate to the favorite page
-                        className='mega-menu-items'
-                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                      // Optionally, you can add additional logic for navigating to the favorite page if needed
-                      >
-                        {/* Thêm vào sản phẩm yêu thích */}
-                        <i className="fa-regular fa-heart text-white"></i>
-                      </Link>
-                    </div>
-                    
-                  </div>
- 
-                  <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
-                  <Link to={""}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
-                  <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
-                  <div className='flex gap-2 py-2 px-4'>
-                    <p className='text-sm'>Nơi khởi hành: </p>
-                    <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
-                  </div>
-                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
-                  <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                    <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
-                    <div className='bg-yellow-300 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
-                  </div>
-                  <div className="px-3 py-4 grid grid-cols-2 gap-7">
-                    <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
-                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
 
 
           <div className='ml-auto py-4 pt-6'>
