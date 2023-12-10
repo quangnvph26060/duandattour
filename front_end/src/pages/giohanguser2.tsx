@@ -223,7 +223,7 @@ const Giohanguser = () => {
 
                                                         <>
                                                             <p>Đánh giá: {item.danh_gia.so_sao} sao</p>
-                                                            <p>{item.danh_gia.noi_dung}</p>
+                                                            <p>Nội dung: {item.danh_gia.noi_dung}</p>
                                                         </>
                                                     ) : (
                                                         <div>

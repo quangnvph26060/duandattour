@@ -30,7 +30,7 @@ class ApiEvaluateController extends Controller
     {
         $user = auth()->user()->id;
         $evaluation = Evaluate::where('id_user', $user)->get();
-        $dattour = DatTour::where('trang_thai', 1)->get();
+        $dattour = DatTour::where('trang_thai', 1)->where('ma_khach_hang',$user)->get();
         $tours = TourModel::all();
         $loaitour = LoaiTourModel::all();
         // lấy đánh giá của tour
