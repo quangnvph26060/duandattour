@@ -2,23 +2,28 @@
   max-width: 100%;
   margin: 0 auto;
 }
+
 .product-listb {
   max-width: 100%;
 }
-.content{
+
+.content {
   margin: 40px;
-  
-border: burlywood;
+
+  border: burlywood;
 }
-.price-c{
+
+.price-c {
   font-weight: 700;
   color: #2d4271;
 }
-.price-t{
+
+.price-t {
   font-size: 20px;
-    font-weight: 700;
-    color: #fd5056;
+  font-weight: 700;
+  color: #fd5056;
 }
+
 .button-wrapper {
   display: flex;
   flex-direction: column;
@@ -28,46 +33,56 @@ border: burlywood;
 .button-wrapper button {
   margin-top: 10px;
 }
+
 .info-row {
   display: flex;
   align-items: center;
 }
+
 .chat-messages .message-timestamp {
   font-size: smaller;
   float: left;
   color: #000000;
 }
 
-.text{
+.text {
   font-size: 15px;
   color: #2d4271;
   font-family: sans-serif;
   font-style: normal;
 }
+
 .price {
   text-decoration: line-through;
 }
+
 .date {
   font-size: 13px;
   color: #2d4271;
-  font:  sans-serif;
+  font: sans-serif;
 }
+
 .info-row p {
   margin-right: 10px;
 }
+
 .home-page__title {
   font-weight: 500;
   font-size: 30px;
   color: #2d4271;
 }
+
 .product-list .slick-slide {
   display: flex;
   justify-content: center;
 }
+
 .box-shadow {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-  
-}.form-input {
+
+}
+
+.form-input {
   width: 300px;
   height: 40px;
   padding: 0.5rem;
@@ -79,6 +94,7 @@ border: burlywood;
 br {
   margin-bottom: 1rem;
 }
+
 .product-list .slick-dots {
   bottom: 10px;
 }
@@ -86,49 +102,184 @@ br {
 .product-list .slick-dots li button:before {
   font-size: 12px;
 }
-.custum{
+
+.custum {
   border: 3.5px solid black;
 }
 
 .product-lista img {
   width: 100%;
   height: 310px;
-  margin: auto ;
+  margin: auto;
   object-fit: cover;
 }
-.hoem{
+
+.hoem {
   color: #555;
   border: #2d4271;
 }
+
 .product-list1 img {
   width: 100%;
   height: 210px;
   object-fit: cover;
 }
+
 .product-list img {
 
   height: 40%;
   object-fit: cover;
-}.text-lg {
-  font-size: 1.125rem; /* Tăng kích thước chữ lên 1.125rem */
-  color: #333; /* Đổi màu chữ thành màu đen */
 }
+
+.text-lg {
+  font-size: 1.125rem;
+  /* Tăng kích thước chữ lên 1.125rem */
+  color: #333;
+  /* Đổi màu chữ thành màu đen */
+}
+
 .font-semibold {
-  
-  font-weight: 600; /* Đặt độ đậm cho phông chữ */
-  color: #555; /* Đổi màu chữ thành màu xám đậm */
-}.pl-4 li {
-  
-  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi mục danh sách */
+
+  font-weight: 600;
+  /* Đặt độ đậm cho phông chữ */
+  color: #555;
+  /* Đổi màu chữ thành màu xám đậm */
 }
-  p {
-  margin-bottom: 0.5rem; /* Tăng khoảng cách dưới của mỗi đoạn văn */
-}.text-sm {
-  text-align: center; /* Căn giữa nội dung */
-  color: #888; /* Đổi màu chữ thành màu xám nhẹt */
+
+.pl-4 li {
+
+  margin-bottom: 0.5rem;
+  /* Tăng khoảng cách dưới của mỗi mục danh sách */
 }
-ul li{
-  
+
+p {
+  margin-bottom: 0.5rem;
+  /* Tăng khoảng cách dưới của mỗi đoạn văn */
+}
+
+.text-sm {
+  text-align: center;
+  /* Căn giữa nội dung */
+  color: #888;
+  /* Đổi màu chữ thành màu xám nhẹt */
+}
+
+ul li {
+
+  display: block;
+}
+
+.block-all {
+  max-width: 1920px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.icon-select img {
+  object-fit: cover;
+  max-width: 80px;
+
+}
+
+.hover-image img {
+  width: 100%;
+  height: 100%;
+
+}
+
+.hover-image img:hover {
+  transform: scale(1.05);
+  transition: all linear 0.5s;
+  height: 168px;
+}
+
+.tour-uudai {
+  width: 320px;
+  height: 290px;
+}
+
+.tour-uudai img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+}
+
+.slider-item img {
+  max-width: 1920px;
+  height: 570px;
+}
+
+@media (max-width: 1024px) {
+  .slider-item img {
+    max-width: 1920px;
+    height: 200px !important;
+  }
+}
+
+.icon-sheach img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.form-banner input {
+  outline: none;
+  padding-right: 10px;
+  color: #2d4271;
+  font-weight: bold;
+}
+
+.form-banner select {
+  outline: none;
+  padding-right: 10px;
+}
+
+.tuongduong {
+  width: 50px;
+  height: 50px;
+
+  margin-right: 15px;
+
+}
+
+.tuongduong img {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slick-dots {
+  margin: 0 !important;
+}
+
+ul {
+
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+li {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.sub-menu {
+  border-radius: 6px;
+  width: 200px;
+  transform: translate(-75px);
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+li:hover .sub-menu {
   display: block;
 }
 .block-all{

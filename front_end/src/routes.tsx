@@ -47,7 +47,6 @@ import { Route, Routes } from "react-router-dom";
 import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-
 import ChatComponent from "./pages/Admin/products/Message/ChatBox";
 import { ContextProvider } from "./context/ContextProvider";
 import AdminGiam_Gia from "./pages/Admin/products/GiamGia";
@@ -59,7 +58,16 @@ import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
 import ADmin_Qlytourchuathanhtoan from "./pages/Admin/products/Dat_tour/index2";
 import ADmin_Qlytourdathanhtoan from "./pages/Admin/products/Dat_tour/index3";
 import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
+import Giohanguser from "./pages/giohanguser";
+import Giohanguser1 from "./pages/giohanguser1";
+import Giohanguser2 from "./pages/giohanguser2";
+import Doimk from "./pages/changeMk";
+import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
+import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+import Admin_baiviet from "./pages/Admin/Post/bai_viet";
+import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 export const router = createBrowserRouter([
+  
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -77,6 +85,10 @@ export const router = createBrowserRouter([
         element: <TourPage />,
       },
       {
+        path: "tour/:diem_den",
+        element: <TourPage />,
+      },
+      {
         path: "signin",
         element: <SignIn />,
       },
@@ -85,7 +97,7 @@ export const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "tour/:idTour",
+        path: "tours/:idTour",
         element: <DetailPage />,
       },
       {
@@ -108,13 +120,31 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <QLuser />,
       },
+      {
+        path: "/giohanguser",
+        element: <Giohanguser />
+      },
+      {
+        path: "/giohanguser1",
+        element: <Giohanguser1 />
+      },
+      {
+        path: "/giohanguser2",
+        element: <Giohanguser2 />
+      },
+      {
+        path: "/changeMk",
+        element: <Doimk />
+      },
     ],
   },
 
   {
     path: "/admin",
     element: localStorage.getItem("role") === 'admin' ||
-      localStorage.getItem("role") === 'nhan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
+      localStorage.getItem("role") === 'nhan_vien' ||
+      localStorage.getItem("role") === 'customer_feedback' ||
+      localStorage.getItem("role") === 'huong_dan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
@@ -198,7 +228,10 @@ export const router = createBrowserRouter([
         path: "customer_account",
         element: <Admin_Khachhang />,
       },
-
+      {
+        path: 'customer_feedback',
+        element: <ChatComponent />
+      },
       // {
       //   path: "customer_account/add",
       //   element: <Admin_Acountkhachhang_Roles />,
@@ -291,7 +324,22 @@ export const router = createBrowserRouter([
         path: "tour/tour_dathanhtoan",
         element: <ADmin_Qlytourdathanhtoan />,
       },
-    
+      {
+        path: "post/danhmuc_post",
+        element: <Admin_Danhmuc_baiviet />,
+      },
+      {
+        path: "post/add_danhmuc",
+        element: <Admin_DanhmucADD />,
+      },
+      {
+        path: "post/bai_viet",
+        element: <Admin_baiviet />,
+      },
+      {
+        path: "post/bai_vietADD",
+        element: <ADmin_postADD />,
+      },
     ],
   },
 ]);

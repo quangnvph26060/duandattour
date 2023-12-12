@@ -10,27 +10,42 @@ use App\Models\LichTrinhModel;
 use App\Models\TourPhuongTienModel;
 use App\Models\TourKhachSanModel;
 use App\Models\DatTour;
+
 class TourModel extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = "tour";
     protected $fillable = [
         'ten_tour',
+        'image_path',
         'diem_di',
         'diem_den',
         'lich_khoi_hanh',
-        'ngay_ket_thuc',
         'diem_khoi_hanh',
-        'gia_tour',
+        'ngay_ket_thuc',
+        'gia_nguoilon',
+        'gia_treem',
         'mo_ta',
         'soluong',
         'trang_thai',
         'ma_loai_tour',
-        'ma_hdv'
     ];
+    public function tourDiscount()
+    {
+        return $this->hasMany(TourDiscount::class, 'tour_id', 'id');
+    }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'tour_discount', 'tour_id', 'discount_id');
+    }  
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
+    }
+    public function loaiTours()
+    {
+        return $this->belongsto(LoaiTourModel::class, 'ma_loai_tour');
     }
     public function images()
     {
@@ -62,5 +77,4 @@ class TourModel extends Model
     {
         return $this->hasMany(DatTour::class, 'id_tour');
     }
-    
 }

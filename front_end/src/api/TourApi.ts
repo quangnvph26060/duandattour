@@ -34,12 +34,13 @@ const TourApi = createApi({
             }),
             invalidatesTags: ['Tour']
         }),
-        removeTour: builder.mutation<ITour, ITour>({
+        removeTour: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/tour/${id}`,
                 method: "DELETE",
 
-            })
+            }),
+            invalidatesTags: ['Tour']
 
         }),
         getTourById: builder.query<ITour, number>({

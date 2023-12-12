@@ -11,6 +11,9 @@ class LoaiKhachSanModel extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'loai_khach_san';
     protected $fillable = [
-        'loai_khach_san'
+        'image',
+        'ten_khach_san',
+        'dia_chi',
+        'so_sao'
     ];
 }

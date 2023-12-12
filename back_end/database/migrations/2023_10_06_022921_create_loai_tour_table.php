@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('loai_tour', function (Blueprint $table) {
             $table->id();
+            $table->string('image')->nullable();
             $table->string('ten_loai_tour')->unique();
             $table->timestamps();
             $table->softDeletes();
