@@ -80,6 +80,7 @@ const LayoutAdmin = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("role");
+      localStorage.removeItem('avatar')
       // Display a success message
       alert("Đăng xuất thành công!");
       alert("Bạn không có quyền truy cập");

@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import { IPour } from "../../interface/home";
 import logo from '../img/logo.jpg';
+import pogo from '../img/in.webp';
 interface Tour {
   id: number;
   ten_tour: string;
@@ -104,10 +105,12 @@ const HeaderWebsite = () => {
           />
           <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button>
           <Link to="/signup">
-            <button className="bg-green-500 text-white py-1 px-3 rounded">
-              <i className="fas fa-user"></i>
-            </button>
-          </Link>
+  <img style={{width:"30px"}}
+   src={localStorage.getItem('avatar') || {logo} }
+    alt="User Icon"
+    className=" text-white py-1 px-1 rounded"
+  />
+</Link>
         </div>
       </div>
     </div>
