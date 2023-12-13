@@ -1,0 +1,19 @@
+.hidden {
+  display: none;
+}
+.container-detail{
+max-width: 1320px;
+}
+.img-container{
+position: relative;
+overflow: hidden;
+}
+.hover-img{
+transition: transform 0.3s ease-in-out;
+}
+.hover-img :hover{
+transform: scale(1.2);
+}
+.input-rate :focus{
+border: 1px solid green;
+}

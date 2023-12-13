@@ -3,6 +3,10 @@ import logo from '../img/logo.jpg'
 import { AiOutlineSearch } from 'react-icons/ai';
 import axios from 'axios'; // Import Axios
 import { Link } from "react-router-dom";
+import "./css.css"
+import { FaStar } from 'react-icons/fa';
+import Item from 'antd/es/list/Item';
+
 const rounded = {
     borderRadius: '25px',
 };
@@ -10,9 +14,7 @@ const Giohanguser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [data, setUserTours] = useState([]);
-
     const Td = JSON.parse(localStorage.getItem('id'));
-
     const role = localStorage.getItem('role');
     useEffect(() => {
         if (token) {
@@ -57,51 +59,9 @@ const Giohanguser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
-    // useEffect(() => {
-    //     if (token) {
-    //         fetch('http://127.0.0.1:8000/api/ToursByUserId', {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         })
-    //             .then(response => response.json())
-    //             .then(result => {
-    //                 setUserTours(result.data);
-
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             });
-    //     }
-    // }, [token])
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        // Fetch data from the API
-        fetch('http://127.0.0.1:8000/api/ToursByUserId', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Network response was not ok.');
-            })
-            .then(data => {
-                setUserTours(data.data); // Assuming the data is under the 'data' key in the response
-            })
-            .catch(error => {
-                console.error('There was an error fetching the data:', error);
-            });
-    }, []);
     const calculateDaysDifference = (ngayKetThuc, lichKhoiHanh) => {
         const ngayKetThucDate = new Date(ngayKetThuc);
         const lichKhoiHanhDate = new Date(lichKhoiHanh);
-
         const millisecondsPerDay = 1000 * 60 * 60 * 24; // Số milliseconds trong một ngày
         const timeDifference = ngayKetThucDate.getTime() - lichKhoiHanhDate.getTime();
         const daysDifference = Math.round(timeDifference / millisecondsPerDay);
@@ -109,31 +69,68 @@ const Giohanguser = () => {
         return daysDifference;
         // console.log(data);
     };
-    const [toursByLoaiTour, setToursByLoaiTour] = useState([]);
+    const showAlert = (tourId) => {
+        const inputContainer = document.getElementById(`inputContainer-${tourId}`);
+        const isInputVisible = !inputContainer.classList.contains("hidden");
+
+        if (isInputVisible) {
+            inputContainer.classList.add("hidden");
+        } else {
+            inputContainer.classList.remove("hidden");
+        }
+    };
+    
+    // lấy số sao đánh giá
+    const [selectedStars, setSelectedStars] = useState(0);
+    const handleStarClick = (rating) => {
+        setSelectedStars(rating);
+    };
+    //  nội dung đánh giá 
+    const [inputValue, setInputValue] = useState('');
+    // xử lý đánh giá 
+    const addToFavorites = (id) => {
+        const token = localStorage.getItem('token');
+        axios.post('http://127.0.0.1:8000/api/evaluate', { so_sao: selectedStars, noi_dung: inputValue, id_tour: id }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+                setInputValue("")
+            })
+            .catch(error => {
+                // Xử lý lỗi
+                console.error(error);
+            });
+    };
+    // 
+
+    const [evaluations, setEvaluations] = useState([]);
+
 
     useEffect(() => {
-        // Lọc và nhóm các tours đã đặt theo loại tour và trạng thái
-        const toursByLoaiTourData = {};
-        data.forEach((user) => {
-            if (user.trang_thai === 1) {
-                const loaiTour = user.tours.loai_tours.ten_loai_tour;
-                if (!toursByLoaiTourData[loaiTour]) {
-                    toursByLoaiTourData[loaiTour] = [];
-                }
-                toursByLoaiTourData[loaiTour].push(user);
-            }
-        });
-        setToursByLoaiTour(toursByLoaiTourData);
-    }, [data]); // Chạy lại khi data thay đổi
-    // console.log(toursByLoaiTour);
-
-
-
-
+        findEvaluate();
+    }, [])
+    const findEvaluate = () => {
+        axios.get('http://127.0.0.1:8000/api/find_evaluate', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+                setEvaluations(response.data.tour);
+            })
+            .catch(error => {
+                // Xử lý lỗi
+                console.error(error);
+            });
+    };
     return (
-
         <div>
-
             <br /><br /><br /><br />
             <div className='container mx-auto' >
                 <div className='flex gap-10'>
@@ -172,8 +169,6 @@ const Giohanguser = () => {
                             <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
-
-
                     <article className='w-4/5 container'  >
                         <div className='flex border justify-between px-10 py-5 rounded-lg'>
                             <a href="/giohanguser">Tất cả</a>
@@ -188,59 +183,88 @@ const Giohanguser = () => {
                                 <input type="text" className='overflow-hidden w-96' placeholder='Tìm kiếm theo tên tour/tourCode hoặc số booking' name="" id="" />
                             </div>
                         </div>
-
-                        {/* {data.map((user) => ( */}
-                        {Object.keys(toursByLoaiTour).map((loaiTour) => (
-                            <div key={loaiTour}>
+                        {evaluations.map((item) => (
+                            <div key={item}>
                                 <div className='px-2'>
-
-                                    <h1 className='text-2xl font-medium'> {loaiTour}</h1>
-
+                                    <h1 className='text-2xl font-medium'> {item.ten_loai_tour.ten_loai_tour}</h1>
                                 </div>
-
-                                {toursByLoaiTour[loaiTour].map((user) => (
-                                    <div key={user.id}><p className='py-3'>{user.tours.lich_khoi_hanh} - {user.tours.ngay_ket_thuc}</p><br />
-                                        < div className='flex border gap-5 px-10 py-5 rounded-lg'  >
-
-                                            <div>
-                                                <div className='flex gap-4'>
-                                                    {user.tours.images.map((image, imgIndex) => (
-                                                        <img src={`http://localhost:8000/storage/${image.image_path}`} style={{
-                                                            width: '200px',
-                                                            height: '250px',
-
-                                                        }} className='w-1/3 rounded-lg' alt="" />
-                                                    ))}
-                                                    <div>
-                                                        <Link to={`http://localhost:5173/bookingtour/${user.id}`} >
-                                                            <h2 className='text-2xl font-medium'>{user.tours.ten_tour}</h2>
-                                                        </Link>
-                                                        <div className='py-4'>
-                                                            <p className='py-1 font-medium'>Tuyệt vời</p>
-                                                            <p>358 Quan tâm</p>
-                                                            <div className='flex justify-between'>
-                                                                {/* <p className='py-3'>Số booking: 2HBNDFSBV43476</p> */}
-
-                                                                <div>
-                                                                    <p className='text-xl text-red-500 font-medium'> {user.trang_thai === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</p>
-                                                                    <p className='text-xl text-red-500 font-medium'>{user.thanh_toan ? `tt ${user.thanh_toan.tong_tien_tt}₫` : '    '}</p>
-
-                                                                </div>
-
+                                <div>
+                                    <p className='py-3'>{item.tour.lich_khoi_hanh} - {item.tour.ngay_ket_thuc}</p>
+                                    <br />
+                                    <div className='flex border gap-5 px-10 py-5 rounded-lg'>
+                                        <div>
+                                            <div className='flex gap-4'>
+                                                <img
+                                                    src={`http://localhost:8000/storage/${item.tour.image_path}`}
+                                                    style={{
+                                                        width: '200px',
+                                                        height: '250px',
+                                                    }}
+                                                    className='w-1/3 rounded-lg'
+                                                    alt={item.tour.ten_tour}
+                                                />
+                                                <div>
+                                                    <Link to={`http://localhost:5173/bookingtour/${item.tour.id}`}>
+                                                        <h2 className='text-2xl font-medium'>{item.tour.ten_tour}</h2>
+                                                    </Link>
+                                                    <div className='mb-2'>
+                                                        <p className='py-1 font-medium'>Tuyệt vời</p>
+                                                        <p>358 Quan tâm</p>
+                                                        <div className='flex justify-between'>
+                                                            <div>
+                                                                <p className='text-xl text-red-500 font-medium'> {item.trang_thai === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</p>
+                                                                {/* <p className='text-xl text-red-500 font-medium'>{item.thanh_toan ? `tt ${user.thanh_toan.tong_tien_tt}₫` : ''}</p> */}
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <p className='py-4'>{user.so_luong_khach}người {calculateDaysDifference(user.tours.ngay_ket_thuc, user.tours.lich_khoi_hanh)}đêm</p>
-                                                        </div>
                                                     </div>
+                                                    <div>
+                                                        <p className='mb-2'>{item.so_luong_khach}người {calculateDaysDifference(item.tour.ngay_ket_thuc, item.tour.lich_khoi_hanh)}đêm</p>
+                                                    </div>
+                                                    {item.danh_gia ? (
+
+                                                        <>
+                                                            <p className='flex items-center text-base font-semibold'>Đánh giá: {item.danh_gia.so_sao} <span className='ml-1'><img src="https://cdn-icons-png.flaticon.com/128/2107/2107957.png" alt="" width={'16px'} height={'16px'} /></span> </p>
+                                                            <p className='text-base font-semibold'>Nội dung: <span className='text-red-500'>{item.danh_gia.noi_dung}</span> </p>
+                                                        </>
+                                                    ) : (
+                                                        <div>
+                                                            <button className='border rounded-xl px-3 py-1 bg-blue-500 text-white' onClick={() => showAlert(item.id)}>Viết đánh giá</button>
+                                                            <br />
+                                                            <div id={`inputContainer-${item.id}`} className="hidden ">
+                                                                <div className=' flex flex-col'>
+                                                                <div className="rate  mb-5 mt-3 flex gap-2">
+                                                                    <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                        <FaStar onClick={() => handleStarClick(1)} />
+                                                                    </h2>
+                                                                    <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                        <FaStar onClick={() => handleStarClick(2)} />
+                                                                    </h2>
+                                                                    <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                        <FaStar onClick={() => handleStarClick(3)} />
+                                                                    </h2>
+                                                                    <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                        <FaStar onClick={() => handleStarClick(4)} />
+                                                                    </h2>
+                                                                    <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                        <FaStar onClick={() => handleStarClick(5)} />
+                                                                    </h2>
+                                                                </div>
+                                                                <div>
+                                                                    <input className='w-[500px] input-rate h-8 px-3 py-1 rounded-tl-md rounded-bl-md ' type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} style={{ border: "1px solid" }} />
+                                                                <button className='px-3 py-1 h-8 rounded-tr-md rounded-br-md' style={{ background: "green", color: "white" }} onClick={() => addToFavorites(item.id_tour)}>Đánh giá </button> 
+                                                                </div>
+                                                                </div>
+                                                               
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
-
                                             </div>
-                                            <div />
+                                        </div>
+                                    </div>
+                                </div>
 
-
-                                        </div></div>
-                                ))}
                             </div>
 
                         ))}

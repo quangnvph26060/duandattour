@@ -22,7 +22,7 @@ use App\Http\Controllers\Api\ApiFavoriteController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
-
+use App\Http\Controllers\Api\ApiEvaluateController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -127,7 +127,14 @@ Route::prefix('register')->group(function () {
 });
 // show chỗ đoạn menu
 Route::get('/ShowLoaiTour', [ApiLoaiTourController::class, 'ShowLoaiTour']);
-
+Route::group(['middleware' => ['auth:sanctum']], function () {
+   // add sản phẩm yêu thích 
+   Route::get('/favorites', [ApiFavoriteController::class, 'index']);
+   Route::post('/favorites', [ApiFavoriteController::class, 'store']);
+   // đánh giá 
+   Route::post('/evaluate', [ApiEvaluateController::class, 'addDanhGia']);
+   Route::get('/find_evaluate', [ApiEvaluateController::class, 'findDanhGia']);
+});
 Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], function () {
     Route::prefix('admin')->group(function () {
         Route::prefix('loaitour')->group(function () {
@@ -138,9 +145,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], functio
             Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
         });
     });
-    // add sản phẩm yêu thích 
-    Route::get('/favorites', [ApiFavoriteController::class, 'index']);
-    Route::post('/favorites', [ApiFavoriteController::class, 'store']);
+ 
 });
 // api giảm giá 
 Route::prefix('admin')->group(function () {
