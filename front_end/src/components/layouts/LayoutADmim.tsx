@@ -1,6 +1,9 @@
 import { Button, Layout, Menu, theme } from "antd";
 import { Badge, Popover, List } from 'antd';
 import { useEffect, useState } from "react";
+import { IoNotificationsOutline } from "react-icons/io5";
+
+
 import {
   AiOutlineMenuFold,
   AiOutlineMenuUnfold,
@@ -35,6 +38,7 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useGetnotificationQuery } from "../../api/notification";
+import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
 
 const { Header, Sider, Content } = Layout;
@@ -93,7 +97,7 @@ const LayoutAdmin = () => {
     }
   };
 
-  const { data: notificationData } = useGetnotificationQuery();
+  const { data: notificationData,refetch } = useGetnotificationQuery();
   if (!notificationData) {
     // Xử lý trường hợp khi notificationData không tồn tại
     return null;
@@ -103,7 +107,7 @@ console.log(notificationData);
 const handleNotificationClick = async () => {
   try {
     const response = await axios.put('http://127.0.0.1:8000/api/admin/notification/updateStatusNotification');
-
+  refetch()
     // Sau khi thành công, bạn có thể thực hiện các xử lý bổ sung (ví dụ: cập nhật trạng thái thông báo trong giao diện).
     console.log('Cập nhật trạng thái thành công:', response.data);
 
@@ -113,20 +117,41 @@ const handleNotificationClick = async () => {
     console.error('Lỗi khi cập nhật trạng thái thông báo:', error);
   }
 };  
+const formatTimeAgo = (dateTimeString) => {
+  const dateTime = new Date(dateTimeString);
+  const currentTime = new Date();
+  const timeDifference = currentTime - dateTime;
 
+  if (timeDifference < 60000) { // Less than 1 minute
+    return 'vài giây trước';
+  } else if (timeDifference < 3600000) { // Less than 1 hour
+    const minutesAgo = Math.floor(timeDifference / 60000);
+    return `${minutesAgo} phút trước`;
+  } else if (timeDifference < 86400000) { // Less than 1 day
+    const hoursAgo = Math.floor(timeDifference / 3600000);
+    return `${hoursAgo} giờ trước`;
+  } else {
+    const daysAgo = Math.floor(timeDifference / 86400000);
+    return `${daysAgo} ngày trước`;
+  }
+};
+
+const reversedNotifications = [...notificationData.notification].reverse();
  const content = (
-  <List
-    itemLayout="horizontal"
-    dataSource={notificationData.notification}
-    renderItem={item => (
-      <List.Item>
-        <List.Item.Meta
-          title={item.tours.ten_tour}
-          description={item.body}
-        />
-      </List.Item>
-    )}
-  />
+  <div className="notification-list-container" style={{ width: '250px', maxHeight: '380px', overflowY: 'auto' }}>
+      <List
+        itemLayout="horizontal"
+        dataSource={reversedNotifications}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+              title={`${item.body} : ${item.tours.ten_tour}`}
+              description={formatTimeAgo(item.ngay_gio)}
+            />
+          </List.Item>
+        )}
+      />
+    </div>
 );
   
 return (
@@ -247,14 +272,15 @@ return (
             <div className="flex gap-3 items-center">
               {/* Hiển thị thông tin người dùng */}
               <Popover
+          
     content={content}
-    title="Notifications"
+    title="Thông báo"
     trigger="click"
     visible={visible}
     onVisibleChange={setVisible}
   >
     <Badge count={unreadCount} onClick={handleNotificationClick}>
-      <div>🔔</div>
+      <div className="text-[25px]"><IoNotificationsOutline /></div>
     </Badge>
   </Popover>
       
