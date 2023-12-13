@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ApiNewsController;
 use App\Http\Controllers\Api\ApiNotificationController;
+use App\Http\Controllers\Api\ApiStatisticalController;
 use Carbon\Carbon;
 
 /*
@@ -281,9 +282,17 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
     });
 
+    // api thông báo
     Route::prefix('notification')->group(function () {
         Route::get('/', [ApiNotificationController::class, 'getlistNotification']);
         Route::put('/updateStatusNotification', [ApiNotificationController::class, 'updateStatusNotification']);
+    });
+
+    // api thống kê
+    
+    Route::prefix('statistical')->group(function () {
+        // đếm để thống kê doanh thu trang web
+        Route::get('/', [ApiStatisticalController::class, 'getStatistical']);
     });
 
     Route::prefix('dattour')->group(function () {
