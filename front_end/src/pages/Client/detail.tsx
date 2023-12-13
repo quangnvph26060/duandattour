@@ -279,7 +279,8 @@ const DetailPage = (props: Props) => {
                   <h2 className="mb-4 font-bold text-[#2D4271] text-[16px] py-5">
                     {datatourArray && datatourArray.lich_t_rinh ? (
                       datatourArray.lich_t_rinh.map((tieude) => (
-                        <p key={tieude.id}>{tieude.noi_dung}</p>
+                        <p key={tieude.id} dangerouslySetInnerHTML={{ __html: tieude.noi_dung }} ></p>
+
                       ))
                     ) : (
                       <p>Không có lịch trình.</p>

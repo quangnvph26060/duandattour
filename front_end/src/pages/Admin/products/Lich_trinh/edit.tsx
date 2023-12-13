@@ -1,116 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Input, Select } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import moment from 'moment';
+import axios from 'axios';
+import { useGetLichTrinhIdQuery, useEditLichTrinhMutation } from '../../../../api/LichTrinhApi';
 import { useGetTourQuery } from '../../../../api/TourApi';
-import { useEditLichTrinhMutation, useGetLichTrinhIdQuery } from '../../../../api/LichTrinhApi';
 import { ILichTrinh } from '../../../../interface/lichtrinh';
+
 const { Option } = Select;
 
-type FieldType = {
-  id: number;
-  tieu_de: string;
-  thoi_gian: Date,
-  noi_dung: string,
-  id_tour: bigint
-};
-
-const Admin_LichtrinhEDit: React.FC = () => {
-  const navigate = useNavigate();
-  const { data: tourdata } = useGetTourQuery();
-  const tourArrary = tourdata?.date || [];
-
-  const { idlichtrinh } = useParams<{ idlichtrinh: any }>();
-  const { data: LichTrinhData } = useGetLichTrinhIdQuery(idlichtrinh || "");
-  const LichTrinh = LichTrinhData || {};
-  const [updateLichTrinh] = useEditLichTrinhMutation();
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState(null);
+const Admin_LichtrinhEdit: React.FC = () => {
+  const { idlt } = useParams<{ idlt: string }>();
+  const [editorData, setEditorData] = useState<string>('');
   const [form] = Form.useForm();
-  useEffect(() => {
-    if (LichTrinh.date && LichTrinh.data.tieu_de && LichTrinh.date.noi_dung && LichTrinh.date.thoi_gian && LichTrinh.date.id_tour) {
-      form.setFieldsValue({
-        tieu_de: LichTrinh.date.tieu_de,
-        noi_dung: LichTrinh.data.noi_dung,
-        thoi_gian: LichTrinh.data.thoi_gian,
-        id_tour: LichTrinh.data.id_tour,
-      });
-    }
-  }, [LichTrinh]);
+  const [postData, setPostData] = useState<ILichTrinh | null>(null);
+  const navigate = useNavigate();
+  const [editLichTrinh] = useEditLichTrinhMutation();
+  const { data: postDataResponse } = useGetLichTrinhIdQuery(idlt);
+  const { data: tourData } = useGetTourQuery();
 
-  const onFinish = (values: ILichTrinh) => {
-    updateLichTrinh({ ...values, id: idlichtrinh })
-      .unwrap()
-      .then(() => navigate("/admin/tour/lichtrinh"))
-      .catch((error) => {
-        setErrors(error.data.message);
-        setLoading(false);
+  const tourArray = tourData?.data || [];
+  console.log(tourArray);
+
+  useEffect(() => {
+    if (postDataResponse) {
+      setPostData(postDataResponse);
+      setEditorData(postDataResponse.noi_dung);
+      form.setFieldsValue({
+        tieu_de: postDataResponse.tieu_de,
+        noi_dung: postDataResponse.noi_dung,
+        thoi_gian: moment(postDataResponse.thoi_gian).format('YYYY-MM-DD'),
+        id_tour: postDataResponse.id_tour,
       });
+
+    }
+  }, [postDataResponse, form]);
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
   };
+  console.log(editorData);
+
+  const onFinish = async (values: ILichTrinh) => {
+
+    try {
+      const formData = new FormData();
+      formData.append("tieu_de", values.tieu_de);
+      formData.append("noi_dung", editorData);
+      formData.append("thoi_gian", moment().format());
+      formData.append("id_tour", values.id_tour);
+
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/admin/lichtrinh/${idlt}`, // Replace with your API endpoint
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-HTTP-Method-Override': 'PUT',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+
+        window.location.href = 'http://localhost:5173/admin/tour/lich_trinh';
+
+      } else {
+        console.log('Update failed');
+      }
+    } catch (error) {
+      console.error('Error updating:', error);
+    }
+  };
+
 
 
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Sửa lịch trình lịch trình </h2>
+        <h2 className="font-bold text-2xl">Edit Lichtrinh</h2>
       </header>
       <Form
-        className="tour-form"
+        form={form}
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
         onFinish={onFinish}
-        autoComplete="off"
       >
-        <Form.Item
-          label="Tiêu đề"
-          name="tieu_de"
-          rules={[
-            { required: true, message: 'Vui lòng nhập tiêu đề ' },
-            { min: 3, message: 'Tiêu đề tour ít nhất 3 ký tự' },
-          ]}
-        >
+        <Form.Item label="Tiêu đề" name="tieu_de" rules={[{ required: true, message: 'Please enter title!' }]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Nội dung"
-          name="noi_dung"
-          rules={[
-            { required: true, message: 'Vui lòng nhập nội dung' },
-            { min: 3, message: 'Nội dung ít nhất 3 ký tự' },
-          ]}
-        >
-          <Input />
+        <Form.Item label="Description" name="noi_dung" rules={[{ required: true, message: 'Please enter description!' }]}>
+          <CKEditor
+            editor={ClassicEditor}
+            data={editorData}
+            onChange={handleEditorChange}
+          />
         </Form.Item>
-        <Form.Item
-          label="Thời gian"
-          name="thời gian"
-          rules={[{ required: true, message: 'Vui lòng chọn thời gian!' }]}
-        >
-          <DatePicker style={{ width: '100%' }} />
+        <Form.Item label="Publish Date" name="thoi_gian" rules={[{ required: true, message: 'Please enter publish date!' }]}>
+          <Input type="date" />
         </Form.Item>
-        <Form.Item
-          label="ID Tour"
-          name="id_tour"
-          rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
-        >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
-            {tourArrary.map((option) => (
+        <Form.Item label="Tour" name="id_tour" rules={[{ required: true, message: 'Please select tour!' }]}>
+          <Select defaultValue="Select" style={{ width: 400 }}>
+            {tourArray.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Sửa
+            Save
           </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate('/admin/tour/lich_trinh')}
-          >
-            Quay lại
+          <Button type="default" className="ml-2" onClick={() => navigate("/your-cancel-route")}>
+            Cancel
           </Button>
         </Form.Item>
       </Form>
@@ -118,4 +122,4 @@ const Admin_LichtrinhEDit: React.FC = () => {
   );
 };
 
-export default Admin_LichtrinhEDit;
+export default Admin_LichtrinhEdit;

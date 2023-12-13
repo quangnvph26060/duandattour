@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, DatePicker, Select, InputNumber, message } from 'antd';
+import { Form, Button, Input, DatePicker, Select, InputNumber } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
@@ -13,7 +13,6 @@ import { Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 // import ImgCrop from 'antd-img-crop';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios';
 
 
 const { Option } = Select;
@@ -38,6 +37,8 @@ type FieldType = {
 const AdminTourAdd: React.FC = () => {
   const [editorData, setEditorData] = useState('');
 
+  const [imageList, setImageList] = useState([]);
+
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
     setEditorData(data);
@@ -46,29 +47,21 @@ const AdminTourAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
-  const [messageApi, contextHolder] = message.useMessage();
 
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Thêm thành công',
-    });
-  };
 
   const onFinish = (values: FieldType) => {
     const formData = new FormData();
 
     // Kiểm tra nếu có hình ảnh được chọn
-    if (values.hinh && values.hinh.fileList.length > 0) {
-      // Lưu hình ảnh vào formData
-      formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    if (imageList && imageList.length > 0) {
+      imageList.forEach((file) => {
+        formData.append('hinh[]', file.originFileObj);
+      });
     }
     formData.append("ten_tour", values.ten_tour);
     formData.append("diem_di", values.diem_di);
     formData.append("diem_den", values.diem_den);
     formData.append("diem_khoi_hanh", values.diem_khoi_hanh);
-    formData.append("lich_khoi_hanh", values.lich_khoi_hanh);
-    formData.append("ngay_ket_thuc", values.ngay_ket_thuc);
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
@@ -76,17 +69,12 @@ const AdminTourAdd: React.FC = () => {
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
 
-    addTour(formData)
-    .unwrap()
-    .then(() => {
-      success();
-      setTimeout(() => {
-        navigate('/admin/tour');
-      }, 2000); // Trì hoãn chuyển hướng sau 1 giây (1000ms)
-    })
-    .catch((error) => {
-      setErrors(error.data.message);
-    });
+    addTour(formData) // Sử dụng formData chứa hình ảnh
+      .unwrap()
+      .then(() => navigate("/admin/tour"))
+      .catch((error) => {
+        setErrors(error.data.message);
+      });
   };
 
   const { data: loaitourdata } = useGetLoaiTourQuery();
@@ -131,75 +119,11 @@ const AdminTourAdd: React.FC = () => {
     return current && current < currentDate.setHours(0, 0, 0, 0);
   };
 
-
-  // test chọn ngày đi và kết thúc 
-
-  const [HDVArrary, setHDVArrary] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const handleStartDateChange = (date: any, dateString: any) => {
-    setStartDate(dateString);
-  };
-
-  const handleEndDateChange = (date: any, dateString: any) => {
-    setEndDate(dateString);
-  };
-  useEffect(() => {
-    if (startDate && endDate) {
-      fetchData();
-    }
-  }, [startDate, endDate]);
-  const fetchData = () => {
-    axios.post('http://127.0.0.1:8000/api/admin/hdvtour', { start_date: startDate, end_date: endDate })
-      .then(response => {
-        let hdvDate = response.data;
-        axios.get('http://127.0.0.1:8000/api/admin/user')
-          .then(response => {
-            let ShowUserAll = response.data;
-            const matchingRecords = [];
-            ShowUserAll.data.map((item) => {
-              hdvDate.map((itemhdv) => {
-                // kiểm tra nếu thành công 
-                if (item.id === itemhdv.hdv_id) {
-                  const isDuplicate = matchingRecords.some((record) => record.id === item.id);
-                  if (!isDuplicate) {
-                    matchingRecords.push(item);
-                  }
-                }
-              });
-
-
-            });
-
-            setHDVArrary(matchingRecords);
-            console.log(HDVArrary);
-            
-          })
-          .catch(error => {
-            // Xử lý lỗi
-            console.error(error);
-          });
-
-      })
-      .catch(error => {
-        // Xử lý lỗi
-        console.error(error);
-      });
-  };
-  // const handleSelectChange = (selectedRecordId) => {
-  //   // Xử lý các thao tác sau khi lựa chọn được thay đổi, sử dụng giá trị selectedRecordId
-  //   // Ví dụ: Gọi hàm xử lý atnd với selectedRecordId
-  //   yourATNDFunction(selectedRecordId);
-  // };
   return (
-  
     <div className="container">
-    
       <header className="mb-4">
         <h2 className="font-bold text-2xl">Tạo mới tour</h2>
       </header>
-      <div>
-        {contextHolder}
       <Form
         className="tour-form"
         name="basic"
@@ -209,35 +133,31 @@ const AdminTourAdd: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <div className='flex w-[1000px] container mx-auto'>
-        <div className='w-1/2'>
-        <Form.Item className='w-full'
-  label="Tên tour"
-  name="ten_tour"
-  rules={[
-    { required: true, message: 'Vui lòng nhập tên tour!' },
-    { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
-    {
-      validator(_, value) {
-        if (value && value.trim() === "") {
-          return Promise.reject('Tên tour không thể chỉ chứa khoảng trắng');
-        }
-        return Promise.resolve();
-      },
-    },
-  ]}
->
-  <Input />
-</Form.Item>
-        <Form.Item className='w-full'
+        <Form.Item
+          label="Tên tour"
+          name="ten_tour"
+          rules={[
+            { required: true, message: 'Vui lòng nhập tên tour!' },
+            { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="Hình ảnh"
-          name="hinh"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          name="hinh[]"
+          rules={[{ required: true, message: 'Vui lòng chọn ảnh' }]}
         >
           <Upload
             accept="image/*" // Chỉ chấp nhận các định dạng ảnh
             listType="picture"
-            beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
+            multiple // Cho phép chọn nhiều file
+            beforeUpload={() => false}
+            onChange={(info) => {
+              const { fileList } = info;
+              // Lưu danh sách hình ảnh đã chọn vào imageList
+              setImageList(fileList);
+            }}
           >
             <Button icon={<UploadOutlined />} type="button">
               Chọn ảnh
@@ -246,7 +166,8 @@ const AdminTourAdd: React.FC = () => {
         </Form.Item>
 
 
-        <Form.Item className='w-full'
+
+        <Form.Item
           label="Điểm khởi hành"
           name="diem_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng chọn điểm khởi hành!' }]}
@@ -260,7 +181,7 @@ const AdminTourAdd: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item className='w-full'
+        <Form.Item
           label="Điểm đi"
           name="diem_di"
           rules={[{ required: true, message: 'Vui lòng chọn điểm đi!' }]}
@@ -274,7 +195,7 @@ const AdminTourAdd: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item className='w-full'
+        <Form.Item
           label="Điểm đến"
           name="diem_den"
           rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
@@ -290,24 +211,21 @@ const AdminTourAdd: React.FC = () => {
 
 
         </Form.Item>
-        <Form.Item className='w-full'
+        <Form.Item
           label="Lịch khởi hành"
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
-          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
-
-            onChange={handleStartDateChange} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
-        <Form.Item className='w-full'
+        <Form.Item
           label="Ngày kết thúc"
           name="ngay_ket_thuc"
           rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
         >
-          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
-            onChange={handleEndDateChange} />
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
-        <Form.Item 
+        <Form.Item
           label="Giá Người lớn"
           name="gia_nguoilon"
           rules={[
@@ -341,10 +259,6 @@ const AdminTourAdd: React.FC = () => {
         >
           <InputNumber min={1000000} parser={value => value.replace(/\$\s?|(,*)/g, '')} />
         </Form.Item>
-        </div>
-        <div>
-
-        
         <Form.Item
           label="Mô Tả"
           name="mo_ta"
@@ -382,11 +296,9 @@ const AdminTourAdd: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-        </div>
-        </div>
-       
-        <Form.Item className='' wrapperCol={{ offset: 8, span: 16 }}>
-          <Button className='bg-blue-500' type="primary" htmlType="submit">
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
             Thêm
           </Button>
           <Button
@@ -398,7 +310,6 @@ const AdminTourAdd: React.FC = () => {
           </Button>
         </Form.Item>
       </Form>
-      </div>
     </div>
   );
 };

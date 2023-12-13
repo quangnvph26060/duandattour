@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import '../tour.css'
+
 // import { IPour } from "../interface/home";
 import { Link, Route, useParams } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 import { useLocation } from "react-router-dom"
+import image from "antd/es/image";
 interface Tour {
   id: number;
   ten_tour: string;
@@ -177,11 +178,16 @@ const TourPage: React.FC = () => {
       });
   };
 
+  const reloadTour = (e) => {
+    e.preventDefault();
+    window.location.reload();
+  };
+
   console.log("selectedDayRange:", selectedDayRange);
-console.log("selectedNumberOfPeople:", selectedNumberOfPeople);
-console.log("matchedResults:", matchedResults);
-console.log("filteredTours:", filteredTours);
-console.log("tourdiemden:", tourdiemden);
+  console.log("selectedNumberOfPeople:", selectedNumberOfPeople);
+  console.log("matchedResults:", matchedResults);
+  console.log("filteredTours:", filteredTours);
+  console.log("tourdiemden:", tourdiemden);
 
 
 
@@ -400,7 +406,7 @@ console.log("tourdiemden:", tourdiemden);
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
           <div className='py-5 mb-3'><hr className='bg-black h-[1px]' /></div>
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
-            {(selectedDayRange || selectedNumberOfPeople || matchedResults
+            {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
               : tourdiemden
             ).map((items) => (
@@ -426,7 +432,12 @@ console.log("tourdiemden:", tourdiemden);
                         <i className="fa-regular fa-heart text-white"></i>
                       </Link>
                     </div>
-                    <img src="http://localhost:5173/src/img/anh7.png" className="rounded-t-lg mb-3 h-[250px]" alt="" />
+                    <img
+                        key={image.id}
+                        className="mt-4 rounded-lg w-full h-60 object-cover"
+                        src={`http://localhost:8000/storage/${image.image_path}`}
+                        alt={`Ảnh`}
+                      />
                   </div>
 
                   <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
@@ -452,9 +463,9 @@ console.log("tourdiemden:", tourdiemden);
 
 
 
-          <div className='ml-auto py-4 pt-6'>
-            <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
-          </div>
+          <button className='ml-auto py-4 pt-6'>
+            <Link to={'/tour'} onClick={reloadTour} className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</Link>
+          </button>
           <div className='py-5'><hr className='bg-black h-[1px]' /></div>
 
           <div className='py-3'>

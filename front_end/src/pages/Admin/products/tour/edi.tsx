@@ -1,20 +1,29 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, DatePicker, Select,TextArea } from 'antd';
+import { Form, Button, Input, DatePicker, Select, Upload } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import { UploadOutlined } from "@ant-design/icons";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ITour } from "../../../../interface/tour";
 import { useGetTourQuery, useEditTourMutation, useGetTourByIdQuery } from "../../../../api/TourApi";
 const { Option } = Select;
 
 const AdminTourEdit = () => {
   const navigate = useNavigate();
+  const [editorData, setEditorData] = useState('');
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  };
   const [provinces, setProvinces] = useState([]);
   const [provinces2, setProvinces2] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
   const dateFormat = "DD-MM-YYYY";
+  const [imageList, setImageList] = useState([]);
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -23,7 +32,7 @@ const AdminTourEdit = () => {
   const { data: TourData } = useGetTourByIdQuery(idtour || "");
   const Tour = TourData || {};
   console.log(Tour);
-  
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [updateTour] = useEditTourMutation();
   const [loading, setLoading] = useState(false);
@@ -31,6 +40,18 @@ const AdminTourEdit = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    if (Tour && Tour.data && Tour.data.image_path) {
+      const fileList = Tour.data.image_path.map((image, index) => ({
+        uid: `${index}`,
+        name: `image-${index}`,
+        status: 'done',
+        url: `http://localhost:8000/storage/${image}`, // Thay thế bằng domain và đường dẫn thực tế của bạn
+      }));
+      setImageList(fileList);
+    }
+    if (Tour && Tour.data && Tour.data.mo_ta) {
+      setEditorData(Tour.data.mo_ta);
+    }
     fetch('https://provinces.open-api.vn/api/')
       .then((response) => {
         if (!response.ok) {
@@ -45,19 +66,21 @@ const AdminTourEdit = () => {
       .catch((error) => {
         console.error(error);
       });
-    if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
-      && Tour.data.ten_tour && Tour.data.thoi_gian && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
-      Tour.data.lich_khoi_hanh  && Tour.data.soluong
+    if (Tour && Tour.data && Tour.data.image_path && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
+      && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
+      Tour.data.lich_khoi_hanh && Tour.data.soluong && Tour.data.gia_nguoilon && Tour.data.gia_treem
 
     ) {
       form.setFieldsValue({
         diem_di: Tour.data.diem_di,
+        hinh: Tour.data.image_path,
         mo_ta: Tour.data.mo_ta,
         diem_den: Tour.data.diem_den,
         ma_loai_tour: Tour.data.ma_loai_tour,
         ten_hdv: Tour.data.ten_hdv,
         ten_tour: Tour.data.ten_tour,
-        thoi_gian:Tour.data.thoi_gian,
+        gia_nguoilon: Tour.data.gia_nguoilon,
+        gia_treem: Tour.data.gia_treem,
         diem_khoi_hanh: Tour.data.diem_khoi_hanh,
         ngay_ket_thuc: Tour.data.ngay_ket_thuc,
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
@@ -120,14 +143,24 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Thời Gian"
-          name="thoi_gian"
-          rules={[
-            { required: true, message: "Vui lòng nhập thời gian!" },
-            { min: 3, message: "Thời gian phải từ 1 ngày" },
-          ]}
+          label="Image"
+          name="hinh[]"
+          rules={!imageList.length ? [{ required: true, message: "Vui lòng chọn ảnh" }] : undefined}
         >
-          <Input />
+          <Upload
+            disabled={imageList.length > 0}
+            accept="image/*"
+            listType="picture"
+            multiple
+            beforeUpload={() => false}
+            fileList={imageList}
+            onChange={({ fileList }) => setImageList(fileList)}
+          // Disable upload if images exist
+          >
+            <Button icon={<UploadOutlined />} type="button" disabled={imageList.length > 0}>
+              Chọn ảnh
+            </Button>
+          </Upload>
         </Form.Item>
         <Form.Item
           label="Điểm khởi hành"
@@ -194,6 +227,27 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          label="Giá người lớn"
+          name="gia_nguoilon"
+          rules={[
+            { required: true, message: "Vui lòng nhập giá người lớn!" },
+            // Thêm các rule validation khác nếu cần
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Giá trẻ em"
+          name="gia_treem"
+          rules={[
+            { required: true, message: "Vui lòng nhập giá trẻ em!" },
+            // Thêm các rule validation khác nếu cần
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           label="Số Lượng Còn nhận"
           name="soluong"
           rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
@@ -201,11 +255,20 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Mô tả"
+          label="Mô Tả"
           name="mo_ta"
-          rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-        >
-          <Input.TextArea />
+          rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
+        > <CKEditor
+            editor={ClassicEditor}
+            // config={{
+            //   extraPlugins: [EasyImage],
+            //   // Cấu hình thêm plugin Easy Image
+
+            // }}
+            data={editorData}
+            onChange={handleEditorChange}
+          />
+
         </Form.Item>
 
         <Form.Item
@@ -220,7 +283,8 @@ const AdminTourEdit = () => {
           </Select>
         </Form.Item>
 
-        
+
+
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" danger htmlType="submit"

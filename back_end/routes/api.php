@@ -30,6 +30,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ApiNewsController;
+use App\Http\Controllers\API\ApiPostController;
+use App\Http\Controllers\API\ApiPostDanhmucController;
 
 use Carbon\Carbon;
 
@@ -288,6 +290,20 @@ Route::prefix('admin')->group(function () {
         // Chi tiết booking tour
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
+    });
+    Route::prefix('postdm')->group(function () {
+        Route::get('/', [ApiPostDanhmucController::class, 'index']);
+        Route::post('/', [ApiPostDanhmucController::class, 'store']);
+        Route::get('/{id}', [ApiPostDanhmucController::class, 'show']);
+        Route::put('/{id}', [ApiPostDanhmucController::class, 'update']);
+        Route::delete('/{id}', [ApiPostDanhmucController::class, 'destroy']);
+    });
+    Route::prefix('post')->group(function () {
+        Route::get('/', [ApiPostController::class, 'index']);
+        Route::post('/', [ApiPostController::class, 'store']);
+        Route::get('/{id}', [ApiPostController::class, 'show']);
+        Route::put('/{id}', [ApiPostController::class, 'update']);
+        Route::delete('/{id}', [ApiPostController::class, 'destroy']);
     });
 
     

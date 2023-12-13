@@ -99,10 +99,12 @@ const LayoutAdmin = () => {
             </p>
           </div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<AiFillFund />}>
-              <Link to="/admin/tour/dat_tour">Thống kê</Link>
-            </Menu.Item>
-            <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
+              <Menu.Item key="1" icon={<AiFillFund />}>
+                <Link to="/admin/tour/dat_tour">Thống kê</Link>
+              </Menu.Item>
+            }
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') && <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
                 <Link to="/admin/tour">Tất cả các tour</Link>
               </Menu.Item>
@@ -161,24 +163,35 @@ const LayoutAdmin = () => {
                 </Menu.Item>
               </Menu.SubMenu>
             </Menu.SubMenu>
-            <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
-              <Menu.Item icon={<FaUser />} key="4-1">
-                <Link to="/admin/customer_account">Tài khoản khách</Link>
-              </Menu.Item>
-              <Menu.Item icon={<FaUserTag />} key="4-2">
-                <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="5" icon={<MdPermMedia />} title="Truyền thông ">
-              <Menu.SubMenu icon={<FaNewspaper />} key="5-1" title="Bài viết">
-                <Menu.Item icon={<TfiWrite />} key="5-1-1">
-                  <Link to="/admin/post/danhmuc_post">Danh mục bài viết</Link>
+            }
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
+              <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
+                <Menu.Item icon={<FaUser />} key="4-1">
+                  <Link to="/admin/customer_account">Tài khoản khách</Link>
                 </Menu.Item>
-                <Menu.Item icon={<FaBook />} key="5-1-2">
-                  <Link to="/admin/post/bai_viet">Danh sách bài viết</Link>
+                <Menu.Item icon={<FaUserTag />} key="4-2">
+                  <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
                 </Menu.Item>
               </Menu.SubMenu>
-            </Menu.SubMenu>
+            }
+            {(localStorage.getItem('role') === 'huong_dan_vien') &&
+              <Menu.Item icon={<FaUserTag />} key="5">
+                <Link to="/admin/account_huongdanvien">Công việc</Link>
+              </Menu.Item>
+            }
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
+              <Menu.SubMenu key="5" icon={<MdPermMedia />} title="Truyền thông ">
+                <Menu.SubMenu icon={<FaNewspaper />} key="5-1" title="Bài viết">
+                  <Menu.Item icon={<TfiWrite />} key="5-1-1">
+                    <Link to="/admin/post/danhmuc_post">Danh mục bài viết</Link>
+                  </Menu.Item>
+                  <Menu.Item icon={<FaBook />} key="5-1-2">
+                    <Link to="/admin/post/bai_viet">Danh sách bài viết</Link>
+                  </Menu.Item>
+                </Menu.SubMenu>
+              </Menu.SubMenu>
+            }
+
             <Menu.Item icon={<FaPowerOff />} key="5-1-2">
               <button onClick={handleLogout}>Đăng xuất</button>
             </Menu.Item>

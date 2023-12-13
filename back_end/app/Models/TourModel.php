@@ -64,6 +64,10 @@ class TourModel extends Model
     // {
     //     return $this->hasMany(DatTour::class, 'id_tour');
     // }
+
+    protected $casts = [
+        'image_path' => 'array',
+    ];
     public function tourDiscount()
     {
         return $this->hasMany(TourDiscount::class, 'tour_id', 'id');
@@ -72,7 +76,7 @@ class TourModel extends Model
     public function discounts()
     {
         return $this->belongsToMany(Discount::class, 'tour_discount', 'tour_id', 'discount_id');
-    }  
+    }
     public function tourImages()
     {
         return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');

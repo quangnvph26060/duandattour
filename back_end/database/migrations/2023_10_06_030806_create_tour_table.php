@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tour', function (Blueprint $table) {
             $table->id(); // Sử dụng trường tự tăng làm khóa chính
             $table->string('ten_tour');
-            $table->string('image_path');
+            $table->json('image_path')->nullable();
             $table->string('diem_di');
             $table->string('diem_den');
             $table->date('lich_khoi_hanh');

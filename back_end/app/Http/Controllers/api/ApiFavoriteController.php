@@ -30,7 +30,7 @@ class ApiFavoriteController extends Controller
         $user = auth()->user();
         $tourId = $request->input('tour_id');
 
-        $existingFavorite = Favorite::where('user_id', $user->id)->where('tour_id', $tourId)->first();    
+        $existingFavorite = Favorite::where('user_id', $user->id)->where('tour_id', $tourId)->first();
         // kiểm tra có trong db hay chưa
         if ($existingFavorite) {
             // Nếu sản phẩm đã tồn tại, thực hiện xóa khỏi danh sách yêu thích

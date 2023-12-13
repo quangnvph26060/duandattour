@@ -462,7 +462,7 @@ const HomePage = () => {
       </div>
       <div
       className="bg-white box-shadow rounded-lg  p-9 mx-auto hidden lg:block "
-      style={{ maxWidth: "1200px", position: "relative", left: 0, top: "-110px" }}
+      style={{ maxWidth: "1200px", position: "relative", left: 0, top: "-125px" }}
     >
       <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">PolyTour Trong Nước</h1>
       <div className="tour-form mt-2 flex items-center">
@@ -679,7 +679,7 @@ const HomePage = () => {
 
       <div className="lg:m-10 m-0">
         <div className="lg:m-10 m-0">
-          <h2 className="mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
+          <h2 className="mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
             CHƯƠNG TRÌNH ƯU ĐÃI!!!
           </h2>
           <div className="product-list1  gap-4 flex md:flex-row flex-col">

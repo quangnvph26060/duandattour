@@ -45,6 +45,12 @@ const Admin_Lichtrinh = (props: Props) => {
             title: "Nội dung",
             dataIndex: "noi_dung",
             key: "noi_dung",
+            render: (text) => (
+                <div>
+                    {/* Hiển thị mô tả toàn bộ */}
+                    <div dangerouslySetInnerHTML={{ __html: text }} />
+                </div>
+            ),
         },
         {
             title: "Thời gian",
@@ -68,7 +74,7 @@ const Admin_Lichtrinh = (props: Props) => {
             render: ({ key: id }: any) => {
                 return (
                     <>
-                     {  localStorage.getItem("role") == 'admin' ?  <div className="flex space-x-2">
+                        {localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -84,7 +90,7 @@ const Admin_Lichtrinh = (props: Props) => {
                                 <Link to={`/admin/tour/lich_trinh/edit/${id}`}>Sửa</Link>
                             </Button>
 
-                        </div>:""}  
+                        </div> : ""}
                     </>
                 );
             },

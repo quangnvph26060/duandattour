@@ -3,26 +3,27 @@ import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useAddLoaiTourMutation } from "../../../../api/LoaiTourApi";
-import { ILoaiTour } from "../../../../interface/loaiTour";
+import { useAddpostdmMutation } from "../../../../api/postdm";
+import { Ipostdm } from "../../../../interface/postdm";
 
 const { Option } = Select;
 
 type FieldType = {
   id: number;
-  image:string;
-  ten_loai_tour: string;
+  image: string;
+
+  ten_dm: string;
 };
 
 const Admin_DanhmucADD: React.FC = () => {
-  const [addLoaiTour] = useAddLoaiTourMutation();
+  const [addLoaiTour] = useAddpostdmMutation();
   const navigate = useNavigate();
 
-  const onFinish = (values: ILoaiTour) => {
+  const onFinish = (values: Ipostdm) => {
     const formData = new FormData();
-  
-    formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
-  
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("ten_dm", values.ten_dm); // Thêm các trường dữ liệu khác vào formData (nếu cần)
+
     addLoaiTour(formData)
       .unwrap()
       .then(() => navigate("/admin/post/danhmuc_post"))
@@ -30,8 +31,8 @@ const Admin_DanhmucADD: React.FC = () => {
         console.log(error);
         // Xử lý lỗi (nếu có)
       });
-    
-    console.log(values); 
+
+    console.log(values);
   };
   return (
     <div className="container">
@@ -47,10 +48,10 @@ const Admin_DanhmucADD: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
-      
+
         <Form.Item
-          label="Tên danh mục tour"
-          name="ten_loai_tour"
+          label="Tên danh mục"
+          name="ten_dm"
           rules={[
             { required: true, message: "Vui lòng nhập tên loại tour!" },
             { min: 3, message: "Tên tour ít nhất 3 ký tự" },
@@ -58,7 +59,21 @@ const Admin_DanhmucADD: React.FC = () => {
         >
           <Input />
         </Form.Item>
-
+        <Form.Item
+          label="Image"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Thêm
@@ -66,7 +81,7 @@ const Admin_DanhmucADD: React.FC = () => {
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate("/admin/tour/loai_tour")}
+            onClick={() => navigate("/admin/post/danhmuc_post")}
           >
             Quay lại
           </Button>
