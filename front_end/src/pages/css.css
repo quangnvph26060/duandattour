@@ -14,3 +14,6 @@
 .hover-img :hover{
   transform: scale(1.2);
 }
+.input-rate :focus{
+  border: 1px solid green;
+}

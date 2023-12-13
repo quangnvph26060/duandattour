@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "./css.css"
 import { FaStar } from 'react-icons/fa';
 import Item from 'antd/es/list/Item';
+
 const rounded = {
     borderRadius: '25px',
 };
@@ -206,7 +207,7 @@ const Giohanguser = () => {
                                                     <Link to={`http://localhost:5173/bookingtour/${item.tour.id}`}>
                                                         <h2 className='text-2xl font-medium'>{item.tour.ten_tour}</h2>
                                                     </Link>
-                                                    <div className='py-4'>
+                                                    <div className='mb-2'>
                                                         <p className='py-1 font-medium'>Tuyệt vời</p>
                                                         <p>358 Quan tâm</p>
                                                         <div className='flex justify-between'>
@@ -217,19 +218,21 @@ const Giohanguser = () => {
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <p className='py-4'>{item.so_luong_khach}người {calculateDaysDifference(item.tour.ngay_ket_thuc, item.tour.lich_khoi_hanh)}đêm</p>
+                                                        <p className='mb-2'>{item.so_luong_khach}người {calculateDaysDifference(item.tour.ngay_ket_thuc, item.tour.lich_khoi_hanh)}đêm</p>
                                                     </div>
                                                     {item.danh_gia ? (
 
                                                         <>
-                                                            <p>Đánh giá: {item.danh_gia.so_sao} sao</p>
-                                                            <p>Nội dung: {item.danh_gia.noi_dung}</p>
+                                                            <p className='flex items-center text-base font-semibold'>Đánh giá: {item.danh_gia.so_sao} <span className='ml-1'><img src="https://cdn-icons-png.flaticon.com/128/2107/2107957.png" alt="" width={'16px'} height={'16px'} /></span> </p>
+                                                            <p className='text-base font-semibold'>Nội dung: <span className='text-red-500'>{item.danh_gia.noi_dung}</span> </p>
                                                         </>
                                                     ) : (
                                                         <div>
-                                                            <button onClick={() => showAlert(item.id)}>Viết đánh giá</button>
-                                                            <div id={`inputContainer-${item.id}`} className="hidden">
-                                                                <div className="rate ml-[120px] mb-5 mt-[-25px] flex gap-2">
+                                                            <button className='border rounded-xl px-3 py-1 bg-blue-500 text-white' onClick={() => showAlert(item.id)}>Viết đánh giá</button>
+                                                            <br />
+                                                            <div id={`inputContainer-${item.id}`} className="hidden ">
+                                                                <div className=' flex flex-col'>
+                                                                <div className="rate  mb-5 mt-3 flex gap-2">
                                                                     <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(1)} />
                                                                     </h2>
@@ -246,8 +249,13 @@ const Giohanguser = () => {
                                                                         <FaStar onClick={() => handleStarClick(5)} />
                                                                     </h2>
                                                                 </div>
-                                                                <input type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} style={{ border: "1px solid" }} />
-                                                                <button style={{ background: "green", color: "white" }} onClick={() => addToFavorites(item.id_tour)}>Đánh giá </button>
+                                                                <div>
+                                                                    <input className='w-[500px] input-rate h-8 px-3 py-1 rounded-tl-md rounded-bl-md ' type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} style={{ border: "1px solid" }} />
+                                                                <button className='px-3 py-1 h-8 rounded-tr-md rounded-br-md' style={{ background: "green", color: "white" }} onClick={() => addToFavorites(item.id_tour)}>Đánh giá </button> 
+                                                                </div>
+                                                                </div>
+                                                               
+                                                               
                                                             </div>
                                                         </div>
                                                     )}
