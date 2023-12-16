@@ -1,6 +1,6 @@
 type Props = {};
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+import { Table, Button, Skeleton,Input,  Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
@@ -14,6 +14,25 @@ import axios from "axios";
 import "./tour.css";
 
 const AdminProduct = (props: Props) => {
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+   
+const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    // Lọc dữ liệu dựa trên giá trị tìm kiếm
+    const filteredData = phuongtiendata?.data.filter((item) =>
+      item.loai_phuong_tien.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredDataSource(filteredData);
+  };
+
+
+
+
+
 
   const { Option } = Select;
   const { data: loaitourdata } = useGetLoaiTourQuery();
@@ -150,7 +169,7 @@ const AdminProduct = (props: Props) => {
               <td>{item.ngay_ket_thuc}</td>
               {
                 <td>
-                  <select className="select-dropdown" onChange={(event) => handleSelectChange(event, item)}>
+                  {/* <select className="select-dropdown" onChange={(event) => handleSelectChange(event, item)}>
                     <option value="">Chọn</option>
                     {tourHDVArray[index]?.hdv_duoc_chon.map((hdvItem) => {
                       const isSelected = hdvItem.id === tourHDVArray[index]?.hdv_duoc_chon[0]?.id;
@@ -169,7 +188,7 @@ const AdminProduct = (props: Props) => {
                         {hdvItem.name}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </td>
               }
               <td>{item.gia_nguoilon}</td>
