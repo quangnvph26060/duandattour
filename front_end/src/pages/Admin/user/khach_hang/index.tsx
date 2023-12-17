@@ -121,7 +121,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
-        <h2 className="font-bold text-2xl">Quản lý khách hàng</h2>
+        <h2 className="font-bold text-2xl">Quản lý tài khoản</h2>
       </header>
 
       {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}

@@ -100,7 +100,7 @@ const Giohanguser = () => {
                 setInputValue("")
             })
             .catch(error => {
-                // Xử lý lỗi
+                alert('Nội dung chứa từ ngữ nhạy cảm')
                 console.error(error);
             });
     };

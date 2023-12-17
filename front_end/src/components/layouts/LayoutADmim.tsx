@@ -126,7 +126,9 @@ const LayoutAdmin = () => {
               <Menu.Item icon={<MdFeedback />} key="2-7">
                 <Link to="/admin/customer_feedback">Customer Feedback</Link>
               </Menu.Item>
-
+              <Menu.Item icon={<MdFeedback />} key="2-8">
+                <Link to="/admin/evaluate">Đánh Giá</Link>
+              </Menu.Item>
               <Menu.SubMenu
                 icon={<MdDiscount />}
                 key="2-9"
@@ -165,14 +167,12 @@ const LayoutAdmin = () => {
             </Menu.SubMenu>
             }
             {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
-              <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
-                <Menu.Item icon={<FaUser />} key="4-1">
-                  <Link to="/admin/customer_account">Tài khoản khách</Link>
+              
+                <Menu.Item icon={<FaUser />} key="4">
+                  <Link to="/admin/customer_account">Tài khoản</Link>
                 </Menu.Item>
-                <Menu.Item icon={<FaUserTag />} key="4-2">
-                  <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
-                </Menu.Item>
-              </Menu.SubMenu>
+               
+             
             }
             {(localStorage.getItem('role') === 'huong_dan_vien') &&
               <Menu.Item icon={<FaUserTag />} key="5">
