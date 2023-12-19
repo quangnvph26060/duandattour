@@ -166,7 +166,7 @@ const LayoutAdmin = () => {
           </div>
           <Menu className="h-screen" theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item className="ml-[-10px]" key="1" icon={<AiFillFund />}>
-              <Link to="/admin/tour/dat_tour">Thống kê</Link>
+              <Link to="/admin/dashboard">Thống kê</Link>
             </Menu.Item>
             <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">

@@ -48,9 +48,9 @@ const ADmin_DatTour = (props: Props) => {
   useEffect(() => {
     if (DataQuanly) {
       const sorted = [...DataQuanly].sort((a, b) => {
-        const dateA = new Date(a.ngay_dat).getTime();
-        const dateB = new Date(b.ngay_dat).getTime();
-        return dateB - dateA;
+        const timestampA = new Date(a.created_at).getTime() / 1000;
+        const timestampB = new Date(b.created_at).getTime() / 1000;
+        return timestampB - timestampA;
       });
       setSortedData(sorted);
     }

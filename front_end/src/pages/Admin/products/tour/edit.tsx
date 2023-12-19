@@ -1,30 +1,21 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, DatePicker, Select, Upload } from 'antd';
+import { Form, Button, Input, DatePicker, Select, TextArea, Upload } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UploadOutlined } from "@ant-design/icons";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { UploadOutlined } from "@ant-design/icons";
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ITour } from "../../../../interface/tour";
 import { useGetTourQuery, useEditTourMutation, useGetTourByIdQuery } from "../../../../api/TourApi";
 const { Option } = Select;
 
 const AdminTourEdit = () => {
-  const [coverImage, setCoverImage] = useState('');
   const navigate = useNavigate();
-  const [editorData, setEditorData] = useState('');
-  const handleEditorChange = (event, editor) => {
-    const data = editor.getData();
-    setEditorData(data);
-  };
   const [provinces, setProvinces] = useState([]);
   const [provinces2, setProvinces2] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
   const dateFormat = "DD-MM-YYYY";
-  const [imageList, setImageList] = useState([]);
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -36,24 +27,20 @@ const AdminTourEdit = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [updateTour] = useEditTourMutation();
+  const [imageList, setImageList] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
 
   useEffect(() => {
-
-    if (Tour && Tour.data && Tour.data.image_path) {
-      const fileList = Tour.data.image_path.map((image, index) => ({
-        uid: `${index}`,
-        name: `image-${index}`,
-        status: 'done',
-        url: `http://localhost:8000/storage/${image}`, // Thay thế bằng domain và đường dẫn thực tế của bạn
-      }));
-      setImageList(fileList);
-    }
-    if (Tour && Tour.data && Tour.data.mo_ta) {
-      setEditorData(Tour.data.mo_ta);
-    }
     fetch('https://provinces.open-api.vn/api/')
       .then((response) => {
         if (!response.ok) {
@@ -68,21 +55,19 @@ const AdminTourEdit = () => {
       .catch((error) => {
         console.error(error);
       });
-    if (Tour && Tour.data && Tour.data.image_path && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
+    if (Tour && Tour.data && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
       && Tour.data.ten_tour && Tour.data.ngay_ket_thuc &&
-      Tour.data.lich_khoi_hanh && Tour.data.soluong && Tour.data.gia_nguoilon && Tour.data.gia_treem
+      Tour.data.lich_khoi_hanh && Tour.data.soluong
 
     ) {
       form.setFieldsValue({
         diem_di: Tour.data.diem_di,
-        hinh: Tour.data.image_path,
         mo_ta: Tour.data.mo_ta,
         diem_den: Tour.data.diem_den,
         ma_loai_tour: Tour.data.ma_loai_tour,
         ten_hdv: Tour.data.ten_hdv,
         ten_tour: Tour.data.ten_tour,
-        gia_nguoilon: Tour.data.gia_nguoilon,
-        gia_treem: Tour.data.gia_treem,
+
         ngay_ket_thuc: Tour.data.ngay_ket_thuc,
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
         soluong: Tour.data.soluong,
@@ -91,7 +76,18 @@ const AdminTourEdit = () => {
 
     }
 
-  }, [Tour, form]);
+
+    if (Tour && Tour.data && Tour.data.image_path) {
+      const fileList = Tour.data.image_path.map((image, index) => ({
+        uid: `${index}`,
+        name: `image-${index}`,
+        status: 'done',
+        url: `http://localhost:8000/storage/${image}`, // Thay thế bằng domain và đường dẫn thực tế của bạn
+      }));
+      setImageList(fileList);
+    }
+  }
+    , [Tour, form]);
 
 
 
@@ -128,7 +124,7 @@ const AdminTourEdit = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
         form={form}
@@ -157,8 +153,9 @@ const AdminTourEdit = () => {
               Chọn ảnh
             </Button>
           </Upload>
-          {Tour && Tour.data && Tour.data.image_path && (
-            <img src={`http://localhost:8000/storage/${Tour.data.image_path[0]}`} alt="Ảnh đại diện" style={{ width: '200px', marginTop: '10px' }} />
+          {/* Hiển thị ảnh đại diện nếu có dữ liệu từ API */}
+          {Tour && Tour.data && Tour.data.image_dd && (
+            <img src={`http://localhost:8000/storage/${Tour.data.image_dd}`} alt="Ảnh đại diện" style={{ width: '200px', marginTop: '10px' }} />
           )}
         </Form.Item>
         <Form.Item
@@ -181,20 +178,10 @@ const AdminTourEdit = () => {
             </Button>
           </Upload>
         </Form.Item>
-        <Form.Item
-          label="Điểm khởi hành"
-          name="diem_khoi_hanh"
-          rules={[{ required: true, message: "Vui lòng chọn điểm đến!" }]}
-        >
-          <Select defaultValue="Điểm khởi hành">
-            <Option value="" >Chọn điểm đi</Option>
-            {provinces.map((province) => (
-              <Option key={province.code} value={province.name}>
-                {province.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+
+
+
+
 
         <Form.Item
           label="Điểm đi"
@@ -246,27 +233,6 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Giá người lớn"
-          name="gia_nguoilon"
-          rules={[
-            { required: true, message: "Vui lòng nhập giá người lớn!" },
-            // Thêm các rule validation khác nếu cần
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Giá trẻ em"
-          name="gia_treem"
-          rules={[
-            { required: true, message: "Vui lòng nhập giá trẻ em!" },
-            // Thêm các rule validation khác nếu cần
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
           label="Số Lượng Còn nhận"
           name="soluong"
           rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
@@ -274,20 +240,11 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Mô Tả"
+          label="Mô tả"
           name="mo_ta"
-          rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-        > <CKEditor
-            editor={ClassicEditor}
-            // config={{
-            //   extraPlugins: [EasyImage],
-            //   // Cấu hình thêm plugin Easy Image
-
-            // }}
-            data={editorData}
-            onChange={handleEditorChange}
-          />
-
+          rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+        >
+          <Input.TextArea className='mt-4' />
         </Form.Item>
 
         <Form.Item
@@ -295,7 +252,7 @@ const AdminTourEdit = () => {
           name="ma_loai_tour"
           rules={[{ required: true, message: "Vui lòng nhập mã loại tour!" }]}
         >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
+          <Select defaultValue="Chọn" style={{ width: "100%", }}>
             {loaitourArrary.map((option: { id: React.Key | null | undefined; ten_loai_tour: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
               <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
             ))}
@@ -304,21 +261,23 @@ const AdminTourEdit = () => {
 
 
 
-
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" danger htmlType="submit"
-          >
-            Cập Nhật
-            {/* <AiOutlineLoading3Quarters className="animate-spin" />   */}
-          </Button>
-          <Button
-            type="primary"
-            danger
-            className="ml-2"
-            onClick={() => navigate("/admin/tour")}
-          >
-            Quay lại
-          </Button>
+          <div className='btn-button-sub-pt'>
+            <Button type="primary" danger htmlType="submit" className='submit-click'
+            >
+              Cập Nhật
+              {/* <AiOutlineLoading3Quarters className="animate-spin" />   */}
+            </Button>
+            <Button
+              type="primary"
+              danger
+              className="ml-2"
+              onClick={() => navigate("/admin/tour")}
+            >
+              Quay lại
+            </Button>
+          </div>
+
         </Form.Item>
       </Form>
     </div>
