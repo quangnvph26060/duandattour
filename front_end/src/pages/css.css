@@ -43,7 +43,7 @@
   flex-direction: row !important;
   display: flex !important;
   justify-content: flex-end !important;
-  margin-top: 120px !important;
+  margin-top: 150px !important;
   gap: 30px 30px;
 }
 .ant-btn-button{
@@ -107,4 +107,33 @@
 }
 .ant-form-item-label{
   margin-top: 20px;
+}
+.role-user{
+  border: 1px solid blue;
+  background: white;
+  color: blue;
+  
+}
+.form-css-role{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.role-form button:hover{
+  background-color: rgb(0, 0, 255);
+  color: white;
+}
+.ant-css-form{
+  width: 100% !important;
+}
+.ant-css-form > .ant-form-item{
+  width: 100% !important;
+}
+.btn-button-sub-role{
+  display: flex;
+}
+.btn-button-sub-hdv{
+  position: absolute;
+  top: 200px;
+  left: -380px;
 }
