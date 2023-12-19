@@ -16,6 +16,13 @@ const ADmin_KhachsanEdit: React.FC = () => {
   const { data: LoaiKhachSanData } = useGetKhachSanByIdQuery(idkhachsan || "");
   const LoaiKhachSan = LoaiKhachSanData || {};
   const [updateLoaiKhachSan] = useEditKhachSanMutation();
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
@@ -83,21 +90,7 @@ const ADmin_KhachsanEdit: React.FC = () => {
         autoComplete="off"
         form={form}
       >
-        <Form.Item
-          label="Image"
-          name="image"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-        >
-          <Upload
-            accept="image/*"
-            listType="picture"
-            beforeUpload={() => false}
-          >
-            <Button icon={<UploadOutlined />} type="button">
-              Chọn ảnh
-            </Button>
-          </Upload>
-        </Form.Item>
+       
         <Form.Item
           label="Tên khách sạn"
           name="ten_khach_san"
@@ -132,6 +125,21 @@ const ADmin_KhachsanEdit: React.FC = () => {
           help={errors}
         >
           <Input />
+        </Form.Item>
+        <Form.Item
+          label="Image"
+          name="image"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+           <Button icon={<UploadOutlined />} type="button" onClick={handleButtonClick} className={imageButtonClass}>
+                Chọn ảnh
+              </Button>
+          </Upload>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

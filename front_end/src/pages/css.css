@@ -43,8 +43,8 @@
   flex-direction: row !important;
   display: flex !important;
   justify-content: flex-end !important;
-  margin-top: 150px !important;
-  gap: 30px 30px;
+  margin-top: 200px !important;
+  
 }
 .ant-btn-button{
   border: 1px solid;
