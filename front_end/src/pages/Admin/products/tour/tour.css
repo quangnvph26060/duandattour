@@ -2,7 +2,13 @@
     width: 100%;
     border-collapse: collapse;
 }
-
+.expired-text {
+    color: red; /* Red color for expired tours */
+  }
+  
+  .active-text {
+    color: green; /* Green color for active tours */
+  }
 .table_tour th,
 .table_tour td {
     padding: 8px;
