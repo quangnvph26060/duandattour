@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
 import { ILoaiTour } from '../../../../interface/loaiTour';
 import axios from 'axios';
+import "../../../css.css";
 
 const AdminLoai_tourEdit: React.FC = () => {
   const { idLoaiTour } = useParams<{ idLoaiTour: any }>();
@@ -63,7 +64,7 @@ const AdminLoai_tourEdit: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
         form={form}
@@ -73,6 +74,7 @@ const AdminLoai_tourEdit: React.FC = () => {
           name="image"
           rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
+          <div className='upload-image'>
           <Upload
             accept="image/*"
             listType="picture"
@@ -82,6 +84,8 @@ const AdminLoai_tourEdit: React.FC = () => {
               Chọn ảnh
             </Button>
           </Upload>
+          </div>
+         
         </Form.Item>
         <Form.Item
           label="Tên loại tour"
@@ -95,7 +99,8 @@ const AdminLoai_tourEdit: React.FC = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <div className='btn-button-sub'>
+          <Button type="primary" htmlType="submit" className='submit-click'>
             Sửa
           </Button>
           <Button
@@ -105,6 +110,8 @@ const AdminLoai_tourEdit: React.FC = () => {
           >
             Quay lại
           </Button>
+          </div>
+         
         </Form.Item>
       </Form>
     </div>

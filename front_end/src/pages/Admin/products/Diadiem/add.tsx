@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useAddDiaDiemMutation, useRemoveDiaDiemMutation } from "../../../../api/DiaDiemApi";
 import { IDiaDiem } from "../../../../interface/diadiem";
+import "../../../css.css";
 const { Option } = Select;
 
 type FieldType = {

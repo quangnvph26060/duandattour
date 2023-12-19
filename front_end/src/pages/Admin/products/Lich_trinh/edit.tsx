@@ -28,7 +28,7 @@ const Admin_LichtrinhEDit: React.FC = () => {
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
   useEffect(() => {
-    if (LichTrinh.date && LichTrinh.data.tieu_de && LichTrinh.date.noi_dung && LichTrinh.date.thoi_gian && LichTrinh.date.id_tour) {
+    if (LichTrinh.date && LichTrinh.date.tieu_de && LichTrinh.date.noi_dung && LichTrinh.date.thoi_gian && LichTrinh.date.id_tour) {
       form.setFieldsValue({
         tieu_de: LichTrinh.date.tieu_de,
         noi_dung: LichTrinh.data.noi_dung,
@@ -59,7 +59,7 @@ const Admin_LichtrinhEDit: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -95,23 +95,25 @@ const Admin_LichtrinhEDit: React.FC = () => {
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
+          <Select defaultValue="Chọn" style={{ width: "100%"}}>
             {tourArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+        <div className='btn-button-sub'>
+          <Button type="primary" htmlType="submit" className='submit-click'>
             Sửa
           </Button>
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour/lich_trinh')}
+            onClick={() => navigate('/admin/tour')}
           >
             Quay lại
           </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

@@ -29,6 +29,13 @@ const AdminTourEdit = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
 
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/')
@@ -103,7 +110,7 @@ const AdminTourEdit = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
         form={form}
@@ -194,7 +201,7 @@ const AdminTourEdit = () => {
           name="mo_ta"
           rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
         >
-          <Input.TextArea />
+          <Input.TextArea className='mt-4'/>
         </Form.Item>
 
         <Form.Item
@@ -202,7 +209,7 @@ const AdminTourEdit = () => {
           name="ma_loai_tour"
           rules={[{ required: true, message: "Vui lòng nhập mã loại tour!" }]}
         >
-          <Select defaultValue="Chọn" style={{ width: 400, }}>
+          <Select defaultValue="Chọn" style={{ width: "100%", }}>
             {loaitourArrary.map((option: { id: React.Key | null | undefined; ten_loai_tour: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
               <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
             ))}
@@ -212,7 +219,8 @@ const AdminTourEdit = () => {
         
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" danger htmlType="submit"
+          <div className='btn-button-sub-pt'>
+          <Button type="primary" danger htmlType="submit" className='submit-click'
           >
             Cập Nhật
             {/* <AiOutlineLoading3Quarters className="animate-spin" />   */}
@@ -225,6 +233,8 @@ const AdminTourEdit = () => {
           >
             Quay lại
           </Button>
+          </div>
+         
         </Form.Item>
       </Form>
     </div>

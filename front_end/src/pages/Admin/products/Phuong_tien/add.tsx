@@ -39,7 +39,7 @@ const ADmin_PhuontiengADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: '100%' }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -58,17 +58,20 @@ const ADmin_PhuontiengADD: React.FC = () => {
         </Form.Item>
    
        
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+          <div className="btn-button-sub-pt">
+          <Button type="primary" htmlType="submit" className="submit-click" >
             Thêm
           </Button>
           <Button
             type="default"
             className="ml-2"
-            onClick={() => navigate('/admin/tour/loai_phuong_tien')}
+            onClick={() => navigate("/admin/tour/loai_tour")}
           >
             Quay lại
           </Button>
+          </div>
+          
         </Form.Item>
       </Form>
     </div>

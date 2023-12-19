@@ -51,7 +51,7 @@ const Admin_TourDiscountADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -64,7 +64,7 @@ const Admin_TourDiscountADD: React.FC = () => {
           validateStatus={errors ? 'error' : ''}
           help={errors}
         >
-        <Select defaultValue="Chọn" style={{ width: 400,}}>
+        <Select defaultValue="Chọn" style={{ width: "100%",}}>
           {discountArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.discount_name}</Option>
           ))}
@@ -77,7 +77,7 @@ const Admin_TourDiscountADD: React.FC = () => {
             { required: true, message: 'Vui lòng chọn tour ' },
           ]}
         >
-        <Select defaultValue="Chọn" style={{ width: 400,}}>
+        <Select defaultValue="Chọn" style={{ width: "100%",}}>
           {tourArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
           ))}
@@ -85,7 +85,8 @@ const Admin_TourDiscountADD: React.FC = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <div className='btn-button-sub'>
+          <Button type="primary" htmlType="submit" className='submit-click'>
             Thêm
           </Button>
           <Button
@@ -95,6 +96,8 @@ const Admin_TourDiscountADD: React.FC = () => {
           >
             Quay lại
           </Button>
+          </div>
+         
         </Form.Item>
       </Form>
     </div>

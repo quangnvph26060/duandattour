@@ -10,7 +10,7 @@ const { Option } = Select;
 
 type FieldType = {
   id: number;
-  image:string;
+  image: string;
   ten_loai_tour: string;
 };
 
@@ -20,9 +20,9 @@ const Admin_DanhmucADD: React.FC = () => {
 
   const onFinish = (values: ILoaiTour) => {
     const formData = new FormData();
-  
+
     formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
-  
+
     addLoaiTour(formData)
       .unwrap()
       .then(() => navigate("/admin/post/danhmuc_post"))
@@ -30,8 +30,8 @@ const Admin_DanhmucADD: React.FC = () => {
         console.log(error);
         // Xử lý lỗi (nếu có)
       });
-    
-    console.log(values); 
+
+    console.log(values);
   };
   return (
     <div className="container">
@@ -43,11 +43,10 @@ const Admin_DanhmucADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
-      
         <Form.Item
           label="Tên danh mục tour"
           name="ten_loai_tour"
@@ -60,16 +59,18 @@ const Admin_DanhmucADD: React.FC = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Thêm
-          </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate("/admin/tour/loai_tour")}
-          >
-            Quay lại
-          </Button>
+          <div className="btn-button-sub-pt">
+            <Button type="primary" htmlType="submit" className="submit-click">
+              Thêm
+            </Button>
+            <Button
+              type="default"
+              className="ml-2"
+              onClick={() => navigate("/admin/tour/loai_tour")}
+            >
+              Quay lại
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

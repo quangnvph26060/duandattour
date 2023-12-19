@@ -1,15 +1,17 @@
-import React , { useEffect, useState }from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { useNavigate ,useParams} from 'react-router-dom';
-import {useEditLoaiPhuongTienMutation,useGetLoaiPhuongTienByIdQuery} from "../../../../api/LoaiPhuongTienApi";
-import { ILoaiPhuongTien  } from "../../../../interface/loaiphuongtien";
-
-
-
+import React, { useEffect, useState } from "react";
+import { Form, Button, Input, DatePicker, Select } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useEditLoaiPhuongTienMutation,
+  useGetLoaiPhuongTienByIdQuery,
+} from "../../../../api/LoaiPhuongTienApi";
+import { ILoaiPhuongTien } from "../../../../interface/loaiphuongtien";
 
 const ADmin_Phuongtienedit: React.FC = () => {
   const { idPhuongTien } = useParams<{ idPhuongTien: any }>();
-  const { data: LoaiPhuongTienData } = useGetLoaiPhuongTienByIdQuery(idPhuongTien || "");
+  const { data: LoaiPhuongTienData } = useGetLoaiPhuongTienByIdQuery(
+    idPhuongTien || ""
+  );
   const LoaiPhuongTien = LoaiPhuongTienData || {};
   const [updateLoaiPhuongTien] = useEditLoaiPhuongTienMutation();
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,6 @@ const ADmin_Phuongtienedit: React.FC = () => {
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);
-        
       });
   };
 
@@ -47,7 +48,7 @@ const ADmin_Phuongtienedit: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
         form={form}
@@ -56,27 +57,28 @@ const ADmin_Phuongtienedit: React.FC = () => {
           label="Phương tiện"
           name="loai_phuong_tien"
           rules={[
-            { required: true, message: 'Vui lòng nhập loại phương tiện!' },
-            { min: 3, message: ' Phương tiện ít nhất 3 ký tự' },
+            { required: true, message: "Vui lòng nhập loại phương tiện!" },
+            { min: 3, message: " Phương tiện ít nhất 3 ký tự" },
           ]}
-          validateStatus={errors ? 'error' : ''}
+          validateStatus={errors ? "error" : ""}
           help={errors}
         >
           <Input />
         </Form.Item>
-   
-       
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Sửa
-          </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate('/admin/tour/loai_phuong_tien')}
-          >
-            Quay lại
-          </Button>
+          <div className="btn-button-sub-pt">
+            <Button type="primary" htmlType="submit" className="submit-click">
+              Sửa
+            </Button>
+            <Button
+              type="default"
+              className="ml-2"
+              onClick={() => navigate("/admin/tour/loai_phuong_tien")}
+            >
+              Quay lại
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>
