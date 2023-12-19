@@ -20,9 +20,7 @@ use App\Http\Controllers\api\ApiDiscountController;
 use App\Http\Controllers\Api\ApiSearchController;
 use App\Http\Controllers\Api\ApiFavoriteController;
 use App\Http\Controllers\Api\ApiAuthController;
-
 use App\Http\Controllers\Api\ApiContactController;
-
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 
 use App\Models\LoaiTourModel;
@@ -307,7 +305,4 @@ Route::prefix('admin')->group(function () {
     });
 
     
-
 });
-
-

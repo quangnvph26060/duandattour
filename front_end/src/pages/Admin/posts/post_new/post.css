@@ -101,10 +101,9 @@
     background-color: #f9f9f9;
 }
 
-/* Điều chỉnh các thuộc tính của form theo nhu cầu */
-/* #posts-filter {
-    
-} */
+#posts-filter {
+    /* Điều chỉnh các thuộc tính của form theo nhu cầu */
+}
 
 /* CSS cho các phần tử trong bảng */
 .wp-list-table {
