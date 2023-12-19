@@ -47,19 +47,21 @@ const News = () => {
     return (
         <div>
 
-            <div className='w-post flex gap-1'>
+            <div className='container mx-auto flex gap-5'>
                 {postData && (
-                    <div className="w-lef w-4/5 ">
-                        <h2 className='px-3 font-semibold text-4xl'>{postData.ten_post}</h2>
-                        <p>Tin tức du lịch : {postData.ngay_dang}</p>
-                        <div dangerouslySetInnerHTML={{ __html: postData.mo_ta }} ></div>
+                    <div className="w-3/4 p-7">
+                        <div className="container mx-auto">
+                            <h2 className='font-semibold text-4xl py-4'>{postData.ten_post}</h2>
+                            <p className=" py-4">Tin tức du lịch : {postData.ngay_dang}</p>
+                            <div className="py-4" dangerouslySetInnerHTML={{ __html: postData.mo_ta }} ></div>
+                        </div>
                     </div>
                 )}
 
-                <div className="w-right w-1/5">
-                    <b>Tin mới</b> <br />
+                <div className="p-5 w-1/5 pt-20">
+                    <b className="pb-5 text-xl">Tin mới</b> <br />
                     {tourArray.map(item => (
-                        <b> * {item.ten_post}</b>
+                        <button><b className="font-sans px-1 hover:text-blue-500 py-4">- {item.ten_post}</b></button>
                     ))}
                 </div>
 

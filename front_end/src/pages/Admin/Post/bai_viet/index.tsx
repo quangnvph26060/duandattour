@@ -72,7 +72,7 @@ const Admin_baiviet = () => {
             dataIndex: "mo_ta",
             key: "mo_ta",
             render: (text) => (
-                <div>
+                <div className="">
                     {/* Hiển thị mô tả toàn bộ */}
                     <div dangerouslySetInnerHTML={{ __html: text }} />
                 </div>

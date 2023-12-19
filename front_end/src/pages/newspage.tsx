@@ -68,7 +68,7 @@ const News = () => {
                 <>
                   <div>
                     <Link to={`/post/${dataSource[0].key}`} className='w-auto rounded-xl'>
-                      <img src={`http://localhost:8000/storage/${dataSource[0].image}`} className='w-auto rounded-xl' />
+                      <img src={`http://localhost:8000/storage/${dataSource[0].image}`} className='w-[900px] h-[550px] rounded-xl' />
                     </Link>
                   </div>
                   <p className='py-4 px-3 text-red-500 font-medium'>Tin tức dữ liệu</p>
@@ -82,9 +82,9 @@ const News = () => {
 
             <div className='w-2/5'>
               {dataSource.map(item => (
-                <div className='flex gap-3' key={item.key}>
+                <div className='flex gap-3 pb-3' key={item.key}>
                   <Link to={`/post/${item.key}`} >
-                    <img src={`http://localhost:8000/storage/${item.image}`} alt={`Image ${item.key}`} className='w-64 rounded-lg' /></Link>
+                    <img src={`http://localhost:8000/storage/${item.image}`} alt={`Image ${item.key}`} className='w-[250px] h-[175px] rounded-lg' /></Link>
                   <div>
                     <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
                     <Link to={`/post/${item.key}`} >
