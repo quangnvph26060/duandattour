@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-
+import './css.css'
 import {
   Table,
   Button,
@@ -22,6 +22,8 @@ import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
 import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
+  const [sortedData, setSortedData] = useState([]);
+
   const navigate = useNavigate();
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -44,7 +46,14 @@ const ADmin_DatTour = (props: Props) => {
 
   const [selectedId, setSelectedId] = useState("");
   useEffect(() => {
-    setDataQuanly(DataQuanly);
+    if (DataQuanly) {
+      const sorted = [...DataQuanly].sort((a, b) => {
+        const dateA = new Date(a.ngay_dat).getTime();
+        const dateB = new Date(b.ngay_dat).getTime();
+        return dateB - dateA;
+      });
+      setSortedData(sorted);
+    }
   }, [DataQuanly]);
   const updateStatus = (id) => {
     setSelectedId(id);
@@ -92,7 +101,7 @@ const ADmin_DatTour = (props: Props) => {
 
   //  const dattour = dattour?.data || [];
 
-  const dataSource = DataQuanly.map(
+  const dataSource = sortedData.map(
     ({
       id,
       ten_khach_hang,
@@ -317,32 +326,40 @@ const ADmin_DatTour = (props: Props) => {
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
-        className="rounded-md"
+        className="rounded-md ant-modal-content "
       >
         {selectedTour && (
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
-            <table className="w-full table-auto border-collapse border rounded">
-              <tbody>
-                {tourDetailsColumns.map((column) => (
-                  <tr key={column.key} className="border-b">
-                    <td className="py-2 px-4 font-semibold">{column.title}</td>
-                    <td className="py-2 px-4">
-                      {column.dataIndex === "image_path" ? (
-                        <img
-                        src={`http://localhost:8000/storage/${selectedTour[column.dataIndex]}`}
-                          alt="Tour"
-                          className="w-[200px] h-[150px] rounded object-cover"
-                        />
-                      ) : (
-                        selectedTour[column.dataIndex]
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+    <div className="p-4 ">
+    <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
+    <table className="w-full  table-auto border-collapse border rounded">
+      <tbody>
+        <tr className="border-b">
+          {tourDetailsColumns.map((column) => (
+            <td key={column.key} className="py-2 px-4 font-semibold">
+              {column.title}
+            </td>
+          ))}
+        </tr>
+        <tr className="border-b">
+          {tourDetailsColumns.map((column) => (
+            <td key={column.key} className="py-2 px-4">
+              {column.dataIndex === "image_path" ? (
+                <img
+                  src={`http://localhost:8000/storage/${selectedTour[column.dataIndex]}`}
+                  alt="Tour"
+                  className="w-[200px] h-[150px] rounded object-cover"
+                />
+              ) : (
+                selectedTour[column.dataIndex]
+              )}
+            </td>
+          ))}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+       
         )}
       </Modal>
       <Modal
