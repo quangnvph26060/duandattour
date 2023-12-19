@@ -37,6 +37,8 @@ const AdminProduct = (props: Props) => {
   };
   const loaitourArrary = loaitourdata?.data || [];
   const tourArray = tourdata?.data || [];
+  console.log(tourArray);
+
   const tour = () => {
     const [isreadloang, setisreadloang] = useState(false);
     const [hdvtour, sethdvtour] = useState([]);
@@ -63,6 +65,8 @@ const AdminProduct = (props: Props) => {
         });
 
     };
+
+
 
 
 
@@ -118,7 +122,8 @@ const AdminProduct = (props: Props) => {
             <th>ID</th>
             <th>Name</th>
             <th>Ma Loai Tour</th>
-            <th>Ảnh minh họa</th>
+            <th>Ảnh Đại diện</th>
+            <th>Ảnh Mô tả</th>
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
             <th>Hướng dẫn viên</th>
@@ -140,6 +145,13 @@ const AdminProduct = (props: Props) => {
                     return loaiTour.ten_loai_tour;
                   }
                 })}
+              </td>
+              <td>
+                <img
+                  src={`http://localhost:8000/storage/${item.image_dd}`}
+                  alt={`Image ${index}`}
+                  style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
+                />
               </td>
               <td>
                 {item.image_path.map((image, index) => (

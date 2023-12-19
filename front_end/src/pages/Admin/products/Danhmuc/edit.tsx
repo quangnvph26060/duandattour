@@ -1,10 +1,11 @@
-import React, { useEffect,useState } from 'react';
-import { Form, Button, Input,Upload } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Input, Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
 import { ILoaiTour } from '../../../../interface/loaiTour';
 import axios from 'axios';
+import moment from 'moment';
 
 const AdminLoai_tourEdit: React.FC = () => {
   const { idLoaiTour } = useParams<{ idLoaiTour: any }>();
@@ -19,7 +20,8 @@ const AdminLoai_tourEdit: React.FC = () => {
     form.setFieldsValue({
       hinh: LoaiTour.image,
       ten_loai_tour: LoaiTour.ten_loai_tour,
-   
+      thoi_gian: moment(LoaiTour.thoi_gian).format('YYYY-MM-DD'),
+
     });
   }, [LoaiTour]);
 
@@ -30,7 +32,7 @@ const AdminLoai_tourEdit: React.FC = () => {
       const formData = new FormData();
       formData.append('image', values.image.fileList[0].originFileObj);
       formData.append('ten_loai_tour', values.ten_loai_tour);
-  
+
       const response = await axios.post(
         `http://127.0.0.1:8000/api/admin/loaitour/${idLoaiTour}`,
         formData,
@@ -40,7 +42,7 @@ const AdminLoai_tourEdit: React.FC = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log('Thành công');
         console.log(response);
@@ -68,7 +70,7 @@ const AdminLoai_tourEdit: React.FC = () => {
         autoComplete="off"
         form={form}
       >
-          <Form.Item
+        <Form.Item
           label="Image"
           name="image"
           rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
@@ -91,7 +93,7 @@ const AdminLoai_tourEdit: React.FC = () => {
             { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
           ]}
         >
-         <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

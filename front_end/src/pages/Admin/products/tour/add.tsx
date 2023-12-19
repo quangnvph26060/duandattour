@@ -19,6 +19,7 @@ const { Option } = Select;
 type FieldType = {
   id: number;
   ten_tour: string;
+  image_dd: string;
   image_path: string;
   diem_di: string;
   diem_den: string;
@@ -58,10 +59,10 @@ const AdminTourAdd: React.FC = () => {
         formData.append('hinh[]', file.originFileObj);
       });
     }
+    formData.append("image", values.image.fileList[0].originFileObj);
     formData.append("ten_tour", values.ten_tour);
     formData.append("diem_di", values.diem_di);
     formData.append("diem_den", values.diem_den);
-    formData.append("diem_khoi_hanh", values.diem_khoi_hanh);
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
@@ -144,7 +145,22 @@ const AdminTourAdd: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Hình ảnh"
+          label="Ảnh đại diện"
+          name="image"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+        </Form.Item>
+        <Form.Item
+          label="Hình ảnh mô tả"
           name="hinh[]"
           rules={[{ required: true, message: 'Vui lòng chọn ảnh' }]}
         >
@@ -167,20 +183,7 @@ const AdminTourAdd: React.FC = () => {
 
 
 
-        <Form.Item
-          label="Điểm khởi hành"
-          name="diem_khoi_hanh"
-          rules={[{ required: true, message: 'Vui lòng chọn điểm khởi hành!' }]}
-        >
-          <Select defaultValue="Điểm khởi hành">
-            <Option value="" >Chọn điểm đi</Option>
-            {provinces.map((province) => (
-              <Option key={province.code} value={province.name}>
-                {province.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+
         <Form.Item
           label="Điểm đi"
           name="diem_di"
@@ -200,16 +203,13 @@ const AdminTourAdd: React.FC = () => {
           name="diem_den"
           rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
         >
-          <Select defaultValue="Chọn điểm đến "  >
-            <Option value="" >Chọn điểm đến</Option>
+          <Select defaultValue="Chọn điểm đến" mode="multiple">
             {provinces2.map((province) => (
               <Option key={province.code} value={province.name}>
                 {province.name}
               </Option>
             ))}
           </Select>
-
-
         </Form.Item>
         <Form.Item
           label="Lịch khởi hành"

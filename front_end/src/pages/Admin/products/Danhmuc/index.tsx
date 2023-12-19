@@ -21,10 +21,10 @@ const AdminLoai_tour = (props: Props) => {
     // const navigate = useNavigate();
     const tourArray = tourdata?.data || [];
 
-    const dataSource = tourArray.map(({ id, image, ten_loai_tour }: ILoaiTour) => ({
+    const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian }: ILoaiTour) => ({
         key: id,
         image,
-        ten_loai_tour
+        ten_loai_tour, thoi_gian
     }));
 
 
@@ -51,6 +51,11 @@ const AdminLoai_tour = (props: Props) => {
             title: "Tên loại tour",
             dataIndex: "ten_loai_tour",
             key: "ten_loai_tour",
+        },
+        {
+            title: "Thời gian",
+            dataIndex: "thoi_gian",
+            key: "thoi_gian",
         },
         {
             title: "Action",

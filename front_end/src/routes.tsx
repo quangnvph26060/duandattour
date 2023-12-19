@@ -14,7 +14,7 @@ import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
-import AdminTourEdit from "./pages/Admin/products/tour/edi";
+import AdminTourEdit from "./pages/Admin/products/tour/edit";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
 import AdminLoai_tourADD from "./pages/Admin/products/Danhmuc/add";
 import AdminLoai_tourEdit from "./pages/Admin/products/Danhmuc/edit";

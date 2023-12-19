@@ -13,6 +13,7 @@ import { useGetTourQuery, useEditTourMutation, useGetTourByIdQuery } from "../..
 const { Option } = Select;
 
 const AdminTourEdit = () => {
+  const [coverImage, setCoverImage] = useState('');
   const navigate = useNavigate();
   const [editorData, setEditorData] = useState('');
   const handleEditorChange = (event, editor) => {
@@ -40,6 +41,7 @@ const AdminTourEdit = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+
     if (Tour && Tour.data && Tour.data.image_path) {
       const fileList = Tour.data.image_path.map((image, index) => ({
         uid: `${index}`,
@@ -67,7 +69,7 @@ const AdminTourEdit = () => {
         console.error(error);
       });
     if (Tour && Tour.data && Tour.data.image_path && Tour.data.diem_di && Tour.data.mo_ta && Tour.data.diem_den
-      && Tour.data.ten_tour && Tour.data.diem_khoi_hanh && Tour.data.ngay_ket_thuc &&
+      && Tour.data.ten_tour && Tour.data.ngay_ket_thuc &&
       Tour.data.lich_khoi_hanh && Tour.data.soluong && Tour.data.gia_nguoilon && Tour.data.gia_treem
 
     ) {
@@ -81,7 +83,6 @@ const AdminTourEdit = () => {
         ten_tour: Tour.data.ten_tour,
         gia_nguoilon: Tour.data.gia_nguoilon,
         gia_treem: Tour.data.gia_treem,
-        diem_khoi_hanh: Tour.data.diem_khoi_hanh,
         ngay_ket_thuc: Tour.data.ngay_ket_thuc,
         lich_khoi_hanh: Tour.data.lich_khoi_hanh,
         soluong: Tour.data.soluong,
@@ -143,7 +144,25 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Image"
+          label="Ảnh đại diện"
+          name="image"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+          {Tour && Tour.data && Tour.data.image_path && (
+            <img src={`http://localhost:8000/storage/${Tour.data.image_path[0]}`} alt="Ảnh đại diện" style={{ width: '200px', marginTop: '10px' }} />
+          )}
+        </Form.Item>
+        <Form.Item
+          label="Ảnh mô tả"
           name="hinh[]"
           rules={!imageList.length ? [{ required: true, message: "Vui lòng chọn ảnh" }] : undefined}
         >
