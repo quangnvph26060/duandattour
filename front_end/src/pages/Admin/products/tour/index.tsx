@@ -21,6 +21,7 @@ const AdminProduct = (props: Props) => {
   const { data: tourdata, error, isLoading } = useGetTourQuery();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTour, setSelectedTour] = useState<ITour | null>(null);
+  const [sortedTourArray, setSortedTourArray] = useState([]);
 
 
   const currentDate = new Date(); // Ngày hiện tại
@@ -31,12 +32,14 @@ const AdminProduct = (props: Props) => {
   const confirm = (id: any) => {
 
     removeTour(id);
-    
+
 
 
   };
   const loaitourArrary = loaitourdata?.data || [];
   const tourArray = tourdata?.data || [];
+  console.log(tourArray);
+
   const tour = () => {
     const [isreadloang, setisreadloang] = useState(false);
     const [hdvtour, sethdvtour] = useState([]);
@@ -66,16 +69,18 @@ const AdminProduct = (props: Props) => {
 
 
 
+
+
     const [tourHDVArray, setTourHDVArray] = useState([]);
     const [hdvDuocChon, setHdvDuocChon] = useState([]);
     useEffect(() => {
       const fetchHDVData = async (a, b, c) => {
-        if (a && b && c ) {
+        if (a && b && c) {
           try {
             const response = await axios.post('http://127.0.0.1:8000/api/admin/hdvtour', {
               start_date: a,
               end_date: b,
-              id_tour:c
+              id_tour: c
             });
             const hdvDate = response.data;
             console.log(hdvDate);
@@ -94,22 +99,27 @@ const AdminProduct = (props: Props) => {
 
       const fetchData = async () => {
         const tempArray = [];
-
         for (let i = 0; i < tourArray.length; i++) {
           const item = tourArray[i];
-          const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc,item.id);
+          const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc, item.id);
           tempArray.push(hdvData);
-
         }
-
         setTourHDVArray(tempArray);
       };
-
-
-
       fetchData();
     }, [tourArray]);
+    useEffect(() => {
+      const sortedArray = [...tourArray].sort((a, b) => {
+        // Chuyển đổi chuỗi ngày thành đối tượng Date để so sánh
+        const dateA = new Date(a.lich_khoi_hanh);
+        const dateB = new Date(b.lich_khoi_hanh);
 
+        // Sắp xếp theo thứ tự giảm dần (mới nhất đến cũ hơn)
+        return dateB - dateA;
+      });
+
+      setSortedTourArray(sortedArray);
+    }, [tourArray]);
 
     return (
       <table className="table_tour">
@@ -118,15 +128,16 @@ const AdminProduct = (props: Props) => {
             <th>ID</th>
             <th>Name</th>
             <th>Ma Loai Tour</th>
-            <th>Ảnh minh họa</th>
+            <th>Ảnh Đại diện</th>
+            <th>Ảnh Mô tả</th>
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
             <th>Hướng dẫn viên</th>
-            <th>Gia Nguoi Lon</th>
-            <th>Gia Tre Em</th>
-            <th>So Luong</th>
-            <th>Trang Thai</th>
-            <th>Actions</th>
+            <th>Giá người lớn</th>
+            <th>Giá trẻ em</th>
+            <th>Số lượng</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody className="font-semibold">
@@ -141,11 +152,25 @@ const AdminProduct = (props: Props) => {
                   }
                 })}
               </td>
-              <td> <img
-                src={`http://localhost:8000/storage/${item.image_path}`}
-                alt="img"
-                style={{ width: '200px', cursor: 'pointer' ,borderRadius:'5px' }}
-              /></td>
+              <td>
+                <img
+                  src={`http://localhost:8000/storage/${item.image_dd}`}
+                  alt={`Image ${index}`}
+                  style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
+                />
+              </td>
+              <td>
+                {item.image_path.map((image, index) => (
+
+
+                  <img
+                    key={index}
+                    src={`http://localhost:8000/storage/${image}`}
+                    alt={`Image ${index}`}
+                    style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
+                  />
+                ))}
+              </td>
               <td>{item.lich_khoi_hanh}</td>
               <td>{item.ngay_ket_thuc}</td>
               {
@@ -176,19 +201,19 @@ const AdminProduct = (props: Props) => {
               <td>{item.gia_treem} VNĐ</td>
               <td>{item.soluong}</td>
               <td>
-  {(() => {
-    const departureDate = new Date(item.lich_khoi_hanh);
-    const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    const isExpired = formattedDate < ngayhientai;
+                {(() => {
+                  const departureDate = new Date(item.lich_khoi_hanh);
+                  const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                  const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                  const isExpired = formattedDate < ngayhientai;
 
-    return (
-      <span className={isExpired ? 'expired-text' : 'active-text'}>
-        {isExpired ? 'Đã Hết Hạn' : 'Vẫn Hoạt Động'}
-      </span>
-    );
-  })()}
-</td>
+                  return (
+                    <span className={isExpired ? 'expired-text' : 'active-text'}>
+                      {isExpired ? 'Đã Hết Hạn' : 'Vẫn Hoạt Động'}
+                    </span>
+                  );
+                })()}
+              </td>
               <td>
                 {localStorage.getItem("role") === 'admin' && (
                   <div className="flex space-x-2">
@@ -197,11 +222,11 @@ const AdminProduct = (props: Props) => {
                         confirm(item.id);
                       }
                     }}>
-                       <i className="fa fa-trash"></i> 
+                      <i className="fa fa-trash"></i>
                     </button>
                     <button className="edit-button">
                       <Link to={`/admin/tour/edit/${item.id}`}>
-                      <i className="fa fa-wrench"></i>
+                        <i className="fa fa-wrench"></i>
                       </Link>
                     </button>
                   </div>
@@ -214,7 +239,7 @@ const AdminProduct = (props: Props) => {
     );
   };
 
-  
+
   return (
     <div>
 

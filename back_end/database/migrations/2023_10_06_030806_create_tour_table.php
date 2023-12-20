@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('tour', function (Blueprint $table) {
             $table->id(); // Sử dụng trường tự tăng làm khóa chính
             $table->string('ten_tour');
-            $table->string('image_path');
+            $table->string('image_dd');
+            $table->json('image_path')->nullable();
             $table->string('diem_di');
             $table->string('diem_den');
             $table->date('lich_khoi_hanh');
             $table->date('ngay_ket_thuc');
-            $table->string('diem_khoi_hanh');
             $table->integer('gia_nguoilon');
             $table->integer('gia_treem');
             // $table->integer('gia_khuyen_mai');

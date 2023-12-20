@@ -1,18 +1,10 @@
 import React from "react";
-import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Form, Button, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAddLoaiTourMutation } from "../../../../api/LoaiTourApi";
 import { ILoaiTour } from "../../../../interface/loaiTour";
-
-const { Option } = Select;
-
-type FieldType = {
-  id: number;
-  image:string;
-  ten_loai_tour: string;
-};
+import moment from 'moment';
 
 const AdminLoai_tourADD: React.FC = () => {
   const [addLoaiTour] = useAddLoaiTourMutation();
@@ -21,8 +13,9 @@ const AdminLoai_tourADD: React.FC = () => {
   const onFinish = (values: ILoaiTour) => {
     const formData = new FormData();
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
-    formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
-  
+    formData.append("ten_loai_tour", values.ten_loai_tour);
+    formData.append("thoi_gian", moment().format()); // Thêm các trường dữ liệu khác vào formData (nếu cần)
+
     addLoaiTour(formData)
       .unwrap()
       .then(() => navigate("/admin/tour/loai_tour"))
@@ -30,9 +23,10 @@ const AdminLoai_tourADD: React.FC = () => {
         console.log(error);
         // Xử lý lỗi (nếu có)
       });
-    
-    console.log(values); 
+
+    console.log(values);
   };
+
   return (
     <div className="container">
       <header className="mb-4">

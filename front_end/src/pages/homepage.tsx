@@ -111,7 +111,6 @@ const HomePage = () => {
       });
 
       setSearchResults(response.data.data);
-
       const filteredResults = response.data.data.filter((tour: Tour) =>
         tour.ngay_ket_thuc.includes(selectedDate) &&
         tour.lich_khoi_hanh.includes(selectedDepartureDate) &&
@@ -693,6 +692,7 @@ const HomePage = () => {
                   src={product.image}
                   alt={product.name}
                 />
+
               </div>
             ))}
           </div>

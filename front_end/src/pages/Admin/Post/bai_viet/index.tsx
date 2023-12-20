@@ -1,24 +1,48 @@
-import React from "react";
-import { Table, Button, Skeleton, Popconfirm } from "antd";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Popconfirm } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
+import { Ipost } from "../../../../interface/post";
+import { useGetpostQuery, useRemovepostMutation } from "../../../../api/post";
 
 const Admin_baiviet = () => {
-    const dataSource = [
-        {
-            key: 1,
-            ten_bai_viet: "Bài viết cương",
-            image: "image_url_1.jpghttps://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/399083074_666738505589224_5550605208199897590_n.jpg?stp=dst-jpg_p843x403&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=Z6q--I4u1U4AX-mpVqv&_nc_ht=scontent.fhan14-3.fna&oh=00_AfAhGnPQEVEVOXt_CGOJHdx5C6cGjN-dFNyeuyhTrrPEMA&oe=6566DDAE", // You can use the image URL or any other representation you need
-            mo_ta: "Mô tả bài viết 1",
-        },
-        {
-            key: 2,
-            ten_bai_viet: "Bài viết thái",
-            image: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/399083074_666738505589224_5550605208199897590_n.jpg?stp=dst-jpg_p843x403&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=Z6q--I4u1U4AX-mpVqv&_nc_ht=scontent.fhan14-3.fna&oh=00_AfAhGnPQEVEVOXt_CGOJHdx5C6cGjN-dFNyeuyhTrrPEMA&oe=6566DDAE",
-            mo_ta: "Mô tả bài viết 2",
-        },
-        // Add more data objects as needed
-    ];
+    const { data: tourdata } = useGetpostQuery();
+    const [removePost, { isSuccess: isRemoveSuccess }] = useRemovepostMutation();
+    const navigate = useNavigate();
+
+    const [dataSource, setDataSource] = useState([]);
+
+    useEffect(() => {
+        if (tourdata?.data) {
+            const modifiedData = tourdata.data.map(({ id, ten_post, image, mo_ta, ngay_dang }: Ipost) => ({
+                key: id,
+                ten_post,
+                image,
+                mo_ta,
+                ngay_dang,
+                expand: false, // Initially set expand to false for all rows
+            }));
+            setDataSource(modifiedData);
+        }
+    }, [tourdata]);
+
+    useEffect(() => {
+        if (isRemoveSuccess) {
+            setTimeout(() => {
+                navigate("/admin/post/bai_viet", { replace: true });
+                window.location.reload(); // Reload the page after 1 second
+            }, 1000);
+        }
+    }, [isRemoveSuccess, navigate]);
+
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+    const handleExpand = (key) => {
+        const updatedDataSource = dataSource.map((item) =>
+            item.key === key ? { ...item, expand: !item.expand } : item
+        );
+        setDataSource(updatedDataSource);
+    };
 
     const columns = [
         {
@@ -28,52 +52,69 @@ const Admin_baiviet = () => {
         },
         {
             title: "Tên bài viết",
-            dataIndex: "ten_bai_viet",
-            key: "ten_bai_viet",
+            dataIndex: "ten_post",
+            key: "ten_post",
         },
         {
-            title: "Ảnh",
+            title: "Ảnh bài viết",
             dataIndex: "image",
             key: "image",
-            render: (image) => (
-                <img src={image} alt="Bài viết" style={{ maxWidth: "100px", maxHeight: "100px" }} />
+            render: (image: string) => (
+                <img
+                    src={`http://localhost:8000/storage/${image}`}
+                    alt="img"
+                    style={{ width: '200px', cursor: 'pointer' }}
+                />
             ),
         },
         {
-            title: "Mô tả",
+            title: "Nội dung",
             dataIndex: "mo_ta",
             key: "mo_ta",
+            render: (text) => (
+                <div>
+                    {/* Hiển thị mô tả toàn bộ */}
+                    <div dangerouslySetInnerHTML={{ __html: text }} />
+                </div>
+            ),
+        },
+        {
+            title: "Ngày đăng",
+            dataIndex: "ngay_dang",
+            key: "ngay_dang",
         },
         {
             title: "Action",
-            render: ({ key: id }) => {
-                return (
-                    <>
-                        <div className="flex space-x-2">
-                            <Popconfirm
-                                title="Bạn có muốn xóa?"
-                                onConfirm={() => confirm(id)}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Button type="primary" danger>
-                                    Xóa
-                                </Button>
-                            </Popconfirm>
-                            {/* Add other action buttons or links here */}
-                        </div>
-                    </>
-                );
-            },
+            render: ({ key: id }) => (
+                <div className="flex space-x-2">
+                    <Popconfirm
+                        title="Bạn có muốn xóa?"
+                        onConfirm={() => confirm(id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="primary" danger>
+                            Xóa
+                        </Button>
+                    </Popconfirm>
+                    <Button type="primary" danger>
+                        <Link to={`/admin/post/edit_baiviet/${id}`}>Sửa</Link>
+                    </Button>
+                </div>
+            ),
         },
     ];
+
+    const confirm = (id) => {
+        removePost(id);
+    };
 
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý  bài viết</h2>
                 <Button type="primary" danger>
-                    <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
+                    <Link to="/admin/post/add_baiviet" className="flex items-center space-x-2">
                         <AiOutlinePlus />
                         Tạo mới bài viết
                     </Link>

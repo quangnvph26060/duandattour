@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TourResoure;
+
 use App\Models\LoaiTourModel;
 use App\Models\TourModel;
 
@@ -34,15 +35,15 @@ class ApiTourController extends Controller
     public function getToursByDestination(Request $request)
     {
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den','like',"%{$query}%")->get();
-        foreach($tourdiemden as $tourdiemdens){
-          
-            $tourttcount = DatTour::where('trang_thai',1)
-            ->where('id_tour',$tourdiemdens->id)
-            ->count();
+        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->get();
+        foreach ($tourdiemden as $tourdiemdens) {
+
+            $tourttcount = DatTour::where('trang_thai', 1)
+                ->where('id_tour', $tourdiemdens->id)
+                ->count();
             $tourdiemdens->tourttcount = $tourttcount;
         }
-       
+
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -63,23 +64,43 @@ class ApiTourController extends Controller
      */
     public function store(Request $request)
     {
+        $uploadedImages = [];
 
-
-        if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
-            $imagePath = uploadFile('hinh', $request->file('hinh'));
+        if ($request->hasFile('hinh')) {
+            foreach ($request->file('hinh') as $file) {
+                if ($file->isValid()) {
+                    $imagePath = uploadFile('hinh', $file);
+                    $uploadedImages[] = $imagePath;
+                } else {
+                    return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+                }
+            }
         } else {
-            return response()->json(['error' => 'Invalid file or file upload failed'], 500);
+            return response()->json(['error' => 'No files were uploaded'], 500);
         }
+
+        $image_dd = null;
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $image_dd = uploadFile('image', $request->file('image'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed for image_dd'], 500);
+        }
+
         $lich_khoi_hanh = Carbon::parse($request->lich_khoi_hanh)->format('Y-m-d');
         $ngay_ket_thuc = Carbon::parse($request->ngay_ket_thuc)->format('Y-m-d');
+
         $requestData = $request->all();
         $requestData['lich_khoi_hanh'] = $lich_khoi_hanh;
         $requestData['ngay_ket_thuc'] = $ngay_ket_thuc;
-        $requestData['image_path'] = $imagePath;
+        $requestData['image_dd'] = $image_dd; // Assigning single image to 'image_dd' field
+        $requestData['image_path'] = $uploadedImages; // Assigning multiple uploaded images
+
         $tour = TourModel::create($requestData);
-        // Trả về thông tin vừa thêm
+
         return new TourResoure($tour);
     }
+
 
     /**
      * Display the specified resource.
@@ -102,49 +123,47 @@ class ApiTourController extends Controller
     public function update(Request $request, string $id)
     {
         $tour = TourModel::find($id);
+
+        if (!$tour) {
+            return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
+        }
+
+        // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
         if ($request->hasFile('image_path')) {
             $image = $request->file('image_path');
 
             // Xóa ảnh hiện tại nếu có
             if ($tour->image_path) {
-                Storage::disk('public')->delete($tour->image);
+                Storage::disk('public')->delete($tour->image_path);
             }
 
             // Lưu trữ ảnh mới
-            $imagePath = $image->store('image_path', 'public');
+            $imagePath = $this->uploadFile('images', $image);
 
             // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
-            $tour->image = $imagePath;
+            $tour->image_path = $imagePath;
         }
-        $tour->ten_tour = $request->input('ten_tour');
-        $tour->diem_di = $request->input('diem_di');
-        $tour->diem_den = $request->input('diem_den');
-        $tour->lich_khoi_hanh = $request->input('lich_khoi_hanh');
-        $tour->ngay_ket_thuc = $request->input('ngay_ket_thuc');
-        $tour->diem_khoi_hanh = $request->input('diem_khoi_hanh');
-        $tour->gia_nguoilon = $request->input('ten_tour');
-        $tour->gia_treem = $request->input('gia_treem');
-        $tour->mo_ta = $request->input('mo_ta');
-        $tour->soluong = $request->input('soluong');
-        $tour->trang_thai = $request->input('trang_thai');
-        $tour->ma_loai_tour = $request->input('ma_loai_tour');
-        // Lưu các thay đổi
+
+        // Cập nhật thông tin tour
+        $tour->fill($request->only([
+            'ten_tour',
+            'diem_di',
+            'diem_den',
+            'lich_khoi_hanh',
+            'ngay_ket_thuc',
+            'diem_khoi_hanh',
+            'gia_nguoilon',
+            'gia_treem',
+            'mo_ta',
+            'soluong',
+            'ma_loai_tour',
+        ]));
+
+        // Lưu thay đổi
         $tour->save();
 
-        return response()->json(['message' => 'Cập nhật thành công']);
-
-
-
-
-        if ($tour) {
-            $tour->update($request->all());
-        } else {
-            return  response()->json([
-                'message' => 'Không tìm thấy thong tin'
-            ], 404);
-        }
+        return response()->json(['message' => 'Cập nhật thành công', 'tour' => $tour]);
     }
-
 
 
     public function updatef(Request $request, string $id)
@@ -213,16 +232,16 @@ class ApiTourController extends Controller
                 $expiryDate = Carbon::parse($maxExpiryDate);
                 $countdown = $expiryDate->diffInSeconds($now);
                 $tour->max_expiry_date = $maxExpiryDate;
-                
+
                 $tourKMWithDiscounts[] = $tour;
             }
         }
 
-        foreach($tourKMWithDiscounts as $tourKMs){
-          
-            $tourttcount = DatTour::where('trang_thai',1)
-            ->where('id_tour',$tourKMs->id)
-            ->count();
+        foreach ($tourKMWithDiscounts as $tourKMs) {
+
+            $tourttcount = DatTour::where('trang_thai', 1)
+                ->where('id_tour', $tourKMs->id)
+                ->count();
             $tourKMs->tourttcount = $tourttcount;
         }
         $responseData = [
@@ -232,5 +251,4 @@ class ApiTourController extends Controller
 
         return response()->json($responseData, 200);
     }
-    
 }

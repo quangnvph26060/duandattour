@@ -3,13 +3,7 @@ type Props = {};
 // import { IProduct } from "@/interfaces/product";
 import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch} from "antd";
 import { Link } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
-import {
-  useGetLichTrinhQuery,
-  useRemoveLichTrinhMutation,
-} from "../../../../api/LichTrinhApi";
-import { ILichTrinh } from "../../../../interface/lichtrinh";
-import { ITour } from "../../../../interface/tour";
+import { useGetLichTrinhQuery, useRemoveLichTrinhMutation } from "../../../../api/LichTrinhApi";
 import { useGetTourQuery } from "../../../../api/TourApi";
 
 import { useEffect, useState } from "react";
@@ -34,7 +28,18 @@ const Admin_Lichtrinh = (props: Props) => {
     { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess },
   ] = useRemoveLichTrinhMutation();
 
-  const confirm = (id: any) => {
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    const filteredData = lictrinhdata?.date.filter((item) =>
+      item.tieu_de.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredDataSource(filteredData);
+  };
+
+  const confirm = (id) => {
     removeLichTrinh(id);
   };
   // const navigate = useNavigate();
@@ -84,33 +89,20 @@ const Admin_Lichtrinh = (props: Props) => {
       key: "key",
     },
     {
-      title: (
-        <span style={tableStyles} className="w-[40px]">
-        Nội dung
-        </span>
-      ),
+      title: "Nội dung",
       dataIndex: "noi_dung",
       key: "noi_dung",
     },
     {
-      title: (
-        <span style={tableStyles} className="w-[40px]">
-       Thời gian
-        </span>
-      ),
+      title: "Thời gian",
       dataIndex: "thoi_gian",
       key: "thoi_gian",
     },
     {
-      title: (
-        <span style={tableStyles} className="w-[40px]">
-          Tour tương ứng
-        </span>
-      ),
+      title: "Tour tương ứng",
       dataIndex: "id_tour",
-
       key: "id_tour",
-      render: (id_tour: number) => {
+      render: (id_tour) => {
         const Tour = tourArrary.find((item) => item.id === id_tour);
         return Tour ? Tour.ten_tour : "Không xác định";
       },
@@ -139,34 +131,24 @@ const Admin_Lichtrinh = (props: Props) => {
     },
 
     {
-      title:  (
-        <span style={tableStyles} className="w-[40px]">
-        Hành động
-        </span>
-      ),
-      render: ({ key: id }: any) => {
+      title: "Action",
+      render: ({ key: id }) => {
         return (
           <>
-            {localStorage.getItem("role") == "admin" ? (
+            {localStorage.getItem("role") === "admin" && (
               <div className="flex space-x-2">
                 <Popconfirm
                   title="Bạn có muốn xóa?"
                   onConfirm={() => confirm(id)}
                   okText="Yes"
-                  className="text-black"
                   cancelText="No"
                 >
-               <Button type="primary" danger icon={<DeleteOutlined />}>
-               
-                  </Button>
+                  <Button type="primary" danger>Xóa</Button>
                 </Popconfirm>
-
-                <Button className="bg-green" type="primary">
-                  <Link to={`/admin/tour/lich_trinh/edit/${id}`}>  <EditOutlined /></Link>
+                <Button type="primary" danger>
+                  <Link to={`/admin/tour/lich_trinh/edit/${id}`}>Sửa</Link>
                 </Button>
               </div>
-            ) : (
-              ""
             )}
           </>
         );
@@ -179,23 +161,28 @@ const Admin_Lichtrinh = (props: Props) => {
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
         <Button type="primary" danger>
-          <Link
-            to="/admin/tour/lich_trinh/add"
-            className="flex items-center space-x-2"
-          >
-            <AiOutlinePlus />
-            Tạo mới lịch trình
+          <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
+            <AiOutlinePlus />Tạo mới lịch trình
           </Link>
         </Button>
       </header>
+
+      <div className="flex items-center space-x-2 mb-4">
+        <Input
+          placeholder="Tìm kiếm lịch trình"
+          value={searchValue}
+          onChange={handleSearchChange}
+
+        />
+        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
+          Tìm kiếm
+        </Button>
+      </div>
+
       {isLoading ? (
         <Skeleton />
       ) : (
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={{ pageSize: 2 }}
-        />
+        <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 2 }} />
       )}
     </div>
   );
