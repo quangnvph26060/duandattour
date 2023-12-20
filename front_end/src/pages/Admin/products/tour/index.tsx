@@ -1,5 +1,5 @@
 type Props = {};
-// import { IProduct } from "@/interfaces/product";
+
 import { Table, Button, Skeleton,Input,  Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -17,21 +17,17 @@ const AdminProduct = (props: Props) => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
    
-const handleSearchChange = (e) => {
+  const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
 
   const handleSearch = () => {
     // Lọc dữ liệu dựa trên giá trị tìm kiếm
-    const filteredData = phuongtiendata?.data.filter((item) =>
-      item.loai_phuong_tien.toLowerCase().includes(searchValue.toLowerCase())
+    const filteredData = tourArray.filter((item) =>
+      item.ten_tour.toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredDataSource(filteredData);
   };
-
-
-
-
 
 
   const { Option } = Select;
@@ -40,18 +36,14 @@ const handleSearchChange = (e) => {
   const { data: tourdata, error, isLoading } = useGetTourQuery();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTour, setSelectedTour] = useState<ITour | null>(null);
-
-
   const currentDate = new Date(); // Ngày hiện tại
-
+  const [isSearching, setIsSearching] = useState(false);
   const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     useRemoveTourMutation();
 
   const confirm = (id: any) => {
 
     removeTour(id);
-
-
 
   };
   const loaitourArrary = loaitourdata?.data || [];
@@ -82,8 +74,6 @@ const handleSearchChange = (e) => {
         });
 
     };
-
-
 
     const [tourHDVArray, setTourHDVArray] = useState([]);
     const [hdvDuocChon, setHdvDuocChon] = useState([]);
@@ -149,7 +139,7 @@ const handleSearchChange = (e) => {
           </tr>
         </thead>
         <tbody>
-          {tourArray.map((item, index) => (
+          { (filteredDataSource.length > 0 ? filteredDataSource : tourArray).map((item, index) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.ten_tour}</td>
@@ -169,7 +159,7 @@ const handleSearchChange = (e) => {
               <td>{item.ngay_ket_thuc}</td>
               {
                 <td>
-                  {/* <select className="select-dropdown" onChange={(event) => handleSelectChange(event, item)}>
+                  <select className="select-dropdown" onChange={(event) => handleSelectChange(event, item)}>
                     <option value="">Chọn</option>
                     {tourHDVArray[index]?.hdv_duoc_chon.map((hdvItem) => {
                       const isSelected = hdvItem.id === tourHDVArray[index]?.hdv_duoc_chon[0]?.id;
@@ -188,7 +178,7 @@ const handleSearchChange = (e) => {
                         {hdvItem.name}
                       </option>
                     ))}
-                  </select> */}
+                  </select>
                 </td>
               }
               <td>{item.gia_nguoilon}</td>
@@ -244,6 +234,14 @@ const handleSearchChange = (e) => {
           </Link>
         </Button>
       </header>
+      <div className="flex mb-4">
+  <Input
+    placeholder="Tìm kiếm tour"
+    value={searchValue}
+    onChange={handleSearchChange}
+  />
+  <Button style={{backgroundColor:'blue'}} type="primary" onClick={handleSearch}>Tìm kiếm</Button>
+</div>
       {tour()}
     </div>
   );
