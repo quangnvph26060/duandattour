@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\api\ApiPaymentController;
+use App\Mail\DatHang;
 use App\Models\DatTour;
 use App\Models\HoaDon;
 use App\Models\NotificationModel;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ApiDatTourController extends Controller
 {
@@ -58,6 +61,7 @@ class ApiDatTourController extends Controller
             $soLuongKhach = 1;
         }
         $tourone = TourModel::find($datTour['id_tour']);
+     
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
             // dd($createDatTour->ten_khach_hang);
@@ -74,6 +78,9 @@ class ApiDatTourController extends Controller
             $notification->loai_thong_bao = "Đặt tour";
             $notification->id_tour = $datTour['id_tour'];
             $notification->save();
+            $latestThanhToan = ThanhToan::latest('created_at')->first();
+            // dd($latestThanhToan);
+            Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone,$latestThanhToan));
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);

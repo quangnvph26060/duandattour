@@ -25,7 +25,7 @@ return new class extends Migration
             // $table->integer('gia_khuyen_mai');
             $table->text('mo_ta');
             $table->integer('soluong');
-            $table->tinyInteger('trang_thai')->default(0);
+            $table->tinyInteger('trang_thai')->default(1);
             $table->foreignId('ma_loai_tour')->constrained('loai_tour');
 
             $table->timestamps();

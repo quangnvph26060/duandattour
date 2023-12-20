@@ -261,6 +261,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiLichTrinhController::class, 'show']);
         Route::put('/{id}', [ApiLichTrinhController::class, 'update']);
         Route::delete('/{id}', [ApiLichTrinhController::class, 'destroy']);
+        Route::put('updateStatusSchedule/{id}', [ApiLichTrinhController::class, 'updateStatusSchedule']);
     });
     Route::prefix('tourphuongtien')->group(function () {
         Route::get('/', [ApiTourPhuongTienController::class, 'index']);

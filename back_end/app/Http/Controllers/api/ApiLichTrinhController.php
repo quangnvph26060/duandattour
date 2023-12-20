@@ -53,4 +53,19 @@ class ApiLichTrinhController extends Controller
         }
         return $lichtrinh->delete();
     }
+
+    public function updateStatusSchedule($id){
+        $schedule = LichTrinhModel::find($id);
+        if($schedule->status==1){
+            $schedule->status=0;
+            $schedule->save();
+            return response()->json(['message'=>'Ẩn lịch trình thành công !!'],200);
+        }else{
+            $schedule->status=1;
+            $schedule->save();  
+            return response()->json(['message'=>'Hiện lịch trình thành công !!'],200);
+        }
+        return response()->json(['message'=>'lỗi không thể thay đổi trạng thái '],404);
+     
+    }
 }
