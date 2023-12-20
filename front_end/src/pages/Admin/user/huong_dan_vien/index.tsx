@@ -116,7 +116,7 @@ const Admin_Account_huongdanvien = () => {
             status === 0 ? "chua_xac_nhan" : "xac_nhan"
           }`}
         >
-          {status === 0 ? "Chưa thanh toán" : "Đã thanh toán"}
+          {status === 0 ? "Chưa xác nhận" : "Đã xác nhận"}
         </span>
       ),
     },

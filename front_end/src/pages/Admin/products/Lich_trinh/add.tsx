@@ -54,7 +54,7 @@ const Admin_LichtrinhADD: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.Item
+        {/* <Form.Item
           label="Tiêu đề"
           name="tieu_de"
           rules={[
@@ -63,7 +63,7 @@ const Admin_LichtrinhADD: React.FC = () => {
           ]}
         >
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Nội dung"
           name="noi_dung"
