@@ -12,20 +12,20 @@ export  interface IUser {
     created_at: string | null;
     updated_at: string | null;
     deleted_at: string | null;
-    roles: Role[];
-    permissions:Permission[];
+    roles: IRole[];
+    permissions:IPermission[];
 }
 
-export interface Role {
+export interface IRole {
     id: number;
     name: string;
     guard_name: string;
     created_at: string;
     updated_at: string;
-    permissions: Permission[];
+    permissions: IPermission[];
 }
 
-export interface Permission {
+export interface IPermission {
     id: number;
     name: string;
     guard_name: string;

@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch} from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch, Input} from "antd";
 import { Link } from "react-router-dom";
 import { useGetLichTrinhQuery, useRemoveLichTrinhMutation } from "../../../../api/LichTrinhApi";
 import { useGetTourQuery } from "../../../../api/TourApi";
@@ -9,6 +9,7 @@ import { useGetTourQuery } from "../../../../api/TourApi";
 import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; // Import the icons
 import axios from "axios";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const Admin_Lichtrinh = (props: Props) => {
   const { data: lictrinhdata, error, isLoading } = useGetLichTrinhQuery();
@@ -23,6 +24,7 @@ const Admin_Lichtrinh = (props: Props) => {
       content: "This is a success message",
     });
   };
+  const [searchValue ,setSearchValue]= useState();
   const [
     removeLichTrinh,
     { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess },
