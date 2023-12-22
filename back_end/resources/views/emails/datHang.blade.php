@@ -95,7 +95,7 @@
                     <tbody><tr>
                         <td class="m_-412003603614206739td-left">Mã booking:</td>
                         <td class="m_-412003603614206739td-right">
-                            <span style="font-weight:bold">{{$latestThanhToan->ma_giao_dich}}</span>&nbsp;&nbsp;<a href="https://travel.com.vn/confirm-booking/231214210285" style="font-style:italic;color:#306eb7" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://travel.com.vn/confirm-booking/231214210285&amp;source=gmail&amp;ust=1702627682308000&amp;usg=AOvVaw2nuoWRFmFJleraaWbS2ocm">(Xem chi tiết)</a><br>
+                            <span style="font-weight:bold"></span>&nbsp;&nbsp;<a href="https://travel.com.vn/confirm-booking/231214210285" style="font-style:italic;color:#306eb7" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://travel.com.vn/confirm-booking/231214210285&amp;source=gmail&amp;ust=1702627682308000&amp;usg=AOvVaw2nuoWRFmFJleraaWbS2ocm">(Xem chi tiết)</a><br>
                             <span style="font-style:italic">Quý khách vui lòng nhớ số booking (Booking No) để thuận tiện cho các giao dịch sau này.</span>
                         </td>
                     </tr>

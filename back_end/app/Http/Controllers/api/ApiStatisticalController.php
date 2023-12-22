@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\DatTour;
 use App\Models\HoaDon;
 use App\Models\NewsModel;
+use App\Models\ThanhToan;
+use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,11 +29,11 @@ class ApiStatisticalController extends Controller
         $currentMonth = date('m');
         $currentYear = date('Y');
 
-        $totalRevenueToday = HoaDon::whereDate('ngay_tao_hoa_don', $currentDate)->sum('tong_tien');
-        $totalRevenueThisMonth = HoaDon::whereYear('ngay_tao_hoa_don', $currentYear)
-            ->whereMonth('ngay_tao_hoa_don', $currentMonth)
-            ->sum('tong_tien'); 
-        $totalRevenueThisYear = HoaDon::whereYear('ngay_tao_hoa_don', $currentYear)->sum('tong_tien');
+        $totalRevenueToday = ThanhToanDetail::whereDate('ngay_thanh_toan', $currentDate)->sum('tong_tien_tt');
+        $totalRevenueThisMonth = ThanhToanDetail::whereYear('ngay_thanh_toan', $currentYear)
+            ->whereMonth('ngay_thanh_toan', $currentMonth)
+            ->sum('tong_tien_tt'); 
+        $totalRevenueThisYear = ThanhToanDetail::whereYear('ngay_thanh_toan', $currentYear)->sum('tong_tien_tt');
         $statistical['totalTours'] = $totalTours;
         $statistical['totalToursbooked'] = $totalToursbooked;
         $statistical['totalUser'] = $totalUser;
@@ -40,5 +42,23 @@ class ApiStatisticalController extends Controller
         $statistical['totalRevenueThisMonth'] = $totalRevenueThisMonth;
         $statistical['totalRevenueThisYear'] = $totalRevenueThisYear;
         return response()->json(['statistical'=> $statistical]);
+    }
+
+    public function columnChart($year = null)
+    {
+        if ($year === null) {
+            $year = date('Y'); // Sử dụng năm hiện tại nếu $year là null
+        }
+    
+        $totalRevenueByMonth = [];
+    
+        for ($month = 1; $month <= 12; $month++) {
+            $totalRevenue = ThanhToanDetail::whereYear('ngay_thanh_toan', $year)
+                ->whereMonth('ngay_thanh_toan', $month)
+                ->sum('tong_tien_tt');
+            $totalRevenueByMonth[] = intval($totalRevenue); // Chuyển đổi thành số nguyên
+        }
+    
+        return response()->json(['doanhthu' => $totalRevenueByMonth], 200);
     }
 }

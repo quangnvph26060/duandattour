@@ -1,0 +1,26 @@
+.chart-container {
+  display: flex;
+}
+
+.chart-item {
+  flex: 1;
+}
+
+.chart-item-left {
+  margin-right: 10px;
+}
+
+.chart-item-right {
+  margin-left: 10px;
+}
+
+.chart-pie-colors .recharts-surface path:nth-child(1) {
+  fill: red !important;
+}
+
+.chart-pie-colors .recharts-surface path:nth-child(2) {
+  fill: blue !important;
+}
+
+/* Thêm các màu khác cho các loại khác nếu cần */
+/* Thêm các màu khác cho các loại khác nếu cần */
