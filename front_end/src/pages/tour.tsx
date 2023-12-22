@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import '../tour.css'
+
 // import { IPour } from "../interface/home";
 import { Link, Route, useParams } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -19,6 +19,8 @@ import anh7 from "../img/anh7.png"
 import anh8 from "../img/anh8.jpg"
 import anh14 from '../img/anh14.jpg'
 import anh15 from "../img/anh15.jpg"
+import { useNavigate } from 'react-router-dom';
+
 const rounded = { borderRadius: '25px' };
 import logo from '../img/logo.jpg';
 import { useLocation } from "react-router-dom"
@@ -35,7 +37,7 @@ interface Tour {
   soluong: number;
 }
 
-const TourPage : React.FC = () => {
+const TourPage: React.FC = () => {
   const location = useLocation();
   const matchedResults: Tour[] = location.state?.matchedResults || [];
 
@@ -43,7 +45,7 @@ const TourPage : React.FC = () => {
     // Thực hiện bất kỳ tác vụ nào bạn muốn với matchedResults
   }, [matchedResults]);
   const [budget, setBudget] = useState(0);
- 
+
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -67,7 +69,6 @@ const TourPage : React.FC = () => {
 
     return numberOfDays;
   }
-
 
 
   // const [searchTerm, setSearchTerm] = useState("");
@@ -105,13 +106,14 @@ const TourPage : React.FC = () => {
       axios
         .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
         .then((response) => {
-          console.log(response.data.tourdiemden);
+          console.log('123jhgkjg', response.data.tourdiemden);
           setTour(response.data.tourdiemden);
         })
     }
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
+
   // const getTour = () => {
   //   axios
   //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
@@ -151,35 +153,90 @@ const TourPage : React.FC = () => {
   // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
 
   //Hiếu
-  const [selectedDayRange, setSelectedDayRange] = useState(null);
-  const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+
   const [filteredTours, setFilteredTours] = useState([]);
+  const [selectedDayRange, setSelectedDayRange] = useState(null);
 
   const handleButtonClick = (dayRange) => {
+    // Đặt phạm vi ngày đã chọn
     setSelectedDayRange(dayRange);
 
-    // Filter tours based on the selected day range logic
+    // Lọc các chuyến tham quan dựa trên phạm vi ngày đã chọn
     const filteredTours = tourdiemden.filter((tour) => {
       const numberOfDays = calculateNumberOfDays(tour.lich_khoi_hanh, tour.ngay_ket_thuc);
-      // Adjust this logic based on your specific filtering criteria
-      switch (dayRange) {
-        case '1-3':
-          return numberOfDays >= 1 && numberOfDays <= 3;
-        case '4-7':
-          return numberOfDays >= 4 && numberOfDays <= 7;
-        case '8-14':
-          return numberOfDays >= 8 && numberOfDays <= 14;
-        case '14+':
-          return numberOfDays > 14;
-        default:
-          return true; // If no day range is selected, show all tours
+
+      if (dayRange === '1-3' && numberOfDays >= 1 && numberOfDays <= 3) {
+        return true;
+      } else if (dayRange === '4-7' && numberOfDays >= 4 && numberOfDays <= 7) {
+        return true;
+      } else if (dayRange === '8-14' && numberOfDays >= 8 && numberOfDays <= 14) {
+        return true;
+      } else if (dayRange === '14+' && numberOfDays > 14) {
+        return true;
       }
+
+      return false;
     });
 
-    // Update the state with the filtered tours
+
+    // Đặt các chuyến tham quan đã lọc
     setFilteredTours(filteredTours);
   };
 
+
+  const [selectedNumberOfPeople, setSelectedNumberOfPeople] = useState(null);
+  const filterToursByNumberOfPeople = (tour, selectedNumberOfPeople) => {
+    if (!selectedNumberOfPeople) {
+      return true; // No number of people selected, so the tour should be included
+    }
+
+    if (selectedNumberOfPeople === 1 && tour.soluong === 1) {
+      return true;
+    } else if (selectedNumberOfPeople === 2 && tour.soluong === 2) {
+      return true;
+    } else if (selectedNumberOfPeople === '3-5' && tour.soluong >= 3 && tour.soluong <= 5) {
+      return true;
+    } else if (selectedNumberOfPeople === 999 && tour.soluong > 5) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const handleNumberOfPeopleClick = (numberOfPeople) => {
+    // Đặt số lượng người đã chọn
+    console.log(numberOfPeople)
+    setSelectedNumberOfPeople(numberOfPeople);
+
+    // Lọc các chuyến tham quan dựa trên số lượng người đã chọn
+    const filteredTours = tourdiemden.filter((tour) =>
+      filterToursByNumberOfPeople(tour, numberOfPeople)
+    );
+
+    // Đặt các chuyến tham quan đã lọc
+    setFilteredTours(filteredTours);
+  };
+
+  //SẢN PHẨM YÊU THÍCH
+  //Thêm tour vào yêu thích
+  const addToFavorites = (tourId) => {
+    const token = localStorage.getItem('token');
+
+    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        // Xử lý kết quả thành công
+        console.log(response.data);
+      })
+      .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+        alert("Bạn chưa đăng nhập!");
+      });
+  };
 
 
   return (
@@ -190,7 +247,7 @@ const TourPage : React.FC = () => {
 
       <div className='flex container mx-auto px-10 gap-11 pt-5'>
         {/* Conten left*/}
-        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-gray-100 h-[1450px]'>
+        <aside style={{ borderRadius: '10px' }} className=' left w-1/4 bg-white shadow-xl h-[1250px]'>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
           <h2 className='bg-blue-600 text-2xl ct font-medium text-white px-4 py-1'>Poly Tour</h2>
           <div className='text-center p-2 py-4 '>
@@ -200,9 +257,9 @@ const TourPage : React.FC = () => {
             </select>
           </div>
           <div className='text-center'>
-            <button className='bg-white px-4 py-2 rounded-lg border border-black'>Trong nước</button>
+            <button className='bg-white px-4 py-2 rounded-lg shadow-xl'>Trong nước</button>
           </div>
-          <p className='px-3 py-1 text-xl font-medium'>Loại Hình Tour</p>
+          <p className='px-3 py-3 text-xl font-medium'>Loại Hình Tour</p>
           <div className='px-3 text-center py-1'>
             <select name="" className='rounded-md border border-black w-72 h-9' id="">
               <option value="1">-- Tất cả --</option>
@@ -334,21 +391,20 @@ const TourPage : React.FC = () => {
           </div>
 
           <p className='px-3 text-lg font-medium pt-1'>Số ngày</p>
-
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>1 đến 3 ngày</button>
+              <button onClick={() => handleButtonClick('1-3')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>1 đến 3 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>4 đến 7 ngày</button>
+              <button onClick={() => handleButtonClick('4-7')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>4 đến 7 ngày</button>
             </div>
           </div>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>8 đến 14 ngày</button>
+              <button onClick={() => handleButtonClick('8-14')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>8 đến 14 ngày</button>
             </div>
             <div className=''>
-              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg border border-black'>trên 14 ngày</button>
+              <button onClick={() => handleButtonClick('14+')} className='w-36 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>trên 14 ngày</button>
             </div>
           </div>
           <p className='px-3 text-lg font-medium py-1'>Ngày đi</p>
@@ -358,38 +414,21 @@ const TourPage : React.FC = () => {
           <p className='px-3 text-lg font-medium py-1'>Số người</p>
           <div className='flex gap-2 py-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>1 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(1)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>1 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>2 người</button>
+              <button onClick={() => handleNumberOfPeopleClick(2)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>2 người</button>
             </div>
           </div>
           <div className='flex gap-2 container justify-center'>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(3)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>3 - 5 người</button>
+              <button onClick={() => handleNumberOfPeopleClick('3-5')} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>3 - 5 người</button>
             </div>
             <div className=''>
-              <button onClick={() => handleNumberOfPeopleClick(5)} className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>5+ người</button>
+              <button onClick={() => handleNumberOfPeopleClick(999)} className='w-32 bg-white px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white shadow-xl'>5+ người</button>
             </div>
           </div>
-          <p className='px-3 text-lg font-medium py-1'>Dòng Tour</p>
-          <div className='flex gap-2 py-2 container justify-center'>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Cao cấp</button>
-            </div>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiêu chuẩn</button>
-            </div>
-          </div>
-          <div className='flex gap-2 container justify-center'>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Tiết kiệm</button>
-            </div>
-            <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Giá tốt</button>
-            </div>
-          </div>
-          <p className='px-3 text-lg font-medium py-2'>Bộ lọc tìm kiếm___________</p>
+          <p className='px-3 text-lg font-medium py-3 mt-3'>Bộ lọc tìm kiếm___________</p>
           <h1 className='font-medium text-3xl p-4'>Lọc kết quả</h1>
 
           <p className='px-3 text-lg font-medium py-1'>Ngân sách của quý khách: {formatCurrency(budget)}</p>
@@ -400,10 +439,10 @@ const TourPage : React.FC = () => {
           <p className='px-3 text-lg font-medium py-1'>Thông tin vận chuyển</p>
           <div className='flex gap-3 py-1 pt-2 container justify-center'>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Máy bay</button>
+              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black shadow-xl'>Máy bay</button>
             </div>
             <div className=''>
-              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black'>Ô tô</button>
+              <button className='w-32 bg-white px-4 py-2 rounded-lg border border-black shadow-xl'>Ô tô</button>
             </div>
           </div>
 
@@ -412,44 +451,61 @@ const TourPage : React.FC = () => {
         {/*conten-right*/}
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5'><hr className='bg-black h-[1.5px]' /></div>
-
-
-         <div className="content">
-              <h2 className="mt-5 mb-5 home-page__title">Kết quả tìm kiếm tour du lịch</h2>
-              <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {tourdiemden.map((tour) => (
-                  <div key={tour.id} className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center">
-                    {tour.images.map((image) => (
-                      <img
-                        key={image.id}
-                        className="mt-4 rounded-lg w-full h-60 object-cover"
-                        src={`http://localhost:8000/storage/${image.image_path}`}
-                        alt={`Ảnh ${tour.ten_tour}`}
-                      />))}
-                    <div className="product-details mt-4">
-                      <div className="info-row data">
-                        <p>{tour.lich_khoi_hanh}</p>-
-                        <p>{tour.soluong} ngày</p>
-                      </div>
-                      <Link to="/:id/tour" className="text-blue-500 hover:underline">
-                        <h3 className="text-lg font-bold">{tour.ten_tour}</h3></Link>
-                      <p className='price'>Giá :1500000đ</p><p style={{ color: '#fd5056', fontSize: "18px", fontWeight: '700' }}>{tour.gia_tour}đ</p>
-                      {/* <p className='text mt-2'>{tour.mo_ta}</p> */}
-                      <p className='text mt-2'>Nơi Khởi Hành: {tour.diem_khoi_hanh}</p>
-                      <button style={{ backgroundColor: '#fd5056', float: 'right', borderRadius: '5px' }} className="button-wrapper py-2 px-2 text-white mt-5">
-                        Giảm 6%
-                      </button>
-                      <button
-                        id="countdown-btn" style={{ color:'revert' }}
-                        className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded">
-                        Đặt Ngay
-                      </button>
+          <div className='py-5 mb-3'><hr className='bg-black h-[1.5px]' /></div>
+          <div className='grid grid-cols-3 gap-7 container mx-auto'>
+            {(selectedDayRange || selectedNumberOfPeople
+              ? filteredTours
+              : tourdiemden
+            ).map((items) => (
+              <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
+                {/* ... (your existing code) */}
+                <div className=' bg-white rounded-t-lg shadow-xl'>
+                  {/* {items.images.map((images) => (
+                    <img
+                      key={image.id}
+                      className="mt-4 rounded-lg w-full h-60 object-cover"
+                      src={`http://localhost:8000/storage/${images.image_path}`}
+                      alt={`Ảnh ${items.ten_tour}`}
+                    />))} */}
+                  <div className="relative">
+                    <div className="py-2 absolute top-0 left-1">
+                      <Link
+                        to={``}  // Update the 'to' prop to navigate to the favorite page
+                        className='mega-menu-items'
+                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
+                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                      >
+                        {/* Thêm vào sản phẩm yêu thích */}
+                        <i className="fa-regular fa-heart text-white"></i>
+                      </Link>
                     </div>
+                    <img src="http://localhost:5173/src/img/anh7.png" className="rounded-t-lg mb-3 h-[250px]" alt="" />
                   </div>
-                ))}
+
+                  <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
+                  <Link to={`/tours/${items.id}`}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
+                  <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
+                  <div className='flex gap-2 py-2 px-4'>
+                    <p className='text-sm'>Nơi khởi hành: </p>
+                    <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+                  </div>
+                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
+                  <div className='grid grid-cols-2 justify-between px-4 p-1'>
+                    <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
+                    <div className='bg-yellow-300 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
+                  </div>
+                  <div className="px-3 py-4 grid grid-cols-2 gap-7">
+                    <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
+                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
+                  </div>
+                </div>
               </div>
+            ))}
           </div>
+
+
+
+
 
           <div className='ml-auto py-4 pt-6'>
             <button className='py-2 px-3 border border-blue-400 rounded-lg hover:bg-teal-500 shadow-lg shadow-slate-400'>Xem tất cả</button>
@@ -458,7 +514,7 @@ const TourPage : React.FC = () => {
 
           <div className='py-3'>
             <div className='w-[860px] bg-gray-100 rounded-lg flex'>
-              <img src={anh4} alt="anh4" className='w-1/3 rounded-lg' />
+              <img src="/src/img/sl.webp" alt="anh4" className='w-1/3 rounded-lg' />
               <div className='w-2/3 flex'>
                 <div className='w-2/3 px-2'>
                   <div className='py-2'>
@@ -489,10 +545,10 @@ const TourPage : React.FC = () => {
                       </p>
                     </div>
                     <div className='flex gap-11'>
-                      <button className='py-2 px-4 border border-blue-400 text-xs rounded-lg'>
+                      <button className='py-2 px-4 border border-blue-400 text-xs rounded-lg shadow-xl'>
                         Ngày khác
                       </button>
-                      <button className='py-2 px-4 bg-red-500 text-xs rounded-lg text-white'>
+                      <button className='py-2 px-4 bg-red-500 text-xs rounded-lg text-white shadow-xl'>
                         Đặt ngay
                       </button>
                     </div>

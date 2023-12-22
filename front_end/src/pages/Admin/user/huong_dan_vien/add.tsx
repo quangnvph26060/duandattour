@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Input, DatePicker, Select } from "antd";
 import { AiOutlineLoading3Quarters, AiOutlineUpload } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { IUser } from "../../../../interface/user";
 import { useAddUserMutation } from "../../../../api/UserApi";
-import { Upload } from 'antd';
+import { Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
@@ -23,7 +23,13 @@ type FieldType = {
 const Admin_Account_huongdanvienAdd: React.FC = () => {
   const [addHuongDanVien] = useAddUserMutation();
   const navigate = useNavigate();
-
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
   const onFinish = (values: IUser) => {
     const formData = new FormData();
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
@@ -49,7 +55,7 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -72,19 +78,11 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
         </Form.Item>
 
         <Form.Item
-          label="Hình ảnh"
-          name="hinh"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
         >
-          <Upload
-            accept="image/*" // Chỉ chấp nhận các định dạng ảnh
-            listType="picture"
-            beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
-          >
-            <Button icon={<UploadOutlined />} type="button">
-              Chọn ảnh
-            </Button>
-          </Upload>
+          <Input />
         </Form.Item>
 
         <Form.Item
@@ -121,23 +119,38 @@ const Admin_Account_huongdanvienAdd: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+          label="Hình ảnh"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
-          <Input />
+          <Upload
+            accept="image/*" // Chỉ chấp nhận các định dạng ảnh
+            listType="picture"
+            beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
+          >
+            <Button
+              onClick={handleButtonClick}
+              className={ButtonImage}
+              icon={<UploadOutlined />}
+              type="button"
+            >
+              Chọn ảnh
+            </Button>
+          </Upload>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Thêm hướng dẫn viên
-          </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate("/admin/product")}
-          >
-            Quay lại
-          </Button>
+          <div className="btn-button-sub-hdv">
+            <Button type="primary" htmlType="submit" className="submit-click">
+              Thêm hướng dẫn viên
+            </Button>
+            <Button
+              type="default"
+              className="ml-2"
+              onClick={() => navigate("/admin/product")}
+            >
+              Quay lại
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

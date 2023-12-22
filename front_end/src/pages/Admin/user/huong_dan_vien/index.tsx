@@ -66,7 +66,6 @@ const Admin_Account_huongdanvien = () => {
       .then((response) => {
         if (response.data) {
           alert("cập nhật trạng thái thành công");
-         
         }
         // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
       })
@@ -113,9 +112,8 @@ const Admin_Account_huongdanvien = () => {
       key: "status",
       render: (status) => (
         <span
-          className={`status-badge ${
-            status === 0 ? "chua_xac_nhan" : "xac_nhan"
-          }`}
+          className={`status-badge ${status === 0 ? "chua_xac_nhan" : "xac_nhan"
+            }`}
         >
           {status === 0 ? "Chưa Xác Nhận" : "Đã Xác Nhận"}
         </span>

@@ -1,6 +1,7 @@
 import { Itourdetail } from '../interface/Itourdetail';
+
 import { ITour } from '../interface/tour';
-// import { pause } from '../';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const TourApi = createApi({
@@ -47,15 +48,15 @@ const TourApi = createApi({
             query: (id) => `/tour/${id}`,
             providesTags: ['Tour']
         }),
-        getdetailTourById: builder.query<Itourdetail, number >({
-            query: (id) => `/tour/${id}` ,
+        getdetailTourById: builder.query<Itourdetail, number>({
+            query: (id) => `/tour/${id}`,
             providesTags: ['Tour']
         }),
-        book: builder.query<Itourdetail, number >({
-            query: (id) => `/booktour/${id}` ,
+        book: builder.query<Itourdetail, number>({
+            query: (id) => `/booktour/${id}`,
             providesTags: ['Tour']
         })
-     
+
 
     })
 });

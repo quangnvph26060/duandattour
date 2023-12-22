@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('lich_trinh', function (Blueprint $table) {
             $table->id();
-            $table->string('tieu_de')->unique();
             $table->text('noi_dung');
             $table->date('thoi_gian');
+            $table->tinyInteger('status')->default(1);
             $table->foreignId('id_tour')->constrained('tour');
             $table->timestamps();
             $table->softDeletes();

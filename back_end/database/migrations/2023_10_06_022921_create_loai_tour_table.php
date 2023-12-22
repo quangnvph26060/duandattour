@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('image')->nullable();
             $table->string('ten_loai_tour')->unique();
+            $table->date('thoi_gian');
             $table->timestamps();
             $table->softDeletes();
         });
