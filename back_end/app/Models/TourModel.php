@@ -17,11 +17,11 @@ class TourModel extends Model
     protected $table = "tour";
     protected $fillable = [
         'ten_tour',
+        'image_dd',
         'image_path',
         'diem_di',
         'diem_den',
         'lich_khoi_hanh',
-        'diem_khoi_hanh',
         'ngay_ket_thuc',
         'gia_nguoilon',
         'gia_treem',
@@ -30,6 +30,7 @@ class TourModel extends Model
         'trang_thai',
         'ma_loai_tour',
     ];
+
     // public function tourImages()
     // {
     //     return $this->hasMany(TourImagesModel::class, 'tour_id', 'id');
@@ -68,6 +69,7 @@ class TourModel extends Model
     protected $casts = [
         'image_path' => 'array',
     ];
+
     public function tourDiscount()
     {
         return $this->hasMany(TourDiscount::class, 'tour_id', 'id');

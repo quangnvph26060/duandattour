@@ -21,6 +21,7 @@ const AdminProduct = (props: Props) => {
   const { data: tourdata, error, isLoading } = useGetTourQuery();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTour, setSelectedTour] = useState<ITour | null>(null);
+  const [sortedTourArray, setSortedTourArray] = useState([]);
 
 
   const currentDate = new Date(); // Ngày hiện tại
@@ -37,6 +38,8 @@ const AdminProduct = (props: Props) => {
   };
   const loaitourArrary = loaitourdata?.data || [];
   const tourArray = tourdata?.data || [];
+  console.log(tourArray);
+
   const tour = () => {
     const [isreadloang, setisreadloang] = useState(false);
     const [hdvtour, sethdvtour] = useState([]);
@@ -63,6 +66,8 @@ const AdminProduct = (props: Props) => {
         });
 
     };
+
+
 
 
 
@@ -94,22 +99,27 @@ const AdminProduct = (props: Props) => {
 
       const fetchData = async () => {
         const tempArray = [];
-
         for (let i = 0; i < tourArray.length; i++) {
           const item = tourArray[i];
           const hdvData = await fetchHDVData(item.lich_khoi_hanh, item.ngay_ket_thuc, item.id);
           tempArray.push(hdvData);
-
         }
-
         setTourHDVArray(tempArray);
       };
-
-
-
       fetchData();
     }, [tourArray]);
+    useEffect(() => {
+      const sortedArray = [...tourArray].sort((a, b) => {
+        // Chuyển đổi chuỗi ngày thành đối tượng Date để so sánh
+        const dateA = new Date(a.lich_khoi_hanh);
+        const dateB = new Date(b.lich_khoi_hanh);
 
+        // Sắp xếp theo thứ tự giảm dần (mới nhất đến cũ hơn)
+        return dateB - dateA;
+      });
+
+      setSortedTourArray(sortedArray);
+    }, [tourArray]);
 
     return (
       <table className="table_tour">
@@ -118,15 +128,16 @@ const AdminProduct = (props: Props) => {
             <th>ID</th>
             <th>Name</th>
             <th>Ma Loai Tour</th>
-            <th>Ảnh minh họa</th>
+            <th>Ảnh Đại diện</th>
+            <th>Ảnh Mô tả</th>
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
             <th>Hướng dẫn viên</th>
-            <th>Gia Nguoi Lon</th>
-            <th>Gia Tre Em</th>
-            <th>So Luong</th>
-            <th>Trang Thai</th>
-            <th>Actions</th>
+            <th>Giá người lớn</th>
+            <th>Giá trẻ em</th>
+            <th>Số lượng</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody className="font-semibold">
@@ -140,6 +151,13 @@ const AdminProduct = (props: Props) => {
                     return loaiTour.ten_loai_tour;
                   }
                 })}
+              </td>
+              <td>
+                <img
+                  src={`http://localhost:8000/storage/${item.image_dd}`}
+                  alt={`Image ${index}`}
+                  style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
+                />
               </td>
               <td>
                 {item.image_path.map((image, index) => (

@@ -1,11 +1,11 @@
-import React ,{useState}from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 import {
-    useAddTourDiscountMutation,
-     
+  useAddTourDiscountMutation,
+
 } from "../../../../api/TourDiscountApi";
 import { ITourDiscount } from "../../../../interface/tourdiscount";
 import { useGetTourQuery } from "../../../../api/TourApi";
@@ -14,8 +14,8 @@ const { Option } = Select;
 
 type FieldType = {
   id: number;
- tour_id:number,
- image_id:number
+  tour_id: number,
+  image_id: number
 };
 
 
@@ -32,13 +32,13 @@ const Admin_TourDiscountADD: React.FC = () => {
   const [errors, setErrors] = useState(null);
   const onFinish = (values: ITourDiscount) => {
     addTourDiscount(values)
-        .unwrap()
-        .then(() => navigate("/admin/tour/tour_discount"))
-        .catch((error) => {
-          setErrors(error.data.message);
-          setLoading(false);
-          
-        });
+      .unwrap()
+      .then(() => navigate("/admin/tour/tour_discount"))
+      .catch((error) => {
+        setErrors(error.data.message);
+        setLoading(false);
+
+      });
   };
 
   return (
@@ -51,11 +51,11 @@ const Admin_TourDiscountADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
-       <Form.Item
+        <Form.Item
           label="Tên mã giảm giá"
           name="discount_id"
           rules={[
@@ -64,11 +64,11 @@ const Admin_TourDiscountADD: React.FC = () => {
           validateStatus={errors ? 'error' : ''}
           help={errors}
         >
-        <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {discountArrary.map((option) => (
+          <Select defaultValue="Chọn" style={{ width: "100%", }}>
+            {discountArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.discount_name}</Option>
-          ))}
-        </Select>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label="Tour"
@@ -77,24 +77,27 @@ const Admin_TourDiscountADD: React.FC = () => {
             { required: true, message: 'Vui lòng chọn tour ' },
           ]}
         >
-        <Select defaultValue="Chọn" style={{ width: 400,}}>
-          {tourArrary.map((option) => (
+          <Select defaultValue="Chọn" style={{ width: "100%", }}>
+            {tourArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
-          ))}
-        </Select>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Thêm
-          </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate('/admin/tour/tour_discount')}
-          >
-            Quay lại
-          </Button>
+          <div className='btn-button-sub'>
+            <Button type="primary" htmlType="submit" className='submit-click'>
+              Thêm
+            </Button>
+            <Button
+              type="default"
+              className="ml-2"
+              onClick={() => navigate('/admin/tour/tour_discount')}
+            >
+              Quay lại
+            </Button>
+          </div>
+
         </Form.Item>
       </Form>
     </div>

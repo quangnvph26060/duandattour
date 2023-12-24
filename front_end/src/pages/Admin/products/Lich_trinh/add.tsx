@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetTourQuery } from '../../../../api/TourApi';
 import { useAddLichTrinhMutation } from '../../../../api/LichTrinhApi';
 import { ILichTrinh } from '../../../../interface/lichtrinh';
+import "../../../css.css"
 
 const { Option } = Select;
 
@@ -50,11 +51,11 @@ const Admin_LichtrinhADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: "100%" }}
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.Item
+        {/* <Form.Item
           label="Tiêu đề"
           name="tieu_de"
           rules={[
@@ -63,46 +64,53 @@ const Admin_LichtrinhADD: React.FC = () => {
           ]}
         >
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Nội dung"
           name="noi_dung"
         >
-          <CKEditor
-            editor={ClassicEditor}
-            data={editorData}
-            onChange={handleEditorChange}
-          />
+          <div className=''>
+            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={handleEditorChange}
+
+            />
+          </div>
+
         </Form.Item>
         <Form.Item
-          label="Lịch khởi hành"
+          label="Thời gian"
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
           <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
-          label="ID Tour"
+          label="Tour"
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
-          <Select defaultValue="Chọn" style={{ width: 400 }}>
+          <Select defaultValue="Chọn" style={{}}>
             {tourArray.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Thêm
-          </Button>
-          <Button
-            type="default"
-            className="ml-2"
-            onClick={() => navigate('/admin/tour/lich_trinh')}
-          >
-            Quay lại
-          </Button>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+          <div className="btn-button-sub">
+            <Button type="primary" htmlType="submit" className="submit-click" >
+              Thêm
+            </Button>
+            <Button
+              type="default"
+              className="ml-2"
+              onClick={() => navigate("/admin/tour/lich_trinh")}
+            >
+              Quay lại
+            </Button>
+          </div>
+
         </Form.Item>
       </Form>
     </div>

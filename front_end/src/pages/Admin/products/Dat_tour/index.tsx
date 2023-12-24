@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-
+import './css.css'
 import {
   Table,
   Button,
@@ -22,6 +22,8 @@ import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
 import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
+  const [sortedData, setSortedData] = useState([]);
+
   const navigate = useNavigate();
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -44,7 +46,14 @@ const ADmin_DatTour = (props: Props) => {
 
   const [selectedId, setSelectedId] = useState("");
   useEffect(() => {
-    setDataQuanly(DataQuanly);
+    if (DataQuanly) {
+      const sorted = [...DataQuanly].sort((a, b) => {
+        const timestampA = new Date(a.created_at).getTime() / 1000;
+        const timestampB = new Date(b.created_at).getTime() / 1000;
+        return timestampB - timestampA;
+      });
+      setSortedData(sorted);
+    }
   }, [DataQuanly]);
   const updateStatus = (id) => {
     setSelectedId(id);
@@ -57,18 +66,18 @@ const ADmin_DatTour = (props: Props) => {
 
           if (message === "Xác nhận đơn đặt tour thành công") {
             // Chuyển hướng đến trang đã thanh toán
-        
-            navigate("/admin/tour/tour_dathanhtoan"); 
-         refetch()
-      
+
+            navigate("/admin/tour/tour_dathanhtoan");
+            refetch()
+
           } else if (message === "Cập nhập chưa thanh toán thành công!!") {
             // Chuyển hướng đến trang chưa thanh toán
-            navigate("/admin/tour/tour_chuathanhtoan"); 
+            navigate("/admin/tour/tour_chuathanhtoan");
             refetch()
           }
-     
+
           success()
-     
+
         }
         // Thực hiện các tác vụ sau khi nhận được phản hồi từ API
       })
@@ -92,7 +101,7 @@ const ADmin_DatTour = (props: Props) => {
 
   //  const dattour = dattour?.data || [];
 
-  const dataSource = DataQuanly.map(
+  const dataSource = sortedData.map(
     ({
       id,
       ten_khach_hang,
@@ -154,13 +163,13 @@ const ADmin_DatTour = (props: Props) => {
         </span>
       ),
       dataIndex: "key",
-      className:"font-medium",
+      className: "font-medium",
       key: "key",
     },
     {
       title: <span style={tableStyles}>Tour được đặt tour</span>,
       dataIndex: "tours",
-      className:"font-medium",
+      className: "font-medium",
       key: "tours",
       onCell: () => ({
         style: { cursor: "pointer", textDecoration: "" },
@@ -191,17 +200,17 @@ const ADmin_DatTour = (props: Props) => {
       title: <span style={tableStyles}>Ngày đặt</span>,
       dataIndex: "ngay_dat",
       key: "ngay_dat",
-      className:"font-medium",
+      className: "font-medium",
     },
 
     {
       title: <span style={tableStyles}>Tên người đặt</span>,
       dataIndex: "ten_khach_hang",
       key: "ten_khach_hang",
-      className:"font-medium",
+      className: "font-medium",
       render: (ten_khach_hang, record) => (
         <span
-          style={{ cursor: "pointer",}}
+          style={{ cursor: "pointer", }}
           onClick={() => openUserModal(record)} // Call the function to open the modal
         >
           {ten_khach_hang}
@@ -212,12 +221,12 @@ const ADmin_DatTour = (props: Props) => {
       title: <span style={tableStyles}>Số lượng đặt tour</span>,
       dataIndex: "so_luong_khach",
       key: "so_luong_khach",
-      className:"font-medium",
+      className: "font-medium",
     },
     {
       title: <span style={tableStyles}>Trạng thái</span>,
       dataIndex: "trang_thai",
-      className:"font-medium",
+      className: "font-medium",
       key: "trang_thai",
       render: (trang_thai) => (
         <span style={{ color: trang_thai === 0 ? "red" : "green" }}>
@@ -290,7 +299,7 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "gia_treem",
       key: "gia_treem",
     },
-   
+
     {
       title: "Mô Tả",
       dataIndex: "mo_ta",
@@ -317,20 +326,26 @@ const ADmin_DatTour = (props: Props) => {
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
-        className="rounded-md"
+        className="rounded-md ant-modal-content "
       >
         {selectedTour && (
-          <div className="p-4">
+          <div className="p-4 ">
             <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
-            <table className="w-full table-auto border-collapse border rounded">
+            <table className="w-full  table-auto border-collapse border rounded">
               <tbody>
-                {tourDetailsColumns.map((column) => (
-                  <tr key={column.key} className="border-b">
-                    <td className="py-2 px-4 font-semibold">{column.title}</td>
-                    <td className="py-2 px-4">
+                <tr className="border-b">
+                  {tourDetailsColumns.map((column) => (
+                    <td key={column.key} className="py-2 px-4 font-semibold">
+                      {column.title}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="border-b">
+                  {tourDetailsColumns.map((column) => (
+                    <td key={column.key} className="py-2 px-4">
                       {column.dataIndex === "image_path" ? (
                         <img
-                        src={`http://localhost:8000/storage/${selectedTour[column.dataIndex]}`}
+                          src={`http://localhost:8000/storage/${selectedTour[column.dataIndex]}`}
                           alt="Tour"
                           className="w-[200px] h-[150px] rounded object-cover"
                         />
@@ -338,42 +353,44 @@ const ADmin_DatTour = (props: Props) => {
                         selectedTour[column.dataIndex]
                       )}
                     </td>
-                  </tr>
-                ))}
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        )}
+      </Modal>
+      <Modal
+        visible={customerInfoVisible}
+        onCancel={closeCustomerInfoModal}
+        footer={null}
+        className="rounded-md"
+      >
+        {selectedUser && (
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-4">Thông tin Người Đặt</h2>
+            <table className="w-full table-auto border-collapse border rounded">
+              <tbody>
+                <tr>
+                  <td className="py-2 px-4 font-bold">Tên người đặt</td>
+                  <td className="py-2 px-4">{selectedUser.ten_khach_hang}</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-4 font-bold">Email người đặt</td>
+                  <td className="py-2 px-4">{selectedUser.email}</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-4 font-bold">Sdt người đặt</td>
+                  <td className="py-2 px-4">{selectedUser.sdt}</td>
+                </tr>
+
               </tbody>
             </table>
           </div>
         )}
       </Modal>
-      <Modal
-  visible={customerInfoVisible}
-  onCancel={closeCustomerInfoModal}
-  footer={null}
-  className="rounded-md"
->
-  {selectedUser && (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Thông tin Người Đặt</h2>
-      <table className="w-full table-auto border-collapse border rounded">
-        <tbody>
-          <tr>
-            <td className="py-2 px-4 font-bold">Tên người đặt</td>
-            <td className="py-2 px-4">{selectedUser.ten_khach_hang}</td>
-          </tr>
-          <tr>
-            <td className="py-2 px-4 font-bold">Email người đặt</td>
-            <td className="py-2 px-4">{selectedUser.email}</td>
-          </tr>
-          <tr>
-            <td className="py-2 px-4 font-bold">Sdt người đặt</td>
-            <td className="py-2 px-4">{selectedUser.sdt}</td>
-          </tr>
-        
-        </tbody>
-      </table>
-    </div>
-  )}
-</Modal>
 
     </div>
   );

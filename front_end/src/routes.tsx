@@ -14,7 +14,7 @@ import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/dashboard/dashboard";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
-import AdminTourEdit from "./pages/Admin/products/tour/edi";
+import AdminTourEdit from "./pages/Admin/products/tour/edit";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
 import AdminLoai_tourADD from "./pages/Admin/products/Danhmuc/add";
 import AdminLoai_tourEdit from "./pages/Admin/products/Danhmuc/edit";
@@ -31,6 +31,7 @@ import ADmin_Phuontien from "./pages/Admin/products/Phuong_tien";
 import ADmin_PhuontiengADD from "./pages/Admin/products/Phuong_tien/add";
 import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
+
 import Admin_Acountkhachhang_Roles from "./pages/Admin/user/khach_hang/roles";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
@@ -53,6 +54,7 @@ import { ContextProvider } from "./context/ContextProvider";
 import AdminGiam_Gia from "./pages/Admin/products/GiamGia";
 import AdminGiam_GiaADD from "./pages/Admin/products/GiamGia/add";
 import AdminGiam_GiaEdit from "./pages/Admin/products/GiamGia/edit";
+import AdminDanhGia from "./pages/Admin/products/DanhGia/index";
 import Admin_TourDiscount from "./pages/Admin/products/Tour_GiamGia";
 import Admin_TourDiscountADD from "./pages/Admin/products/Tour_GiamGia/add";
 import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
@@ -169,7 +171,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
       },
       {
         path: "tour",
@@ -219,30 +221,30 @@ export const router = createBrowserRouter([
         path: "tour/lich_trinh/edit/:idlt",
         element: <Admin_LichtrinhEDit />,
       },
-      {
-        path: "tour/loai_khach_san",
-        element: <ADmin_khachsan />,
-      },
-      {
-        path: "tour/loai_khach_san/add",
-        element: <ADmin_KhachsanADD />,
-      },
-      {
-        path: "tour/loai_khach_san/edit/:idkhachsan",
-        element: <ADmin_KhachsanEdit />,
-      },
-      {
-        path: "tour/loai_phuong_tien",
-        element: <ADmin_Phuontien />,
-      },
-      {
-        path: "tour/loai_phuong_tien/add",
-        element: <ADmin_PhuontiengADD />,
-      },
-      {
-        path: "tour/loai_phuong_tien/edit/:idPhuongTien",
-        element: <ADmin_Phuongtienedit />,
-      },
+      // {
+      //   path: "tour/loai_khach_san",
+      //   element: <ADmin_khachsan />,
+      // },
+      // {
+      //   path: "tour/loai_khach_san/add",
+      //   element: <ADmin_KhachsanADD />,
+      // },
+      // {
+      //   path: "tour/loai_khach_san/edit/:idkhachsan",
+      //   element: <ADmin_KhachsanEdit />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien",
+      //   element: <ADmin_Phuontien />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien/add",
+      //   element: <ADmin_PhuontiengADD />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien/edit/:idPhuongTien",
+      //   element: <ADmin_Phuongtienedit />,
+      // },
       {
         path: "customer_account",
         element: <Admin_Khachhang />,
@@ -367,6 +369,11 @@ export const router = createBrowserRouter([
       {
         path: "post/edit_baiviet/:idbv",
         element: <ADmin_postADD />,
+      },
+      // đánh giá
+      {
+        path: "evaluate",
+        element: <AdminDanhGia />,
       },
     ],
   },

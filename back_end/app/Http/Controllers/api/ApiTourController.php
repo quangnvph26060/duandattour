@@ -64,8 +64,6 @@ class ApiTourController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $uploadedImages = [];
 
         if ($request->hasFile('hinh')) {
@@ -81,16 +79,28 @@ class ApiTourController extends Controller
             return response()->json(['error' => 'No files were uploaded'], 500);
         }
 
+        $image_dd = null;
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $image_dd = uploadFile('image', $request->file('image'));
+        } else {
+            return response()->json(['error' => 'Invalid file or file upload failed for image_dd'], 500);
+        }
+
         $lich_khoi_hanh = Carbon::parse($request->lich_khoi_hanh)->format('Y-m-d');
         $ngay_ket_thuc = Carbon::parse($request->ngay_ket_thuc)->format('Y-m-d');
+
         $requestData = $request->all();
         $requestData['lich_khoi_hanh'] = $lich_khoi_hanh;
         $requestData['ngay_ket_thuc'] = $ngay_ket_thuc;
-        $requestData['image_path'] = $uploadedImages; // Gán mảng đường dẫn ảnh vào trường image_path
+        $requestData['image_dd'] = $image_dd; // Assigning single image to 'image_dd' field
+        $requestData['image_path'] = $uploadedImages; // Assigning multiple uploaded images
+
         $tour = TourModel::create($requestData);
-        // Trả về thông tin vừa thêm
+
         return new TourResoure($tour);
     }
+
 
     /**
      * Display the specified resource.
