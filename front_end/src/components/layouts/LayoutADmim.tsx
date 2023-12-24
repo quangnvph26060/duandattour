@@ -102,7 +102,7 @@ const LayoutAdmin = () => {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
               <Menu.Item key="1" icon={<AiFillFund />}>
-                <Link to="/admin/tour/dat_tour">Thống kê</Link>
+                <Link to="/admin/dashboard">Thống kê</Link>
               </Menu.Item>
             }
             {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') && <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">

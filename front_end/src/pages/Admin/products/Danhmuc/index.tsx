@@ -99,19 +99,23 @@ const AdminLoai_tour = (props) => {
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý loại tour</h2>
                 <Button type="primary" danger>
-                  <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
+                    <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
+                        <AiOutlinePlus />
+                        Tạo mới loại tour
+                    </Link>
                 </Button>
             </header>
-            <div className="flex items-center space-x-2 mb-4">
-                <Input
-                    placeholder="Tìm kiếm lịch trình"
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                />
-                <Button style={{ backgroundColor: 'blue' }} type="primary" onClick={handleSearch}>
-                    Tìm kiếm
-                </Button>
-            </div>
+            <div className="flex items-center justify-end mb-4">
+  <Input
+    style={{ width: "250px" }}
+    placeholder="Tìm kiếm lịch trình"
+    value={searchValue}
+    onChange={handleSearchChange}
+  />
+  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
+</div>
             {isRemoveSuccess && <Alert message="Success Text" type="success" />}
             {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>

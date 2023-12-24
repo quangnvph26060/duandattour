@@ -94,16 +94,17 @@ const Admin_Danhmuc_baiviet = (props) => {
           </Link>
         </Button>
       </header>
-      <div className="flex items-center space-x-2 mb-4">
-        <Input
-          placeholder="Tìm kiếm danh mục"
-          value={searchValue}
-          onChange={handleSearchChange}
-        />
-        <Button style={{backgroundColor:"blue"}} type="primary" onClick={handleSearch}>
-          Tìm kiếm
-        </Button>
-      </div>
+      <div className="flex items-center justify-end mb-4">
+  <Input
+    style={{ width: "250px" }}
+    placeholder="Tìm kiếm lịch trình"
+    value={searchValue}
+    onChange={handleSearchChange}
+  />
+  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
+</div>
       <Table dataSource={danhMucArray} columns={columns} />
     </div>
   );

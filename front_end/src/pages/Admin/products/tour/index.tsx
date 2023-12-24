@@ -273,7 +273,7 @@ const AdminProduct = (props: Props) => {
     value={searchValue}
     onChange={handleSearchChange}
   />
-  <Button style={{backgroundColor:'blue'}} type="primary" onClick={handleSearch}>Tìm kiếm</Button>
+  <Button style={{backgroundColor:'blue',width:"50px"}} type="primary" onClick={handleSearch}>Tìm kiếm</Button>
 </div>
       {tour()}
     </div>
