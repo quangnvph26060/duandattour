@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Form, Button, Input, DatePicker, Select,Upload } from 'antd';
-import { AiOutlineLoading3Quarters,AiOutlineUpload } from 'react-icons/ai';
-import { useNavigate,useParams } from 'react-router-dom';
+import { Form, Button, Input, DatePicker, Select, Upload } from 'antd';
+import { AiOutlineLoading3Quarters, AiOutlineUpload } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEditHuongDanVienMutation, useGetHuongDanVienByIdQuery } from '../../../../api/HuongDanVienApi';
 import { IHuongDanVien } from '../../../../interface/huongDanVien';
 
@@ -22,7 +22,7 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
   const HuongDanVien = HuongDanVienData || {};
   const [updateHuongDanVien] = useEditHuongDanVienMutation();
   console.log(idhdv);
-  
+
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
       email: HuongDanVien.email,
       dia_chi: HuongDanVien.dia_chi,
       sdt: HuongDanVien.sdt
-    
+
     });
   }, [HuongDanVien]);
 
@@ -58,24 +58,24 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
         autoComplete="off"
         form={form}
       >
-     <Form.Item
-  label="Hướng dẫn viên" 
-  name="ten_hd"
-  rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
->
-  <Input />
-</Form.Item>
-<Form.Item
-  label="Email"
-  name="email"
-  rules={[
-    { required: true, message: 'Vui lòng nhập email!' },
-    { type: 'email', message: 'Email không hợp lệ' },
-  ]}
->
-  <Input />
-</Form.Item>
-{/* <Form.Item
+        <Form.Item
+          label="Hướng dẫn viên"
+          name="ten_hd"
+          rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            { required: true, message: 'Vui lòng nhập email!' },
+            { type: 'email', message: 'Email không hợp lệ' },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        {/* <Form.Item
   label="Ảnh"
   name="image"
   rules={[{ required: true, message: 'Vui lòng chọn ảnh!' }]}
@@ -95,23 +95,23 @@ const Admin_Account_huongdanvienEdit: React.FC = () => {
     <Button icon={<AiOutlineUpload />}>Chọn ảnh</Button>
   </Upload>
 </Form.Item> */}
-<Form.Item
-  label="Địa chỉ"
-  name="dia_chi"
-  rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
->
-  <Input />
-</Form.Item>
-<Form.Item
-  label="Số điện thoại"
-  name="sdt"
-  rules={[
-    { required: true, message: 'Vui lòng nhập số điện thoại!' },
-    { pattern: /^[0-9]+$/, message: 'Số điện thoại chỉ gồm các chữ số' },
-  ]}
->
-  <Input />
-</Form.Item>
+        <Form.Item
+          label="Địa chỉ"
+          name="dia_chi"
+          rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Số điện thoại"
+          name="sdt"
+          rules={[
+            { required: true, message: 'Vui lòng nhập số điện thoại!' },
+            { pattern: /^[0-9]+$/, message: 'Số điện thoại chỉ gồm các chữ số' },
+          ]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Sửa thông tin

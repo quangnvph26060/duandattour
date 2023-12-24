@@ -14,6 +14,7 @@ class LoaiTourModel extends Model
     protected $fillable = [
         'image',
         'ten_loai_tour',
+        'thoi_gian',
         'id_tour'  // Thêm id_tour làm trường có thể điền
     ];
 

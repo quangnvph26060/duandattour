@@ -155,7 +155,7 @@ const QLuser = () => {
                             <div className='py-3'>
                                 <h2 className='px-5 font-medium py-2'>Tài khoản</h2>
                                 <div className='px-10'>
-                                    {(role === 'admin' || role === 'huong_dan_vien' || role === 'nhan_vien' )&& (
+                                    {(role === 'admin' || role === 'huong_dan_vien' || role === 'nhan_vien') && (
                                         <a href="/admin"><p className='text-sm text-red-500 py-1'>Quản lý Website</p></a>
                                     )}
                                     <a href="/profile"><p className='text-sm text-red-500 py-1'>Thông tin cá nhân</p></a>
@@ -168,7 +168,7 @@ const QLuser = () => {
                             </div>
                             <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt</h3></a>
                             <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
-                            <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
+                            <a href="/favorite"><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
                     <article className="w-4/5">
@@ -209,7 +209,7 @@ const QLuser = () => {
                                             >
                                                 Tổng số tour đã đi
                                             </th>
-                                            <td className="px-6 py-4">{ count || 0 }</td>
+                                            <td className="px-6 py-4">{count || 0}</td>
                                             <td className="px-6 py-4 text-right">
 
                                             </td>

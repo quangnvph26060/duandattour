@@ -143,15 +143,15 @@ const Admin_Khachhang: React.FC<Props> = () => {
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
-        <h2 className="font-bold text-2xl">Quản lý khách hàng</h2>
+        <h2 className="font-bold text-2xl">Quản lý tài khoản</h2>
       </header>
       <div className="flex items-center space-x-2 mb-4">
         <Input
           placeholder="Tìm kiếm khách hàng"
-         value={searchValue}
+          value={searchValue}
           onChange={handleSearchChange}
         />
-        <Button style={{backgroundColor:"blue"}} type="primary" onClick={handleSearch}>
+        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
           Tìm kiếm
         </Button>
       </div>
