@@ -50,11 +50,9 @@ const News = () => {
             <div className='container mx-auto flex gap-5'>
                 {postData && (
                     <div className="w-3/4 p-7">
-                        <div className="container mx-auto">
-                            <h2 className='font-semibold text-4xl py-4'>{postData.ten_post}</h2>
-                            <p className=" py-4">Tin tức du lịch : {postData.ngay_dang}</p>
-                            <div className="py-4" dangerouslySetInnerHTML={{ __html: postData.mo_ta }} ></div>
-                        </div>
+                        <h2 className='font-semibold text-4xl py-4'>{postData.ten_post}</h2>
+                        <p className=" py-4">Tin tức du lịch : {postData.ngay_dang}</p>
+                        <div className="py-4 " dangerouslySetInnerHTML={{ __html: postData.mo_ta }} ></div>
                     </div>
                 )}
 
