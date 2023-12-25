@@ -300,6 +300,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('statistical')->group(function () {
         // đếm để thống kê doanh thu trang web
         Route::get('/', [ApiStatisticalController::class, 'getStatistical']);
+        Route::get('/demo', [ApiStatisticalController::class, 'topFiveTours']);
+        
     });
 
     Route::prefix('dattour')->group(function () {

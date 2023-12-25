@@ -19,7 +19,11 @@ class ApiPermissionsController extends Controller
     // hiển thị danh sách user và quyển , vai trò của user đó 
     public function index()
     {
-        $permissions   = User::with('roles', 'roles.permissions')->get();
+        $permissions = User::with('roles', 'roles.permissions')
+        ->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'admin');
+        })
+        ->get();
         return response()->json(['data' => $permissions]);
     }
     public function store(Request $request)

@@ -96,12 +96,15 @@ const Admin_baiviet = () => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý  bài viết</h2>
-        <Button type="primary" danger>
-          <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
-            <AiOutlinePlus />
-            Tạo mới bài viết
-          </Link>
-        </Button>
+        {localStorage.getItem("role") === 'admin' ? (
+         <Button type="primary" danger>
+         <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
+           <AiOutlinePlus />
+           Tạo mới bài viết
+         </Link>
+       </Button>
+        ) : null}
+       
       </header>
       <div className="flex items-center space-x-2 mb-4">
         <Input
@@ -109,7 +112,7 @@ const Admin_baiviet = () => {
           value={searchValue}
           onChange={handleSearchChange}
         />
-        <Button style={{backgroundColor:'blue'}} type="primary" onClick={handleSearch}>
+        <Button style={{ backgroundColor: 'blue' }} type="primary" onClick={handleSearch}>
           Tìm kiếm
         </Button>
       </div>

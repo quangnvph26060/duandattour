@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch, Input} from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, message, Switch, Input } from "antd";
 import { Link } from "react-router-dom";
 import { useGetLichTrinhQuery, useRemoveLichTrinhMutation } from "../../../../api/LichTrinhApi";
 import { useGetTourQuery } from "../../../../api/TourApi";
@@ -24,7 +24,7 @@ const Admin_Lichtrinh = (props: Props) => {
       content: "This is a success message",
     });
   };
-  const [searchValue ,setSearchValue]= useState();
+  const [searchValue, setSearchValue] = useState();
   const [
     removeLichTrinh,
     { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess },
@@ -48,7 +48,7 @@ const Admin_Lichtrinh = (props: Props) => {
   const lichtrinhrArray = lictrinhdata?.date || [];
   const tourArrary = tourdata?.data || [];
   const dataSource = lichtrinhrArray.map(
-    ({ id, noi_dung, thoi_gian,status, id_tour }: ILichTrinh) => ({
+    ({ id, noi_dung, thoi_gian, status, id_tour }: ILichTrinh) => ({
       key: id,
       noi_dung,
       thoi_gian,
@@ -117,7 +117,7 @@ const Admin_Lichtrinh = (props: Props) => {
       ),
       dataIndex: "status",
       key: "status",
-      render: (status, {key: id }) => {
+      render: (status, { key: id }) => {
         const check = status === 0 ? false : true;
 
         return (
@@ -162,11 +162,14 @@ const Admin_Lichtrinh = (props: Props) => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
-        <Button type="primary" danger>
-          <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
-            <AiOutlinePlus />Tạo mới lịch trình
-          </Link>
-        </Button>
+
+        {localStorage.getItem("role") === 'admin' ? (
+          <Button type="primary" danger>
+            <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
+              <AiOutlinePlus />Tạo mới lịch trình
+            </Link>
+          </Button>
+        ) : null}
       </header>
 
       <div className="flex items-center space-x-2 mb-4">
