@@ -222,7 +222,7 @@ const AdminProduct = (props: Props) => {
 
                   return (
                     <span className={isExpired ? 'expired-text' : 'active-text'}>
-                      {isExpired ? 'Đã Hết Hạn' : 'Vẫn Hoạt Động'}
+                      {isExpired ? 'Không Hoạt Động' : 'Vẫn Hoạt Động'}
                     </span>
                   );
                 })()}
