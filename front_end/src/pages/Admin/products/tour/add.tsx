@@ -18,6 +18,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "../../../css.css";
 import { Upload } from "antd";
+import "../tour/css.css"
 import { UploadOutlined } from "@ant-design/icons";
 // import ImgCrop from 'antd-img-crop';
 import { PlusOutlined } from "@ant-design/icons";
@@ -161,7 +162,7 @@ const AdminTourAdd: React.FC = () => {
           <div className="flex  container mx-auto">
             <div className="w-1/2">
               <Form.Item
-                className="w-full"
+                className="w-full "
                 label="Tên tour"
                 name="ten_tour"
                 rules={[
@@ -179,7 +180,7 @@ const AdminTourAdd: React.FC = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input className="input-form-margin"/>
               </Form.Item>
               <Form.Item
                 className="w-full "
@@ -187,8 +188,11 @@ const AdminTourAdd: React.FC = () => {
                 name="hinh"
                 rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
               >
-                <Upload
-                className=""
+               
+              </Form.Item>
+              <div className="max-w-[413px] w-full -mt-5 -mb-5">
+              <Upload
+                className="w-full"
                   accept="image/*" // Chỉ chấp nhận các định dạng ảnh
                   listType="picture"
                   beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
@@ -196,16 +200,17 @@ const AdminTourAdd: React.FC = () => {
                   <Button
                     icon={<UploadOutlined />}
                     type="button"
-                    onClick={handleButtonClick}
-                    className={ButtonImage}
+                    
+                    
                   >
                     Chọn ảnh
                   </Button>
                 </Upload>
-              </Form.Item>
+              </div>
+             
 
               <Form.Item
-                className={`w-full ${imageButtonClass}`}
+                className={`w-full `}
                 label="Điểm khởi hành"
                 name="diem_khoi_hanh"
                 rules={[
@@ -332,7 +337,10 @@ const AdminTourAdd: React.FC = () => {
                 name="mo_ta"
                 rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
               >
-                <CKEditor
+               
+              </Form.Item>
+              <div className="max-w-[413px] w-full -mt-5">
+              <CKEditor
                   editor={ClassicEditor}
                   // config={{
                   //   extraPlugins: [EasyImage],
@@ -342,7 +350,7 @@ const AdminTourAdd: React.FC = () => {
                   data={editorData}
                   onChange={handleEditorChange}
                 />
-              </Form.Item>
+              </div>
               <Form.Item
                 className="w-full number-tour"
                 label="Số Lượng"
