@@ -23,7 +23,17 @@ import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
   const [sortedData, setSortedData] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const openModal = (record) => {
+    setSelectedData(record);
+    setModalVisible(true);
+  };
 
+  const closeModal = () => {
+    setSelectedData(null);
+    setModalVisible(false);
+  };
   const navigate = useNavigate();
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -86,6 +96,24 @@ const ADmin_DatTour = (props: Props) => {
         // Xử lý lỗi nếu có
       });
   };
+  const userDetailColumns = [
+    {
+      title: "Tên người đặt",
+      dataIndex: "ten_khach_hang",
+      key: "ten_khach_hang",
+    },
+    {
+      title: "Email người đặt",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Số điện thoại người đặt",
+      dataIndex: "sdt",
+      key: "sdt",
+    },
+    // Thêm các cột khác tương ứng với thông tin người đặt
+  ];
   // Lấy dữ liệu cho trang hiện tại
 
   // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
@@ -128,28 +156,7 @@ const ADmin_DatTour = (props: Props) => {
       tours,
     })
   );
-  const [customerInfoVisible, setCustomerInfoVisible] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  const openUserModal = (user) => {
-    setSelectedUser(user);
-    setCustomerInfoVisible(true);
-  };
-  const closeCustomerInfoModal = () => {
-    setCustomerInfoVisible(false);
-  };
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedTour, setSelectedTour] = useState(null);
-
-  const openModal = (record) => {
-    setSelectedTour(record.tours);
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setSelectedTour(null);
-    setModalVisible(false);
-  };
+ 
   const tableStyles: React.CSSProperties = {
     fontWeight: "bold",
     textAlign: "center",
@@ -167,22 +174,19 @@ const ADmin_DatTour = (props: Props) => {
       key: "key",
     },
     {
-      title: <span style={tableStyles}>Tour được đặt tour</span>,
+      title: <span style={tableStyles}>Chi tiết</span>,
       dataIndex: "tours",
       className: "font-medium",
       key: "tours",
       onCell: () => ({
         style: { cursor: "pointer", textDecoration: "" },
       }),
-      render: (text, record) => {
-        console.log("record.tours:", record.tours); // Thêm dòng này
-        return (
-          <span onClick={() => openModal(record)}>
-            👁
-            {record.tours && record.tours.ten_tour}
-          </span>
-        );
-      },
+      render: (text, record) => (
+        <span onClick={() => openModal(record)}>
+          👁
+          {record.tours && record.tours.ten_tour}
+        </span>
+      ),
     },
     {
       title: <span style={tableStyles}>Ảnh minh họa</span>,
@@ -224,7 +228,7 @@ const ADmin_DatTour = (props: Props) => {
       className: "font-medium",
     },
     {
-      title: <span style={tableStyles}>Trạng thái</span>,
+      title: <span style={tableStyles}>Trạng thái thanh toán</span>,
       dataIndex: "trang_thai",
       className: "font-medium",
       key: "trang_thai",
@@ -235,7 +239,7 @@ const ADmin_DatTour = (props: Props) => {
       ),
     },
     {
-      title: <span style={tableStyles}>Hành động</span>,
+      title: <span style={tableStyles}>Chuyển trạng thái thanh toán </span>,
       dataIndex: "trang_thai",
       key: "trang_thai",
       render: (trang_thai, { key: id }: any) => {
@@ -252,6 +256,12 @@ const ADmin_DatTour = (props: Props) => {
         );
         //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
       },
+    },
+    {
+      title: <span style={tableStyles}>Xác nhận tour</span>,
+      dataIndex: "so_luong_khach",
+      key: "so_luong_khach",
+      className: "font-medium",
     },
   ];
 
@@ -322,19 +332,24 @@ const ADmin_DatTour = (props: Props) => {
         />
       }
 
-      <Modal
+<Modal
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
         className="rounded-md ant-modal-content "
       >
-        {selectedTour && (
+        {selectedData && (
           <div className="p-4 ">
-            <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
+            <h2 className="text-xl font-bold mb-4">Thông tin Đặt Tour</h2>
             <table className="w-full  table-auto border-collapse border rounded">
               <tbody>
                 <tr className="border-b">
                   {tourDetailsColumns.map((column) => (
+                    <td key={column.key} className="py-2 px-4 font-semibold">
+                      {column.title}
+                    </td>
+                  ))}
+                  {userDetailColumns.map((column) => (
                     <td key={column.key} className="py-2 px-4 font-semibold">
                       {column.title}
                     </td>
@@ -345,52 +360,27 @@ const ADmin_DatTour = (props: Props) => {
                     <td key={column.key} className="py-2 px-4">
                       {column.dataIndex === "image_path" ? (
                         <img
-                          src={`http://localhost:8000/storage/${selectedTour[column.dataIndex]}`}
+                          src={`http://localhost:8000/storage/${selectedData.tours[column.dataIndex]}`}
                           alt="Tour"
                           className="w-[200px] h-[150px] rounded object-cover"
                         />
                       ) : (
-                        selectedTour[column.dataIndex]
+                        selectedData.tours[column.dataIndex]
                       )}
+                    </td>
+                  ))}
+                  {userDetailColumns.map((column) => (
+                    <td key={column.key} className="py-2 px-4">
+                      {selectedData[column.dataIndex]}
                     </td>
                   ))}
                 </tr>
               </tbody>
             </table>
           </div>
-
-
         )}
       </Modal>
-      <Modal
-        visible={customerInfoVisible}
-        onCancel={closeCustomerInfoModal}
-        footer={null}
-        className="rounded-md"
-      >
-        {selectedUser && (
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Thông tin Người Đặt</h2>
-            <table className="w-full table-auto border-collapse border rounded">
-              <tbody>
-                <tr>
-                  <td className="py-2 px-4 font-bold">Tên người đặt</td>
-                  <td className="py-2 px-4">{selectedUser.ten_khach_hang}</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-bold">Email người đặt</td>
-                  <td className="py-2 px-4">{selectedUser.email}</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-bold">Sdt người đặt</td>
-                  <td className="py-2 px-4">{selectedUser.sdt}</td>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Modal>
+   
 
     </div>
   );

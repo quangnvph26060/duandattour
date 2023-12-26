@@ -59,18 +59,18 @@ const Dashboard = () => {
   const [columnChart, setColumnChart] = useState([]);
   const ColumnChart = (selectedYear) => {
     const dataBar = [
-      { name: "Tháng 1", doanh_thu: 32 },
-      { name: "Tháng 2", doanh_thu: 42 },
-      { name: "Tháng 3", doanh_thu: 51 },
-      { name: "Tháng 4", doanh_thu: 60 },
-      { name: "Tháng 5", doanh_thu: 51 },
-      { name: "Tháng 6", doanh_thu: 95 },
-      { name: "Tháng 7", doanh_thu: 32 },
-      { name: "Tháng 8", doanh_thu: 42 },
-      { name: "Tháng 9", doanh_thu: 51 },
-      { name: "Tháng 10", doanh_thu: 60 },
-      { name: "Tháng 11", doanh_thu: 51 },
-      { name: "Tháng 12", doanh_thu: 950 },
+      { name: "Tháng 1",  },
+      { name: "Tháng 2", },
+      { name: "Tháng 3", },
+      { name: "Tháng 4",  },
+      { name: "Tháng 5",  },
+      { name: "Tháng 6",  },
+      { name: "Tháng 7",  },
+      { name: "Tháng 8",  },
+      { name: "Tháng 9",  },
+      { name: "Tháng 10",  },
+      { name: "Tháng 11",  },
+      { name: "Tháng 12", },
     ];
 
     axios
@@ -85,7 +85,7 @@ const Dashboard = () => {
         }));
         setColumnChart(newData);
 
-        console.log(newData);
+      
       });
   };
   useEffect(() => {
@@ -132,7 +132,7 @@ const Dashboard = () => {
               alt=""
             />
             <div>
-              <p className="text-xl font-medium">Tour đã đặt</p>
+              <p className="text-xl font-medium">Đơn đã đặt</p>
               <p className="text-xl font-semibold">
                 {statistical.totalToursbooked}
               </p>
