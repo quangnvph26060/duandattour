@@ -33,7 +33,10 @@ use App\Http\Controllers\API\ApiPostDanhmucController;
 
 use App\Http\Controllers\Api\ApiNotificationController;
 use App\Http\Controllers\Api\ApiStatisticalController;
+use App\Models\DatTour;
+use App\Models\TourModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Mews\Purifier\Facades\Purifier;
 /*
 |--------------------------------------------------------------------------
@@ -47,22 +50,35 @@ use Mews\Purifier\Facades\Purifier;
 */
 
 // api demo
-Route::get('a',[ApiDatTourController::class,'demo']);
-Route::get('demo',function(){
-    $badWords = ['cặc', 'lồn', 'buồi'];
-    $text = "con";
-    $hasSensitiveWords = false;
-    foreach ($badWords as $badWord) {
-        if (stripos($text, $badWord) !== false) {
-            $hasSensitiveWords = true;
-            break;
+Route::get('a', [ApiDatTourController::class, 'demo']);
+Route::get('demo', function () {
+    $countArray = DB::table('dat_tours')
+    ->select('id_tour', DB::raw('COUNT(*) as count'))
+    ->groupBy('id_tour')
+    ->orderByDesc('count')
+    ->take(5)
+    ->get();
+   
+
+    $tourArray = TourModel::select('id', 'ten_tour')->get();
+    // tọa 1 mảng rỗng 
+    $result = [];
+    $countArray = json_decode(json_encode($countArray), true);
+    foreach ($countArray as $countItem) {
+        foreach ($tourArray as $tourItem) {
+            if ($countItem['id_tour'] === $tourItem['id']) {
+                $result[] = [
+                    'ten' => $tourItem['ten_tour'],
+                    'ids' => $countItem['id_tour'],
+                ];
+                break;
+            }
         }
     }
-    
-    echo $hasSensitiveWords ? 'true' : 'false';
+    return response()->json([ 'result' => $result]);
 });
 
-Route::get('abc',[ApiDiscountController::class,'abc']);
+Route::get('abc', [ApiDiscountController::class, 'abc']);
 
 //end api demo
 
@@ -184,7 +200,7 @@ Route::prefix('admin')->group(function () {
         Route::put('update/{id}', [ApiDiscountController::class, 'tour_discount_update']);
         Route::delete('/{id}', [ApiDiscountController::class, 'tour_discount_delete']);
     });
-    Route::prefix('evaluate')->group(function(){
+    Route::prefix('evaluate')->group(function () {
         Route::get('/', [ApiEvaluateController::class, 'showDanhGia']);
         Route::delete('/{id}', [ApiEvaluateController::class, 'deleteDanhGia']);
     });
@@ -226,7 +242,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
     });
-  
+
 
     Route::prefix('diadiem')->group(function () {
         Route::get('/', [ApiDiaDiemController::class, 'index']);
@@ -308,6 +324,8 @@ Route::prefix('admin')->group(function () {
         
             return response()->json(['years' => $years], 200);
         });
+        Route::get('/topFiveTours', [ApiStatisticalController::class, 'topFiveTours']);
+        Route::get('/topAddress', [ApiStatisticalController::class, 'topAddress']);
     });
 
     Route::prefix('dattour')->group(function () {

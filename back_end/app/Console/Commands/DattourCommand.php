@@ -42,7 +42,6 @@ class DattourCommand extends Command
                 $affected = DB::table('tour')
                     ->where('id', $tour->id_tour)
                     ->update(['soluong' =>  DB::raw('soluong + ' . $tour->so_luong_khach)]);
-
                 if ($tour->ThanhToan) {
                     $tour->ThanhToan->delete();
                 }

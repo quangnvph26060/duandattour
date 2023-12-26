@@ -247,12 +247,15 @@ const AdminProduct = (props: Props) => {
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-3xl">Quản lý tour</h2>
 
-        <Button type="primary" danger>
-          <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
-            <AiOutlinePlus />
-            Tạo mới tour
-          </Link>
-        </Button>
+      
+        {localStorage.getItem("role") === 'admin' ? (
+           <Button type="primary" danger>
+           <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
+             <AiOutlinePlus />
+             Tạo mới tour
+           </Link>
+         </Button>
+        ) : null}
       </header>
       {tour()}
     </div>

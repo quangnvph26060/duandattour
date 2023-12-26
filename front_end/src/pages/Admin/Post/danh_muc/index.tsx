@@ -36,13 +36,13 @@ const Admin_Danhmuc_baiviet = (props) => {
       ten_danh_muc: 'Danh Mục Tin Tức',
     },
     {
-        key: 3,
-        ten_danh_muc: 'Danh Mục Khuyến Mãi',
-      },
-      {
-        key: 4,
-        ten_danh_muc: 'Danh Mục Biến Động',
-      }
+      key: 3,
+      ten_danh_muc: 'Danh Mục Khuyến Mãi',
+    },
+    {
+      key: 4,
+      ten_danh_muc: 'Danh Mục Biến Động',
+    }
     // Add more data objects as needed
   ];
 
@@ -87,12 +87,15 @@ const Admin_Danhmuc_baiviet = (props) => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý danh mục bài viết</h2>
-        <Button type="primary" danger>
-          <Link to="/admin/post/add_danhmuc" className="flex items-center space-x-2">
-            <AiOutlinePlus />
-            Tạo mới danh mục bài viết
-          </Link>
-        </Button>
+
+        {localStorage.getItem("role") === 'admin' ? (
+          <Button type="primary" danger>
+            <Link to="/admin/post/add_danhmuc" className="flex items-center space-x-2">
+              <AiOutlinePlus />
+              Tạo mới danh mục bài viết
+            </Link>
+          </Button>
+        ) : null}
       </header>
       <div className="flex items-center space-x-2 mb-4">
         <Input
@@ -100,7 +103,7 @@ const Admin_Danhmuc_baiviet = (props) => {
           value={searchValue}
           onChange={handleSearchChange}
         />
-        <Button style={{backgroundColor:"blue"}} type="primary" onClick={handleSearch}>
+        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
           Tìm kiếm
         </Button>
       </div>
