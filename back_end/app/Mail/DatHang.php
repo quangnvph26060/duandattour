@@ -22,13 +22,13 @@ class DatHang extends Mailable
      */
     public $createDatTour;
     public $tourone;
-    public $latestThanhToan;
-    public function __construct(DatTour $createDatTour, TourModel $tourone, ThanhToan $latestThanhToan)
+    // public $latestThanhToan;
+    public function __construct(DatTour $createDatTour, TourModel $tourone)
     {
         //
         $this->createDatTour= $createDatTour;
         $this->tourone= $tourone;
-        $this->latestThanhToan= $latestThanhToan;
+        // $this->latestThanhToan= $latestThanhToan;
     }
 
     /**

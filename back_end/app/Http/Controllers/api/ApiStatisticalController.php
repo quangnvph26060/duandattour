@@ -66,6 +66,32 @@ class ApiStatisticalController extends Controller
 
         return response()->json($topFiveTours, 200);
     }
+     // thống kê top 5 tour được đặt nhiều nhất 
+     public function topAddress()
+     {
+        $countArray = DB::table('dat_tours')
+        ->select('id_tour', DB::raw('COUNT(*) as count'))
+        ->groupBy('id_tour')
+        ->orderByDesc('count')
+        ->take(5)
+        ->get();
+        $tourArray = TourModel::select('id', 'ten_tour')->get();
+        // tọa 1 mảng rỗng 
+        $result = [];
+        $countArray = json_decode(json_encode($countArray), true);
+        foreach ($countArray as $countItem) {
+            foreach ($tourArray as $tourItem) {
+                if ($countItem['id_tour'] === $tourItem['id']) {
+                    $result[] = [
+                        'ten' => $tourItem['ten_tour'],
+                        'id' => $countItem['id_tour'],
+                    ];
+                    break;
+                }
+            }
+        }
+        return response()->json([ 'result' => $result]);
+     }
 //     axios.get('http://localhost:8000/api/admin/statistical/demo')
 //   .then(response => {
 //     // Xử lý dữ liệu trả về khi yêu cầu thành công
@@ -75,4 +101,5 @@ class ApiStatisticalController extends Controller
 //     // Xử lý lỗi khi yêu cầu thất bại
 //     console.error(error);
 //   });
+
 }

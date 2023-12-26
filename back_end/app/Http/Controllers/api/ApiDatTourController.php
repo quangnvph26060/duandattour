@@ -80,7 +80,7 @@ class ApiDatTourController extends Controller
             $notification->save();
             $latestThanhToan = ThanhToan::latest('created_at')->first();
             // dd($latestThanhToan);
-            Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone,$latestThanhToan));
+            Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);
