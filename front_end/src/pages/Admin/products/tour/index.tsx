@@ -154,7 +154,7 @@ const AdminProduct = (props: Props) => {
           </tr>
         </thead>
         <tbody className="font-semibold">
-          {tourArray.map((item, index) => (
+          {(filteredDataSource.length > 0 ? filteredDataSource : tourArray).map((item, index) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.ten_tour}</td>
@@ -267,13 +267,16 @@ const AdminProduct = (props: Props) => {
           </Link>
         </Button>
       </header>
-      <div className="flex mb-4">
+      <div className="flex items-center justify-end mb-4">
   <Input
-    placeholder="Tìm kiếm tour"
+    style={{ width: "250px" }}
+    placeholder="Tìm kiếm lịch trình"
     value={searchValue}
     onChange={handleSearchChange}
   />
-  <Button style={{backgroundColor:'blue',width:"50px"}} type="primary" onClick={handleSearch}>Tìm kiếm</Button>
+  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
 </div>
       {tour()}
     </div>
