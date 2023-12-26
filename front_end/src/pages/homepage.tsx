@@ -55,7 +55,7 @@ const Countdown = ({ expiryDate }) => {
     const interval = setInterval(() => {
       const expiryDateTime = new Date(expiryDate);
       const currentDateTime = new Date();
-      currentDateTime.setHours(currentDateTime.getHours() + 7); // Điều chỉnh sang múi giờ GMT+7
+      currentDateTime.setHours(currentDateTime.getHours()); // Điều chỉnh sang múi giờ GMT+7
 
       const distance = differenceInSeconds(expiryDateTime, currentDateTime);
 

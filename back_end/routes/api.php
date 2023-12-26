@@ -285,6 +285,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('statistical')->group(function () {
         // đếm để thống kê doanh thu trang web
         Route::get('/', [ApiStatisticalController::class, 'getStatistical']);
+        Route::get('/tourStatusStatistics', [ApiStatisticalController::class, 'tourStatusStatistics']);
+        Route::get('/getStatisticalDate', [ApiStatisticalController::class, 'getStatisticalDate']);
         Route::get('/columnChart/{year?}', [ApiStatisticalController::class, 'columnChart']);
         Route::get('/years', function () {
             // Lấy danh sách các năm từ 1900 đến năm hiện tại

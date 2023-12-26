@@ -35,8 +35,9 @@ const Dashboard = () => {
   ];
 
   const dataPie = [
-    { name: "React", value: 75 },
-    { name: "Angular", value: 50 },
+    { name: "totalToursPaid", value: 75 },
+    { name: "totalToursUnpaid", value: 50 },
+    { name: "totalToursCancelled", value: 50 },
   ];
   const colors = ["red", "blue"]; // Mảng các màu cho từng loại dữ liệu
   const [statistical, setStatistical] = useState([]);
@@ -109,7 +110,31 @@ const Dashboard = () => {
     ColumnChart(selectedYear) // Lấy giá trị năm đã chọn khi người dùng nhấp vào nút "Lọc dữ liệu"
     // Thực hiện xử lý dữ liệu dựa trên năm đã chọn
   };
-
+  const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
+  const PieChartSatusTour = () => {
+    const dataPie = [
+      { name: "totalToursPaid", value: 0 },
+      { name: "totalToursUnpaid", value: 0 },
+      { name: "totalToursCancelled", value: 0 },
+    ];
+    axios
+    .get( 'http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics')
+    .then((response) => {
+      const newData1 = dataPie.map((item, index) => ({
+        name: item.name,
+        value: response.data.statisticalStatus[item.name],
+        
+      }));
+      console.log(response.data.statisticalStatus.totalToursCancelled);
+      
+      setPieChartSatusTour(newData1);
+// debugger;
+      console.log(newData1);
+    });
+  }
+  useEffect(() => {
+    PieChartSatusTour();
+  }, []);
   return (
     <div>
       <div>
@@ -281,7 +306,7 @@ const Dashboard = () => {
           <h3>Biểu đồ tròn</h3>
           <PieChart width={500} height={300}>
             <Pie
-              data={dataPie}
+              data={pieChartSatusTour}
               dataKey="value"
               nameKey="name"
               cx="50%"
