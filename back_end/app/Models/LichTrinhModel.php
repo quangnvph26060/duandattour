@@ -11,9 +11,9 @@ class LichTrinhModel extends Model
     use HasFactory,SoftDeletes;
     protected $table="lich_trinh";
     protected $fillable=[
-        'tieu_de',
         'noi_dung',
         'thoi_gian',
+        'status',
         'id_tour'
     ];
 }

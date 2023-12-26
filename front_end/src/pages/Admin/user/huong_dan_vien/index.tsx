@@ -112,11 +112,10 @@ const Admin_Account_huongdanvien = () => {
       key: "status",
       render: (status) => (
         <span
-          className={`status-badge ${
-            status === 0 ? "chua_xac_nhan" : "xac_nhan"
-          }`}
+          className={`status-badge ${status === 0 ? "chua_xac_nhan" : "xac_nhan"
+            }`}
         >
-          {status === 0 ? "Chưa thanh toán" : "Đã thanh toán"}
+          {status === 0 ? "Chưa Xác Nhận" : "Đã Xác Nhận"}
         </span>
       ),
     },
@@ -154,7 +153,7 @@ const Admin_Account_huongdanvien = () => {
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
-        <h2 className="font-bold text-2xl">Quản lý hướng dẫn viên</h2>
+        <h2 className="font-bold text-2xl">Hướng dẫn viên</h2>
         <Button type="primary" danger>
           <Link
             to="/admin/account_huongdanvien/add"

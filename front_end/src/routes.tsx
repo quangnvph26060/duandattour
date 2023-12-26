@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
 import News from "./pages/newspage";
+import Posts from "./pages/post";
 // import TitelPage from "./pages/TitelPage";
 import Signup from "./auth/signup";
 import SignIn from "./auth/signin";
@@ -13,7 +14,7 @@ import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/dashboard/dashboard";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
-import AdminTourEdit from "./pages/Admin/products/tour/edi";
+import AdminTourEdit from "./pages/Admin/products/tour/edit";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
 import AdminLoai_tourADD from "./pages/Admin/products/Danhmuc/add";
 import AdminLoai_tourEdit from "./pages/Admin/products/Danhmuc/edit";
@@ -30,6 +31,7 @@ import ADmin_Phuontien from "./pages/Admin/products/Phuong_tien";
 import ADmin_PhuontiengADD from "./pages/Admin/products/Phuong_tien/add";
 import ADmin_Phuongtienedit from "./pages/Admin/products/Phuong_tien/edit";
 import Admin_Khachhang from "./pages/Admin/user/khach_hang";
+
 import Admin_Acountkhachhang_Roles from "./pages/Admin/user/khach_hang/roles";
 import Admin_Account_huongdanvien from "./pages/Admin/user/huong_dan_vien";
 import Admin_Account_huongdanvienEdit from "./pages/Admin/user/huong_dan_vien/edit";
@@ -52,6 +54,7 @@ import { ContextProvider } from "./context/ContextProvider";
 import AdminGiam_Gia from "./pages/Admin/products/GiamGia";
 import AdminGiam_GiaADD from "./pages/Admin/products/GiamGia/add";
 import AdminGiam_GiaEdit from "./pages/Admin/products/GiamGia/edit";
+import AdminDanhGia from "./pages/Admin/products/DanhGia/index";
 import Admin_TourDiscount from "./pages/Admin/products/Tour_GiamGia";
 import Admin_TourDiscountADD from "./pages/Admin/products/Tour_GiamGia/add";
 import Admin_TourDiscountEDIT from "./pages/Admin/products/Tour_GiamGia/edit";
@@ -62,8 +65,13 @@ import Giohanguser from "./pages/giohanguser";
 import Giohanguser1 from "./pages/giohanguser1";
 import Giohanguser2 from "./pages/giohanguser2";
 import Doimk from "./pages/changeMk";
+import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
+import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+import Admin_baiviet from "./pages/Admin/Post/bai_viet";
+import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
+import Favorite from "./pages/favorite";
 export const router = createBrowserRouter([
-  
+
   {
     path: "/",
     element: <LayoutWebsite />,
@@ -77,8 +85,16 @@ export const router = createBrowserRouter([
         element: <News />,
       },
       {
+        path: "post/:idpost",
+        element: <Posts />,
+      },
+      {
         path: "tour",
         element: <TourPage />,
+      },
+      {
+        path: "favorite",
+        element: <Favorite />,
       },
       {
         path: "tour/:diem_den",
@@ -146,7 +162,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
       },
       {
         path: "tour",
@@ -193,7 +209,7 @@ export const router = createBrowserRouter([
         element: <Admin_LichtrinhADD />,
       },
       {
-        path: "tour/lich_trinh/edit/:id",
+        path: "tour/lich_trinh/edit/:idlt",
         element: <Admin_LichtrinhEDit />,
       },
       {
@@ -320,7 +336,36 @@ export const router = createBrowserRouter([
         path: "tour/tour_dathanhtoan",
         element: <ADmin_Qlytourdathanhtoan />,
       },
-    
+      {
+        path: "post/danhmuc_post",
+        element: <Admin_Danhmuc_baiviet />,
+      },
+      {
+        path: "post/add_danhmuc",
+        element: <Admin_DanhmucADD />,
+      },
+      {
+        path: "post/edit_danhmuc/:iddm",
+        element: <Admin_DanhmucADD />,
+      },
+
+      {
+        path: "post/bai_viet",
+        element: <Admin_baiviet />,
+      },
+      {
+        path: "post/add_baiviet",
+        element: <ADmin_postADD />,
+      },
+      {
+        path: "post/edit_baiviet/:idbv",
+        element: <ADmin_postADD />,
+      },
+      // đánh giá
+      {
+        path: "evaluate",
+        element: <AdminDanhGia />,
+      },
     ],
   },
 ]);

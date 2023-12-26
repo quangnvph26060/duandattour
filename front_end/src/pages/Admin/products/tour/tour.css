@@ -1,0 +1,65 @@
+.table_tour {
+    width: 100%;
+    border-collapse: collapse;
+}
+.expired-text {
+    color: red; /* Red color for expired tours */
+  }
+  
+  .active-text {
+    color: green; /* Green color for active tours */
+  }
+.table_tour th,
+.table_tour td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table_tour th {
+    background-color: #f2f2f2;
+}
+
+.select-dropdown {
+    width: 100%;
+    padding: 6px;
+}
+
+.select-dropdown {
+    width: auto;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.delete-button {
+    padding: 6px 10px;
+    margin-right: 5px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    padding: 6px 10px;
+    margin-right: 5px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+/*
+
+
+
+
+*/

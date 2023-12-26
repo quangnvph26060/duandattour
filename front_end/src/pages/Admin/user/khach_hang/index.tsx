@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Skeleton, Popconfirm } from "antd";
+import { Table, Button, Skeleton, Popconfirm, Input } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -10,9 +10,31 @@ type Props = {};
 
 const Admin_Khachhang: React.FC<Props> = () => {
   const { data: userdata, error, isLoading } = useGetUserQuery();
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredDataSource, setFilteredDataSource] = useState<IUser[]>([]);
 
+  const handleSearch = () => {
+    // Filter data based on search value
+    const filteredData = userdata?.data.filter((user) =>
+      user.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredDataSource(filteredData || []);
+  };
 
-  const tourArray = userdata?.data || [];
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  useEffect(() => {
+    if (!isLoading) {
+      const filteredData = userdata?.data.filter((user) =>
+        user.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredDataSource(filteredData || []);
+    }
+  }, [isLoading, userdata, searchValue]);
+
+  const tourArray = filteredDataSource.length > 0 ? filteredDataSource : userdata?.data || [];
   const [userData, setUserData] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -30,8 +52,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
       email,
       sdt,
       cccd,
-      roles,
-
+      roles
     }: IUser) => ({
       key: id,
       name,
@@ -44,9 +65,10 @@ const Admin_Khachhang: React.FC<Props> = () => {
       permissions: roles
         .map((role: IRole) => role.permissions.map((permission: IPermission) => permission.name))
         .flat()
-        .join(", "), // Hiển thị danh sách quyền từ mảng roles
+        .join(", "),
     })
   );
+
   const columns = [
     {
       title: "ID",
@@ -66,9 +88,9 @@ const Admin_Khachhang: React.FC<Props> = () => {
         <img
           src={`http://localhost:8000/storage/${image}`}
           alt="img"
-          style={{ width: '100px', cursor: 'pointer' }}
+          style={{ width: "100px", cursor: "pointer" }}
         />
-    ),
+      ),
     },
     {
       title: "Địa chỉ",
@@ -99,21 +121,21 @@ const Admin_Khachhang: React.FC<Props> = () => {
       title: "Quyền",
       dataIndex: "permissions",
       key: "permissions",
-
     },
     {
       title: "Action",
       render: ({ key: id }: any) => (
-        localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
-          <Button type="primary" danger>
-            <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
-          </Button>
+        localStorage.getItem("role") === "admin" ? (
+          <div className="flex space-x-2">
+            <Button type="primary" danger>
+              <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
+            </Button>
 
-          <Button type="primary" danger>
-            <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
-          </Button>
-          
-        </div> : ""
+            <Button type="primary" danger>
+              <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
+            </Button>
+          </div>
+        ) : null
       ),
     },
   ];
@@ -121,9 +143,18 @@ const Admin_Khachhang: React.FC<Props> = () => {
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
-        <h2 className="font-bold text-2xl">Quản lý khách hàng</h2>
+        <h2 className="font-bold text-2xl">Quản lý tài khoản</h2>
       </header>
-
+      <div className="flex items-center space-x-2 mb-4">
+        <Input
+          placeholder="Tìm kiếm khách hàng"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
+          Tìm kiếm
+        </Button>
+      </div>
       {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
     </div>
   );
