@@ -22,7 +22,13 @@ import {
 import "../css.css";
 
 type Props = {};
-
+const formatCurrency = (value) => {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formatter.format(value);
+};
 const DetailPage = (props: Props) => {
   const radius = {
     borderRadius: "10px",
@@ -72,14 +78,14 @@ const DetailPage = (props: Props) => {
                   </div>
 
                   <div className="price buy mr-40 flex gap-5 ">
-                    <p className="text-[26px] text-red-500 font-bold">
-                      {datatourArray?.gia_nguoilon}
-                    </p>
-                    <p className="mt-2">/khách</p>
-                    <button
-                      type="button"
-                      className="text-white bg-red-500 hover:bg-white hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
+                  <p className="text-[26px] text-red-500 font-bold">
+  {formatCurrency(datatourArray?.gia_nguoilon)}
+</p>
+<p className="mt-2">/khách</p>
+<button
+  type="button"
+  className="text-white bg-red-500 hover:bg-white hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+>
                       <svg
                         className="w-3.5 h-3.5 mr-2"
                         aria-hidden="true"

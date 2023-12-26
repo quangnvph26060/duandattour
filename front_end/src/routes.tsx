@@ -91,7 +91,9 @@ export const router = createBrowserRouter([
       {
         path: "tour",
         element: <TourPage />,
-      },
+    },
+     
+     
       {
         path: "favorite",
         element: <Favorite />,
@@ -116,6 +118,7 @@ export const router = createBrowserRouter([
         path: "booktour/:idTour",
         element: <BookTour />,
       },
+      
       {
         path: "booktour",
         element: <BookTour />,
@@ -244,10 +247,7 @@ export const router = createBrowserRouter([
         path: 'customer_feedback',
         element: <ChatComponent />
       },
-      // {
-      //   path: "customer_account/add",
-      //   element: <Admin_Acountkhachhang_Roles />,
-      // },
+      
       {
         path: "customer_account/edit/:idrole",
         element: <Admin_Acountkhachhang_Roles />,

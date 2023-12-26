@@ -1,6 +1,6 @@
 type Props = {};
-// import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+
+import { Table, Button, Skeleton,Input,  Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ITour } from "../../../../interface/tour";
@@ -14,6 +14,21 @@ import axios from "axios";
 import "./tour.css";
 
 const AdminProduct = (props: Props) => {
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+   
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    // Lọc dữ liệu dựa trên giá trị tìm kiếm
+    const filteredData = tourArray.filter((item) =>
+      item.ten_tour.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredDataSource(filteredData);
+  };
+
 
   const { Option } = Select;
   const { data: loaitourdata } = useGetLoaiTourQuery();
@@ -25,15 +40,13 @@ const AdminProduct = (props: Props) => {
 
 
   const currentDate = new Date(); // Ngày hiện tại
-
+  const [isSearching, setIsSearching] = useState(false);
   const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     useRemoveTourMutation();
 
   const confirm = (id: any) => {
 
     removeTour(id);
-
-
 
   };
   const loaitourArrary = loaitourdata?.data || [];
@@ -141,7 +154,7 @@ const AdminProduct = (props: Props) => {
           </tr>
         </thead>
         <tbody className="font-semibold">
-          {tourArray.map((item, index) => (
+          {(filteredDataSource.length > 0 ? filteredDataSource : tourArray).map((item, index) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.ten_tour}</td>
@@ -209,7 +222,7 @@ const AdminProduct = (props: Props) => {
 
                   return (
                     <span className={isExpired ? 'expired-text' : 'active-text'}>
-                      {isExpired ? 'Đã Hết Hạn' : 'Vẫn Hoạt Động'}
+                      {isExpired ? 'Không Hoạt Động' : 'Vẫn Hoạt Động'}
                     </span>
                   );
                 })()}
@@ -257,6 +270,17 @@ const AdminProduct = (props: Props) => {
          </Button>
         ) : null}
       </header>
+      <div className="flex items-center justify-end mb-4">
+  <Input
+    style={{ width: "250px" }}
+    placeholder="Tìm kiếm lịch trình"
+    value={searchValue}
+    onChange={handleSearchChange}
+  />
+  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
+</div>
       {tour()}
     </div>
   );

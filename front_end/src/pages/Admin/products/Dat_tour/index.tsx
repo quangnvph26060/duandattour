@@ -137,6 +137,7 @@ const ADmin_DatTour = (props: Props) => {
       sdt,
       image_path,
       ngay_dat,
+      xac_nhan,
       trang_thai,
       id_tour,
       so_luong_khach,
@@ -148,6 +149,7 @@ const ADmin_DatTour = (props: Props) => {
       email,
       sdt,
       image_path,
+      xac_nhan,
       trang_thai,
       id_tour,
       so_luong_khach,
@@ -235,6 +237,18 @@ const ADmin_DatTour = (props: Props) => {
       render: (trang_thai) => (
         <span style={{ color: trang_thai === 0 ? "red" : "green" }}>
           {trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán"}
+        </span>
+      ),
+    }
+    ,
+    {
+      title: <span style={tableStyles}>Trạng thái</span>,
+      dataIndex: "trang_thai",
+      className: "font-medium",
+      key: "xac_nhan",
+      render: (xac_nhan) => (
+        <span style={{ color: xac_nhan === 0 ? "red" : "green" }}>
+          {xac_nhan === 0 ? "Chờ xác nhận " : "Đã  xác nhận"}
         </span>
       ),
     },
