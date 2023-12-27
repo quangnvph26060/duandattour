@@ -458,13 +458,7 @@ const TourPage: React.FC = () => {
               <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
                 <div className=' bg-white rounded-t-lg shadow-xl'>
-                {items.image_dd && (
-            <img
-              className="mt-4 rounded-lg w-full h-60 object-cover"
-              src={`http://localhost:8000/storage/${items.image_dd}`}
-              alt={`Ảnh ${items.ten_tour}`}
-            />
-          )}
+               
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
@@ -477,9 +471,15 @@ const TourPage: React.FC = () => {
                         <i className="fa-regular fa-heart text-white"></i>
                       </Link>
                     </div>
-                   
+            
                   </div>
-
+        {items.image_dd && (
+            <img
+              className="mt-4 rounded-lg w-full h-60 object-cover"
+              src={`http://localhost:8000/storage/${items.image_dd}`}
+              alt={`Ảnh ${items.ten_tour}`}
+            />
+          )}
                   <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <Link to={`/tours/${items.id}`}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>

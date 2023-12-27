@@ -166,7 +166,24 @@ const HomePage = () => {
       handleSendMessage();
     }
   };
+  const addToFavorites = (tourId) => {
+    const token = localStorage.getItem('token');
 
+    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        // Xử lý kết quả thành công
+        console.log(response.data);
+      })
+      .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+        alert("Bạn chưa đăng nhập!");
+      });
+  };
   const sendAutoReply = userMessage => {
     let autoReply;
     if (userMessage.includes('loại tour')) {
@@ -769,6 +786,20 @@ const HomePage = () => {
                     <div className="py-2 absolute top-0 left-1">
                    
                     </div>
+                    <div className="relative">
+                    <div className="py-2 absolute top-0 left-1">
+                      <Link
+                        to={``}  // Update the 'to' prop to navigate to the favorite page
+                        className='mega-menu-items'
+                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
+                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                      >
+                        {/* Thêm vào sản phẩm yêu thích */}
+                        <i className="fa-regular fa-heart text-white"></i>
+                      </Link>
+                    </div>
+            
+                  </div>
                     {items.image_dd && (
             <img
               className="mt-4 rounded-lg w-full h-60 object-cover"
