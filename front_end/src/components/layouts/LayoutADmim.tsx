@@ -303,7 +303,8 @@ const LayoutAdmin = () => {
           </Header>
           <Content
             style={{
-              maxHeight: 1000,
+              maxHeight: 1800,
+              maxWidth:10000,
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,

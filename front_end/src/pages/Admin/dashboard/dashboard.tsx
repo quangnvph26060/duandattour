@@ -13,13 +13,89 @@ import {
 } from "recharts";
 import axios from "axios";
 import Chart from "./ChartComponent";
+import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const style: React.CSSProperties = {
   padding: "8px 0",
   border: "2px solid gray",
   height: "90px",
 };
 const Dashboard = () => {
+  // top 5 dat nhieu
+  const [results, setResults] = useState([]);
+  const [results1, setResults1] = useState([]);
 
+  useEffect(() => {
+    // Fetch or set your data here
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/admin/statistical/topAddress');
+        const data = await response.json();
+
+        if (Array.isArray(data.result) && data.result.length > 0) {
+          setResults(data.result);
+          console.log('Fetched Data:', data.result);
+        } else {
+          console.error('Invalid data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Run once on component mount
+
+
+
+  useEffect(() => {
+    // Fetch or set your data here
+    const fetchData1 = async () => {
+      try {
+        const response1 = await fetch('http://localhost:8000/api/admin/statistical/topFiveTours');
+        const data1 = await response1.json();
+
+        if (Array.isArray(data1) && data1.length > 0) {
+          setResults1(data1);
+          console.log('Fetched Data:', data1);
+        } else {
+          console.error('Invalid data format:', data1);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData1();
+  }, []); // Run once on component mount
+
+  const colors = ["red", "blue"]; // Mảng các màu cho từng loại dữ liệu
+  const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
+  const PieChartSatusTour = () => {
+    const dataPie = [
+      { name: "totalToursPaid", value: 0 },
+      { name: "totalToursUnpaid", value: 0 },
+      { name: "totalToursCancelled", value: 0 },
+    ];
+    axios
+      .get("http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics")
+      .then((response) => {
+        const newData1 = dataPie.map((item, index) => ({
+          name: item.name,
+          value: response.data.statisticalStatus[item.name],
+        }));
+        console.log(response.data.statisticalStatus.totalToursCancelled);
+
+        setPieChartSatusTour(newData1);
+        // debugger;
+        console.log(newData1);
+      });
+  };
+
+  useEffect(() => {
+    PieChartSatusTour();
+  }, []);
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -28,7 +104,7 @@ const Dashboard = () => {
     }
     return color;
   };
-  
+
   const monthColors = Array.from({ length: 12 }, getRandomColor);
   const [statistical, setStatistical] = useState([]);
   const Statistical = () => {
@@ -59,18 +135,18 @@ const Dashboard = () => {
   const [columnChart, setColumnChart] = useState([]);
   const ColumnChart = (selectedYear) => {
     const dataBar = [
-      { name: "Tháng 1",  },
-      { name: "Tháng 2", },
-      { name: "Tháng 3", },
-      { name: "Tháng 4",  },
-      { name: "Tháng 5",  },
-      { name: "Tháng 6",  },
-      { name: "Tháng 7",  },
-      { name: "Tháng 8",  },
-      { name: "Tháng 9",  },
-      { name: "Tháng 10",  },
-      { name: "Tháng 11",  },
-      { name: "Tháng 12", },
+      { name: "Tháng 1" },
+      { name: "Tháng 2" },
+      { name: "Tháng 3" },
+      { name: "Tháng 4" },
+      { name: "Tháng 5" },
+      { name: "Tháng 6" },
+      { name: "Tháng 7" },
+      { name: "Tháng 8" },
+      { name: "Tháng 9" },
+      { name: "Tháng 10" },
+      { name: "Tháng 11" },
+      { name: "Tháng 12" },
     ];
 
     axios
@@ -81,11 +157,9 @@ const Dashboard = () => {
         const newData = dataBar.map((item, index) => ({
           name: item.name,
           doanh_thu: response.data.doanhthu[index],
-          fill: monthColors[index]  
+          fill: monthColors[index],
         }));
         setColumnChart(newData);
-
-      
       });
   };
   useEffect(() => {
@@ -103,9 +177,25 @@ const Dashboard = () => {
     ColumnChart(selectedYear); // Lấy giá trị năm đã chọn khi người dùng nhấp vào nút "Lọc dữ liệu"
     // Thực hiện xử lý dữ liệu dựa trên năm đã chọn
   };
-
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const remainder = rating - fullStars;
+  
+    const stars = Array(fullStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />);
+    
+    if (remainder > 0) {
+      stars.push(<FontAwesomeIcon icon={faStarHalfAlt} color="gold" />);
+    }
+  
+    const remainingStars = 5 - fullStars - (remainder > 0 ? 1 : 0);
+    stars.push(...Array(remainingStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />));
+  
+    return stars;
+  };
+  
   return (
     <div>
+    
       <div>
         <h1 className="text-3xl p-5 font-semibold">Quản lý du lịch</h1>
         <hr />
@@ -258,30 +348,28 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="chart-container">
+      <div className="chart-container flex  gap-10">
         <div className="chart-item chart-item-left">
           <h3>
             Biểu đồ doanh thu của năm {selectedYear ? selectedYear : "2023"}
           </h3>
           <br />
           <BarChart width={1000} height={400} data={columnChart}>
-  <CartesianGrid stroke="#ccc" />
-  <XAxis dataKey="name" />
-  <YAxis />
-  <Tooltip formatter={(value) => `${value} VNĐ`} />
-  <Legend />
-  <Bar dataKey="doanh_thu" name="Doanh thu" fill={getRandomColor()} />
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip formatter={(value) => `${value} VNĐ`} />
+            <Legend />
+            <Bar dataKey="doanh_thu" name="Doanh thu" fill={getRandomColor()} />
 
-  {/* Thêm các cột khác tương tự */}
-</BarChart>
-
-
+            {/* Thêm các cột khác tương tự */}
+          </BarChart>
         </div>
-        {/* <div className="chart-item chart-item-right">
+        <div className="chart-item chart-item-right">
           <h3>Biểu đồ tròn</h3>
           <PieChart width={500} height={300}>
             <Pie
-              data={dataPie}
+              data={pieChartSatusTour}
               dataKey="value"
               nameKey="name"
               cx="50%"
@@ -294,7 +382,47 @@ const Dashboard = () => {
             <Tooltip />
             <Legend />
           </PieChart>
-        </div> */}
+        </div>
+      </div>
+      <div className="top 5 mt-10 justify-normal mx-auto ml-10 gap-20 flex">
+  <div className="top5rate ">
+  <h2 className="text-2xl font-medium ">Top 5 tour hot</h2>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>ID</th>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên Địa Điểm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {results.map(result => (
+          <tr key={result.id}>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id}</td>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.ten}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <div className="top5buy ">
+  <h2 className="text-2xl font-bold">Top 5 rating</h2>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên địa điểm</th>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        {results1.map(result => (
+          <tr >
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id_tour}</td>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> {renderStars(result.average_rating)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
       </div>
     </div>
   );
