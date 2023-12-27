@@ -78,9 +78,9 @@ const AdminLoai_tour = (props) => {
                                     className="text-black"
                                     cancelText="No"
                                 >
-                                    <Button type="primary" danger>
+                                    {/* <Button type="primary" danger>
                                         Xóa
-                                    </Button>
+                                    </Button> */}
                                 </Popconfirm>
 
                                 <Button type="primary" danger>

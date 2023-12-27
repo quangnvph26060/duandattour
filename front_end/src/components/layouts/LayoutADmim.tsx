@@ -107,7 +107,7 @@ const LayoutAdmin = () => {
             }
             {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') && <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
-                <Link to="/admin/tour">Tất cả các tour</Link>
+                <Link to="/admin/tour">Quản lý tour</Link>
               </Menu.Item>
               <Menu.Item icon={<MdCategory />} key="2-2">
                 <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
@@ -150,7 +150,7 @@ const LayoutAdmin = () => {
                 key="3"
                 title={
                   <Link to="/admin/tour/dat_tour">
-                    <span>Quản lý tour</span>
+                    <span>Quản lý đặt tour</span>
                   </Link>
                 }
               >

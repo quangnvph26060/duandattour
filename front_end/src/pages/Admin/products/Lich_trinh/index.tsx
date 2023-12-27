@@ -112,7 +112,7 @@ const Admin_Lichtrinh = () => {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button type="primary" danger>Xóa</Button>
+                  {/* <Button type="primary" danger>Xóa</Button> */}
                 </Popconfirm>
                 <Button type="primary" danger>
                   <Link to={`/admin/tour/lich_trinh/edit/${id}`}>Sửa</Link>
