@@ -112,45 +112,7 @@ const TourPage: React.FC = () => {
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
 
-  // const getTour = () => {
-  //   axios
-  //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
-  //     .then((response)=>{
-  //       console.log(response.data.tourdiemden);
-  //       setTour(response.data.tourdiemden);
-  //     })
-  // }
-  // useEffect(() => {
-  //   getTour();
-  // }, []);
-
-
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   const filteredTours = tours.filter((tour) =>
-  //     tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-
-  //   setFilteredTours(filteredTours);
-  //   setSearched(true); // Đánh dấu đã tìm kiếm
-  // };
-
-  // const handleResetSearch = () => {
-  //   setSearchTerm("");
-  //   setFilteredTours([]);
-  //   setSearched(false); // Đánh dấu chưa tìm kiếm
-  // };
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
-
-  // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
-
-  //Hiếu
+  
 
   const [filteredTours, setFilteredTours] = useState([]);
   const [selectedDayRange, setSelectedDayRange] = useState(null);
