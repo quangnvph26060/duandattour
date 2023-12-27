@@ -6,9 +6,7 @@ import { Link, Route, useParams } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import anh4 from "../img/anh4.jpg"
-import anh2 from '../img/anh2.jpg'
-import anh3 from '../img/anh3.jpg'
+
 import star from "../img/star.png"
 import line from "../img/line.png"
 import anh5 from "../img/anh5.png"
@@ -22,7 +20,7 @@ import anh15 from "../img/anh15.jpg"
 import { useNavigate } from 'react-router-dom';
 
 const rounded = { borderRadius: '25px' };
-import logo from '../img/logo.jpg';
+
 import { useLocation } from "react-router-dom"
 interface Tour {
   id: number;
@@ -460,13 +458,13 @@ const TourPage: React.FC = () => {
               <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
                 <div className=' bg-white rounded-t-lg shadow-xl'>
-                  {/* {items.images.map((images) => (
-                    <img
-                      key={image.id}
-                      className="mt-4 rounded-lg w-full h-60 object-cover"
-                      src={`http://localhost:8000/storage/${images.image_path}`}
-                      alt={`Ảnh ${items.ten_tour}`}
-                    />))} */}
+                {items.image_dd && (
+            <img
+              className="mt-4 rounded-lg w-full h-60 object-cover"
+              src={`http://localhost:8000/storage/${items.image_dd}`}
+              alt={`Ảnh ${items.ten_tour}`}
+            />
+          )}
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
@@ -479,7 +477,7 @@ const TourPage: React.FC = () => {
                         <i className="fa-regular fa-heart text-white"></i>
                       </Link>
                     </div>
-                    <img src="http://localhost:5173/src/img/anh7.png" className="rounded-t-lg mb-3 h-[250px]" alt="" />
+                   
                   </div>
 
                   <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
