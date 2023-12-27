@@ -453,8 +453,8 @@ const TourPage: React.FC = () => {
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
             {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
-              : tourdiemden
-            ).map((items) => (
+              : matchedResults
+            ).slice(0, 3).map((items) => (
               <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
                 <div className=' bg-white rounded-t-lg shadow-xl'>
@@ -485,11 +485,11 @@ const TourPage: React.FC = () => {
                   <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>
                     <p className='text-sm'>Nơi khởi hành: </p>
-                    <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+                    <p className='font-medium text-sm'>{items.diem_di}</p>
                   </div>
-                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
+                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {formatCurrency(items.gia_treem)} </p>
                   <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                    <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
+                    <p className='text-xl font-bold text-red-500'>{formatCurrency(items.gia_nguoilon)} </p>
                     <div className='bg-yellow-300 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
                   </div>
                   <div className="px-3 py-4 grid grid-cols-2 gap-7">

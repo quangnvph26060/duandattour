@@ -554,11 +554,11 @@ const HomePage = () => {
             value={selectedDeparture}
             onChange={(e) => setSelectedDeparture(e.target.value)}
           >
-                <option value="Hà Nội"> Hà Nội</option>
+                <option value="Thành phố Hà Nội"> Hà Nội</option>
                 <option value="Đà Nẵng">Đà Nẵng</option>
                 <option value="Hcm">Hồ Chí Minh </option>
                 <option value="Hải Phòng">Hải Phòng</option>
-
+                <option value="Tỉnh Thanh Hóa">Thanh Hóa</option>
                 <option value="Cần Thơ">Cần Thơ</option>
                 <option value="An Giang">An Giang</option>
                 <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
@@ -643,7 +643,7 @@ const HomePage = () => {
                 <option value="An Giang">An Giang</option>
                 <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
                 <option value="Bắc Giang">Bắc Giang</option>
-                <option value="Bắc Kạn">Bắc Kạn</option>
+                <option value="Tỉnh Bắc Kạn">Bắc Kạn</option>
                 <option value="Bạc Liêu">Bạc Liêu</option>
                 <option value="Bắc Ninh">Bắc Ninh</option>
                 <option value="Bến Tre">Bến Tre</option>
@@ -655,7 +655,7 @@ const HomePage = () => {
                 <option value="Cao Bằng">Cao Bằng</option>
                 <option value="Đắk Lắk">Đắk Lắk</option>
                 <option value="Đắk Nông">Đắk Nông</option>
-                <option value="Điện Biên">Điện Biên</option>
+                <option value="Tỉnh Điện Biên">Điện Biên</option>
                 <option value="Đồng Nai">Đồng Nai</option>
                 <option value="Đồng Tháp">Đồng Tháp</option>
                 <option value="Gia Lai">Gia Lai</option>
