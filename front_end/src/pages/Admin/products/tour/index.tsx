@@ -142,7 +142,7 @@ const AdminProduct = (props: Props) => {
             <th>Name</th>
             <th>Ma Loai Tour</th>
             <th>Ảnh Đại diện</th>
-            <th>Ảnh Mô tả</th>
+    
             <th>Lich Khoi Hanh</th>
             <th>Ngay Ket Thuc</th>
             <th>Hướng dẫn viên</th>
@@ -172,7 +172,7 @@ const AdminProduct = (props: Props) => {
                   style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
                 />
               </td>
-              <td>
+              {/* <td>
                 {item.image_path.map((image, index) => (
 
 
@@ -183,7 +183,7 @@ const AdminProduct = (props: Props) => {
                     style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
                   />
                 ))}
-              </td>
+              </td> */}
               <td>{item.lich_khoi_hanh}</td>
               <td>{item.ngay_ket_thuc}</td>
               {

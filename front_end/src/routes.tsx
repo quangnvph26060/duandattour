@@ -70,6 +70,7 @@ import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 import Favorite from "./pages/favorite";
+import PromotionPage from "./pages/PromotionPage"
 export const router = createBrowserRouter([
 
   {
@@ -93,7 +94,10 @@ export const router = createBrowserRouter([
         element: <TourPage />,
     },
      
-     
+    {
+      path: "promo",
+      element: <PromotionPage />,
+  },
       {
         path: "favorite",
         element: <Favorite />,
