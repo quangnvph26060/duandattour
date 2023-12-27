@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Col, Divider, Row } from "antd";
+
+import { Form, DatePicker, Button  } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+
+
 import {
   BarChart,
   Bar,
@@ -7,8 +11,9 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
-  Tooltip,
+
   PieChart,
+  LineChart, Line, Tooltip ,
   Pie,
 } from "recharts";
 import axios from "axios";
@@ -22,6 +27,37 @@ const style: React.CSSProperties = {
   height: "90px",
 };
 const Dashboard = () => {
+  //loc 
+  const [filteredData, setFilteredData] = useState([]);
+  const [dailyRevenueData, setDailyRevenueData] = useState([]);
+  const fetchDailyRevenueData = async (start, end) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/admin/statistical/getStatisticalDate?start_date=${start.format(
+          "YYYY-MM-DD"
+        )}&end_date=${end.format("YYYY-MM-DD")}`
+      );
+      const data = response.data.data;
+  
+      // Chuyển đổi dữ liệu thành mảng objects để phù hợp với Recharts
+      const chartData = Object.keys(data).map((date) => ({
+        date,
+        revenue: data[date],
+      }));
+  
+      setDailyRevenueData(chartData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const onFinish = async (values) => {
+    try {
+      const { startDate, endDate } = values;
+      await fetchDailyRevenueData(startDate, endDate);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   // top 5 dat nhieu
   const [results, setResults] = useState([]);
   const [results1, setResults1] = useState([]);
@@ -303,28 +339,40 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-3 p-6">
-        <div>
-          <input
-            className="border border-gray-400 lg:w-72 md:w-64 h-10 text-2xl rounded-md"
-            type="number"
-            name=""
-            id=""
-          />
+      <div className="  p-6">
+      <h2 className="text-xl">Doanh thu từ ngày</h2>
+      <Form onFinish={onFinish}>
+      
+        <div className="flex">
+       
+        <Form.Item  name="startDate">
+          <DatePicker style={{ width: '200px' }} />
+        </Form.Item>
+        <Form.Item name="endDate">
+          <DatePicker style={{ width: '200px' }} />
+        </Form.Item>
+        <Form.Item className="">
+          <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+            Search
+          </Button>
+        </Form.Item>
         </div>
-        <div>
-          <input
-            className="border border-gray-400 lg:w-72 md:w-64 h-10 text-2xl rounded-md"
-            type="number"
-            name=""
-            id=""
-          />
-        </div>
-        <div>
-          <button className="px-5 py-[6px] bg-green-600 rounded-md text-white text-lg">
-            Lọc dữ liệu
-          </button>
-        </div>
+       
+    
+      </Form>
+
+      
+      <div className="chart-item mt-10">
+ 
+  <BarChart width={800} height={400} barSize={70} data={dailyRevenueData}>
+    <CartesianGrid stroke="#ccc" />
+    <XAxis dataKey="date" />
+    <YAxis />
+    <Tooltip formatter={(value) => `${value} VNĐ`} />
+    <Legend />
+    <Bar name="Doanh thu" dataKey="revenue" fill={getRandomColor()} />
+  </BarChart>
+</div>
       </div>
 
       <div className="flex gap-3 p-6">

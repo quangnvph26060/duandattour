@@ -27,6 +27,7 @@
     "postcss": "^8.4.31",
     "react": "^18.2.0",
     "react-countdown": "^2.3.5",
+    "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-modal": "^3.16.1",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
+    "@types/react-datepicker": "^4.19.4",
     "@types/react-dom": "^18.2.7",
     "@types/react-slick": "^0.23.10",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
