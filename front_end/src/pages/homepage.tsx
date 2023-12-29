@@ -109,20 +109,31 @@ const HomePage = () => {
           diemDi: selectedDeparture
         }
       });
-
+ 
+       console.log('matchedResults:', matchedResults);
       setSearchResults(response.data.data);
-      const filteredResults = response.data.data.filter((tour: Tour) =>
-        tour.ngay_ket_thuc.includes(selectedDate) &&
-        tour.lich_khoi_hanh.includes(selectedDepartureDate) &&
-        tour.diem_den === selectedDestination &&
-        tour.diem_di === selectedDeparture
-      );
+     
 
-      setMatchedResults(filteredResults);
+      let filteredResults = response.data.data || []
 
+      // if (selectedDate) {
+      //   filteredResults = filteredResults.filter(tour => tour.ngay_ket_thuc.includes(selectedDate))
+      // }
+      // if (selectedDepartureDate) {
+      //   filteredResults = filteredResults.filter(tour => tour.lich_khoi_hanh.includes(selectedDepartureDate))
+      // }
+      // if (selectedDestination) {
+      //   filteredResults = filteredResults.filter(tour => tour.diem_den === selectedDestination)
+      // }
+      // if (selectedDeparture) {
+      //   filteredResults = filteredResults.filter(tour => tour.diem_di === selectedDeparture)
+      // }
+      // setMatchedResults(filteredResults);
+     
       if (filteredResults.length > 0) {
         // Chuyển trang khi có kết quả tìm kiếm chính xác
-        navigate('/tour', { state: { matchedResults: filteredResults } });
+        console.log('filteredResult:', filteredResults);
+      navigate('/tour', { state: { matchedResults: filteredResults } });
       }
     } catch (error) {
       console.error(error);
