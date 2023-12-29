@@ -116,19 +116,19 @@ const HomePage = () => {
 
       let filteredResults = response.data.data || []
 
-      // if (selectedDate) {
-      //   filteredResults = filteredResults.filter(tour => tour.ngay_ket_thuc.includes(selectedDate))
-      // }
-      // if (selectedDepartureDate) {
-      //   filteredResults = filteredResults.filter(tour => tour.lich_khoi_hanh.includes(selectedDepartureDate))
-      // }
-      // if (selectedDestination) {
-      //   filteredResults = filteredResults.filter(tour => tour.diem_den === selectedDestination)
-      // }
-      // if (selectedDeparture) {
-      //   filteredResults = filteredResults.filter(tour => tour.diem_di === selectedDeparture)
-      // }
-      // setMatchedResults(filteredResults);
+      if (selectedDate) {
+        filteredResults = filteredResults.filter(tour => tour.ngay_ket_thuc.includes(selectedDate))
+      }
+      if (selectedDepartureDate) {
+        filteredResults = filteredResults.filter(tour => tour.lich_khoi_hanh.includes(selectedDepartureDate))
+      }
+      if (selectedDestination) {
+        filteredResults = filteredResults.filter(tour => tour.diem_den === selectedDestination)
+      }
+      if (selectedDeparture) {
+        filteredResults = filteredResults.filter(tour => tour.diem_di === selectedDeparture)
+      }
+      setMatchedResults(filteredResults);
      
       if (filteredResults.length > 0) {
         // Chuyển trang khi có kết quả tìm kiếm chính xác
