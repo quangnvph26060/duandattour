@@ -18,6 +18,7 @@ import { Tour } from "antd";
 import { Dattour } from "../../interface/Dattour";
 import logo from "./img/logo.jpg";
 import axios from "axios";
+import "./css/style.css";
 type Props = {};
 
 const img = {
@@ -50,29 +51,17 @@ const BookTour = () => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-  const [couponData, setCouponData] = useState("");
-  const [error, setError] = useState("");
-  useEffect(() => {
-    // Gửi yêu cầu HTTP POST đến API
-    axios
-      .post("http://localhost:8000/api/check_coupon", {
-        name_coupon: inputValue,
-        tourid: idTour,
-      })
-      .then((response) => {
-        // Xử lý phản hồi từ server
-        setError(response.data.message); // lỗi từ serve
-        setCouponData(response.data.session.coupon);
-        // Tiếp tục xử lý dữ liệu phản hồi từ server
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu có
-        console.error(error); // Hiển thị thông tin lỗi từ phản hồi của server
-      });
-    if (inputValue === "") {
-      setCouponData("");
-    }
-  }, [inputValue]);
+
+  const [showMore, setShowMore] = useState(false);
+
+  const handleShowMore = (event) => {
+    event.stopPropagation();// Ngăn chặn sự kiện onClick lan ra và kích hoạt onclick
+    event.preventDefault();
+    setShowMore(!showMore);
+
+  };
+
+
 
   const [isChecked1, setIsChecked1] = useState(false); // chuyển khoản
 
@@ -144,6 +133,8 @@ const BookTour = () => {
 
   const datatourArray = Tourdata?.data || [];
 
+
+
   // Lấy token từ localStorage
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -190,24 +181,76 @@ const BookTour = () => {
     }
   }, []);
   // tính tổng tiền
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [radioValue, setradioValue] = useState(0);
+  const handlegiamgia = (event) => {
+    const gialon = datatourArray?.gia_nguoilon;
+    const gianho = datatourArray?.gia_treem;
+    let giamgiaressult = (quantity * gialon + quantity2 * gianho)
+    if (parseInt(event.target.value) > 100) {
+      giamgiaressult -= parseInt(event.target.value);
+    } else if (parseInt(event.target.value) < 100) {
+
+      giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
+    }
+    setradioValue(parseInt(event.target.value));
+    console.log('123', radioValue);
+
+    // console.log(selectedValue);
+    setSelectedValue(giamgiaressult);
+  };
+  const [couponData, setCouponData] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Gửi yêu cầu HTTP POST đến API
+    axios
+      .post("http://localhost:8000/api/check_coupon", {
+        name_coupon: inputValue,
+        tourid: idTour,
+      })
+      .then((response) => {
+        // Xử lý phản hồi từ server
+        setError(response.data.message); // lỗi từ serve
+        setCouponData(response.data.session.coupon);
+        // Tiếp tục xử lý dữ liệu phản hồi từ server
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có
+        console.error(error); // Hiển thị thông tin lỗi từ phản hồi của server
+      });
+    if (inputValue === "") {
+      setCouponData("");
+    }
+  }, [inputValue]);
+
+  const [InputNhapMagiamGia, setInputNhapMagiamGia] = useState(0);
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
     const gianho = datatourArray?.gia_treem;
-    let totalPrice = quantity * gialon + quantity2 * gianho;
-
+    let totalPrice = (quantity * gialon + quantity2 * gianho);
     if (couponData.length > 0) {
-      couponData.forEach((item) => {
-        console.log(item.discount_condition);
+      couponData.map((item) => {
         if (item.discount_condition == 1) {
+          // tính theo k
           totalPrice -= item.percentage;
         } else {
+          // tính theo %
           totalPrice = (totalPrice * (100 - item.percentage)) / 100;
         }
       });
+      if (radioValue > 100) {
+        totalPrice -= radioValue;
+      } else if (radioValue < 100) {
+        totalPrice = (totalPrice * (100 - radioValue)) / 100;
+
+      }
+
     }
 
     return totalPrice;
   };
+
   const images = datatourArray?.images || [];
   // console.log(images);
 
@@ -223,6 +266,7 @@ const BookTour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
 
     if (isChecked) {
       // tiền mặt
@@ -277,22 +321,49 @@ const BookTour = () => {
         }
       }
     }
+
+
   };
-  console.log();
+
 
   // đanh giá 
   const [selectedStars, setSelectedStars] = useState(0);
-  if (datatourArray?.id !== undefined) {
-    axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id })
-      .then(response => {
-        // Xử lý phản hồi thành công từ server (nếu cần)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id });
         setSelectedStars(response.data);
-      })
-      .catch(error => {
-        // Xử lý lỗi (nếu có)
+      } catch (error) {
         console.error(error);
-      });
-  }
+      }
+    };
+
+    if (datatourArray?.id !== undefined && Tourdata?.data) {
+      fetchData();
+    }
+  }, [datatourArray?.id, Tourdata?.data]);
+
+  // giảm giá  option
+  const [inputGiamGia, setinputGiamGia] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/admin/discount/filterDicscount', { price_tour: datatourArray?.gia_nguoilon });
+        setinputGiamGia(response.data.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (datatourArray?.gia_nguoilon !== undefined && Tourdata?.data) {
+      fetchData();
+    }
+  }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
+  // hiển thị danh sách giảm giá
+
+
+
   return (
     <div className="container mx-auto">
       {/* header trên thôn tin dưới */}
@@ -318,24 +389,24 @@ const BookTour = () => {
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
               {selectedStars ? (
-                  <div className="rate  mb-5 mt-[-25px] flex gap-2">
-                    <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                  </div>
-              ):(
+                <div className="rate  mb-5 mt-[-25px] flex gap-2">
+                  <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                    <FaStar />
+                  </h2>
+                  <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                    <FaStar />
+                  </h2>
+                  <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                    <FaStar />
+                  </h2>
+                  <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                    <FaStar />
+                  </h2>
+                  <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                    <FaStar />
+                  </h2>
+                </div>
+              ) : (
                 <p></p>
               )}
               <div className=" font-bold text-[#2D4271] text-[20px] py-5">
@@ -402,7 +473,7 @@ const BookTour = () => {
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
           Thông tin liên lạc
         </p>
-        <form onSubmit={handleSubmit}>
+        <form >
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
               <input
@@ -592,32 +663,7 @@ const BookTour = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="dieukhoan scroll-text ">
-                <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
-                  Điều khoản bắt buộc khi đăng ký online
-                </p>
-                <div className="w-full mt-5 max-h-[200px] overflow-y-auto border rounded">
-                  <div className="scrollingText ">
-                    <p>
-                      This is a long piece of text that will scroll within a
-                      fixed height
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <label className="flex mt-5">
-                    <input
-                      type="checkbox"
-                      checked={isAgreed}
-                      onChange={handleAgreeToggle}
-                    />
-                    <p className="text-[#2D4271] text-[16px] font-medium">
-                      {" "}
-                      Tôi đồng ý với các điều kiện trên
-                    </p>
-                  </label>
-                </div>
-              </div> */}
+
             </div>
             <div className="h-[950px] w-1/3 border py-6 px-4 ">
               <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
@@ -706,9 +752,10 @@ const BookTour = () => {
                     {quantity2} x {datatourArray?.gia_treem}{" "}
                   </p>
                 </div>
+
                 <input
                   type="text"
-                  placeholder="Mã Giảm Giá"
+                  placeholder="Nhập mã giảm giá "
                   value={inputValue}
                   onChange={handleInputChange}
                   style={{
@@ -720,27 +767,53 @@ const BookTour = () => {
                     marginTop: "10px",
                   }}
                 />
+                <h1>Áp dụng mã giảm giá:</h1>
+                <div>
+                  <div className="radio-container">
+                    {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (
+                      <>
+                        {index === 0 && (
+                          <div className="radio-item">
+                            <input
+                              type="radio"
+                              name="radio"
+                              value={item.percentage}
+                              onChange={handlegiamgia}
+                            />
+                            <div>
+                              <h1>{item.discount_name}</h1>
+                              <p>{item.minprice}</p>
 
-                {/* <div className="flex mt-6 justify-between">
-                  <p className=" text-[#2D4271] text-base font-normal">
-                    Mã giảm giá
-                  </p>
-                  <div className="flex gap-1 text-black">
-                    <input
-                      type="text"
-                      placeholder="Thêm mã.."
-                      className="text-center text-black h-[35px] w-[100px] rounded border "
-                      name=""
-                      id=""
-                    />
-                    <button
-                      type="submit"
-                      className="h-[35px] text-white w-[100px] rounded hover:bg-green-700 bg-green-600"
-                    >
-                      Áp dụng
-                    </button>
+                            </div>
+                          </div>
+                        )}
+                        {showMore && index !== 0 && (
+                          <>
+                            <div className="radio-item">
+                              <input
+                                type="radio"
+                                name="radio"
+                                value={item.percentage}
+                                onChange={handlegiamgia}
+                              />
+                              <div>
+                                <h1>{item.discount_name}</h1>
+                                <p>Những tour trên {item.minprice}</p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </>
+
+                    ))}
+
                   </div>
-                </div> */}
+                  <button id="show-more-button" onClick={handleShowMore}>
+                    {showMore ? 'Thu gọn' : 'Xem thêm'}
+                  </button>
+                </div>
+
+
                 <p className="mx-auto mt-5">
                   <hr />
                 </p>
@@ -774,25 +847,27 @@ const BookTour = () => {
                   <p className="text-[#2D4271] text-[28px] font-semibold">
                     Tổng cộng
                   </p>
+                  {/* mỗi input giảm giá */}
                   {couponData.length > 0 ? (
                     <p className="text-red-400 text-[28px]">
-                      {calculateTotalPrice()} VNĐ
+                      {calculateTotalPrice()} VNĐ 
+                    </p>
+                  ) : selectedValue ? (
+                    <p className="text-red-400 text-[28px]">
+                      {selectedValue} VNĐ 
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
-                      {quantity * datatourArray?.gia_nguoilon +
-                        quantity2 * datatourArray?.gia_treem}{" "}
-                      VNĐ
+                      {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
                     </p>
                   )}
-                </div>
-                {/* <p className="text-[200px] ml-10">
-                  <FaQrcode />
-                </p> */}
+                  
 
+
+                </div>
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
-                  type="submit"
+                  type="submit" onClick={handleSubmit}
                 >
                   Đặt ngay
                 </button>

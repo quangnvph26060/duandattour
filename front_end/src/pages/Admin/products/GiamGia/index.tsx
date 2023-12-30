@@ -29,6 +29,7 @@ const AdminGiam_Gia = (props: Props) => {
         discount_code,
         percentage,
         expiry_date,
+        minprice,
     
     }: IDiscount) => ({
         key: id,
@@ -37,6 +38,7 @@ const AdminGiam_Gia = (props: Props) => {
         discount_code,
         percentage,
         expiry_date,
+        minprice,
     }));
     const columns = [
         {
@@ -63,6 +65,12 @@ const AdminGiam_Gia = (props: Props) => {
             render: (percentage: number) => {
                 return percentage >= 100 ?  `${percentage}K` : `${percentage}%`;
             }
+        },
+        {
+            title: "Điều kiện giảm giá",
+            dataIndex: "minprice",
+            key: "minprice",
+           
         },
         {
             title: "Loại Giảm giá",
