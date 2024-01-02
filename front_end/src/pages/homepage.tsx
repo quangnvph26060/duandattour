@@ -133,7 +133,16 @@ const HomePage = () => {
       if (filteredResults.length > 0) {
         // Chuyển trang khi có kết quả tìm kiếm chính xác
         console.log('filteredResult:', filteredResults);
-      navigate('/tour', { state: { matchedResults: filteredResults } });
+        navigate('/tour', { state: { matchedResults: filteredResults } });
+      } else {
+        // Hiển thị thông báo không tìm thấy tour và xác nhận chuyển trang
+        const confirmMessage = 'Không tìm thấy tour. Bạn có muốn chuyển trang đến /tour không?';
+        const shouldNavigate = window.confirm(confirmMessage);
+        
+        // Nếu người dùng xác nhận muốn chuyển trang, thực hiện chuyển trang tới `/tour` với trạng thái trống
+        if (shouldNavigate) {
+          navigate('/tour', { state: {} });
+        }
       }
     } catch (error) {
       console.error(error);
