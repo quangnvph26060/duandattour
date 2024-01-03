@@ -102,7 +102,7 @@ const HeaderWebsite = () => {
                 </li>
 
                 <li className="group visible">
-                  <Link to={"tour"}  className="menu-items">
+                  <Link to={"tour"} className="menu-items">
                     Tour
                   </Link>
                   {/* Menu phân cấp*/}
@@ -175,7 +175,11 @@ border-[3px] px-2 py-2  rounded"
           <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">
             Search
           </button>
-
+          {token && (
+            <Link to={'/favorite'} className="px-3">
+              <i className="fa-regular fa-heart text-red"></i>
+            </Link>
+          )}
           <div className="ml-2">
             {token ? (
               <Link to="/profile">

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useGetTourByIdQuery } from '../api/TourApi';
+import { MdDeleteOutline } from "react-icons/md"
 
 const Favorite = () => {
 
@@ -96,6 +97,31 @@ const Favorite = () => {
     console.log('2323', postData);
   }, [postData]);
 
+  const [deletingItemId, setDeletingItemId] = useState(null);
+
+  const removeFromFavorites = (tourId) => {
+    const token = localStorage.getItem('token');
+    console.log('Removing tourId:', tourId);
+
+    axios
+      .delete(`http://127.0.0.1:8000/api/favorites/${tourId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        // Update the state to remove the deleted item
+        setTourfavorite((prevFavorites) =>
+          prevFavorites.filter((item) => item.tour_id !== tourId)
+        );
+        console.log('Item removed successfully:', response.data);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error removing item:', error);
+      });
+  };
+
   return (
     <div className='mx-auto container flex gap-10 py-8'>
       <aside className='w-1/5 container mx-auto'>
@@ -155,8 +181,18 @@ const Favorite = () => {
                 <div className="tour-details">
                   <p className='py-2 px-3'>Ngày khởi hành: {item.lich_khoi_hanh}</p>
                   <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
-                  <p className='px-4 text-sm text-left pb-5'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
-                  <p className='text-right px-5 text-xl text-red-500 font-semibold py-3'>{item.gia_nguoilon}₫</p>
+                  <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
+
+                  <div className='px-4 pb-4 flex gap-10 justify-between'>
+                    <button
+                      onClick={() => removeFromFavorites(item.tour_id)}
+                      className='py-2 px-6 bg-red-500 rounded-lg text-white font-semibold text-lg flex gap-1'
+                    >
+                      <img src="" alt="" />
+                      Xóa
+                    </button>
+                    <p className='px-5 text-red-500 font-semibold py-3 text-2xl'>{item.gia_nguoilon}₫</p>
+                  </div>
                   {/* Thêm các chi tiết khác về tour tại đây */}
                 </div>
               </div>
