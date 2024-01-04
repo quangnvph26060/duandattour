@@ -78,7 +78,7 @@ Route::get('demo', function () {
     return response()->json([ 'result' => $result]);
 });
 
-Route::get('abc', [ApiDiscountController::class, 'abc']);
+
 
 //end api demo
 
@@ -189,6 +189,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('discount')->group(function () {
         Route::get('/', [ApiDiscountController::class, 'showDiscount']);
         Route::post('/', [ApiDiscountController::class, 'store']);
+        Route::post('/filterDicscount', [ApiDiscountController::class, 'filterDicscount']); // lọc giảm giá theo giá tour
         Route::get('/{id}', [ApiDiscountController::class, 'show']);
         Route::put('update/{id}', [ApiDiscountController::class, 'update']);
         Route::delete('/{id}', [ApiDiscountController::class, 'destroy']);
@@ -312,7 +313,6 @@ Route::prefix('admin')->group(function () {
     });
 
     // api thống kê
-
     Route::prefix('statistical')->group(function () {
         // đếm để thống kê doanh thu trang web
         Route::get('/', [ApiStatisticalController::class, 'getStatistical']);
