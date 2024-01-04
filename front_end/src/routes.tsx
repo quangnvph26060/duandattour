@@ -71,6 +71,8 @@ import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
 import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
+import Banner_logo from "./pages/Admin/products/Banner_logo";
+import Add_Banner from "./pages/Admin/products/Banner_logo/add";
 export const router = createBrowserRouter([
 
   {
@@ -245,6 +247,15 @@ export const router = createBrowserRouter([
       //   path: "tour/loai_phuong_tien/edit/:idPhuongTien",
       //   element: <ADmin_Phuongtienedit />,
       // },
+
+      {
+        path: "banner_logo",
+        element: <Banner_logo/>
+      },
+      {
+        path: "add_banner",
+        element: <Add_Banner/>
+      },
       {
         path: "customer_account",
         element: <Admin_Khachhang />,
