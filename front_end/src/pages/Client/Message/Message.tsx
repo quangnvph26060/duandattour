@@ -134,7 +134,7 @@ const MessageChatBox = () => {
         <div className="chat-box">
           <div className=" bg-red-500 px-5 py-3 rounded-md">
             <img src={logo} alt="logo" width="30px" />
-            <h3 className="chat-title">aaaaaa</h3>
+            <h3 className="chat-title">PolyTour</h3>
           </div>
           <div className="message-list">
             {alertMessager()}

@@ -62,16 +62,20 @@ const Login = () => {
         console.log(response.data)
         const token = response.data.access_token;
         const role = response.data.role;
-        const avatar = response.data.data.image;
-
-        localStorage.setItem('avatar', avatar)
+      
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
         localStorage.setItem("id", response.data.data.id);
         // authContext.storeAuthData(token,role);
         //  setUser(response.data.role);
         alert("Đăng nhập thành công");
-        window.location.href = '/';
+        if(localStorage.getItem("role") === 'admin'){
+ 
+          window.location.href = 'http://localhost:5173/admin';
+        }else{
+          window.location.href = 'http://localhost:5173/';
+        }
+        
 
 
       }

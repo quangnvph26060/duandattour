@@ -35,6 +35,8 @@ class ApiDiscountController extends Controller
             'discount_code' => 'required|unique:discounts',
             'percentage' => 'required|integer',
             'expiry_date' => 'required|date',
+            'minprice' => 'required',
+          
         ]);
 
         // Kiểm tra điều kiện discount_condition và percentage
@@ -51,8 +53,10 @@ class ApiDiscountController extends Controller
         $discount->discount_name = $validatedData['discount_name'];
         $discount->discount_condition = $validatedData['discount_condition'];
         $discount->discount_code = $validatedData['discount_code'];
-        $discount->percentage = $validatedData['percentage'];
         $discount->expiry_date = $validatedData['expiry_date'];
+        $discount->percentage = $validatedData['percentage'];
+        $discount->minprice = $validatedData['minprice'];
+       
         $discount->save();
 
         // Trả về kết quả thành công
@@ -80,6 +84,7 @@ class ApiDiscountController extends Controller
             'discount_code' => 'required|unique:discounts,discount_code,' . $id,
             'percentage' => 'required|integer',
             'expiry_date' => 'required|date',
+            'minprice' => 'required',
         ]);
 
         // Kiểm tra điều kiện discount_condition và percentage
@@ -100,6 +105,7 @@ class ApiDiscountController extends Controller
         $discount->discount_code = $validatedData['discount_code'];
         $discount->percentage = $validatedData['percentage'];
         $discount->expiry_date = $validatedData['expiry_date'];
+        $discount->minprice = $validatedData['minprice'];
         $discount->save();
 
         // Trả về kết quả thành công
@@ -255,5 +261,9 @@ class ApiDiscountController extends Controller
             ->delete();
 
         return response()->json(['status' => 'success']);
+    }
+    public function filterDicscount(Request $request) {
+        $result=  Discount::where('minprice','>',$request->input('price_tour'))->get();
+        return response()->json(['data'=>$result]);
     }
 }
