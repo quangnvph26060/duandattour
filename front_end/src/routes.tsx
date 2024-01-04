@@ -70,6 +70,7 @@ import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 import Favorite from "./pages/favorite";
+import TestPage from "./pages/test";
 import PromotionPage from "./pages/PromotionPage"
 export const router = createBrowserRouter([
 
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "h",
+        element: <TestPage />,
       },
       {
         path: "news",
