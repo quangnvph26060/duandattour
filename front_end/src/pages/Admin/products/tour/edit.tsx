@@ -244,7 +244,7 @@ const AdminTourEdit = () => {
           name="mo_ta"
           rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
         >
-          <Input.TextArea className='mt-4' />
+          <Input.TextArea className='mt-4'/>
         </Form.Item>
 
         <Form.Item
@@ -263,21 +263,21 @@ const AdminTourEdit = () => {
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <div className='btn-button-sub-pt'>
-            <Button type="primary" danger htmlType="submit" className='submit-click'
-            >
-              Cập Nhật
-              {/* <AiOutlineLoading3Quarters className="animate-spin" />   */}
-            </Button>
-            <Button
-              type="primary"
-              danger
-              className="ml-2"
-              onClick={() => navigate("/admin/tour")}
-            >
-              Quay lại
-            </Button>
+          <Button type="primary" danger htmlType="submit" className='submit-click'
+          >
+            Cập Nhật
+            {/* <AiOutlineLoading3Quarters className="animate-spin" />   */}
+          </Button>
+          <Button
+            type="primary"
+            danger
+            className="ml-2"
+            onClick={() => navigate("/admin/tour")}
+          >
+            Quay lại
+          </Button>
           </div>
-
+         
         </Form.Item>
       </Form>
     </div>

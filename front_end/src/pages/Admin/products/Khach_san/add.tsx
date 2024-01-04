@@ -29,10 +29,17 @@ type FieldType = {
 };
 
 const ADmin_KhachsanADD: React.FC = () => {
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
   const [addKhachsan] = useAddKhachSanMutation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
   const onFinish = (values: IKhachSan) => {
     const formData = new FormData();
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
@@ -63,23 +70,7 @@ const ADmin_KhachsanADD: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.Item
-          label="Image"
-          name="hinh"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-        >
-          <div className="upload">
-            <Upload
-              accept="image/*"
-              listType="picture"
-              beforeUpload={() => false}
-            >
-              <Button icon={<UploadOutlined />} type="button">
-                Chọn ảnh
-              </Button>
-            </Upload>
-          </div>
-        </Form.Item>
+      
         <Form.Item
           label="Tên khách sạn"
           name="ten_khach_san"
@@ -114,6 +105,23 @@ const ADmin_KhachsanADD: React.FC = () => {
           help={errors}
         >
           <Input />
+        </Form.Item>
+        <Form.Item
+          label="Image"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <div className="upload">
+            <Upload
+              accept="image/*"
+              listType="picture"
+              beforeUpload={() => false}
+            >
+              <Button icon={<UploadOutlined />} type="button" onClick={handleButtonClick} className={imageButtonClass}>
+                Chọn ảnh
+              </Button>
+            </Upload>
+          </div>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

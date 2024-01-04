@@ -184,28 +184,13 @@ const AdminTourAdd: React.FC = () => {
                 <Input />
               </Form.Item>
               <Form.Item
-                label="Ảnh đại diện"
-                name="image"
-                rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-              >
-                <Upload
-                  accept="image/*"
-                  listType="picture"
-                  beforeUpload={() => false}
-                >
-                  <Button icon={<UploadOutlined />} type="button">
-                    Chọn ảnh
-                  </Button>
-                </Upload>
-              </Form.Item>
-              <Form.Item
                 className="w-full "
-                label="Hình ảnh mô tả"
+                label="Hình ảnh"
                 name="hinh"
                 rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
               >
                 <Upload
-                  className=""
+                className=""
                   accept="image/*" // Chỉ chấp nhận các định dạng ảnh
                   listType="picture"
                   beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
@@ -221,7 +206,23 @@ const AdminTourAdd: React.FC = () => {
                 </Upload>
               </Form.Item>
 
-
+              <Form.Item
+                className={`w-full ${imageButtonClass}`}
+                label="Điểm khởi hành"
+                name="diem_khoi_hanh"
+                rules={[
+                  { required: true, message: "Vui lòng chọn điểm khởi hành!" },
+                ]}
+              >
+                <Select defaultValue="Điểm khởi hành">
+                  <Option value="">Chọn điểm đi</Option>
+                  {provinces.map((province) => (
+                    <Option key={province.code} value={province.name}>
+                      {province.name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
               <Form.Item
                 className="w-full"
                 label="Điểm đi"
@@ -238,11 +239,13 @@ const AdminTourAdd: React.FC = () => {
                 </Select>
               </Form.Item>
               <Form.Item
+                className="w-full"
                 label="Điểm đến"
                 name="diem_den"
-                rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
+                rules={[{ required: true, message: "Vui lòng chọn điểm đến!" }]}
               >
-                <Select defaultValue="Chọn điểm đến" mode="multiple">
+                <Select defaultValue="Chọn điểm đến ">
+                  <Option value="">Chọn điểm đến</Option>
                   {provinces2.map((province) => (
                     <Option key={province.code} value={province.name}>
                       {province.name}

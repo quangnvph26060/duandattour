@@ -537,9 +537,9 @@ const DetailPage = (props: Props) => {
                         </svg>
                         Đặt ngay
                       </button>
-                      <div className="border px-5 py-2.5 rounded-lg bg-white">
-                        <a href="">Xem chi tiết</a>
-                      </div>
+                     <div className="border px-5 py-2.5 rounded-lg bg-white">
+                      <a href="">Xem chi tiết</a>
+                     </div>
                     </div>
                   </div>
                 </div>
@@ -588,9 +588,9 @@ const DetailPage = (props: Props) => {
                         </svg>
                         Đặt ngay
                       </button>
-                      <div className="border px-5 py-2.5 rounded-lg bg-white">
-                        <a href="">Xem chi tiết</a>
-                      </div>
+                     <div className="border px-5 py-2.5 rounded-lg bg-white">
+                      <a href="">Xem chi tiết</a>
+                     </div>
                     </div>
                   </div>
                 </div>
@@ -639,9 +639,9 @@ const DetailPage = (props: Props) => {
                         </svg>
                         Đặt ngay
                       </button>
-                      <div className="border px-5 py-2.5 rounded-lg bg-white">
-                        <a href="">Xem chi tiết</a>
-                      </div>
+                     <div className="border px-5 py-2.5 rounded-lg bg-white">
+                      <a href="">Xem chi tiết</a>
+                     </div>
                     </div>
                   </div>
                 </div>
@@ -690,9 +690,9 @@ const DetailPage = (props: Props) => {
                         </svg>
                         Đặt ngay
                       </button>
-                      <div className="border px-5 py-2.5 rounded-lg bg-white">
-                        <a href="">Xem chi tiết</a>
-                      </div>
+                     <div className="border px-5 py-2.5 rounded-lg bg-white">
+                      <a href="">Xem chi tiết</a>
+                     </div>
                     </div>
                   </div>
                 </div>

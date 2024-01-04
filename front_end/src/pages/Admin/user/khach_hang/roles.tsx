@@ -123,16 +123,16 @@ const Admin_Acountkhachhang_Roles: React.FC = () => {
             {username()}
             {value()}
             <div>
-              <Form.Item
-
-                className="role-form"
-              >
-                <Button type="success" htmlType="submit" className="role-user">
-                  Cấp vai trò
-                </Button>
-              </Form.Item>
+            <Form.Item
+             
+              className="role-form"
+            >
+              <Button type="success" htmlType="submit" className="role-user">
+                Cấp vai trò
+              </Button>
+            </Form.Item>
             </div>
-
+           
           </Form>
         </div>
         <div className="w-1/2">
@@ -153,18 +153,18 @@ const Admin_Acountkhachhang_Roles: React.FC = () => {
               <div className="flex items-center">
                 <Input className="mr-10" />
                 <div className="btn-button-sub-role">
-                  <Button type="primary" htmlType="submit" className="submit-click">
-                    Thêm
-                  </Button>
-                  <Button
-                    type="default"
-                    className="ml-2"
-                    onClick={() => navigate("/admin/customer_account")}
-                  >
-                    Quay lại
-                  </Button>
+                <Button type="primary" htmlType="submit" className="submit-click">
+                  Thêm
+                </Button>
+                <Button
+                  type="default"
+                  className="ml-2"
+                  onClick={() => navigate("/admin/customer_account")}
+                >
+                  Quay lại
+                </Button>
                 </div>
-
+               
               </div>
             </Form.Item>
           </Form>

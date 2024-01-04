@@ -56,22 +56,22 @@ const ADmin_PhuontiengADD: React.FC = () => {
         >
           <Input />
         </Form.Item>
-
-
+   
+       
         <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <div className="btn-button-sub-pt">
-            <Button type="primary" htmlType="submit" className="submit-click" >
-              Thêm
-            </Button>
-            <Button
-              type="default"
-              className="ml-2"
-              onClick={() => navigate("/admin/tour/loai_tour")}
-            >
-              Quay lại
-            </Button>
+          <Button type="primary" htmlType="submit" className="submit-click" >
+            Thêm
+          </Button>
+          <Button
+            type="default"
+            className="ml-2"
+            onClick={() => navigate("/admin/tour/loai_tour")}
+          >
+            Quay lại
+          </Button>
           </div>
-
+          
         </Form.Item>
       </Form>
     </div>

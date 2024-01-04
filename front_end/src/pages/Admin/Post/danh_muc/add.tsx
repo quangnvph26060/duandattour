@@ -13,45 +13,28 @@ const AdminLoai_tourEdit: React.FC = () => {
   const LoaiTour = LoaiTourData || {};
   const [updateLoaiTour] = useEditLoaiTourMutation();
 
-  const [name, setName] = useState('');
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    form.setFieldsValue({
-      hinh: LoaiTour.image,
-      ten_loai_tour: LoaiTour.ten_loai_tour,
-
-    });
-  }, [LoaiTour]);
+type FieldType = {
+  id: number;
+  image: string;
+  ten_loai_tour: string;
+};
 
   const navigate = useNavigate();
 
-  const onFinish = async (values: ILoaiTour) => {
-    try {
-      const formData = new FormData();
-      formData.append('image', values.image.fileList[0].originFileObj);
-      formData.append('ten_loai_tour', values.ten_loai_tour);
+  const onFinish = (values: ILoaiTour) => {
+    const formData = new FormData();
 
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/admin/loaitour/${idLoaiTour}`,
-        formData,
-        {
-          headers: {
-            'X-HTTP-Method-Override': 'PUT',
-          },
-        }
-      );
+    formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
 
-      if (response.status === 200) {
-        console.log('Thành công');
-        console.log(response);
-        window.location.href = 'http://localhost:5173/admin/tour/loai_tour';
-      } else {
-        console.log('Yêu cầu thất bại');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    addLoaiTour(formData)
+      .unwrap()
+      .then(() => navigate("/admin/post/danhmuc_post"))
+      .catch((error) => {
+        console.log(error);
+        // Xử lý lỗi (nếu có)
+      });
+
+    console.log(values);
   };
 
   return (
@@ -99,19 +82,18 @@ const AdminLoai_tourEdit: React.FC = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className='btn-button-sub'>
-            <Button type="primary" htmlType="submit" className='submit-click'>
-              Sửa
+          <div className="btn-button-sub-pt">
+            <Button type="primary" htmlType="submit" className="submit-click">
+              Thêm
             </Button>
             <Button
               type="default"
               className="ml-2"
-              onClick={() => navigate('/admin/tour')}
+              onClick={() => navigate("/admin/tour/loai_tour")}
             >
               Quay lại
             </Button>
           </div>
-
         </Form.Item>
       </Form>
     </div>
