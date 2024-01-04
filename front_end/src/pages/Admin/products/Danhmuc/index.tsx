@@ -98,12 +98,15 @@ const AdminLoai_tour = (props) => {
         <div>
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý loại tour</h2>
-                <Button type="primary" danger>
-                    <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
-                        <AiOutlinePlus />
-                        Tạo mới loại tour
-                    </Link>
-                </Button>
+
+                {localStorage.getItem("role") === 'admin' ? (
+                    <Button type="primary" danger>
+                        <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
+                            <AiOutlinePlus />
+                            Tạo mới loại tour
+                        </Link>
+                    </Button>
+                ) : null}
             </header>
             <div className="flex items-center space-x-2 mb-4">
                 <Input

@@ -33,8 +33,11 @@ use App\Http\Controllers\API\ApiPostDanhmucController;
 
 use App\Http\Controllers\Api\ApiNotificationController;
 use App\Http\Controllers\Api\ApiStatisticalController;
+use App\Models\DatTour;
+use App\Models\TourModel;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
+use Mews\Purifier\Facades\Purifier;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,17 +52,38 @@ use Carbon\Carbon;
 // api demo
 Route::get('a', [ApiDatTourController::class, 'demo']);
 Route::get('demo', function () {
-    $today = Carbon::today(); // Lấy ngày tháng năm hiện tại
-    $today1 = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-    return response()->json([
-        'today' => $today,
-        'today+1' => $today1,
-    ]);
+    $countArray = DB::table('dat_tours')
+    ->select('id_tour', DB::raw('COUNT(*) as count'))
+    ->groupBy('id_tour')
+    ->orderByDesc('count')
+    ->take(5)
+    ->get();
+   
+
+    $tourArray = TourModel::select('id', 'ten_tour')->get();
+    // tọa 1 mảng rỗng 
+    $result = [];
+    $countArray = json_decode(json_encode($countArray), true);
+    foreach ($countArray as $countItem) {
+        foreach ($tourArray as $tourItem) {
+            if ($countItem['id_tour'] === $tourItem['id']) {
+                $result[] = [
+                    'ten' => $tourItem['ten_tour'],
+                    'ids' => $countItem['id_tour'],
+                ];
+                break;
+            }
+        }
+    }
+    return response()->json([ 'result' => $result]);
 });
+
 Route::get('abc', [ApiDiscountController::class, 'abc']);
+
 //end api demo
 
-
+// đánh giá về số sao cho tour đó 
+Route::post('/so_sao_tour', [ApiEvaluateController::class, 'so_sao']);
 // đếm tour đã đi thành công 
 Route::get('CountTour', [ApiDatTourController::class, 'CountTour']);
 
@@ -138,6 +162,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/evaluate', [ApiEvaluateController::class, 'addDanhGia']);
     Route::get('/find_evaluate', [ApiEvaluateController::class, 'findDanhGia']);
 });
+
 Route::group(['middleware' => ['auth:sanctum', 'role:admin|nhan_vien']], function () {
     Route::prefix('admin')->group(function () {
         Route::prefix('loaitour')->group(function () {
@@ -159,6 +184,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/getListHDVTour', [ApiHuongDanVienTourController::class, 'getListHDVTour']);
     });
 
+    // giảm giá 
 
     Route::prefix('discount')->group(function () {
         Route::get('/', [ApiDiscountController::class, 'showDiscount']);
@@ -173,6 +199,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiDiscountController::class, 'tour_discount_show']);
         Route::put('update/{id}', [ApiDiscountController::class, 'tour_discount_update']);
         Route::delete('/{id}', [ApiDiscountController::class, 'tour_discount_delete']);
+    });
+    Route::prefix('evaluate')->group(function () {
+        Route::get('/', [ApiEvaluateController::class, 'showDanhGia']);
+        Route::delete('/{id}', [ApiEvaluateController::class, 'deleteDanhGia']);
     });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
@@ -212,6 +242,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
     });
+
 
     Route::prefix('diadiem')->group(function () {
         Route::get('/', [ApiDiaDiemController::class, 'index']);
@@ -295,6 +326,8 @@ Route::prefix('admin')->group(function () {
         
             return response()->json(['years' => $years], 200);
         });
+        Route::get('/topFiveTours', [ApiStatisticalController::class, 'topFiveTours']);
+        Route::get('/topAddress', [ApiStatisticalController::class, 'topAddress']);
     });
 
     Route::prefix('dattour')->group(function () {

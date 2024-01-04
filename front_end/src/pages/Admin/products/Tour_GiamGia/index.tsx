@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import {
     useGetTourDiscountQuery,
-     useRemoveTourDiscountMutation,
+    useRemoveTourDiscountMutation,
 } from "../../../../api/TourDiscountApi";
 import { ITourDiscount } from "../../../../interface/tourdiscount";
 import { useGetTourQuery } from "../../../../api/TourApi";
@@ -21,8 +21,8 @@ const Admin_TourDiscount = () => {
 
     const discountdataArray = discountdata || [];
     const datatourArray = datatour || [];
-     const [removeImage, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-     useRemoveTourDiscountMutation();
+    const [removeImage, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+        useRemoveTourDiscountMutation();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState("");
@@ -40,7 +40,7 @@ const Admin_TourDiscount = () => {
     //     setIsModalVisible(false);
     // };
 
-   
+
 
 
 
@@ -68,7 +68,7 @@ const Admin_TourDiscount = () => {
                 return tour ? tour.ten_tour : "Không xác định";
             },
         },
-      
+
         {
             title: "Tên mã giảm giá ",
             dataIndex: "discount_id",
@@ -162,12 +162,14 @@ const Admin_TourDiscount = () => {
                     </Form.Item>
 
                 </Form>
-                <Button type="primary" danger>
-                    <Link to="/admin/tour/tour_discount/add" className="flex items-center space-x-2">
-                        <AiOutlinePlus />
-                       Thêm mã giảm giá vào tour
-                    </Link>
-                </Button>
+                {localStorage.getItem("role") === 'admin' ? (
+                    <Button type="primary" danger>
+                        <Link to="/admin/tour/tour_discount/add" className="flex items-center space-x-2">
+                            <AiOutlinePlus />
+                            Thêm mã giảm giá vào tour
+                        </Link>
+                    </Button>
+                ) : null}
             </header>
             {isRemoveSuccess && <Alert message="Success Text" type="success" />}
             {isLoading ? (
@@ -176,7 +178,7 @@ const Admin_TourDiscount = () => {
                 <Table dataSource={filteredDataSource} columns={columns} />
             )}
 
-          
+
         </div>
     );
 };

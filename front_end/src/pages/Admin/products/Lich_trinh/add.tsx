@@ -80,14 +80,14 @@ const Admin_LichtrinhADD: React.FC = () => {
 
         </Form.Item>
         <Form.Item
-          label="Lịch khởi hành"
+          label="Thời gian"
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
           <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item
-          label="ID Tour"
+          label="Tour"
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
@@ -105,7 +105,7 @@ const Admin_LichtrinhADD: React.FC = () => {
             <Button
               type="default"
               className="ml-2"
-              onClick={() => navigate("/admin/tour/loai_tour")}
+              onClick={() => navigate("/admin/tour/lich_trinh")}
             >
               Quay lại
             </Button>
