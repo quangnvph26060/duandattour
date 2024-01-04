@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch, Input} from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, message, Switch, Input } from "antd";
 import { Link } from "react-router-dom";
 import { useGetLichTrinhQuery, useRemoveLichTrinhMutation } from "../../../../api/LichTrinhApi";
 import { useGetTourQuery } from "../../../../api/TourApi";
@@ -24,7 +24,7 @@ const Admin_Lichtrinh = (props: Props) => {
       content: "This is a success message",
     });
   };
-  const [searchValue ,setSearchValue]= useState();
+  const [searchValue, setSearchValue] = useState();
   const [
     removeLichTrinh,
     { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess },
@@ -48,7 +48,7 @@ const Admin_Lichtrinh = (props: Props) => {
   const lichtrinhrArray = lictrinhdata?.date || [];
   const tourArrary = tourdata?.data || [];
   const dataSource = lichtrinhrArray.map(
-    ({ id, noi_dung, thoi_gian,status, id_tour }: ILichTrinh) => ({
+    ({ id, noi_dung, thoi_gian, status, id_tour }: ILichTrinh) => ({
       key: id,
       noi_dung,
       thoi_gian,
@@ -94,6 +94,12 @@ const Admin_Lichtrinh = (props: Props) => {
       title: "Nội dung",
       dataIndex: "noi_dung",
       key: "noi_dung",
+      render: (text) => (
+        <div>
+          {/* Hiển thị mô tả toàn bộ */}
+          <div dangerouslySetInnerHTML={{ __html: text }} />
+        </div>
+      ),
     },
     {
       title: "Thời gian",
@@ -117,7 +123,7 @@ const Admin_Lichtrinh = (props: Props) => {
       ),
       dataIndex: "status",
       key: "status",
-      render: (status, {key: id }) => {
+      render: (status, { key: id }) => {
         const check = status === 0 ? false : true;
 
         return (
@@ -170,16 +176,16 @@ const Admin_Lichtrinh = (props: Props) => {
       </header>
 
       <div className="flex items-center justify-end mb-4">
-  <Input
-    style={{ width: "250px" }}
-    placeholder="Tìm kiếm lịch trình"
-    value={searchValue}
-    onChange={handleSearchChange}
-  />
-  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
-    Tìm kiếm
-  </Button>
-</div>
+        <Input
+          style={{ width: "250px" }}
+          placeholder="Tìm kiếm lịch trình"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+        <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
+          Tìm kiếm
+        </Button>
+      </div>
 
       {isLoading ? (
         <Skeleton />
