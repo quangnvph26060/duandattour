@@ -182,12 +182,7 @@ const LayoutAdmin = () => {
               <Menu.Item icon={<AiFillSchedule />} key="2-4">
                 <Link to="/admin/tour/lich_trinh">Lịch trình tour</Link>
               </Menu.Item>
-              <Menu.Item icon={<FaHotel />} key="2-5">
-                <Link to="/admin/tour/loai_khach_san">Khách sạn tour</Link>
-              </Menu.Item>
-              <Menu.Item icon={<FaCar />} key="2-6">
-                <Link to="/admin/tour/loai_phuong_tien">Phương tiện tour</Link>
-              </Menu.Item>
+             
               <Menu.Item icon={<MdFeedback />} key="2-8">
                 <Link to="/admin/evaluate">Đánh Giá</Link>
               </Menu.Item>
@@ -230,11 +225,9 @@ const LayoutAdmin = () => {
             </Menu.SubMenu>
             <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
               <Menu.Item icon={<FaUser />} key="4-1">
-                <Link to="/admin/customer_account">Tài khoản khách</Link>
+                <Link to="/admin/customer_account">Tài khoản </Link>
               </Menu.Item>
-              <Menu.Item icon={<FaUserTag />} key="4-2">
-                <Link to="/admin/account_huongdanvien">Hướng dẫn viên</Link>
-              </Menu.Item>
+            
             </Menu.SubMenu>
             <Menu.SubMenu key="5" icon={<MdPermMedia />} title="Truyền thông ">
               <Menu.SubMenu icon={<FaNewspaper />} key="5-1" title="Bài viết">
