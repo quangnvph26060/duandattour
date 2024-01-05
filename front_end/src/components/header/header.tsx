@@ -7,10 +7,26 @@ import logo from "../img/logo.jpg";
 import { useGetMenuQuery } from "../../api/menu";
 import { data } from "autoprefixer";
 import "../../page.css";
+import axios from "axios";
 
 const HeaderWebsite = () => {
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
+  const [imagesData, setImagesData] = useState([]);
+
+  useEffect(() => {
+    const fetchImagesData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        setImagesData(response.data); // Assuming the API response is an array of image data
+      } catch (error) {
+        console.error('Error fetching image data:', error);
+      }
+    };
+
+    fetchImagesData();
+  }, []);
+
   useEffect(() => {
     if (token) {
       // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -38,11 +54,6 @@ const HeaderWebsite = () => {
   // 
 
   // const navigate = useNavigate();
-
-  const reloadTour = (e) => {
-    e.preventDefault();
-    window.location.reload();
-  };
 
   if (isLoading) {
     return <div>Đang tải dữ liệu...</div>;
@@ -83,13 +94,25 @@ const HeaderWebsite = () => {
     });
     console.log(combinedData);
   }
+
+  
+
   return (
     <div>
       {" "}
       <div className="menu flex items-center justify-between">
         <div className="flex">
           <a href="/">
-            <img style={rounded} src={logo} alt="logo" width="100px" />
+            {imagesData.length > 0 ? (
+              <img
+                style={rounded}
+                src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
+                alt=""
+                width="100px"
+              />
+            ) : (
+              <span></span>
+            )}
           </a>
 
           <nav className="font-semibold p-4 pt-8 pl-18">

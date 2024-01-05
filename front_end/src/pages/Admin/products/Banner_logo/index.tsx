@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button, Popconfirm } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { useGetSlidersQuery } from '../../../../api/Slider';
+import axios from 'axios';
 
 const Banner_logo = () => {
     const navigate = useNavigate();
-    const { data: imagesData } = useGetSlidersQuery();
-    console.log("123",imagesData);
+    const [imagesData, setImagesData] = useState([]);
 
+    useEffect(() => {
+        const fetchImagesData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+                setImagesData(response.data); // Assuming the API response is an array of image data
+            } catch (error) {
+                console.error('Error fetching image data:', error);
+            }
+        };
 
+        fetchImagesData();
+    }, []);
+    console.log(imagesData)
 
     const dataSource = imagesData
         ? imagesData.map(({ id, url }) => ({
@@ -28,11 +39,11 @@ const Banner_logo = () => {
             title: 'Hình ảnh Banner',
             dataIndex: 'image_banner',
             key: 'image_banner',
-            render: (image_banner: string) => (
+            render: () => (
                 <img
-                    src={`http://localhost:8000${image_banner}`}
+                    src={`http://localhost:8000/storage/${imagesData[0].image_banner}`}
                     alt="img"
-                    style={{ width: '50px', cursor: 'pointer' }}
+                    style={{ width: '200px', cursor: 'pointer' }}
                 />
             ),
         },
@@ -40,11 +51,11 @@ const Banner_logo = () => {
             title: 'Hình ảnh Logo',
             dataIndex: 'image_logo',
             key: 'image_logo',
-            render: (image_logo: string) => (
+            render: () => (
                 <img
-                    src={`http://localhost:8000${image_logo}`}
+                    src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
                     alt="img"
-                    style={{ width: '50px', cursor: 'pointer' }}
+                    style={{ width: '150px', cursor: 'pointer' }}
                 />
             ),
         },
@@ -73,7 +84,7 @@ const Banner_logo = () => {
         },
     ];
 
-    const confirm = (id: string) => {
+    const confirm = (id) => {
         // Implement your confirm logic here
         console.log(`Confirmed deletion for image with ID: ${id}`);
     };
@@ -90,7 +101,7 @@ const Banner_logo = () => {
                     + Thêm mới Banner & Logo
                 </button>
             </div>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />
         </div>
     );
 };

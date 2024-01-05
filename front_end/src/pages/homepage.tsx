@@ -99,6 +99,22 @@ const HomePage = () => {
   const [selectedDeparture, setSelectedDeparture] = useState('');
   const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
   const navigate = useNavigate();
+  const [imagesData, setImagesData] = useState([]);
+
+  useEffect(() => {
+    const fetchImagesData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        setImagesData(response.data); // Assuming the API response is an array of image data
+      } catch (error) {
+        console.error('Error fetching image data:', error);
+      }
+    };
+
+    fetchImagesData();
+  }, []);
+  console.log('123', imagesData)
+
   const handleSearch = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/admin/tour/', {
@@ -448,15 +464,16 @@ const HomePage = () => {
             },
           ]}
         >
-          {names.map((name) => (
-            <div key={name.id} className="slider-item">
+          {imagesData.length > 0 ? (
               <img
-                style={{ height: "570px", maxWidth: "1920px" }}
-                className="slider-image"
-                src={name.image}
+                style={rounded}
+                src={`http://localhost:8000/storage/${imagesData[0].image_banner}`}
+                alt=""
+                width="100px"
               />
-            </div>
-          ))}
+            ) : (
+              <span></span>
+            )}
         </Slider>
       </div>
       <div
