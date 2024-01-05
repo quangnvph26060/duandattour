@@ -10,7 +10,6 @@ import {
   Alert,
   Switch,
   message,
-  Select
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,9 +22,8 @@ import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
 import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
-  const [filterStatus, setFilterStatus] = useState("all"); // Mặc định là "all", có thể là "chuathanhtoan" hoặc "dathanhtoan"
-
   const [sortedData, setSortedData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const openModal = (record) => {
@@ -44,7 +42,17 @@ const ADmin_DatTour = (props: Props) => {
       success();
     }
   };
-
+  const filterData = (status) => {
+    if (status === 'chuathanhtoan') {
+      const filtered = sortedData.filter((item) => item.trang_thai === 0);
+      setFilteredData(filtered);
+    } else if (status === 'dathanhtoan') {
+      const filtered = sortedData.filter((item) => item.trang_thai === 1);
+      setFilteredData(filtered);
+    } else if (status === 'tatca') {
+      setFilteredData(sortedData);
+    }
+  };
   const success = () => {
     message.success("Trạng thái đã được chuyển đổi thành công");
   };
@@ -117,20 +125,6 @@ const ADmin_DatTour = (props: Props) => {
     },
     // Thêm các cột khác tương ứng với thông tin người đặt
   ];
-  // Lấy dữ liệu cho trang hiện tại
-
-  // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-  // useRemove();
-
-  // const confirm = (id: any) => {
-  //     if(!window.confirm('bạn có muốn xóa không ')){
-  //         return
-  //     }
-  //     removeProduct(id);
-
-  // };
-
-  //  const dattour = dattour?.data || [];
 
   const dataSource = sortedData.map(
     ({
@@ -143,6 +137,7 @@ const ADmin_DatTour = (props: Props) => {
       xac_nhan,
       trang_thai,
       id_tour,
+      image_dd,
       so_luong_khach,
       ten_tour,
       tours,
@@ -151,7 +146,7 @@ const ADmin_DatTour = (props: Props) => {
       ngay_dat,
       email,
       sdt,
-      image_path,
+      image_dd,
       xac_nhan,
       trang_thai,
       id_tour,
@@ -195,11 +190,11 @@ const ADmin_DatTour = (props: Props) => {
     },
     {
       title: <span style={tableStyles}>Ảnh minh họa</span>,
-      dataIndex: "image_path",
-      key: "image_path",
+      dataIndex: "image_dd",
+      key: "image_dd",
       render: (text, record) => (
         <img
-          src={`http://localhost:8000/storage/${record.tours.image_path}`}
+          src={`http://localhost:8000/storage/${record.tours.image_dd}`}
           alt="img"
           style={{ width: "200px", cursor: "pointer" }}
         />
@@ -260,33 +255,20 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "trang_thai",
       key: "trang_thai",
       render: (trang_thai, { key: id }: any) => {
-        const statusOptions = [
-          { value: 0, label: 'Chưa thanh toán', color: 'red' },
-          { value: 1, label: 'Đã thanh toán', color: 'green' },
-        ];
+        const check = trang_thai === 0 ? false : true;
+        console.log(id);
 
         return (
-          <Select
-            defaultValue={trang_thai}
-            style={{ width: 120 }}
-            onChange={(value) => {
-              updateStatus(id, value);
+          <Switch
+            defaultChecked={check}
+            onChange={(checked) => {
+              updateStatus(id);
             }}
-          >
-            {statusOptions.map((option) => (
-              <Select.Option
-                key={option.value}
-                value={option.value}
-                style={{ color: option.color }}
-              >
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
+          />
         );
+        //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
       },
     },
-
     {
       title: <span style={tableStyles}>Xác nhận tour</span>,
       dataIndex: "so_luong_khach",
@@ -299,11 +281,11 @@ const ADmin_DatTour = (props: Props) => {
   const tourDetailsColumns = [
     {
       title: "Ảnh minh họa",
-      dataIndex: "image_path",
-      key: "image_path",
-      render: (image_path) => (
+      dataIndex: "image_dd",
+      key: "image_dd",
+      render: (image_dd) => (
         <img
-          src={`http://localhost:8000/storage/${image_path}`}
+          src={`http://localhost:8000/storage/${image_dd}`}
           alt="Ảnh minh họa"
           style={{ width: "200px", cursor: "pointer" }}
         />
@@ -346,32 +328,70 @@ const ADmin_DatTour = (props: Props) => {
       key: "mo_ta",
     },
     // Thêm các cột khác tương ứng với thông tin tour
-  ];const filteredDataSource = dataSource.filter((record) => {
-    if (filterStatus === "chuathanhtoan") {
-      return record.trang_thai === 0; // Lọc các tour có trang_thai bằng 0 (Chưa thanh toán)
-    } else if (filterStatus === "dathanhtoan") {
-      return record.trang_thai === 1; // Lọc các tour có trang_thai bằng 1 (Đã thanh toán)
-    }
-    return true; // Trả về tất cả các bản ghi nếu filterStatus là "all"
-  });
+  ];
 
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
       </header>
-     <div>
-    <Button onClick={() => setFilterStatus("chuathanhtoan")}>
-  Tour chưa thanh toán
-</Button>
-<Button onClick={() => setFilterStatus("dathanhtoan")}>
-  Tour đã thanh toán
-</Button>
-     </div>
+      <div className="table_tour">
+        <button
+          style={{
+            marginRight: '4px',
+            backgroundColor: '#F6AD55',
+            color: '#FFFFFF',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          }}
+          onClick={() => filterData('chuathanhtoan')}
+        >
+          Chưa thanh toán
+        </button>
+        <button
+          style={{
+            backgroundColor: '#63B3ED',
+            color: '#FFFFFF',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          }}
+          onClick={() => filterData('dathanhtoan')}
+        >
+          Đã thanh toán
+        </button>
+        <button
+          style={{
+            backgroundColor: '#DD6B20',
+            color: '#FFFFFF',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+            marginLeft: '4px'
+          }}
+          onClick={() => filterData('tatca')}
+        >
+          Tất cả
+        </button>
+      </div>
       {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
       {
         <Table
-          dataSource={filteredDataSource}
+          // dataSource={ dataSource} 
+          dataSource={filteredData}
           columns={columns}
           pagination={{ pageSize: 3 }}
         />
@@ -381,7 +401,7 @@ const ADmin_DatTour = (props: Props) => {
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
-        className="rounded-md  text-center items-center content-center ml-64 ant-modal-content "
+        className="rounded-md ant-modal-content "
       >
         {selectedData && (
           <div className="p-4 ">
@@ -403,11 +423,11 @@ const ADmin_DatTour = (props: Props) => {
                 <tr className="border-b">
                   {tourDetailsColumns.map((column) => (
                     <td key={column.key} className="py-2 px-4">
-                      {column.dataIndex === "image_path" ? (
+                      {column.dataIndex === "image_dd" ? (
                         <img
                           src={`http://localhost:8000/storage/${selectedData.tours[column.dataIndex]}`}
                           alt="Tour"
-                          className="w-[300px] h-[200px] rounded object-cover"
+                          className="w-[200px] h-[150px] rounded object-cover"
                         />
                       ) : (
                         selectedData.tours[column.dataIndex]
