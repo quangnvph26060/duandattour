@@ -47,9 +47,19 @@
 }
 
 .edit-button {
+    padding: 9px 10px;
+    margin-right: 5px;
+    background-color: #36f4ab;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ct-button {
     padding: 6px 10px;
     margin-right: 5px;
-    background-color: #f44336;
+    background-color: #d1f436;
     color: #fff;
     border: none;
     border-radius: 4px;

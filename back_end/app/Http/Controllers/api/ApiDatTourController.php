@@ -61,7 +61,7 @@ class ApiDatTourController extends Controller
             $soLuongKhach = 1;
         }
         $tourone = TourModel::find($datTour['id_tour']);
-     
+
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
             // dd($createDatTour->ten_khach_hang);
@@ -189,11 +189,11 @@ class ApiDatTourController extends Controller
 
                 return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
             }
-              // Cập nhật trạng thái của đơn đặt tour
-              $updateStatus->trang_thai = 1;
-              $updateStatus->save();
+            // Cập nhật trạng thái của đơn đặt tour
+            $updateStatus->trang_thai = 1;
+            $updateStatus->save();
 
-              return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
+            return response()->json(['message' => 'Xác nhận đơn đặt tour thành công'], 200);
         } else if ($updateStatus->trang_thai == 1) {
             $thantoandata = ThanhToanDetail::where('id_dat_tour', $id)->first();
             $hoadondata = HoaDon::where('id_dat_tour', $id)->first();

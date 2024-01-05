@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('image_path')->nullable();
             $table->string('diem_di');
             $table->string('diem_den');
+            $table->string('phuonwg_tien');
             $table->date('lich_khoi_hanh');
             $table->date('ngay_ket_thuc');
             $table->integer('gia_nguoilon');

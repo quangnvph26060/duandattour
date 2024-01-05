@@ -7,6 +7,7 @@ import {
   Select,
   InputNumber,
   message,
+  Checkbox, Space
 } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -80,6 +81,7 @@ const AdminTourAdd: React.FC = () => {
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
+    formData.append("trang_thai", values.trang_thai);
     formData.append("ma_loai_tour", values.ma_loai_tour);
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
@@ -96,7 +98,7 @@ const AdminTourAdd: React.FC = () => {
         setErrors(error.data.message);
       });
   };
-
+  const { Option } = Select;
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -148,7 +150,7 @@ const AdminTourAdd: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl text-center ">Tạo mới tour</h2>
+        <h2 className="font-bold text-2xl text-center ">Thêm mới tour</h2>
       </header>
       <div>
         {contextHolder}
@@ -346,10 +348,11 @@ const AdminTourAdd: React.FC = () => {
 
               <Form.Item
                 className="w-full"
-                label="Mô Tả"
+                label="Mô Tả  "
                 name="mo_ta"
                 rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
               >
+                <br /><br /> <br />
                 <CKEditor
                   editor={ClassicEditor}
                   // config={{
@@ -371,6 +374,22 @@ const AdminTourAdd: React.FC = () => {
               >
                 <Input />
               </Form.Item>
+              <Form.Item
+                className="w-full"
+                label="Trạng thái"
+                name="trang_thai"
+                rules={[
+                  { required: true, message: "Vui lòng chọn checkout!" },
+                ]}
+              >
+                <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
+                  <Space direction="vertical">
+                    <Checkbox value={1}>Kích hoạt</Checkbox>
+                    <Checkbox value={0}>Vô hiệu hóa</Checkbox>
+                  </Space>
+                </Checkbox.Group>
+              </Form.Item>
+
               <Form.Item
                 className="w-full"
                 label="Loại Tour"

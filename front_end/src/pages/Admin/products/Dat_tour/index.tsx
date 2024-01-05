@@ -10,6 +10,7 @@ import {
   Alert,
   Switch,
   message,
+  Select
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -140,7 +141,6 @@ const ADmin_DatTour = (props: Props) => {
       xac_nhan,
       trang_thai,
       id_tour,
-      image_dd,
       so_luong_khach,
       ten_tour,
       tours,
@@ -149,7 +149,7 @@ const ADmin_DatTour = (props: Props) => {
       ngay_dat,
       email,
       sdt,
-      image_dd,
+      image_path,
       xac_nhan,
       trang_thai,
       id_tour,
@@ -159,7 +159,7 @@ const ADmin_DatTour = (props: Props) => {
       tours,
     })
   );
- 
+
   const tableStyles: React.CSSProperties = {
     fontWeight: "bold",
     textAlign: "center",
@@ -193,11 +193,11 @@ const ADmin_DatTour = (props: Props) => {
     },
     {
       title: <span style={tableStyles}>Ảnh minh họa</span>,
-      dataIndex: "image_dd",
-      key: "image_dd",
+      dataIndex: "image_path",
+      key: "image_path",
       render: (text, record) => (
         <img
-          src={`http://localhost:8000/storage/${record.tours.image_dd}`}
+          src={`http://localhost:8000/storage/${record.tours.image_path}`}
           alt="img"
           style={{ width: "200px", cursor: "pointer" }}
         />
@@ -258,20 +258,33 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "trang_thai",
       key: "trang_thai",
       render: (trang_thai, { key: id }: any) => {
-        const check = trang_thai === 0 ? false : true;
-        console.log(id);
+        const statusOptions = [
+          { value: 0, label: 'Chưa thanh toán', color: 'red' },
+          { value: 1, label: 'Đã thanh toán', color: 'green' },
+        ];
 
         return (
-          <Switch
-            defaultChecked={check}
-            onChange={(checked) => {
-              updateStatus(id);
+          <Select
+            defaultValue={trang_thai}
+            style={{ width: 120 }}
+            onChange={(value) => {
+              updateStatus(id, value);
             }}
-          />
+          >
+            {statusOptions.map((option) => (
+              <Select.Option
+                key={option.value}
+                value={option.value}
+                style={{ color: option.color }}
+              >
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
         );
-        //   return trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán";
       },
     },
+
     {
       title: <span style={tableStyles}>Xác nhận tour</span>,
       dataIndex: "so_luong_khach",
@@ -284,11 +297,11 @@ const ADmin_DatTour = (props: Props) => {
   const tourDetailsColumns = [
     {
       title: "Ảnh minh họa",
-      dataIndex: "image_dd",
-      key: "image_dd",
-      render: (image_dd) => (
+      dataIndex: "image_path",
+      key: "image_path",
+      render: (image_path) => (
         <img
-          src={`http://localhost:8000/storage/${image_dd}`}
+          src={`http://localhost:8000/storage/${image_path}`}
           alt="Ảnh minh họa"
           style={{ width: "200px", cursor: "pointer" }}
         />
@@ -347,7 +360,7 @@ const ADmin_DatTour = (props: Props) => {
         />
       }
 
-<Modal
+      <Modal
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
@@ -373,7 +386,7 @@ const ADmin_DatTour = (props: Props) => {
                 <tr className="border-b">
                   {tourDetailsColumns.map((column) => (
                     <td key={column.key} className="py-2 px-4">
-                      {column.dataIndex === "image_dd" ? (
+                      {column.dataIndex === "image_path" ? (
                         <img
                           src={`http://localhost:8000/storage/${selectedData.tours[column.dataIndex]}`}
                           alt="Tour"
@@ -395,7 +408,7 @@ const ADmin_DatTour = (props: Props) => {
           </div>
         )}
       </Modal>
-   
+
 
     </div>
   );
