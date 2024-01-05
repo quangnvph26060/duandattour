@@ -23,6 +23,8 @@ import { useGetQuanlydattourQuery } from "../../../../api/qlydattour";
 import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
+  const [filterStatus, setFilterStatus] = useState("all"); // Mặc định là "all", có thể là "chuathanhtoan" hoặc "dathanhtoan"
+
   const [sortedData, setSortedData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -344,17 +346,32 @@ const ADmin_DatTour = (props: Props) => {
       key: "mo_ta",
     },
     // Thêm các cột khác tương ứng với thông tin tour
-  ];
+  ];const filteredDataSource = dataSource.filter((record) => {
+    if (filterStatus === "chuathanhtoan") {
+      return record.trang_thai === 0; // Lọc các tour có trang_thai bằng 0 (Chưa thanh toán)
+    } else if (filterStatus === "dathanhtoan") {
+      return record.trang_thai === 1; // Lọc các tour có trang_thai bằng 1 (Đã thanh toán)
+    }
+    return true; // Trả về tất cả các bản ghi nếu filterStatus là "all"
+  });
 
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
       </header>
+     <div>
+    <Button onClick={() => setFilterStatus("chuathanhtoan")}>
+  Tour chưa thanh toán
+</Button>
+<Button onClick={() => setFilterStatus("dathanhtoan")}>
+  Tour đã thanh toán
+</Button>
+     </div>
       {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
       {
         <Table
-          dataSource={dataSource}
+          dataSource={filteredDataSource}
           columns={columns}
           pagination={{ pageSize: 3 }}
         />
@@ -364,7 +381,7 @@ const ADmin_DatTour = (props: Props) => {
         visible={modalVisible}
         onCancel={closeModal}
         footer={null}
-        className="rounded-md ant-modal-content "
+        className="rounded-md  text-center items-center content-center ml-64 ant-modal-content "
       >
         {selectedData && (
           <div className="p-4 ">
@@ -390,7 +407,7 @@ const ADmin_DatTour = (props: Props) => {
                         <img
                           src={`http://localhost:8000/storage/${selectedData.tours[column.dataIndex]}`}
                           alt="Tour"
-                          className="w-[200px] h-[150px] rounded object-cover"
+                          className="w-[300px] h-[200px] rounded object-cover"
                         />
                       ) : (
                         selectedData.tours[column.dataIndex]

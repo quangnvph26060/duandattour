@@ -19,8 +19,15 @@ import { Dattour } from "../../interface/Dattour";
 import logo from "./img/logo.jpg";
 import axios from "axios";
 import "./css/style.css";
+import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 type Props = {};
-
+const formatCurrency = (value) => {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formatter.format(value);
+};
 const img = {
   borderRadius: "10px",
   witdh: "100px",
@@ -132,7 +139,7 @@ const BookTour = () => {
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-
+  const image = datatourArray?.image_dd || [];
 
 
   // Lấy token từ localStorage
@@ -275,8 +282,9 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-        const requestData = {
-          vnp_Amount: calculateTotalPrice(),
+        
+        let requestData = {
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
         const paymentResponse = await axios.post(
@@ -306,7 +314,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount: calculateTotalPrice() * 100,
+          vnp_Amount:  couponData.length > 0 ? calculateTotalPrice()* 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice()* 100,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -362,29 +370,30 @@ const BookTour = () => {
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
   // hiển thị danh sách giảm giá
 
+console.log(image);
 
 
   return (
-    <div className="container mx-auto">
+    
+    <div className=" mx-auto  ">
       {/* header trên thôn tin dưới */}
-      <div className="info mt-14 mx-auto w-10/12 ">
+      <div className="info mx-auto  mt-14 w-10/12  ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-          <div className="img-book w-1/3">
-            {datatourArray.images && datatourArray.images.length > 0 ? (
-              <div>
-                {datatourArray.images.map((image) => (
+          
+            {image && image.length > 0 ? (
+             
                   <img
+                  className="min-h-[300px] w-1/3 rounded-l-lg"
                     key={image.id}
-                    style={img}
-                    src={`http://localhost:8000/storage/${image.image_path}`}
+                 
+                    src={`http://localhost:8000/storage/${image}`}
                     alt={`Image ${image.id}`}
                   />
-                ))}
-              </div>
+              
             ) : (
               <p>Không có hình ảnh cho tour này.</p>
             )}
-          </div>
+   
 
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
@@ -422,7 +431,7 @@ const BookTour = () => {
                 Ngày kết thúc {datatourArray?.ngay_ket_thuc}
               </p>
               <p className="mt-1 text-[#2D4271] text-[16px] font-medium">
-                Nơi khởi hành: {datatourArray?.diem_khoi_hanh}
+                Nơi khởi hành: {datatourArray?.diem_di}
               </p>
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
                 Số chỗ còn nhận: {datatourArray?.soluong}
@@ -495,6 +504,7 @@ const BookTour = () => {
                   <input
                     type="text"
                     id="ten_khach_hang"
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     name="ten_khach_hang"
                     value={formData.ten_khach_hang}
                     onChange={handleChange}
@@ -688,13 +698,13 @@ const BookTour = () => {
               </p>
 
               <div className="name flex gap-3 mt-4">
-                {images && images.length > 0 ? (
+                {image && image.length > 0 ? (
                   <div>
                     {/* {images.map((image) => ( */}
                     <img
-                      key={images[0].id}
+                      key={image[0].id}
                       style={img}
-                      src={`http://localhost:8000/storage/${images[0].image_path}`}
+                      src={`http://localhost:8000/storage/${image}`}
                     />
                     {/* ))} */}
                   </div>
@@ -741,7 +751,7 @@ const BookTour = () => {
                   </p>
                   <p className="text-red-400">
                     {" "}
-                    {quantity} x {datatourArray?.gia_nguoilon}
+                    {quantity} x  {formatCurrency(datatourArray?.gia_nguoilon)}
                   </p>
                 </div>
                 <div className="flex mt-6 justify-between">
@@ -749,25 +759,12 @@ const BookTour = () => {
                     Trẻ em
                   </p>
                   <p className="text-red-400">
-                    {quantity2} x {datatourArray?.gia_treem}{" "}
+                    {quantity2} x   {formatCurrency(datatourArray?.gia_treem)}
                   </p>
                 </div>
 
-                <input
-                  type="text"
-                  placeholder="Nhập mã giảm giá "
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  style={{
-                    padding: "8px",
-                    fontSize: "14px",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    width: "380px",
-                    marginTop: "10px",
-                  }}
-                />
-                <h1>Áp dụng mã giảm giá:</h1>
+               
+                <h1 className="mt-5">Áp dụng mã giảm giá:</h1>
                 <div>
                   <div className="radio-container">
                     {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (
@@ -781,8 +778,8 @@ const BookTour = () => {
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.discount_name}</h1>
-                              <p>{item.minprice}</p>
+                              <h1>{item.discount_code}</h1>
+                              <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
 
                             </div>
                           </div>
@@ -797,8 +794,8 @@ const BookTour = () => {
                                 onChange={handlegiamgia}
                               />
                               <div>
-                                <h1>{item.discount_name}</h1>
-                                <p>Những tour trên {item.minprice}</p>
+                                <h1>{item.discount_code}</h1>
+                                <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
                               </div>
                             </div>
                           </>
@@ -808,7 +805,7 @@ const BookTour = () => {
                     ))}
 
                   </div>
-                  <button id="show-more-button" onClick={handleShowMore}>
+                  <button id="show-more-button " className="border-2 border-black px-4 mt-3 rounded-md hover:border-blue-500 " onClick={handleShowMore}>
                     {showMore ? 'Thu gọn' : 'Xem thêm'}
                   </button>
                 </div>
