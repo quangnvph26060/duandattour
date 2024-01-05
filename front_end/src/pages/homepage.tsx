@@ -92,12 +92,11 @@ const Countdown = ({ expiryDate }) => {
 
 
 const HomePage = () => {
-  
   const [searchResults, setSearchResults] = useState<Tour[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedDepartureDate, setSelectedDepartureDate] = useState('');
   const [selectedDestination, setSelectedDestination] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
+ 
   const [selectedDeparture, setSelectedDeparture] = useState('');
   const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
   const navigate = useNavigate();
@@ -150,16 +149,7 @@ const HomePage = () => {
       console.error(error);
     }
   };
-  // function calculateNumberOfDays(start, end) {
-  //   const startDate = new Date(start);
-  //   const endDate = new Date(end);
-
-  //   const timeDifference = Math.abs(endDate - startDate);
-  //   const numberOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-  //   return numberOfDays;
-  // }
-
+ 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -584,60 +574,60 @@ const HomePage = () => {
              
             value={selectedDeparture}
             onChange={(e) => setSelectedDeparture(e.target.value)}
-          >
-           <option value="Tỉnh Hà Nội"> Hà Nội</option>
-                <option value="Tỉnh Miền Tây">MT </option>
-                <option value="Tỉnh Hcm">Hồ Chí Minh </option>
-                <option value="Tỉnh Hải Phòng">Hải Phòng</option>
-                <option value="Tỉnh Đà Nẵng">Đà Nẵng</option>
-                <option value="Tỉnh Cần Thơ">Cần Thơ</option>
-                <option value="Tỉnh An Giang">An Giang</option>
-                <option value="Tỉnh Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                <option value="Tỉnh Bắc Giang">Bắc Giang</option>
-                <option value="Tỉnh Tỉnh Bắc Kạn">Bắc Kạn</option>
-                <option value="Tỉnh Bạc Liêu">Bạc Liêu</option>
-                <option value="Tỉnh Bắc Ninh">Bắc Ninh</option>
-                <option value="Tỉnh Bến Tre">Bến Tre</option>
-                <option value="Tỉnh Bình Định">Bình Định</option>
-                <option value="Tỉnh Bình Dương">Bình Dương</option>
-                <option value="Tỉnh Bình Phước">Bình Phước</option>
-                <option value="Tỉnh Bình Thuận">Bình Thuận</option>
-                <option value="Tỉnh Cà Mau">Cà Mau</option>
-                <option value="Tỉnh Cao Bằng">Cao Bằng</option>
-                <option value="Tỉnh Đắk Lắk">Đắk Lắk</option>
-                <option value="Tỉnh Đắk Nông">Đắk Nông</option>
-                <option value="Tỉnh Điện Biên">Điện Biên</option>
-                <option value="Tỉnh Đồng Nai">Đồng Nai</option>
-                <option value="Tỉnh Đồng Tháp">Đồng Tháp</option>
-                <option value="Tỉnh Gia Lai">Gia Lai</option>
-                <option value="Tỉnh Hà Giang">Hà Giang</option>
-                <option value="Tỉnh Hà Nam">Hà Nam</option>
-                <option value="Tỉnh Hà Tĩnh">Hà Tĩnh</option>
-                <option value="Tỉnh Hải Dương">Hải Dương</option>
-                <option value="Tỉnh Hậu Giang">Hậu Giang</option>
-                <option value="Tỉnh Hòa Bình">Hòa Bình</option>
-                <option value="Tỉnh Hưng Yên">Hưng Yên</option>
-                <option value="Tỉnh Khánh Hòa">Khánh Hòa</option>
-                <option value="Tỉnh Kiên Giang">Kiên Giang</option>
-                <option value="Tỉnh Kon Tum">Kon Tum</option>
-                <option value="Tỉnh Lai Châu">Lai Châu</option>
-                <option value="Tỉnh Lâm Đồng">Lâm Đồng</option>
-                <option value="Tỉnh Lạng Sơn">Lạng Sơn</option>
-                <option value="Tỉnh Lào Cai">Lào Cai</option>
-                <option value="Tỉnh Long An">Long An</option>
-                <option value="Tỉnh Nam Định">Nam Định</option>
-                <option value="Tỉnh Nghệ An">Nghệ An</option>
-                <option value="Tỉnh Ninh Bình">Ninh Bình</option>
-                <option value="Tỉnh Ninh Thuận">Ninh Thuận</option>
-                <option value="Tỉnh Phú Thọ">Phú Thọ</option>
-                <option value="Tỉnh Phú Yên">Phú Yên</option>
-                <option value="Tỉnh Quảng Bình">Quảng Bình</option>
-                <option value="Tỉnh Quảng Nam">Quảng Nam</option>
-                <option value="Tỉnh Quảng Ngãi">Quảng Ngãi</option>
-                <option value="Tỉnh Quảng Ninh">Quảng Ninh</option>
-                <option value="Tỉnh Quảng Trị">Quảng Trị</option>
-                <option value="Tỉnh Sóc Trăng">Sóc Trăng</option>
-                <option value="Tỉnh Sơn La">Sơn La</option>
+          ><option value="/">Chọn</option>
+                <option value="Thành phố Hà Nội"> Hà Nội</option>
+                <option value="Đà Nẵng">Đà Nẵng</option>
+                <option value="Hcm">Hồ Chí Minh </option>
+                <option value="Hải Phòng">Hải Phòng</option>
+                <option value="Tỉnh Thanh Hóa">Thanh Hóa</option>
+                <option value="Cần Thơ">Cần Thơ</option>
+                <option value="An Giang">An Giang</option>
+                <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+                <option value="Bắc Giang">Bắc Giang</option>
+                <option value="Bắc Kạn">Bắc Kạn</option>
+                <option value="Bạc Liêu">Bạc Liêu</option>
+                <option value="Bắc Ninh">Bắc Ninh</option>
+                <option value="Bến Tre">Bến Tre</option>
+                <option value="Bình Định">Bình Định</option>
+                <option value="Bình Dương">Bình Dương</option>
+                <option value="Bình Phước">Bình Phước</option>
+                <option value="Bình Thuận">Bình Thuận</option>
+                <option value="Cà Mau">Cà Mau</option>
+                <option value="Cao Bằng">Cao Bằng</option>
+                <option value="Đắk Lắk">Đắk Lắk</option>
+                <option value="Đắk Nông">Đắk Nông</option>
+                <option value="Điện Biên">Điện Biên</option>
+                <option value="Đồng Nai">Đồng Nai</option>
+                <option value="Đồng Tháp">Đồng Tháp</option>
+                <option value="Gia Lai">Gia Lai</option>
+                <option value="Hà Giang">Hà Giang</option>
+                <option value="Hà Nam">Hà Nam</option>
+                <option value="Hà Tĩnh">Hà Tĩnh</option>
+                <option value="Hải Dương">Hải Dương</option>
+                <option value="Hậu Giang">Hậu Giang</option>
+                <option value="Hòa Bình">Hòa Bình</option>
+                <option value="Hưng Yên">Hưng Yên</option>
+                <option value="Khánh Hòa">Khánh Hòa</option>
+                <option value="Kiên Giang">Kiên Giang</option>
+                <option value="Kon Tum">Kon Tum</option>
+                <option value="Lai Châu">Lai Châu</option>
+                <option value="Lâm Đồng">Lâm Đồng</option>
+                <option value="Lạng Sơn">Lạng Sơn</option>
+                <option value="Lào Cai">Lào Cai</option>
+                <option value="Long An">Long An</option>
+                <option value="Nam Định">Nam Định</option>
+                <option value="Nghệ An">Nghệ An</option>
+                <option value="Ninh Bình">Ninh Bình</option>
+                <option value="Ninh Thuận">Ninh Thuận</option>
+                <option value="Phú Thọ">Phú Thọ</option>
+                <option value="Phú Yên">Phú Yên</option>
+                <option value="Quảng Bình">Quảng Bình</option>
+                <option value="Quảng Nam">Quảng Nam</option>
+                <option value="Quảng Ngãi">Quảng Ngãi</option>
+                <option value="Quảng Ninh">Quảng Ninh</option>
+                <option value="Quảng Trị">Quảng Trị</option>
+                <option value="Sóc Trăng">Sóc Trăng</option>
+                <option value="Sơn La">Sơn La</option>
               </select>
             </div>
           </div>
@@ -664,60 +654,60 @@ const HomePage = () => {
 
             value={selectedDestination}
             onChange={(e) => setSelectedDestination(e.target.value)}
-          >
-                <option value="Tỉnh Hà Nội"> Hà Nội</option>
-                <option value="Tỉnh Miền Tây">MT </option>
-                <option value="Tỉnh Hcm">Hồ Chí Minh </option>
-                <option value="Tỉnh Hải Phòng">Hải Phòng</option>
-                <option value="Tỉnh Đà Nẵng">Đà Nẵng</option>
-                <option value="Tỉnh Cần Thơ">Cần Thơ</option>
-                <option value="Tỉnh An Giang">An Giang</option>
-                <option value="Tỉnh Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                <option value="Tỉnh Bắc Giang">Bắc Giang</option>
-                <option value="Tỉnh Tỉnh Bắc Kạn">Bắc Kạn</option>
-                <option value="Tỉnh Bạc Liêu">Bạc Liêu</option>
-                <option value="Tỉnh Bắc Ninh">Bắc Ninh</option>
-                <option value="Tỉnh Bến Tre">Bến Tre</option>
-                <option value="Tỉnh Bình Định">Bình Định</option>
-                <option value="Tỉnh Bình Dương">Bình Dương</option>
-                <option value="Tỉnh Bình Phước">Bình Phước</option>
-                <option value="Tỉnh Bình Thuận">Bình Thuận</option>
-                <option value="Tỉnh Cà Mau">Cà Mau</option>
-                <option value="Tỉnh Cao Bằng">Cao Bằng</option>
-                <option value="Tỉnh Đắk Lắk">Đắk Lắk</option>
-                <option value="Tỉnh Đắk Nông">Đắk Nông</option>
+          ><option value="/">Chọn</option>
+                <option value="Hà Nội"> Hà Nội</option>
+                <option value="Miền Tây">MT </option>
+                <option value="Hcm">Hồ Chí Minh </option>
+                <option value="Hải Phòng">Hải Phòng</option>
+                <option value="Đà Nẵng">Đà Nẵng</option>
+                <option value="Cần Thơ">Cần Thơ</option>
+                <option value="An Giang">An Giang</option>
+                <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+                <option value="Bắc Giang">Bắc Giang</option>
+                <option value="Tỉnh Bắc Kạn">Bắc Kạn</option>
+                <option value="Bạc Liêu">Bạc Liêu</option>
+                <option value="Bắc Ninh">Bắc Ninh</option>
+                <option value="Bến Tre">Bến Tre</option>
+                <option value="Bình Định">Bình Định</option>
+                <option value="Bình Dương">Bình Dương</option>
+                <option value="Bình Phước">Bình Phước</option>
+                <option value="Bình Thuận">Bình Thuận</option>
+                <option value="Cà Mau">Cà Mau</option>
+                <option value="Cao Bằng">Cao Bằng</option>
+                <option value="Đắk Lắk">Đắk Lắk</option>
+                <option value="Đắk Nông">Đắk Nông</option>
                 <option value="Tỉnh Điện Biên">Điện Biên</option>
-                <option value="Tỉnh Đồng Nai">Đồng Nai</option>
-                <option value="Tỉnh Đồng Tháp">Đồng Tháp</option>
-                <option value="Tỉnh Gia Lai">Gia Lai</option>
-                <option value="Tỉnh Hà Giang">Hà Giang</option>
-                <option value="Tỉnh Hà Nam">Hà Nam</option>
-                <option value="Tỉnh Hà Tĩnh">Hà Tĩnh</option>
-                <option value="Tỉnh Hải Dương">Hải Dương</option>
-                <option value="Tỉnh Hậu Giang">Hậu Giang</option>
-                <option value="Tỉnh Hòa Bình">Hòa Bình</option>
-                <option value="Tỉnh Hưng Yên">Hưng Yên</option>
-                <option value="Tỉnh Khánh Hòa">Khánh Hòa</option>
-                <option value="Tỉnh Kiên Giang">Kiên Giang</option>
-                <option value="Tỉnh Kon Tum">Kon Tum</option>
-                <option value="Tỉnh Lai Châu">Lai Châu</option>
-                <option value="Tỉnh Lâm Đồng">Lâm Đồng</option>
-                <option value="Tỉnh Lạng Sơn">Lạng Sơn</option>
-                <option value="Tỉnh Lào Cai">Lào Cai</option>
-                <option value="Tỉnh Long An">Long An</option>
-                <option value="Tỉnh Nam Định">Nam Định</option>
-                <option value="Tỉnh Nghệ An">Nghệ An</option>
-                <option value="Tỉnh Ninh Bình">Ninh Bình</option>
-                <option value="Tỉnh Ninh Thuận">Ninh Thuận</option>
-                <option value="Tỉnh Phú Thọ">Phú Thọ</option>
-                <option value="Tỉnh Phú Yên">Phú Yên</option>
-                <option value="Tỉnh Quảng Bình">Quảng Bình</option>
-                <option value="Tỉnh Quảng Nam">Quảng Nam</option>
-                <option value="Tỉnh Quảng Ngãi">Quảng Ngãi</option>
-                <option value="Tỉnh Quảng Ninh">Quảng Ninh</option>
-                <option value="Tỉnh Quảng Trị">Quảng Trị</option>
-                <option value="Tỉnh Sóc Trăng">Sóc Trăng</option>
-                <option value="Tỉnh Sơn La">Sơn La</option>
+                <option value="Đồng Nai">Đồng Nai</option>
+                <option value="Đồng Tháp">Đồng Tháp</option>
+                <option value="Gia Lai">Gia Lai</option>
+                <option value="Hà Giang">Hà Giang</option>
+                <option value="Hà Nam">Hà Nam</option>
+                <option value="Hà Tĩnh">Hà Tĩnh</option>
+                <option value="Hải Dương">Hải Dương</option>
+                <option value="Hậu Giang">Hậu Giang</option>
+                <option value="Hòa Bình">Hòa Bình</option>
+                <option value="Hưng Yên">Hưng Yên</option>
+                <option value="Khánh Hòa">Khánh Hòa</option>
+                <option value="Kiên Giang">Kiên Giang</option>
+                <option value="Kon Tum">Kon Tum</option>
+                <option value="Lai Châu">Lai Châu</option>
+                <option value="Lâm Đồng">Lâm Đồng</option>
+                <option value="Lạng Sơn">Lạng Sơn</option>
+                <option value="Lào Cai">Lào Cai</option>
+                <option value="Long An">Long An</option>
+                <option value="Nam Định">Nam Định</option>
+                <option value="Nghệ An">Nghệ An</option>
+                <option value="Ninh Bình">Ninh Bình</option>
+                <option value="Ninh Thuận">Ninh Thuận</option>
+                <option value="Phú Thọ">Phú Thọ</option>
+                <option value="Phú Yên">Phú Yên</option>
+                <option value="Quảng Bình">Quảng Bình</option>
+                <option value="Quảng Nam">Quảng Nam</option>
+                <option value="Quảng Ngãi">Quảng Ngãi</option>
+                <option value="Quảng Ninh">Quảng Ninh</option>
+                <option value="Quảng Trị">Quảng Trị</option>
+                <option value="Sóc Trăng">Sóc Trăng</option>
+                <option value="Sơn La">Sơn La</option>
               </select>
             </div>
           </div>
