@@ -1,53 +1,48 @@
 import { Ibannerlogo } from '../interface/Banner_logo';
-// import { pause } from '../';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const ImagesApi = createApi({
-    reducerPath: 'images',
+const BannerApi = createApi({
+    reducerPath: 'Images',
     tagTypes: ['Images'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/admin",
+        baseUrl: "http://localhost:8000/api/admin/",
         fetchFn: async (...args) => {
-           
-            return fetch(...args);
+            const response = await fetch(...args);
+            return response.json();
         }
     }),
     endpoints: (builder) => ({
         getSliders: builder.query<Ibannerlogo[], void>({
-            query: () => `/images/images`,
-            providesTags: ['Images']
+            query: () => '/bannerlogo',
+            providesTags: ['Images'],
         }),
-        addSliders:builder.mutation<Ibannerlogo,Ibannerlogo>({
-            query:(images)=>({
-                url:'/images',
-                method: "POST",
-                body:images
+        addSliders: builder.mutation<Ibannerlogo, Ibannerlogo>({
+            query: (images) => ({
+                url: '/bannerlogo',
+                method: 'POST',
+                body: images,
+            }),
+            invalidatesTags: ['Images'],
         }),
-        invalidatesTags: ['Images']
+        editSliders: builder.mutation<Ibannerlogo, Ibannerlogo>({
+            query: (images) => ({
+                url: `bannerlogo/${images.id}`,
+                method: 'PUT',
+                body: images,
+            }),
+            invalidatesTags: ['Images'],
         }),
-        editSliders:builder.mutation<Ibannerlogo,Ibannerlogo>({
-            query:(images)=>({
-                url:`images/edit/${images.id}`,
-                method: "POST",
-                body:images
+        removeSliders: builder.mutation<Ibannerlogo, number>({
+            query: (id) => ({
+                url: `/bannerlogo/${id}`,
+                method: 'DELETE',
+            }),
         }),
-        invalidatesTags: ['Images']
+        getSlidersById: builder.query<Ibannerlogo, number>({
+            query: (id) => `/bannerlogo/${id}`,
+            providesTags: ['Images'],
         }),
-        removeSliders:builder.mutation<Ibannerlogo,Ibannerlogo>({
-            query:(id)=>({
-                url:`/images/${id}`,
-                method: "DELETE",
-              
-            })
-            
-        }),
-        getSlidersById: builder.query<Ibannerlogo, number >({
-            query: (id) => `/images/${id}` ,
-            providesTags: ['Images']
-        }),
-       
-
-    })
+    }),
 });
 
 export const {
@@ -56,7 +51,7 @@ export const {
     useEditSlidersMutation,
     useGetSlidersByIdQuery,
     useRemoveSlidersMutation,
+} = BannerApi;
 
-} = ImagesApi;
-export const imagesRedeucer = ImagesApi.reducer;
-export default ImagesApi;
+export const BannerReducer = BannerApi.reducer;
+export default BannerApi;

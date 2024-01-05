@@ -4,7 +4,7 @@ import LoaiPhuongTienApi, {
   LoaiPhuongTienRedeucer,
 } from "../api/LoaiPhuongTienApi";
 import DiaDiemApi, { DiaDiemRedeucer } from "../api/DiaDiemApi";
-import ImagesApi, { imagesRedeucer } from "../api/ImagesApi";
+// import ImagesApi, { imagesRedeucer } from "../api/ImagesApi";
 import TourImagesApi, { TourImagesRedeucer } from "../api/TourImagesApi";
 import HuongDanVienApi, { HuongDanVienRedeucer } from "../api/HuongDanVienApi";
 import LichTrinhApi, { LichTrinhRedeucer } from "../api/LichTrinhApi";
@@ -18,6 +18,7 @@ import MenuApi, { MenuReducer } from "../api/menu";
 import Tourdiadiem, { TourDiadiemReducer } from "../api/tourdiadiem";
 import PostDmApi, { postdmRedeucer } from "../api/postdm";
 import PostApi, { postRedeucer } from "../api/post";
+import BannerApi, {BannerReducer} from "../api/Slider";
 
 import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
@@ -54,7 +55,7 @@ const rootReducer = combineReducers({
   [LoaiPhuongTienApi.reducerPath]: LoaiPhuongTienRedeucer,
   [DiaDiemApi.reducerPath]: DiaDiemRedeucer,
   [HuongDanVienApi.reducerPath]: HuongDanVienRedeucer,
-  [ImagesApi.reducerPath]: imagesRedeucer,
+  // [ImagesApi.reducerPath]: imagesRedeucer,
   [DangNhapApi.reducerPath]: DangNhapReducer,
   [TourImagesApi.reducerPath]: TourImagesRedeucer,
   [UserApi.reducerPath]: UserReducer,
@@ -71,6 +72,7 @@ const rootReducer = combineReducers({
   [PostDmApi.reducerPath]: postdmRedeucer,
   [PostApi.reducerPath]: postRedeucer,
   [NotificationApi.reducerPath]: NotificationReducer,
+  [BannerApi.reducerPath] : BannerReducer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -86,12 +88,12 @@ export const store = configureStore({
       LoaiTourApi.middleware,
 
       LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
-      HuongDanVienApi.middleware, ImagesApi.middleware,
+      HuongDanVienApi.middleware,
       TourImagesApi.middleware, LichTrinhApi.middleware, DangNhapApi.middleware,
       LoaiPhuongTienApi.middleware, DiaDiemApi.middleware,
-      HuongDanVienApi.middleware, ImagesApi.middleware, KhachSanApi.middleware,
+      HuongDanVienApi.middleware, KhachSanApi.middleware,
       UserApi.middleware, DatourApi.middleware, DiscountApi.middleware, TourDiscountApi.middleware
-      , CheckingApi.middleware, QuanlydattoutApi.middleware, MenuApi.middleware, Tourdiadiem.middleware, HuongDanVienTourApi.middleware, PostDmApi.middleware, PostApi.middleware, NotificationApi.middleware),
+      , CheckingApi.middleware, QuanlydattoutApi.middleware, MenuApi.middleware, Tourdiadiem.middleware, HuongDanVienTourApi.middleware, PostDmApi.middleware, PostApi.middleware, NotificationApi.middleware, BannerApi.middleware),
 
 
 })
