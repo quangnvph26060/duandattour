@@ -188,16 +188,17 @@ const BookTour = () => {
     const gianho = datatourArray?.gia_treem;
     let giamgiaressult = (quantity * gialon + quantity2 * gianho)
     if (parseInt(event.target.value) > 100) {
+      
       giamgiaressult -= parseInt(event.target.value);
-    } else if (parseInt(event.target.value) < 100) {
-
+    } else if (parseInt(event.target.value) < 100) { 
       giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
     }
     setradioValue(parseInt(event.target.value));
-    console.log('123', radioValue);
-
-    // console.log(selectedValue);
+    console.log('234',radioValue);
+    
     setSelectedValue(giamgiaressult);
+    console.log('123', selectedValue);
+    
   };
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
@@ -275,10 +276,12 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-        const requestData = {
-          vnp_Amount: calculateTotalPrice(),
+      
+        let requestData = {
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
+        
         const paymentResponse = await axios.post(
           "http://localhost:8000/api/cash",
           requestData
@@ -306,7 +309,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount: calculateTotalPrice() * 100,
+          vnp_Amount:  couponData.length > 0 ? calculateTotalPrice()* 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice()* 100,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -360,9 +363,7 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
-  // hiển thị danh sách giảm giá
-
-
+  
 
   return (
     <div className="container mx-auto">
@@ -752,8 +753,8 @@ const BookTour = () => {
                     {quantity2} x {datatourArray?.gia_treem}{" "}
                   </p>
                 </div>
-
-                <input
+                    {/* input giảm giá */}
+                {/* <input
                   type="text"
                   placeholder="Nhập mã giảm giá "
                   value={inputValue}
@@ -766,7 +767,7 @@ const BookTour = () => {
                     width: "380px",
                     marginTop: "10px",
                   }}
-                />
+                /> */}
                 <h1>Áp dụng mã giảm giá:</h1>
                 <div>
                   <div className="radio-container">
@@ -782,7 +783,7 @@ const BookTour = () => {
                             />
                             <div>
                               <h1>{item.discount_name}</h1>
-                              <p>{item.minprice}</p>
+                              <p>Những tour trên {item.minprice}</p>
 
                             </div>
                           </div>

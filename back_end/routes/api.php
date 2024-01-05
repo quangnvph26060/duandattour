@@ -52,30 +52,27 @@ use Mews\Purifier\Facades\Purifier;
 // api demo
 Route::get('a', [ApiDatTourController::class, 'demo']);
 Route::get('demo', function () {
-    $countArray = DB::table('dat_tours')
-    ->select('id_tour', DB::raw('COUNT(*) as count'))
-    ->groupBy('id_tour')
-    ->orderByDesc('count')
-    ->take(5)
-    ->get();
-   
+    $currentDateTime = Carbon::now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+    // chuyển sang múi giờ chuẩn giờ hiện tại
+    $expiredDiscounts = DB::table('discounts')
+        ->where('expiry_date', '<', $currentDateTime)
+        ->get();
 
-    $tourArray = TourModel::select('id', 'ten_tour')->get();
-    // tọa 1 mảng rỗng 
-    $result = [];
-    $countArray = json_decode(json_encode($countArray), true);
-    foreach ($countArray as $countItem) {
-        foreach ($tourArray as $tourItem) {
-            if ($countItem['id_tour'] === $tourItem['id']) {
-                $result[] = [
-                    'ten' => $tourItem['ten_tour'],
-                    'ids' => $countItem['id_tour'],
-                ];
-                break;
-            }
-        }
+    foreach ($expiredDiscounts as $discount) {
+
+        DB::table('discounts')
+            ->where('id', $discount->id)
+            ->update(['trang_thai' => 0]);
     }
-    return response()->json([ 'result' => $result]);
+    $expiredDiscounts1 = DB::table('discounts')
+    ->where('expiry_date', '>', $currentDateTime)
+    ->get();
+
+foreach ($expiredDiscounts1 as $discount) {
+    DB::table('discounts')
+        ->where('id', $discount->id)
+        ->update(['trang_thai' => 1]); // Sửa giá trị 0 thành 1
+}
 });
 
 
