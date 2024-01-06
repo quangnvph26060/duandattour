@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('ma_phan_hoi',255)->nullable()->comment('mã phản hồi');
             $table->string('ghi_chu')->nullable()->comment('nội dung thanh toán');
             $table->string('ma_ngan_hang',255)->nullable()->comment('mã ngân hàng ');
-            $table->dateTime('ngay_thanh_toan')->nullable()->comment('thoi gian chuyển khoản ');
+            $table->date('ngay_thanh_toan')->nullable()->comment('thoi gian chuyển khoản ');
             $table->foreignId('id_dat_tour')->constrained('dat_tours');
             $table->timestamps();
         });

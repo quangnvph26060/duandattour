@@ -281,18 +281,18 @@ const BookTour = () => {
   console.log();
 
   // đanh giá 
-  const [selectedStars, setSelectedStars] = useState(0);
-  if (datatourArray?.id !== undefined) {
-    axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id })
-      .then(response => {
-        // Xử lý phản hồi thành công từ server (nếu cần)
-        setSelectedStars(response.data);
-      })
-      .catch(error => {
-        // Xử lý lỗi (nếu có)
-        console.error(error);
-      });
-  }
+  // const [selectedStars, setSelectedStars] = useState(0);
+  // if (datatourArray?.id !== undefined) {
+  //   axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id })
+  //     .then(response => {
+  //       // Xử lý phản hồi thành công từ server (nếu cần)
+  //       setSelectedStars(response.data);
+  //     })
+  //     .catch(error => {
+  //       // Xử lý lỗi (nếu có)
+  //       console.error(error);
+  //     });
+  // }
   return (
     <div className="container mx-auto">
       {/* header trên thôn tin dưới */}
@@ -317,7 +317,7 @@ const BookTour = () => {
 
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
-              {selectedStars ? (
+              {/* {selectedStars ? (
                   <div className="rate  mb-5 mt-[-25px] flex gap-2">
                     <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                       <FaStar />
@@ -337,7 +337,7 @@ const BookTour = () => {
                   </div>
               ):(
                 <p></p>
-              )}
+              )} */}
               <div className=" font-bold text-[#2D4271] text-[20px] py-5">
                 <h2>{datatourArray?.ten_tour}</h2>
               </div>
