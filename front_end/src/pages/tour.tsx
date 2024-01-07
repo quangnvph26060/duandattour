@@ -496,7 +496,7 @@ const TourPage: React.FC = () => {
                   </div>
                   <div className="px-3 py-4 grid grid-cols-2 gap-7">
                     <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
-                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
+                    <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href={`http://localhost:5173/tours/${items.id}`} className="text-blue-600">Xem chi tiết</a></button>
                   </div>
                 </div>
               </div>

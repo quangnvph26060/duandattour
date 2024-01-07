@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import moment from "moment";
@@ -20,6 +20,7 @@ import {
   useGetdetailTourByIdQuery,
 } from "../../api/TourApi";
 import "../css.css";
+import axios from "axios";
 
 type Props = {};
 
@@ -48,12 +49,37 @@ const DetailPage = (props: Props) => {
   const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-  console.log(datatourArray.images);
+
+
+
+
+
   const locationString = datatourArray?.ten_tour || "";
   const locations = locationString.split(" - ");
   const formattedString = locations.join(", ");
   const images = datatourArray?.images || [];
-  console.log(images);
+
+  const [showEvaluate, setshowEvaluate] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/admin/evaluate/showDanhGiaOnlyTour', {
+          id: datatourArray?.id
+        });
+        setshowEvaluate(response.data.result);
+      
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (datatourArray?.id != undefined) {
+      fetchData();
+    }
+  }, [datatourArray?.id ]);
+  console.log('123',showEvaluate);
+  
+
 
   return (
     <div className=" mb-[1900px]">
@@ -123,32 +149,6 @@ const DetailPage = (props: Props) => {
                   ) : (
                     <p>Không có hình ảnh cho tour này.</p>
                   )}
-                  {/* {images && images.length > 0 ? (
-            <div>
-              {" "}
-              <div className="flex gap-5">
-                {" "}
-                <img
-                  style={radius1}
-                  src={`http://localhost:8000/storage/${images[1].image_path}`}
-                  alt=""
-                />
-                <img
-                  style={radius1}
-                  src={`http://localhost:8000/storage/${images[2].image_path}`}
-                  alt=""
-                />{" "}
-              </div>
-              <div className="mt-5">
-                <img
-                  src={`http://localhost:8000/storage/${images[3].image_path}`}
-                  style={radius2}
-                />
-              </div>
-            </div>
-             ) : (
-              <p>Không có hình ảnh cho tour này.</p>
-            )}   */}
                 </div>
                 <div className="Description justify-between flex gap-20   mt-5 py-4">
                   <div className="Desc w-1/3 text-[#2D4271] text-[15px]">
@@ -328,6 +328,8 @@ const DetailPage = (props: Props) => {
                   </div>
                 </div>
               </div>
+             
+
               <div className=" chitiet mx-auto container-detail box-border mt-10">
                 <div className="flex-row gap-[48px] flex justify-between">
                   <div className=" w-1/2">
