@@ -1,14 +1,35 @@
 const rounded = {
   borderRadius: "25px",
 };
+import axios from "axios";
+import { IPour } from "../../interface/home";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import logo from "../img/logo.jpg";
 import { useGetMenuQuery } from "../../api/menu";
 import { data } from "autoprefixer";
 import "../../page.css";
-
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 const HeaderWebsite = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tours, setTours] = useState<IPour[]>([]);
+  const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  const [searched, setSearched] = useState(false);
+  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState<Tour[]>([]);
+  const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
+
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
   useEffect(() => {
@@ -43,17 +64,38 @@ const HeaderWebsite = () => {
   let loaiTour: string[] = [];
   let diemDens: string[] = [];
 
-  // if (menuData) {
-  //   // Lặp qua mảng data để trích xuất thông tin
-  //   menuData.forEach((item) => {
-  //     if (item && item.loaiTour) {
-  //       loaiTour.push(item.loaiTour.ten_loai_tour); // Thêm tên loại tour vào mảng
-  //       diemDens = [...diemDens, ...item.diemDens]; // Thêm tất cả địa điểm vào mảng
-  //     }
-  //   });
-  // }
-  // console.log(loaiTour);
-  // console.log(diemDens);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+      setSearchResults(response.data.data);
+      const filteredTours = response.data.data.filter((tour: Tour) =>
+        tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setMatchedResults(filteredTours);
+
+      setFilteredTours(filteredTours);
+      setSearched(true);
+      navigate('/tour', { state: { matchedResults: filteredTours } });
+    } catch (error) {
+      // setError("Error searching tours.");
+    }
+  };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setFilteredTours([]);
+    setSearched(false);
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const displayedTours = searched ? filteredTours : tours;
   const combinedData = {};
   if (menuData) {
     menuData.forEach((item) => {
@@ -93,7 +135,7 @@ const HeaderWebsite = () => {
                     Tour
                   </Link>
                   {/* Menu phân cấp*/}
-<div className="container mx-auto max-w-full w-full">
+                  <div className="container mx-auto max-w-full w-full">
                     <div className="">
                       <ul className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
                         {" "}
@@ -153,21 +195,23 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="border-yellow-300
-border-[3px] px-2 py-2  rounded"
-          />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">
-            Search
-          </button>
+
+          <div className="search mt-2   tours-center">
+            <input style={{ width: '220px' }} className="border-yellow-300 border-[3px] px- py-2 rounded"
+              type="text"
+              placeholder="Search...."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button>
+
+          </div>
 
           <div className="ml-2">
             {token ? (
               <Link to="/profile">
                 <img
-src={`http://localhost:8000/storage/${usersId.image}`}
+                  src={`http://localhost:8000/storage/${usersId.image}`}
                   alt="img"
                   style={{
                     width: "50px",

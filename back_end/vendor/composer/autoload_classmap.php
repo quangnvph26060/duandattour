@@ -58,6 +58,7 @@ return array(
     'App\\Http\\Resources\\TourResoure' => $baseDir . '/app/Http/Resources/TourResoure.php',
     'App\\Kernel' => $vendorDir . '/laravel/pint/app/Kernel.php',
     'App\\Mail\\ContactMail' => $baseDir . '/app/Mail/ContactMail.php',
+    'App\\Mail\\DatHang' => $baseDir . '/app/Mail/DatHang.php',
     'App\\Mail\\RegisterHuongDanVien' => $baseDir . '/app/Mail/RegisterHuongDanVien.php',
     'App\\Mail\\RegisterUser' => $baseDir . '/app/Mail/RegisterUser.php',
     'App\\Models\\DatTour' => $baseDir . '/app/Models/DatTour.php',

@@ -587,6 +587,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'App\\Http\\Resources\\TourResoure' => __DIR__ . '/../..' . '/app/Http/Resources/TourResoure.php',
         'App\\Kernel' => __DIR__ . '/..' . '/laravel/pint/app/Kernel.php',
         'App\\Mail\\ContactMail' => __DIR__ . '/../..' . '/app/Mail/ContactMail.php',
+        'App\\Mail\\DatHang' => __DIR__ . '/../..' . '/app/Mail/DatHang.php',
         'App\\Mail\\RegisterHuongDanVien' => __DIR__ . '/../..' . '/app/Mail/RegisterHuongDanVien.php',
         'App\\Mail\\RegisterUser' => __DIR__ . '/../..' . '/app/Mail/RegisterUser.php',
         'App\\Models\\DatTour' => __DIR__ . '/../..' . '/app/Models/DatTour.php',

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Col, Divider, Row } from "antd";
+
+import { Form, DatePicker, Button  } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+
+
 import {
   BarChart,
   Bar,
@@ -7,39 +11,137 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
-  Tooltip,
+
   PieChart,
+  LineChart, Line, Tooltip ,
   Pie,
 } from "recharts";
 import axios from "axios";
 import Chart from "./ChartComponent";
+import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const style: React.CSSProperties = {
   padding: "8px 0",
   border: "2px solid gray",
   height: "90px",
 };
 const Dashboard = () => {
-  const dataBar = [
-    { name: "Tháng 1", react: 32 },
-    { name: "Tháng 2", react: 42 },
-    { name: "Tháng 3", react: 51 },
-    { name: "Tháng 4", react: 60 },
-    { name: "Tháng 5", react: 51 },
-    { name: "Tháng 6", react: 95 },
-    { name: "Tháng 7", react: 32 },
-    { name: "Tháng 8", react: 42 },
-    { name: "Tháng 9", react: 51 },
-    { name: "Tháng 10", react: 60 },
-    { name: "Tháng 11", react: 51 },
-    { name: "Tháng 12", react: 950 },
-  ];
+  //loc 
+  const [filteredData, setFilteredData] = useState([]);
+  const [dailyRevenueData, setDailyRevenueData] = useState([]);
+  const fetchDailyRevenueData = async (start, end) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/admin/statistical/getStatisticalDate?start_date=${start.format(
+          "YYYY-MM-DD"
+        )}&end_date=${end.format("YYYY-MM-DD")}`
+      );
+      const data = response.data.data;
+  
+      // Chuyển đổi dữ liệu thành mảng objects để phù hợp với Recharts
+      const chartData = Object.keys(data).map((date) => ({
+        date,
+        revenue: data[date],
+      }));
+  
+      setDailyRevenueData(chartData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const onFinish = async (values) => {
+    try {
+      const { startDate, endDate } = values;
+      await fetchDailyRevenueData(startDate, endDate);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  // top 5 dat nhieu
+  const [results, setResults] = useState([]);
+  const [results1, setResults1] = useState([]);
 
-  const dataPie = [
-    { name: "totalToursPaid", value: 75 },
-    { name: "totalToursUnpaid", value: 50 },
-    { name: "totalToursCancelled", value: 50 },
-  ];
+  useEffect(() => {
+    // Fetch or set your data here
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/admin/statistical/topAddress');
+        const data = await response.json();
+
+        if (Array.isArray(data.result) && data.result.length > 0) {
+          setResults(data.result);
+          console.log('Fetched Data:', data.result);
+        } else {
+          console.error('Invalid data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Run once on component mount
+
+
+
+  useEffect(() => {
+    // Fetch or set your data here
+    const fetchData1 = async () => {
+      try {
+        const response1 = await fetch('http://localhost:8000/api/admin/statistical/topFiveTours');
+        const data1 = await response1.json();
+
+        if (Array.isArray(data1) && data1.length > 0) {
+          setResults1(data1);
+          console.log('Fetched Data:', data1);
+        } else {
+          console.error('Invalid data format:', data1);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData1();
+  }, []); // Run once on component mount
+
   const colors = ["red", "blue"]; // Mảng các màu cho từng loại dữ liệu
+  const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
+  const PieChartSatusTour = () => {
+    const dataPie = [
+      { name: "totalToursPaid", value: 0 },
+      { name: "totalToursUnpaid", value: 0 },
+      { name: "totalToursCancelled", value: 0 },
+    ];
+    axios
+      .get("http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics")
+      .then((response) => {
+        const newData1 = dataPie.map((item, index) => ({
+          name: item.name,
+          value: response.data.statisticalStatus[item.name],
+        }));
+        console.log(response.data.statisticalStatus.totalToursCancelled);
+
+        setPieChartSatusTour(newData1);
+        // debugger;
+        console.log(newData1);
+      });
+  };
+
+  useEffect(() => {
+    PieChartSatusTour();
+  }, []);
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const monthColors = Array.from({ length: 12 }, getRandomColor);
   const [statistical, setStatistical] = useState([]);
   const Statistical = () => {
     axios
@@ -69,32 +171,33 @@ const Dashboard = () => {
   const [columnChart, setColumnChart] = useState([]);
   const ColumnChart = (selectedYear) => {
     const dataBar = [
-      { name: "Tháng 1", doanh_thu: 32 },
-      { name: "Tháng 2", doanh_thu: 42 },
-      { name: "Tháng 3", doanh_thu: 51 },
-      { name: "Tháng 4", doanh_thu: 60 },
-      { name: "Tháng 5", doanh_thu: 51 },
-      { name: "Tháng 6", doanh_thu: 95 },
-      { name: "Tháng 7", doanh_thu: 32 },
-      { name: "Tháng 8", doanh_thu: 42 },
-      { name: "Tháng 9", doanh_thu: 51 },
-      { name: "Tháng 10", doanh_thu: 60 },
-      { name: "Tháng 11", doanh_thu: 51 },
-      { name: "Tháng 12", doanh_thu: 950 },
+      { name: "Tháng 1" },
+      { name: "Tháng 2" },
+      { name: "Tháng 3" },
+      { name: "Tháng 4" },
+      { name: "Tháng 5" },
+      { name: "Tháng 6" },
+      { name: "Tháng 7" },
+      { name: "Tháng 8" },
+      { name: "Tháng 9" },
+      { name: "Tháng 10" },
+      { name: "Tháng 11" },
+      { name: "Tháng 12" },
     ];
 
     axios
-      .get( `http://127.0.0.1:8000/api/admin/statistical/columnChart/${selectedYear}`)
+      .get(
+        `http://127.0.0.1:8000/api/admin/statistical/columnChart/${selectedYear}`
+      )
       .then((response) => {
         const newData = dataBar.map((item, index) => ({
           name: item.name,
           doanh_thu: response.data.doanhthu[index],
+          fill: monthColors[index],
         }));
         setColumnChart(newData);
-
-        console.log(newData);
       });
-  }
+  };
   useEffect(() => {
     ColumnChart(selectedYear);
   }, []);
@@ -107,36 +210,28 @@ const Dashboard = () => {
 
   const handleFilterData = () => {
     console.log(selectedYear);
-    ColumnChart(selectedYear) // Lấy giá trị năm đã chọn khi người dùng nhấp vào nút "Lọc dữ liệu"
+    ColumnChart(selectedYear); // Lấy giá trị năm đã chọn khi người dùng nhấp vào nút "Lọc dữ liệu"
     // Thực hiện xử lý dữ liệu dựa trên năm đã chọn
   };
-  const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
-  const PieChartSatusTour = () => {
-    const dataPie = [
-      { name: "totalToursPaid", value: 0 },
-      { name: "totalToursUnpaid", value: 0 },
-      { name: "totalToursCancelled", value: 0 },
-    ];
-    axios
-    .get( 'http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics')
-    .then((response) => {
-      const newData1 = dataPie.map((item, index) => ({
-        name: item.name,
-        value: response.data.statisticalStatus[item.name],
-        
-      }));
-      console.log(response.data.statisticalStatus.totalToursCancelled);
-      
-      setPieChartSatusTour(newData1);
-// debugger;
-      console.log(newData1);
-    });
-  }
-  useEffect(() => {
-    PieChartSatusTour();
-  }, []);
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const remainder = rating - fullStars;
+  
+    const stars = Array(fullStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />);
+    
+    if (remainder > 0) {
+      stars.push(<FontAwesomeIcon icon={faStarHalfAlt} color="gold" />);
+    }
+  
+    const remainingStars = 5 - fullStars - (remainder > 0 ? 1 : 0);
+    stars.push(...Array(remainingStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />));
+  
+    return stars;
+  };
+  
   return (
     <div>
+    
       <div>
         <h1 className="text-3xl p-5 font-semibold">Quản lý du lịch</h1>
         <hr />
@@ -163,7 +258,7 @@ const Dashboard = () => {
               alt=""
             />
             <div>
-              <p className="text-xl font-medium">Tour đã đặt</p>
+              <p className="text-xl font-medium">Đơn đã đặt</p>
               <p className="text-xl font-semibold">
                 {statistical.totalToursbooked}
               </p>
@@ -244,28 +339,40 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-3 p-6">
-        <div>
-          <input
-            className="border border-gray-400 lg:w-72 md:w-64 h-10 text-2xl rounded-md"
-            type="number"
-            name=""
-            id=""
-          />
+      <div className="  p-6">
+      <h2 className="text-xl">Doanh thu từ ngày</h2>
+      <Form onFinish={onFinish}>
+      
+        <div className="flex">
+       
+        <Form.Item  name="startDate">
+          <DatePicker style={{ width: '200px' }} />
+        </Form.Item>
+        <Form.Item name="endDate">
+          <DatePicker style={{ width: '200px' }} />
+        </Form.Item>
+        <Form.Item className="">
+          <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+            Search
+          </Button>
+        </Form.Item>
         </div>
-        <div>
-          <input
-            className="border border-gray-400 lg:w-72 md:w-64 h-10 text-2xl rounded-md"
-            type="number"
-            name=""
-            id=""
-          />
-        </div>
-        <div>
-          <button className="px-5 py-[6px] bg-green-600 rounded-md text-white text-lg">
-            Lọc dữ liệu
-          </button>
-        </div>
+       
+    
+      </Form>
+
+      
+      <div className="chart-item mt-10">
+ 
+  <BarChart width={800} height={400} barSize={70} data={dailyRevenueData}>
+    <CartesianGrid stroke="#ccc" />
+    <XAxis dataKey="date" />
+    <YAxis />
+    <Tooltip formatter={(value) => `${value} VNĐ`} />
+    <Legend />
+    <Bar name="Doanh thu" dataKey="revenue" fill={getRandomColor()} />
+  </BarChart>
+</div>
       </div>
 
       <div className="flex gap-3 p-6">
@@ -289,9 +396,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="chart-container">
+      <div className="chart-container flex  gap-10">
         <div className="chart-item chart-item-left">
-        <h3>Biểu đồ doanh thu của năm {selectedYear ? selectedYear : "2023"}</h3>
+          <h3>
+            Biểu đồ doanh thu của năm {selectedYear ? selectedYear : "2023"}
+          </h3>
           <br />
           <BarChart width={1000} height={400} data={columnChart}>
             <CartesianGrid stroke="#ccc" />
@@ -299,7 +408,9 @@ const Dashboard = () => {
             <YAxis />
             <Tooltip formatter={(value) => `${value} VNĐ`} />
             <Legend />
-            <Bar dataKey="doanh_thu" fill="#2196F3" />
+            <Bar dataKey="doanh_thu" name="Doanh thu" fill={getRandomColor()} />
+
+            {/* Thêm các cột khác tương tự */}
           </BarChart>
         </div>
         <div className="chart-item chart-item-right">
@@ -320,6 +431,46 @@ const Dashboard = () => {
             <Legend />
           </PieChart>
         </div>
+      </div>
+      <div className="top 5 mt-10 justify-normal mx-auto ml-10 gap-20 flex">
+  <div className="top5rate ">
+  <h2 className="text-2xl font-medium ">Top 5 tour hot</h2>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>ID</th>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên Địa Điểm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {results.map(result => (
+          <tr key={result.id}>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id}</td>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.ten}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <div className="top5buy ">
+  <h2 className="text-2xl font-bold">Top 5 rating</h2>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên địa điểm</th>
+          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        {results1.map(result => (
+          <tr >
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id_tour}</td>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> {renderStars(result.average_rating)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
       </div>
     </div>
   );

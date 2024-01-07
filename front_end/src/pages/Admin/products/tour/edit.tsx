@@ -6,12 +6,20 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { UploadOutlined } from "@ant-design/icons";
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
 import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ITour } from "../../../../interface/tour";
+import "../../../css.css";
 import { useGetTourQuery, useEditTourMutation, useGetTourByIdQuery } from "../../../../api/TourApi";
 const { Option } = Select;
 
 const AdminTourEdit = () => {
   const navigate = useNavigate();
+  const [editorData, setEditorData] = useState('');
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  };
   const [provinces, setProvinces] = useState([]);
   const [provinces2, setProvinces2] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
@@ -41,6 +49,18 @@ const AdminTourEdit = () => {
   };
 
   useEffect(() => {
+    if (Tour && Tour.data && Tour.data.image_path) {
+      const fileList = Tour.data.image_path.map((image, index) => ({
+        uid: `${index}`,
+        name: `image-${index}`,
+        status: 'done',
+        url: `http://localhost:8000/storage/${image}`, // Thay thế bằng domain và đường dẫn thực tế của bạn
+      }));
+      setImageList(fileList);
+    }
+    if (Tour && Tour.data && Tour.data.mo_ta) {
+      setEditorData(Tour.data.mo_ta);
+    }
     fetch('https://provinces.open-api.vn/api/')
       .then((response) => {
         if (!response.ok) {
@@ -124,7 +144,7 @@ const AdminTourEdit = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
+
         onFinish={onFinish}
         autoComplete="off"
         form={form}
@@ -188,8 +208,13 @@ const AdminTourEdit = () => {
           name="diem_di"
           rules={[{ required: true, message: "Vui lòng chọn điểm đến!" }]}
         >
-          <Select defaultValue="Chọn điểm đi " onChange={handleChange}>
-            <Option value="" >Chọn điểm đi</Option>
+          <Select
+            showSearch
+            placeholder="Chọn điểm đi"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
             {provinces.map((province) => (
               <Option key={province.code} value={province.name}>
                 {province.name}
@@ -200,10 +225,16 @@ const AdminTourEdit = () => {
         <Form.Item
           label="Điểm đến"
           name="diem_den"
-          rules={[{ required: true, message: "Vui lòng chọn điểm đến!" }]}
+          rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
         >
-          <Select defaultValue="Chọn điểm đến "  >
-            <Option value="" >Chọn điểm đến</Option>
+          <Select
+            showSearch
+            mode="multiple"
+            placeholder="Chọn điểm đến"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
             {provinces2.map((province) => (
               <Option key={province.code} value={province.name}>
                 {province.name}
@@ -211,6 +242,8 @@ const AdminTourEdit = () => {
             ))}
           </Select>
         </Form.Item>
+
+
 
 
 
@@ -240,11 +273,20 @@ const AdminTourEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Mô tả"
+          label="Mô Tả"
           name="mo_ta"
-          rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-        >
-          <Input.TextArea className='mt-4' />
+          rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
+        > <CKEditor
+            editor={ClassicEditor}
+            // config={{
+            //   extraPlugins: [EasyImage],
+            //   // Cấu hình thêm plugin Easy Image
+
+            // }}
+            data={editorData}
+            onChange={handleEditorChange}
+          />
+
         </Form.Item>
 
         <Form.Item
@@ -280,7 +322,7 @@ const AdminTourEdit = () => {
 
         </Form.Item>
       </Form>
-    </div>
+    </div >
   );
 };
 

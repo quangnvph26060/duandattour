@@ -1,10 +1,11 @@
 export interface IQuanlyDattour {
     data:any
       id: number;
-
+      image_path:string;
       ten_khach_hang: string;
       email: string;
       sdt: string;
+      ten_tour: string;
       dia_chi: string;
       cccd: string | null;
       ngay_dat: string;

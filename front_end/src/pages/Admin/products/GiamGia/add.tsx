@@ -29,6 +29,7 @@ const AdminGiam_GiaADD: React.FC = () => {
         // Disable dates before the current date
         return current && current < currentDate.setHours(0, 0, 0, 0);
     };
+    
     return (
         <div className="container">
             <header className="mb-4">
@@ -68,6 +69,15 @@ const AdminGiam_GiaADD: React.FC = () => {
                     name="percentage"
                     rules={[
                         { required: true, message: 'Vui lòng nhập giá trị giảm giá!' },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Điều kiện áp dụng"
+                    name="minprice"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập điều kiện áp dụng' },
                     ]}
                 >
                     <Input />

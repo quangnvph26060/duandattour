@@ -6,9 +6,7 @@ import { Link, Route, useParams } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import anh4 from "../img/anh4.jpg"
-import anh2 from '../img/anh2.jpg'
-import anh3 from '../img/anh3.jpg'
+
 import star from "../img/star.png"
 import line from "../img/line.png"
 import anh5 from "../img/anh5.png"
@@ -22,7 +20,7 @@ import anh15 from "../img/anh15.jpg"
 import { useNavigate } from 'react-router-dom';
 
 const rounded = { borderRadius: '25px' };
-import logo from '../img/logo.jpg';
+
 import { useLocation } from "react-router-dom"
 interface Tour {
   id: number;
@@ -114,45 +112,7 @@ const TourPage: React.FC = () => {
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
 
-  // const getTour = () => {
-  //   axios
-  //     .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`)
-  //     .then((response)=>{
-  //       console.log(response.data.tourdiemden);
-  //       setTour(response.data.tourdiemden);
-  //     })
-  // }
-  // useEffect(() => {
-  //   getTour();
-  // }, []);
 
-
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   const filteredTours = tours.filter((tour) =>
-  //     tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-
-  //   setFilteredTours(filteredTours);
-  //   setSearched(true); // Đánh dấu đã tìm kiếm
-  // };
-
-  // const handleResetSearch = () => {
-  //   setSearchTerm("");
-  //   setFilteredTours([]);
-  //   setSearched(false); // Đánh dấu chưa tìm kiếm
-  // };
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
-
-  // const displayedTours = searched ? filteredTours : tours; // Chọn danh sách tours để hiển thị
-
-  //Hiếu
 
   const [filteredTours, setFilteredTours] = useState([]);
   const [selectedDayRange, setSelectedDayRange] = useState(null);
@@ -455,18 +415,12 @@ const TourPage: React.FC = () => {
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
             {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
-              : tourdiemden
-            ).map((items) => (
+              : matchedResults
+            ).slice(0, 3).map((items) => (
               <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
                 {/* ... (your existing code) */}
                 <div className=' bg-white rounded-t-lg shadow-xl'>
-                  {/* {items.images.map((images) => (
-                    <img
-                      key={image.id}
-                      className="mt-4 rounded-lg w-full h-60 object-cover"
-                      src={`http://localhost:8000/storage/${images.image_path}`}
-                      alt={`Ảnh ${items.ten_tour}`}
-                    />))} */}
+
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
@@ -479,19 +433,25 @@ const TourPage: React.FC = () => {
                         <i className="fa-regular fa-heart text-white"></i>
                       </Link>
                     </div>
-                    <img src="http://localhost:5173/src/img/anh7.png" className="rounded-t-lg mb-3 h-[250px]" alt="" />
-                  </div>
 
+                  </div>
+                  {items.image_dd && (
+                    <img
+                      className="mt-4 rounded-lg w-full h-60 object-cover"
+                      src={`http://localhost:8000/storage/${items.image_dd}`}
+                      alt={`Ảnh ${items.ten_tour}`}
+                    />
+                  )}
                   <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <Link to={`/tours/${items.id}`}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>
                     <p className='text-sm'>Nơi khởi hành: </p>
-                    <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+                    <p className='font-medium text-sm'>{items.diem_di}</p>
                   </div>
-                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {items.gia_treem}₫</p>
+                  <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {formatCurrency(items.gia_treem)} </p>
                   <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                    <p className='text-xl font-bold text-red-500'>{items.gia_nguoilon}₫</p>
+                    <p className='text-xl font-bold text-red-500'>{formatCurrency(items.gia_nguoilon)} </p>
                     <div className='bg-yellow-300 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
                   </div>
                   <div className="px-3 py-4 grid grid-cols-2 gap-7">
@@ -502,6 +462,8 @@ const TourPage: React.FC = () => {
               </div>
             ))}
           </div>
+
+
 
 
 

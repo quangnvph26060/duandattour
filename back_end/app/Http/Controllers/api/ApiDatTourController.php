@@ -45,6 +45,7 @@ class ApiDatTourController extends Controller
 
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
+        
         // $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
         $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
         $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
@@ -70,6 +71,7 @@ class ApiDatTourController extends Controller
                 $tourone->soluong = $soluong;
                 $tourone->save();
             }
+
             // thông báo khi đặt hàng thành công gửi về admin
             $notification = new NotificationModel();
             $notification->name_user = $createDatTour->ten_khach_hang;
@@ -78,10 +80,9 @@ class ApiDatTourController extends Controller
             $notification->loai_thong_bao = "Đặt tour";
             $notification->id_tour = $datTour['id_tour'];
             $notification->save();
-            // $latestThanhToan = ThanhToan::latest('created_at')->first();
-            // dd($latestThanhToan);
 
-             // Gọi hàm trong ApiPaymentController
+            $apiPaymentController = new ApiPaymentController();
+            $apiPaymentController->CreatePaymentCash($request,$createDatTour->id);
             Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
 
             return response()->json(['createDatTour' => $createDatTour]);
@@ -221,6 +222,18 @@ class ApiDatTourController extends Controller
             }
         }
         // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+    }
+
+    public function updateConfirm ($idConfirm) {
+        $updateConfirm = DatTour::find($idConfirm);
+        // dd($updateConfirm->xac_nhan);
+        if($updateConfirm->xac_nhan==0){
+            $updateConfirm->xac_nhan=1;
+            $updateConfirm->save();
+            return response()->json(['message' => 'Xác nhận đơn hàng thành công!!'], 200);
+        }else{
+            return response()->json(['message' => 'Xác nhận đơn hàng không thành công!!'], 404);
+        }
     }
     public function CountTour(Request $request)
     {

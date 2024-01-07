@@ -18,8 +18,16 @@ import { Tour } from "antd";
 import { Dattour } from "../../interface/Dattour";
 import logo from "./img/logo.jpg";
 import axios from "axios";
+import "./css/style.css";
+import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 type Props = {};
-
+const formatCurrency = (value) => {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formatter.format(value);
+};
 const img = {
   borderRadius: "10px",
   witdh: "100px",
@@ -50,29 +58,17 @@ const BookTour = () => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-  const [couponData, setCouponData] = useState("");
-  const [error, setError] = useState("");
-  useEffect(() => {
-    // Gửi yêu cầu HTTP POST đến API
-    axios
-      .post("http://localhost:8000/api/check_coupon", {
-        name_coupon: inputValue,
-        tourid: idTour,
-      })
-      .then((response) => {
-        // Xử lý phản hồi từ server
-        setError(response.data.message); // lỗi từ serve
-        setCouponData(response.data.session.coupon);
-        // Tiếp tục xử lý dữ liệu phản hồi từ server
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu có
-        console.error(error); // Hiển thị thông tin lỗi từ phản hồi của server
-      });
-    if (inputValue === "") {
-      setCouponData("");
-    }
-  }, [inputValue]);
+
+  const [showMore, setShowMore] = useState(false);
+
+  const handleShowMore = (event) => {
+    event.stopPropagation();// Ngăn chặn sự kiện onClick lan ra và kích hoạt onclick
+    event.preventDefault();
+    setShowMore(!showMore);
+
+  };
+
+
 
   const [isChecked1, setIsChecked1] = useState(false); // chuyển khoản
 
@@ -80,6 +76,7 @@ const BookTour = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);
     setIsChecked(false);
+    alert(123);
   };
   // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
@@ -143,6 +140,8 @@ const BookTour = () => {
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
+  const image = datatourArray?.image_dd || [];
+
 
   // Lấy token từ localStorage
   const [userData, setUserData] = useState(null);
@@ -190,24 +189,76 @@ const BookTour = () => {
     }
   }, []);
   // tính tổng tiền
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [radioValue, setradioValue] = useState(0);
+  const handlegiamgia = (event) => {
+    const gialon = datatourArray?.gia_nguoilon;
+    const gianho = datatourArray?.gia_treem;
+    let giamgiaressult = (quantity * gialon + quantity2 * gianho)
+    if (parseInt(event.target.value) > 100) {
+      giamgiaressult -= parseInt(event.target.value);
+    } else if (parseInt(event.target.value) < 100) {
+
+      giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
+    }
+    setradioValue(parseInt(event.target.value));
+    console.log('123', radioValue);
+
+    // console.log(selectedValue);
+    setSelectedValue(giamgiaressult);
+  };
+  const [couponData, setCouponData] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Gửi yêu cầu HTTP POST đến API
+    axios
+      .post("http://localhost:8000/api/check_coupon", {
+        name_coupon: inputValue,
+        tourid: idTour,
+      })
+      .then((response) => {
+        // Xử lý phản hồi từ server
+        setError(response.data.message); // lỗi từ serve
+        setCouponData(response.data.session.coupon);
+        // Tiếp tục xử lý dữ liệu phản hồi từ server
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có
+        console.error(error); // Hiển thị thông tin lỗi từ phản hồi của server
+      });
+    if (inputValue === "") {
+      setCouponData("");
+    }
+  }, [inputValue]);
+
+  const [InputNhapMagiamGia, setInputNhapMagiamGia] = useState(0);
   const calculateTotalPrice = () => {
     const gialon = datatourArray?.gia_nguoilon;
     const gianho = datatourArray?.gia_treem;
-    let totalPrice = quantity * gialon + quantity2 * gianho;
-
+    let totalPrice = (quantity * gialon + quantity2 * gianho);
     if (couponData.length > 0) {
-      couponData.forEach((item) => {
-        console.log(item.discount_condition);
+      couponData.map((item) => {
         if (item.discount_condition == 1) {
+          // tính theo k
           totalPrice -= item.percentage;
         } else {
+          // tính theo %
           totalPrice = (totalPrice * (100 - item.percentage)) / 100;
         }
       });
+      if (radioValue > 100) {
+        totalPrice -= radioValue;
+      } else if (radioValue < 100) {
+        totalPrice = (totalPrice * (100 - radioValue)) / 100;
+
+      }
+
     }
 
     return totalPrice;
   };
+
   const images = datatourArray?.images || [];
   // console.log(images);
 
@@ -223,6 +274,7 @@ const BookTour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
 
     if (isChecked) {
       // tiền mặt
@@ -231,8 +283,9 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-        const requestData = {
-          vnp_Amount: calculateTotalPrice(),
+        
+        let requestData = {
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
         const paymentResponse = await axios.post(
@@ -262,7 +315,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount: calculateTotalPrice() * 100,
+          vnp_Amount:  couponData.length > 0 ? calculateTotalPrice()* 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice()* 100,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -277,8 +330,10 @@ const BookTour = () => {
         }
       }
     }
+
+
   };
-  console.log();
+
 
   // đanh giá 
   // const [selectedStars, setSelectedStars] = useState(0);
@@ -293,27 +348,65 @@ const BookTour = () => {
   //       console.error(error);
   //     });
   // }
+  const [selectedStars, setSelectedStars] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id });
+        setSelectedStars(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (datatourArray?.id !== undefined && Tourdata?.data) {
+      fetchData();
+    }
+  }, [datatourArray?.id, Tourdata?.data]);
+
+  // giảm giá  option
+  const [inputGiamGia, setinputGiamGia] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/admin/discount/filterDicscount', { price_tour: datatourArray?.gia_nguoilon });
+        setinputGiamGia(response.data.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (datatourArray?.gia_nguoilon !== undefined && Tourdata?.data) {
+      fetchData();
+    }
+  }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
+  // hiển thị danh sách giảm giá
+
+console.log(image);
+
+
   return (
-    <div className="container mx-auto">
+    
+    <div className=" mx-auto  ">
       {/* header trên thôn tin dưới */}
-      <div className="info mt-14 mx-auto w-10/12 ">
+      <div className="info mx-auto  mt-14 w-10/12  ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-          <div className="img-book w-1/3">
-            {datatourArray.images && datatourArray.images.length > 0 ? (
-              <div>
-                {datatourArray.images.map((image) => (
+          
+            {image && image.length > 0 ? (
+             
                   <img
+                  className="min-h-[300px] w-1/3 rounded-l-lg"
                     key={image.id}
-                    style={img}
-                    src={`http://localhost:8000/storage/${image.image_path}`}
+                 
+                    src={`http://localhost:8000/storage/${image}`}
                     alt={`Image ${image.id}`}
                   />
-                ))}
-              </div>
+              
             ) : (
               <p>Không có hình ảnh cho tour này.</p>
             )}
-          </div>
+   
 
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
@@ -351,7 +444,7 @@ const BookTour = () => {
                 Ngày kết thúc {datatourArray?.ngay_ket_thuc}
               </p>
               <p className="mt-1 text-[#2D4271] text-[16px] font-medium">
-                Nơi khởi hành: {datatourArray?.diem_khoi_hanh}
+                Nơi khởi hành: {datatourArray?.diem_di}
               </p>
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
                 Số chỗ còn nhận: {datatourArray?.soluong}
@@ -402,7 +495,7 @@ const BookTour = () => {
         <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
           Thông tin liên lạc
         </p>
-        <form onSubmit={handleSubmit}>
+        <form >
           <div className="thontin2 flex gap-1 mt-12">
             <div className="ttlienlac  w-2/3  ">
               <input
@@ -424,6 +517,7 @@ const BookTour = () => {
                   <input
                     type="text"
                     id="ten_khach_hang"
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     name="ten_khach_hang"
                     value={formData.ten_khach_hang}
                     onChange={handleChange}
@@ -592,32 +686,7 @@ const BookTour = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="dieukhoan scroll-text ">
-                <p className="mt-5 text-[#2D4271] text-[22px] font-bold">
-                  Điều khoản bắt buộc khi đăng ký online
-                </p>
-                <div className="w-full mt-5 max-h-[200px] overflow-y-auto border rounded">
-                  <div className="scrollingText ">
-                    <p>
-                      This is a long piece of text that will scroll within a
-                      fixed height
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <label className="flex mt-5">
-                    <input
-                      type="checkbox"
-                      checked={isAgreed}
-                      onChange={handleAgreeToggle}
-                    />
-                    <p className="text-[#2D4271] text-[16px] font-medium">
-                      {" "}
-                      Tôi đồng ý với các điều kiện trên
-                    </p>
-                  </label>
-                </div>
-              </div> */}
+
             </div>
             <div className="h-[950px] w-1/3 border py-6 px-4 ">
               <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
@@ -642,13 +711,13 @@ const BookTour = () => {
               </p>
 
               <div className="name flex gap-3 mt-4">
-                {images && images.length > 0 ? (
+                {image && image.length > 0 ? (
                   <div>
                     {/* {images.map((image) => ( */}
                     <img
-                      key={images[0].id}
+                      key={image[0].id}
                       style={img}
-                      src={`http://localhost:8000/storage/${images[0].image_path}`}
+                      src={`http://localhost:8000/storage/${image}`}
                     />
                     {/* ))} */}
                   </div>
@@ -695,7 +764,7 @@ const BookTour = () => {
                   </p>
                   <p className="text-red-400">
                     {" "}
-                    {quantity} x {datatourArray?.gia_nguoilon}
+                    {quantity} x  {formatCurrency(datatourArray?.gia_nguoilon)}
                   </p>
                 </div>
                 <div className="flex mt-6 justify-between">
@@ -703,44 +772,58 @@ const BookTour = () => {
                     Trẻ em
                   </p>
                   <p className="text-red-400">
-                    {quantity2} x {datatourArray?.gia_treem}{" "}
+                    {quantity2} x   {formatCurrency(datatourArray?.gia_treem)}
                   </p>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Mã Giảm Giá"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  style={{
-                    padding: "8px",
-                    fontSize: "14px",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    width: "380px",
-                    marginTop: "10px",
-                  }}
-                />
 
-                {/* <div className="flex mt-6 justify-between">
-                  <p className=" text-[#2D4271] text-base font-normal">
-                    Mã giảm giá
-                  </p>
-                  <div className="flex gap-1 text-black">
-                    <input
-                      type="text"
-                      placeholder="Thêm mã.."
-                      className="text-center text-black h-[35px] w-[100px] rounded border "
-                      name=""
-                      id=""
-                    />
-                    <button
-                      type="submit"
-                      className="h-[35px] text-white w-[100px] rounded hover:bg-green-700 bg-green-600"
-                    >
-                      Áp dụng
-                    </button>
+               
+                <h1 className="mt-5">Áp dụng mã giảm giá:</h1>
+                <div>
+                  <div className="radio-container">
+                    {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (
+                      <>
+                        {index === 0 && (
+                          <div className="radio-item">
+                            <input
+                              type="radio"
+                              name="radio"
+                              value={item.percentage}
+                              onChange={handlegiamgia}
+                            />
+                            <div>
+                              <h1>{item.discount_code}</h1>
+                              <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+
+                            </div>
+                          </div>
+                        )}
+                        {showMore && index !== 0 && (
+                          <>
+                            <div className="radio-item">
+                              <input
+                                type="radio"
+                                name="radio"
+                                value={item.percentage}
+                                onChange={handlegiamgia}
+                              />
+                              <div>
+                                <h1>{item.discount_code}</h1>
+                                <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </>
+
+                    ))}
+
                   </div>
-                </div> */}
+                  <button id="show-more-button " className="border-2 border-black px-4 mt-3 rounded-md hover:border-blue-500 " onClick={handleShowMore}>
+                    {showMore ? 'Thu gọn' : 'Xem thêm'}
+                  </button>
+                </div>
+
+
                 <p className="mx-auto mt-5">
                   <hr />
                 </p>
@@ -774,25 +857,27 @@ const BookTour = () => {
                   <p className="text-[#2D4271] text-[28px] font-semibold">
                     Tổng cộng
                   </p>
+                  {/* mỗi input giảm giá */}
                   {couponData.length > 0 ? (
                     <p className="text-red-400 text-[28px]">
-                      {calculateTotalPrice()} VNĐ
+                      {calculateTotalPrice()} VNĐ 
+                    </p>
+                  ) : selectedValue ? (
+                    <p className="text-red-400 text-[28px]">
+                      {selectedValue} VNĐ 
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
-                      {quantity * datatourArray?.gia_nguoilon +
-                        quantity2 * datatourArray?.gia_treem}{" "}
-                      VNĐ
+                      {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
                     </p>
                   )}
-                </div>
-                {/* <p className="text-[200px] ml-10">
-                  <FaQrcode />
-                </p> */}
+                  
 
+
+                </div>
                 <button
                   className=" mx-auto text-center hover:bg-red-600 align-middle mt-5 bg-red-500 rounded-[10px] h-[50px] w-[390px] font-medium text-white items-center text-[22px]"
-                  type="submit"
+                  type="submit" onClick={handleSubmit}
                 >
                   Đặt ngay
                 </button>
