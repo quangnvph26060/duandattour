@@ -200,7 +200,7 @@ border-[3px] px-2 py-2  rounded"
           </button>
           {token && (
             <Link to={'/favorite'} className="px-3">
-              <i className="fa-regular fa-heart text-red"></i>
+               <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
             </Link>
           )}
           <div className="ml-2">

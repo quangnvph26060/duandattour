@@ -423,24 +423,24 @@ const TourPage: React.FC = () => {
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
-                        to={``}  // Update the 'to' prop to navigate to the favorite page
-                        className='mega-menu-items'
-                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                        to={``}  // Cập nhật thuộc tính 'to' để điều hướng đến trang yêu thích
+                        className='mega-menu-items flex items-center'
+                        onClick={() => addToFavorites(items.id)} // Sử dụng trực tiếp items.id thay vì hoveredItemId
                       >
                         {/* Thêm vào sản phẩm yêu thích */}
-                        <i className="fa-regular fa-heart text-white"></i>
+                        <i className="far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300">&#xf004;</i>
                       </Link>
                     </div>
                     <img
-                        key={image.id}
-                        className="mt-4 rounded-lg w-full h-60 object-cover"
-                        src={`http://localhost:8000/storage/${image.image_path}`}
-                        alt={`Ảnh`}
-                      />
+                      key={image.id}
+                      className="mt-4 rounded-t-lg w-full h-64 object-cover"
+                      // src={`http://localhost:8000/storage/${image.image_path}`}
+                      src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg"
+                      alt={`Ảnh`}
+                    />
                   </div>
 
-                  <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
+                  <p className="px-2 py-1">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
                   <Link to={""}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
                   <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
                   <div className='flex gap-2 py-2 px-4'>

@@ -30,6 +30,7 @@ import MessageChatBox from "./Client/Message/Message";
 import { useStateContext } from "../context/ContextProvider";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { Button } from "antd";
 interface Tour {
   id: number;
   ten_tour: string;
@@ -43,13 +44,28 @@ interface Tour {
   soluong: number;
 }
 
- 
- 
-const rounded = {
-  borderRadius: "25px",
+const imageContainerStyle = {
+  position: 'relative',
+  display: 'inline-block',
 };
+
+const buttonStyle = {
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  fontSize: '1.5rem',
+  color: '#fff',
+  background: 'rgba(0, 0, 0, 0.5)',
+  border: 'none',
+  borderRadius: '4px',
+  padding: '10px',
+  cursor: 'pointer',
+  transition: 'background 0.3s',
+};
+
 const Countdown = ({ expiryDate }) => {
   const [remainingTime, setRemainingTime] = useState("");
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -100,6 +116,7 @@ const HomePage = () => {
   const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
   const navigate = useNavigate();
   const [imagesData, setImagesData] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchImagesData = async () => {
@@ -114,6 +131,14 @@ const HomePage = () => {
     fetchImagesData();
   }, []);
   console.log('123', imagesData)
+
+  const handlePrevious = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imagesData.length) % imagesData.length);
+  };
+
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesData.length);
+  };
 
   const handleSearch = async () => {
     try {
@@ -144,7 +169,7 @@ const HomePage = () => {
       console.error(error);
     }
   };
- 
+
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -464,234 +489,253 @@ const HomePage = () => {
             },
           ]}
         >
-          {imagesData.length > 0 ? (
-              <img
-                style={rounded}
-                src={`http://localhost:8000/storage/${imagesData[0].image_banner}`}
-                alt=""
-                width="100px"
-              />
-            ) : (
-              <span></span>
+          <div className="relative inline-block">
+            {imagesData.length > 0 && (
+              <>
+                <Button
+                  type="primary"
+                  onClick={handlePrevious}
+                  disabled={currentImageIndex === 0}
+                  className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-black bg-opacity-50 text-white p-3 rounded w-12 h-12"
+                >
+                  {'<'}
+                </Button>
+                <img
+                  src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
+                  alt=""
+                  className="rounded"
+                  width="600px"
+                  height="500px"
+                />
+                <Button
+                  type="primary"
+                  onClick={handleNext}
+                  disabled={currentImageIndex === imagesData.length - 1}
+                  className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-black bg-opacity-50 text-white p-3 rounded w-12 h-12"
+                >
+                  {'>'}
+                </Button>
+              </>
             )}
+          </div>
         </Slider>
       </div>
       <div
-      className="bg-white box-shadow rounded-lg  p-9 mx-auto hidden lg:block "
-      style={{ maxWidth: "1200px", position: "relative", left: 0, top: "-125px" }}
-    >
-      <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">PolyTour Trong Nước</h1>
-      <div className="tour-form mt-2 flex items-center">
-        <div className="flex items-center mr-4">
-          <div className="flex hover:border-blue-500 icon-sheach items-center  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/61/61469.png"
-              alt=""
-              width={"20px"}
-            />
+        className="bg-white box-shadow rounded-lg  p-9 mx-auto hidden lg:block "
+        style={{ maxWidth: "1200px", position: "relative", left: 0, top: "-125px" }}
+      >
+        <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">PolyTour Trong Nước</h1>
+        <div className="tour-form mt-2 flex items-center">
+          <div className="flex items-center mr-4">
+            <div className="flex hover:border-blue-500 icon-sheach items-center  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/61/61469.png"
+                alt=""
+                width={"20px"}
+              />
 
-            <div className="flex flex-col ml-3">
-              <label htmlFor="departureDate" className="mr-2 text-[#2d4271] font-medium">
-                Ngày đi:
-              </label>
-              <div className="relative">
-                <label
-                  htmlFor="departureDate"
-                  className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+              <div className="flex flex-col ml-3">
+                <label htmlFor="departureDate" className="mr-2 text-[#2d4271] font-medium">
+                  Ngày đi:
                 </label>
-                <input
-            
-                  type="date"
-                  id="departureDate"
+                <div className="relative">
+                  <label
+                    htmlFor="departureDate"
+                    className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+                  </label>
+                  <input
 
-                  value={selectedDepartureDate}
-                  onChange={(e) => setSelectedDepartureDate(e.target.value)}
-                />
+                    type="date"
+                    id="departureDate"
+
+                    value={selectedDepartureDate}
+                    onChange={(e) => setSelectedDepartureDate(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center mr-4">
-          <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-            <img src="https://cdn-icons-png.flaticon.com/128/61/61469.png" alt="" width={"20px"} />
+          <div className="flex items-center mr-4">
+            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+              <img src="https://cdn-icons-png.flaticon.com/128/61/61469.png" alt="" width={"20px"} />
 
-            <div className="flex flex-col ml-3">
-              <label htmlFor="arrivalDate" className="mr-2 text-[#2d4271] font-medium">
-                Số ngày
-              </label>
-              <select name="" id="" className="h-[26px] text-[#2d4271] font-bold">
-                <option value="1">1 ngày</option>
-                <option value="3">3 ngày</option>
-                <option value="5">5 ngày</option>
-                <option value="7">7 ngày</option>
-              </select>
+              <div className="flex flex-col ml-3">
+                <label htmlFor="arrivalDate" className="mr-2 text-[#2d4271] font-medium">
+                  Số ngày
+                </label>
+                <select name="" id="" className="h-[26px] text-[#2d4271] font-bold">
+                  <option value="1">1 ngày</option>
+                  <option value="3">3 ngày</option>
+                  <option value="5">5 ngày</option>
+                  <option value="7">7 ngày</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center mr-4">
-          <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
-              alt=""
-              width={"20px"}
-            />
-            <div className="flex flex-col ml-3">
-              <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
-                Điểm đi :
-              </label>
-              <select
+          <div className="flex items-center mr-4">
+            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
+                alt=""
+                width={"20px"}
+              />
+              <div className="flex flex-col ml-3">
+                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
+                  Điểm đi :
+                </label>
+                <select
 
-            id="depeparture"
-             
-            value={selectedDeparture}
-            onChange={(e) => setSelectedDeparture(e.target.value)}
+                  id="depeparture"
+
+                  value={selectedDeparture}
+                  onChange={(e) => setSelectedDeparture(e.target.value)}
+                >
+                  <option value="Hà Nội"> Hà Nội</option>
+                  <option value="Đà Nẵng">Đà Nẵng</option>
+                  <option value="Hcm">Hồ Chí Minh </option>
+                  <option value="Hải Phòng">Hải Phòng</option>
+
+                  <option value="Cần Thơ">Cần Thơ</option>
+                  <option value="An Giang">An Giang</option>
+                  <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+                  <option value="Bắc Giang">Bắc Giang</option>
+                  <option value="Bắc Kạn">Bắc Kạn</option>
+                  <option value="Bạc Liêu">Bạc Liêu</option>
+                  <option value="Bắc Ninh">Bắc Ninh</option>
+                  <option value="Bến Tre">Bến Tre</option>
+                  <option value="Bình Định">Bình Định</option>
+                  <option value="Bình Dương">Bình Dương</option>
+                  <option value="Bình Phước">Bình Phước</option>
+                  <option value="Bình Thuận">Bình Thuận</option>
+                  <option value="Cà Mau">Cà Mau</option>
+                  <option value="Cao Bằng">Cao Bằng</option>
+                  <option value="Đắk Lắk">Đắk Lắk</option>
+                  <option value="Đắk Nông">Đắk Nông</option>
+                  <option value="Điện Biên">Điện Biên</option>
+                  <option value="Đồng Nai">Đồng Nai</option>
+                  <option value="Đồng Tháp">Đồng Tháp</option>
+                  <option value="Gia Lai">Gia Lai</option>
+                  <option value="Hà Giang">Hà Giang</option>
+                  <option value="Hà Nam">Hà Nam</option>
+                  <option value="Hà Tĩnh">Hà Tĩnh</option>
+                  <option value="Hải Dương">Hải Dương</option>
+                  <option value="Hậu Giang">Hậu Giang</option>
+                  <option value="Hòa Bình">Hòa Bình</option>
+                  <option value="Hưng Yên">Hưng Yên</option>
+                  <option value="Khánh Hòa">Khánh Hòa</option>
+                  <option value="Kiên Giang">Kiên Giang</option>
+                  <option value="Kon Tum">Kon Tum</option>
+                  <option value="Lai Châu">Lai Châu</option>
+                  <option value="Lâm Đồng">Lâm Đồng</option>
+                  <option value="Lạng Sơn">Lạng Sơn</option>
+                  <option value="Lào Cai">Lào Cai</option>
+                  <option value="Long An">Long An</option>
+                  <option value="Nam Định">Nam Định</option>
+                  <option value="Nghệ An">Nghệ An</option>
+                  <option value="Ninh Bình">Ninh Bình</option>
+                  <option value="Ninh Thuận">Ninh Thuận</option>
+                  <option value="Phú Thọ">Phú Thọ</option>
+                  <option value="Phú Yên">Phú Yên</option>
+                  <option value="Quảng Bình">Quảng Bình</option>
+                  <option value="Quảng Nam">Quảng Nam</option>
+                  <option value="Quảng Ngãi">Quảng Ngãi</option>
+                  <option value="Quảng Ninh">Quảng Ninh</option>
+                  <option value="Quảng Trị">Quảng Trị</option>
+                  <option value="Sóc Trăng">Sóc Trăng</option>
+                  <option value="Sơn La">Sơn La</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="tuongduong">
+            <img src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png" alt="" />
+          </div>
+
+          <div className="flex items-center mr-4">
+            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
+                alt=""
+                width={"20px"}
+              />
+
+              <div className="flex flex-col ml-3">
+                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
+                  Điểm đến :
+                </label>
+                <select
+
+                  id="destination"
+
+                  value={selectedDestination}
+                  onChange={(e) => setSelectedDestination(e.target.value)}
+                >
+                  <option value="Hà Nội"> Hà Nội</option>
+                  <option value="Miền Tây">MT </option>
+                  <option value="Hcm">Hồ Chí Minh </option>
+                  <option value="Hải Phòng">Hải Phòng</option>
+                  <option value="Đà Nẵng">Đà Nẵng</option>
+                  <option value="Cần Thơ">Cần Thơ</option>
+                  <option value="An Giang">An Giang</option>
+                  <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
+                  <option value="Bắc Giang">Bắc Giang</option>
+                  <option value="Bắc Kạn">Bắc Kạn</option>
+                  <option value="Bạc Liêu">Bạc Liêu</option>
+                  <option value="Bắc Ninh">Bắc Ninh</option>
+                  <option value="Bến Tre">Bến Tre</option>
+                  <option value="Bình Định">Bình Định</option>
+                  <option value="Bình Dương">Bình Dương</option>
+                  <option value="Bình Phước">Bình Phước</option>
+                  <option value="Bình Thuận">Bình Thuận</option>
+                  <option value="Cà Mau">Cà Mau</option>
+                  <option value="Cao Bằng">Cao Bằng</option>
+                  <option value="Đắk Lắk">Đắk Lắk</option>
+                  <option value="Đắk Nông">Đắk Nông</option>
+                  <option value="Điện Biên">Điện Biên</option>
+                  <option value="Đồng Nai">Đồng Nai</option>
+                  <option value="Đồng Tháp">Đồng Tháp</option>
+                  <option value="Gia Lai">Gia Lai</option>
+                  <option value="Hà Giang">Hà Giang</option>
+                  <option value="Hà Nam">Hà Nam</option>
+                  <option value="Hà Tĩnh">Hà Tĩnh</option>
+                  <option value="Hải Dương">Hải Dương</option>
+                  <option value="Hậu Giang">Hậu Giang</option>
+                  <option value="Hòa Bình">Hòa Bình</option>
+                  <option value="Hưng Yên">Hưng Yên</option>
+                  <option value="Khánh Hòa">Khánh Hòa</option>
+                  <option value="Kiên Giang">Kiên Giang</option>
+                  <option value="Kon Tum">Kon Tum</option>
+                  <option value="Lai Châu">Lai Châu</option>
+                  <option value="Lâm Đồng">Lâm Đồng</option>
+                  <option value="Lạng Sơn">Lạng Sơn</option>
+                  <option value="Lào Cai">Lào Cai</option>
+                  <option value="Long An">Long An</option>
+                  <option value="Nam Định">Nam Định</option>
+                  <option value="Nghệ An">Nghệ An</option>
+                  <option value="Ninh Bình">Ninh Bình</option>
+                  <option value="Ninh Thuận">Ninh Thuận</option>
+                  <option value="Phú Thọ">Phú Thọ</option>
+                  <option value="Phú Yên">Phú Yên</option>
+                  <option value="Quảng Bình">Quảng Bình</option>
+                  <option value="Quảng Nam">Quảng Nam</option>
+                  <option value="Quảng Ngãi">Quảng Ngãi</option>
+                  <option value="Quảng Ninh">Quảng Ninh</option>
+                  <option value="Quảng Trị">Quảng Trị</option>
+                  <option value="Sóc Trăng">Sóc Trăng</option>
+                  <option value="Sơn La">Sơn La</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full  h-[72px]"
+            onClick={handleSearch}
           >
-                <option value="Hà Nội"> Hà Nội</option>
-                <option value="Đà Nẵng">Đà Nẵng</option>
-                <option value="Hcm">Hồ Chí Minh </option>
-                <option value="Hải Phòng">Hải Phòng</option>
-
-                <option value="Cần Thơ">Cần Thơ</option>
-                <option value="An Giang">An Giang</option>
-                <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                <option value="Bắc Giang">Bắc Giang</option>
-                <option value="Bắc Kạn">Bắc Kạn</option>
-                <option value="Bạc Liêu">Bạc Liêu</option>
-                <option value="Bắc Ninh">Bắc Ninh</option>
-                <option value="Bến Tre">Bến Tre</option>
-                <option value="Bình Định">Bình Định</option>
-                <option value="Bình Dương">Bình Dương</option>
-                <option value="Bình Phước">Bình Phước</option>
-                <option value="Bình Thuận">Bình Thuận</option>
-                <option value="Cà Mau">Cà Mau</option>
-                <option value="Cao Bằng">Cao Bằng</option>
-                <option value="Đắk Lắk">Đắk Lắk</option>
-                <option value="Đắk Nông">Đắk Nông</option>
-                <option value="Điện Biên">Điện Biên</option>
-                <option value="Đồng Nai">Đồng Nai</option>
-                <option value="Đồng Tháp">Đồng Tháp</option>
-                <option value="Gia Lai">Gia Lai</option>
-                <option value="Hà Giang">Hà Giang</option>
-                <option value="Hà Nam">Hà Nam</option>
-                <option value="Hà Tĩnh">Hà Tĩnh</option>
-                <option value="Hải Dương">Hải Dương</option>
-                <option value="Hậu Giang">Hậu Giang</option>
-                <option value="Hòa Bình">Hòa Bình</option>
-                <option value="Hưng Yên">Hưng Yên</option>
-                <option value="Khánh Hòa">Khánh Hòa</option>
-                <option value="Kiên Giang">Kiên Giang</option>
-                <option value="Kon Tum">Kon Tum</option>
-                <option value="Lai Châu">Lai Châu</option>
-                <option value="Lâm Đồng">Lâm Đồng</option>
-                <option value="Lạng Sơn">Lạng Sơn</option>
-                <option value="Lào Cai">Lào Cai</option>
-                <option value="Long An">Long An</option>
-                <option value="Nam Định">Nam Định</option>
-                <option value="Nghệ An">Nghệ An</option>
-                <option value="Ninh Bình">Ninh Bình</option>
-                <option value="Ninh Thuận">Ninh Thuận</option>
-                <option value="Phú Thọ">Phú Thọ</option>
-                <option value="Phú Yên">Phú Yên</option>
-                <option value="Quảng Bình">Quảng Bình</option>
-                <option value="Quảng Nam">Quảng Nam</option>
-                <option value="Quảng Ngãi">Quảng Ngãi</option>
-                <option value="Quảng Ninh">Quảng Ninh</option>
-                <option value="Quảng Trị">Quảng Trị</option>
-                <option value="Sóc Trăng">Sóc Trăng</option>
-                <option value="Sơn La">Sơn La</option>
-              </select>
-            </div>
-          </div>
+            Tìm kiếm
+          </button>
         </div>
-        <div className="tuongduong">
-          <img src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png" alt="" />
-        </div>
-
-        <div className="flex items-center mr-4">
-          <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
-              alt=""
-              width={"20px"}
-            />
-
-            <div className="flex flex-col ml-3">
-              <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
-                Điểm đến :
-              </label>
-              <select
-      
-            id="destination"
-
-            value={selectedDestination}
-            onChange={(e) => setSelectedDestination(e.target.value)}
-          >
-                <option value="Hà Nội"> Hà Nội</option>
-                <option value="Miền Tây">MT </option>
-                <option value="Hcm">Hồ Chí Minh </option>
-                <option value="Hải Phòng">Hải Phòng</option>
-                <option value="Đà Nẵng">Đà Nẵng</option>
-                <option value="Cần Thơ">Cần Thơ</option>
-                <option value="An Giang">An Giang</option>
-                <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                <option value="Bắc Giang">Bắc Giang</option>
-                <option value="Bắc Kạn">Bắc Kạn</option>
-                <option value="Bạc Liêu">Bạc Liêu</option>
-                <option value="Bắc Ninh">Bắc Ninh</option>
-                <option value="Bến Tre">Bến Tre</option>
-                <option value="Bình Định">Bình Định</option>
-                <option value="Bình Dương">Bình Dương</option>
-                <option value="Bình Phước">Bình Phước</option>
-                <option value="Bình Thuận">Bình Thuận</option>
-                <option value="Cà Mau">Cà Mau</option>
-                <option value="Cao Bằng">Cao Bằng</option>
-                <option value="Đắk Lắk">Đắk Lắk</option>
-                <option value="Đắk Nông">Đắk Nông</option>
-                <option value="Điện Biên">Điện Biên</option>
-                <option value="Đồng Nai">Đồng Nai</option>
-                <option value="Đồng Tháp">Đồng Tháp</option>
-                <option value="Gia Lai">Gia Lai</option>
-                <option value="Hà Giang">Hà Giang</option>
-                <option value="Hà Nam">Hà Nam</option>
-                <option value="Hà Tĩnh">Hà Tĩnh</option>
-                <option value="Hải Dương">Hải Dương</option>
-                <option value="Hậu Giang">Hậu Giang</option>
-                <option value="Hòa Bình">Hòa Bình</option>
-                <option value="Hưng Yên">Hưng Yên</option>
-                <option value="Khánh Hòa">Khánh Hòa</option>
-                <option value="Kiên Giang">Kiên Giang</option>
-                <option value="Kon Tum">Kon Tum</option>
-                <option value="Lai Châu">Lai Châu</option>
-                <option value="Lâm Đồng">Lâm Đồng</option>
-                <option value="Lạng Sơn">Lạng Sơn</option>
-                <option value="Lào Cai">Lào Cai</option>
-                <option value="Long An">Long An</option>
-                <option value="Nam Định">Nam Định</option>
-                <option value="Nghệ An">Nghệ An</option>
-                <option value="Ninh Bình">Ninh Bình</option>
-                <option value="Ninh Thuận">Ninh Thuận</option>
-                <option value="Phú Thọ">Phú Thọ</option>
-                <option value="Phú Yên">Phú Yên</option>
-                <option value="Quảng Bình">Quảng Bình</option>
-                <option value="Quảng Nam">Quảng Nam</option>
-                <option value="Quảng Ngãi">Quảng Ngãi</option>
-                <option value="Quảng Ninh">Quảng Ninh</option>
-                <option value="Quảng Trị">Quảng Trị</option>
-                <option value="Sóc Trăng">Sóc Trăng</option>
-                <option value="Sơn La">Sơn La</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <button
-          className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full  h-[72px]"
-          onClick={handleSearch}
-        >
-          Tìm kiếm
-        </button>
       </div>
-    </div>
 
       <div className="lg:m-10 m-0">
         <div className="lg:m-10 m-0">

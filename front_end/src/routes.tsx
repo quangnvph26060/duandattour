@@ -73,6 +73,7 @@ import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 import Banner_logo from "./pages/Admin/products/Banner_logo";
 import Add_Banner from "./pages/Admin/products/Banner_logo/add";
+import Edit_banner from "./pages/Admin/products/Banner_logo/edit";
 export const router = createBrowserRouter([
 
   {
@@ -255,6 +256,10 @@ export const router = createBrowserRouter([
       {
         path: "add_banner",
         element: <Add_Banner/>
+      },
+      {
+        path: "edit_banner",
+        element: <Edit_banner/>
       },
       {
         path: "customer_account",

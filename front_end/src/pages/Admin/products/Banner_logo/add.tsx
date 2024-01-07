@@ -1,67 +1,83 @@
-import { Button, Input } from 'antd'
-import React from 'react'
-import { Form } from 'antd'
+import React from 'react';
+import { Form, Button, Upload, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Add_Banner = () => {
-
     const navigate = useNavigate();
 
-    function onFinish(values: any): void {
-        throw new Error('Function not implemented.')
-    }
+    const onFinish = async (values: any) => {
+        try {
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('hinh_banner', values.hinh_banner[0].originFileObj); // Use originFileObj to get the file
+            formData.append('hinh_logo', values.hinh_logo[0].originFileObj);
+
+            // Make a POST request using Axios
+            await axios.post('http://localhost:8000/api/admin/bannerlogo', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            // If the request is successful, navigate to the desired route
+            navigate('/admin/banner_logo');
+            message.success('Thêm mới thành công'); // Display success message
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            message.error('Đã xảy ra lỗi. Vui lòng thử lại.'); // Display error message
+        }
+    };
 
     return (
-        <div>
-            <div className="container">
-                <header className="mb-4">
-                    <h2 className="font-bold text-2xl">Thêm Banner & Logo mới</h2>
-                </header>
-                <form
-                    className="tour-form"
-                    style={{ maxWidth: 600 }}
-                    onSubmit={onFinish}
-                    autoComplete="off"
+        <div className="container mx-auto mt-10 p-6 bg-white border rounded-md shadow-md max-w-screen-md">
+            <h2 className="font-bold text-2xl mb-6">Thêm Banner & Logo mới</h2>
+            <Form
+                name="addBannerForm"
+                onFinish={onFinish}
+                autoComplete="off"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+            >
+                <Form.Item
+                    label="Upload Image Banner"
+                    name="hinh_banner"
+                    valuePropName="fileList"
+                    getValueFromEvent={(e) => e.fileList}
+                    rules={[{ required: true, message: 'Please upload an image for the banner!' }]}
                 >
-                    <div className='flex gap-5'> 
-                        <div>
-                            <label htmlFor="hinh" className=''>Upload Image Banner</label>
-                            <input
-                                type="file"
-                                id="hinh"
-                                name="hinh"
-                                required
-                                accept="image/*"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="hinh" className=''>Upload Image Logo</label>
-                            <input
-                                type="file"
-                                id="hinh"
-                                name="hinh"
-                                required
-                                accept="image/*"
-                            />
-                        </div>
-                    </div>
+                    <Upload beforeUpload={() => false} accept="image/*">
+                        <Button className="bg-blue-500 text-white hover:bg-blue-700">
+                            Click to Upload
+                        </Button>
+                    </Upload>
+                </Form.Item>
 
-                    <div className='py-4 flex gap-3'>
-                        <button type="submit" className='px-5 py-2 bg-blue-500 rounded-md hover:bg-white border border-blue-400' >
-                            {/* {loading ? 'Loading...' : 'Thêm'} */}Thêm
-                        </button>
-                        <button
-                            type="button"
-                            className="ml-2 px-5 py-2 bg-red-500 rounded-md hover:bg-white border border-red-500"
-                            onClick={() => navigate('/admin/banner_logo')}
-                        >
-                            Quay lại
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <Form.Item
+                    label="Upload Image Logo"
+                    name="hinh_logo"
+                    valuePropName="fileList"
+                    getValueFromEvent={(e) => e.fileList}
+                    rules={[{ required: true, message: 'Please upload an image for the logo!' }]}
+                >
+                    <Upload beforeUpload={() => false} accept="image/*">
+                        <Button className="bg-blue-500 text-white hover:bg-blue-700">
+                            Click to Upload
+                        </Button>
+                    </Upload>
+                </Form.Item>
+
+                <Form.Item className="py-5" wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button type="primary" htmlType="submit" className="mr-2 bg-blue-500 hover:bg-blue-700">
+                        Thêm
+                    </Button>
+                    <Button type="default" onClick={() => navigate('/admin/banner_logo')} className="bg-gray-300 hover:bg-gray-400">
+                        Quay lại
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
-    )
-}
+    );
+};
 
-export default Add_Banner
+export default Add_Banner;

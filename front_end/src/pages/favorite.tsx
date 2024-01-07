@@ -98,41 +98,54 @@ const Favorite = () => {
   }, [postData]);
 
   const [deletingItemId, setDeletingItemId] = useState(null);
+  const [tour_Id, setTourId] = useState();
 
   const removeFromFavorites = async (tourId) => {
     console.log('Tour ID:', tourId); // Log ra ID của tour khi nút xóa được nhấn
-    setDeletingItemId(tourId);
+    // setTourId(tourId);
+    const token = localStorage.getItem('token');
 
-    try {
-      const token = localStorage.getItem('token');
-
-      // Use a POST request to remove the favorite item with tourId in the URL
-      await axios.post(
-        `http://127.0.0.1:8000/api/removeFavorite/${tourId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const payload = {
+      tour_id: tourId
+    };
+    // debugger
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      };
 
-      // Update the state to remove the deleted item
-      setTourfavorite((prevFavorites) =>
-        prevFavorites.filter((item) => item.tour_id !== tourId)
-      );
-
-      console.log('Item removed successfully');
-    } catch (error) {
-      console.error('Error removing item:', error);
-
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-      }
-    } finally {
-      setDeletingItemId(null);
+      // Gửi yêu cầu POST
+      axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, config)
+        .then(response => {
+          console.log('Response:', response.data);
+          addToFavorites();
+          // Xử lý phản hồi từ server
+          // ...
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Xử lý lỗi (nếu có)
+          // ...
+        });
+      axios.post('http://127.0.0.1:8000/api/favorites', payload)
+        .then(response => {
+          console.log('Response:', response.data);
+          // Xử lý phản hồi từ server
+          // ...
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Xử lý lỗi (nếu có)
+          // ...
+        });
     }
+
+    // Gửi yêu cầu POST
+
   };
+
 
 
   return (
@@ -190,20 +203,24 @@ const Favorite = () => {
                     style={{ width: "200px", cursor: "pointer" }}
                   />
                 </div> */}
-                <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[320px] h-[240px] rounded-t-lg' alt="" />
+                <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[310px] h-[240px] rounded-t-lg' alt="" />
                 <div className="tour-details">
                   <p className='py-2 px-3'>Ngày khởi hành: {item.lich_khoi_hanh}</p>
                   <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
                   <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
 
-                  <div className='px-3 pb-4 flex gap-10 justify-between'>
+                  <div className='px-3 pb-3 flex gap-10 justify-between'>
                     <button
                       onClick={() => removeFromFavorites(item.id)}
-                      className='px-5 bg-red-500 rounded-lg text-white font-semibold text-lg'
+                      className='flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition'
                     >
+                      <i className="far fa-trash-alt mr-2"></i>
                       Xóa
                     </button>
-                    <p className='px-5 text-red-500 font-semibold py-3 text-2xl'>{item.gia_nguoilon}₫</p>
+                    <p className='flex items-center px-5 text-red-500 font-semibold py-3 text-2xl'>
+                      <i className="fas fa-money-bill-wave mr-2"></i>
+                      {item.gia_nguoilon}₫
+                    </p>
                   </div>
                   {/* Thêm các chi tiết khác về tour tại đây */}
                 </div>
