@@ -7,7 +7,6 @@ import {
   Select,
   InputNumber,
   message,
-  Checkbox, Space
 } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -81,7 +80,6 @@ const AdminTourAdd: React.FC = () => {
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
-    formData.append("trang_thai", values.trang_thai);
     formData.append("ma_loai_tour", values.ma_loai_tour);
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
@@ -98,7 +96,7 @@ const AdminTourAdd: React.FC = () => {
         setErrors(error.data.message);
       });
   };
-  const { Option } = Select;
+
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -150,7 +148,7 @@ const AdminTourAdd: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl text-center ">Thêm mới tour</h2>
+        <h2 className="font-bold text-2xl text-center ">Tạo mới tour</h2>
       </header>
       <div>
         {contextHolder}
@@ -184,7 +182,7 @@ const AdminTourAdd: React.FC = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input placeholder="Nhập tên cho tour" />
               </Form.Item>
               <div className="upload-wrapper">
                 <Form.Item
@@ -232,13 +230,13 @@ const AdminTourAdd: React.FC = () => {
 
               <Form.Item
                 className="w-full"
-                label="Điểm đi"
+                label="Điểm bắt đầu"
                 name="diem_di"
-                rules={[{ required: true, message: "Vui lòng chọn điểm đi!" }]}
+                rules={[{ required: true, message: "Vui lòng chọn bắt đầu!" }]}
               >
                 <Select
                   showSearch
-                  placeholder="Chọn điểm đi"
+                  placeholder="Chọn bắt đầu"
                   filterOption={(input, option) =>
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
@@ -251,14 +249,14 @@ const AdminTourAdd: React.FC = () => {
                 </Select>
               </Form.Item>
               <Form.Item
-                label="Điểm đến"
+                label="Điểm kết thúc"
                 name="diem_den"
-                rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn kết thúc!' }]}
               >
                 <Select
                   showSearch
                   mode="multiple"
-                  placeholder="Chọn điểm đến"
+                  placeholder="Chọn kết thúc"
                   filterOption={(input, option) =>
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
@@ -282,11 +280,12 @@ const AdminTourAdd: React.FC = () => {
                 <DatePicker
                   style={{ width: "100%" }}
                   disabledDate={disabledDate}
+                  placeholder="Nhập lịch khởi hành"
                 />
               </Form.Item>
               <Form.Item
                 className="w-full"
-                label="Ngày kết thúc"
+                label="Lịch kết thúc"
                 name="ngay_ket_thuc"
                 rules={[
                   { required: true, message: "Vui lòng nhập thời gian!" },
@@ -295,6 +294,7 @@ const AdminTourAdd: React.FC = () => {
                 <DatePicker
                   style={{ width: "100%" }}
                   disabledDate={disabledDate}
+                  placeholder="Nhập lịch kết thúc"
                 />
               </Form.Item>
             </div>
@@ -320,11 +320,12 @@ const AdminTourAdd: React.FC = () => {
                 <InputNumber
                   min={1000000}
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  placeholder="Nhập giá người lớn"
                 />
               </Form.Item>
               <Form.Item
                 className="w-full"
-                label="Giá Trẻ em"
+                label="Giá trẻ em"
                 name="gia_treem"
                 rules={[
                   // { required: true, message: 'Vui lòng nhập giá tour!' },
@@ -341,55 +342,37 @@ const AdminTourAdd: React.FC = () => {
                 ]}
               >
                 <InputNumber
+                  placeholder="Nhập giá trẻ em"
                   min={1000000}
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 />
               </Form.Item>
-
+              <br /> <br />
               <Form.Item
                 className="w-full"
-                label="Mô Tả  "
+                label="Mô Tả"
                 name="mo_ta"
                 rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
               >
-                <br /><br /> <br />
                 <CKEditor
                   editor={ClassicEditor}
-                  // config={{
-                  //   extraPlugins: [EasyImage],
-                  //   // Cấu hình thêm plugin Easy Image
-
-                  // }}
+                  config={{
+                    placeholder: 'Nhập nội dung mô tả'
+                  }}
                   data={editorData}
                   onChange={handleEditorChange}
                 />
               </Form.Item>
               <Form.Item
                 className="w-full number-tour"
-                label="Số Lượng"
+                label="Số Lượng hành khách"
                 name="soluong"
                 rules={[
                   { required: true, message: "Vui lòng nhập  số lượng !" },
                 ]}
               >
-                <Input />
+                <Input placeholder="Nhập số lượng hành khách" />
               </Form.Item>
-              <Form.Item
-                className="w-full"
-                label="Trạng thái"
-                name="trang_thai"
-                rules={[
-                  { required: true, message: "Vui lòng chọn checkout!" },
-                ]}
-              >
-                <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
-                  <Space direction="vertical">
-                    <Checkbox value={1}>Kích hoạt</Checkbox>
-                    <Checkbox value={0}>Vô hiệu hóa</Checkbox>
-                  </Space>
-                </Checkbox.Group>
-              </Form.Item>
-
               <Form.Item
                 className="w-full"
                 label="Loại Tour"
@@ -398,7 +381,7 @@ const AdminTourAdd: React.FC = () => {
                   { required: true, message: "Vui lòng Chọn Mã Loại Tour" },
                 ]}
               >
-                <Select defaultValue="Chọn" style={{ width: "100%" }}>
+                <Select defaultValue="Chọn danh mục" style={{ width: "100%" }}>
                   {loaitourArrary.map((option) => (
                     <Option key={option.id} value={option.id}>
                       {option.ten_loai_tour}

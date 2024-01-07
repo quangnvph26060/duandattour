@@ -100,7 +100,7 @@ const AdminLoai_tour = (props) => {
                 <h2 className="font-bold text-2xl">Quản lý loại tour</h2>
 
                 {localStorage.getItem("role") === 'admin' ? (
-                    <Button type="primary" danger>
+                    <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600" >
                         <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
                             <AiOutlinePlus />
                             Tạo mới loại tour
@@ -109,16 +109,16 @@ const AdminLoai_tour = (props) => {
                 ) : null}
             </header>
             <div className="flex items-center justify-end mb-4">
-  <Input
-    style={{ width: "250px" }}
-    placeholder="Tìm kiếm lịch trình"
-    value={searchValue}
-    onChange={handleSearchChange}
-  />
-  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
-    Tìm kiếm
-  </Button>
-</div>
+                <Input
+                    style={{ width: "250px" }}
+                    placeholder="Tìm kiếm lịch trình"
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                />
+                <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
+                    Tìm kiếm
+                </Button>
+            </div>
             {isRemoveSuccess && <Alert message="Success Text" type="success" />}
             {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>

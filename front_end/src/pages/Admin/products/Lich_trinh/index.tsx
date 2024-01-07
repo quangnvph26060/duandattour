@@ -168,7 +168,7 @@ const Admin_Lichtrinh = (props: Props) => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
-        <Button type="primary" danger>
+        <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
           <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
             <AiOutlinePlus />Tạo mới lịch trình
           </Link>

@@ -6,7 +6,7 @@ import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import useNavigate from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useGetDiscountQuery,useRemoveDiscountMutation } from "../../../../api/discountApi";
+import { useGetDiscountQuery, useRemoveDiscountMutation } from "../../../../api/discountApi";
 import { IDiscount } from "../../../../interface/discount";
 
 
@@ -14,32 +14,32 @@ import { IDiscount } from "../../../../interface/discount";
 const AdminGiam_Gia = (props: Props) => {
     const { data: discountdata, error, isLoading } = useGetDiscountQuery();
     const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-     useRemoveDiscountMutation();
+        useRemoveDiscountMutation();
     const confirm = (id: any) => {
         removeProduct(id);
     };
-  
- //   const navigate = useNavigate();
+
+    //   const navigate = useNavigate();
     const tourArray = discountdata || [];
     const dataSource = tourArray.map((
-    { 
-        id,
-        discount_name,
-        discount_condition,
-        discount_code,
-        percentage,
-        expiry_date,
-        minprice,
-    
-    }: IDiscount) => ({
-        key: id,
-        discount_name,
-        discount_condition,
-        discount_code,
-        percentage,
-        expiry_date,
-        minprice,
-    }));
+        {
+            id,
+            discount_name,
+            discount_condition,
+            discount_code,
+            percentage,
+            expiry_date,
+            minprice,
+
+        }: IDiscount) => ({
+            key: id,
+            discount_name,
+            discount_condition,
+            discount_code,
+            percentage,
+            expiry_date,
+            minprice,
+        }));
     const columns = [
         {
             title: "ID",
@@ -51,26 +51,26 @@ const AdminGiam_Gia = (props: Props) => {
             dataIndex: "discount_name",
             key: "discount_name",
         },
-       
+
         {
             title: "Mã Giảm giá",
             dataIndex: "discount_code",
             key: "discount_code",
-           
+
         },
         {
             title: "Tổng phần trăm(%) / tiền(K) ",
             dataIndex: "percentage",
             key: "percentage",
             render: (percentage: number) => {
-                return percentage >= 100 ?  `${percentage}K` : `${percentage}%`;
+                return percentage >= 100 ? `${percentage}K` : `${percentage}%`;
             }
         },
         {
             title: "Điều kiện giảm giá",
             dataIndex: "minprice",
             key: "minprice",
-           
+
         },
         {
             title: "Loại Giảm giá",
@@ -87,14 +87,14 @@ const AdminGiam_Gia = (props: Props) => {
             render: (expiry_date: string) => {
                 const formattedDate = expiry_date.substring(0, 10);
                 return formattedDate;
-              },
+            },
         },
         {
             title: "Action",
             render: ({ key: id }: any) => {
                 return (
                     <>
-                     {  localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
+                        {localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
                             <Popconfirm
                                 title="Bạn có muốn xóa?"
                                 onConfirm={() => confirm(id)}
@@ -109,25 +109,25 @@ const AdminGiam_Gia = (props: Props) => {
                             <Button type="primary" danger>
                                 <Link to={`/admin/tour/discount/edit/${id}`}>Sửa</Link>
                             </Button>
-                        </div>:""}   
+                        </div> : ""}
                     </>
                 );
             },
         },
     ];
-   
+
     return (
         <div>
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý Mã giảm giá</h2>
-                <Button type="primary" danger>
+                <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
                     <Link to="/admin/tour/discount/add" className="flex items-center space-x-2">
                         <AiOutlinePlus />
-                        Thêm Mã giảm giá 
+                        Thêm Mã giảm giá
                     </Link>
                 </Button>
             </header>
-           {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+            {isRemoveSuccess && <Alert message="Success Text" type="success" />}
             {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
         </div>
     );
