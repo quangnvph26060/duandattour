@@ -6,4 +6,5 @@ export interface IDiscount {
   percentage: number;
   expiry_date: string;
   minprice:number;
+  trang_thai:number,
 }

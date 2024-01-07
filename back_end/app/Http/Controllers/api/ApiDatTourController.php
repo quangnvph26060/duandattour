@@ -81,8 +81,7 @@ class ApiDatTourController extends Controller
             $notification->id_tour = $datTour['id_tour'];
             $notification->save();
 
-            $apiPaymentController = new ApiPaymentController();
-            $apiPaymentController->CreatePaymentCash($request,$createDatTour->id);
+     
             Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
 
             return response()->json(['createDatTour' => $createDatTour]);

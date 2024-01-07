@@ -197,16 +197,17 @@ const BookTour = () => {
     const gianho = datatourArray?.gia_treem;
     let giamgiaressult = (quantity * gialon + quantity2 * gianho)
     if (parseInt(event.target.value) > 100) {
+      
       giamgiaressult -= parseInt(event.target.value);
-    } else if (parseInt(event.target.value) < 100) {
-
+    } else if (parseInt(event.target.value) < 100) { 
       giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
     }
     setradioValue(parseInt(event.target.value));
-    console.log('123', radioValue);
-
-    // console.log(selectedValue);
+    console.log('234',radioValue);
+    
     setSelectedValue(giamgiaressult);
+    console.log('123', selectedValue);
+    
   };
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
@@ -284,11 +285,12 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-        
+      
         let requestData = {
           vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
+        
         const paymentResponse = await axios.post(
           "http://localhost:8000/api/cash",
           requestData
@@ -353,10 +355,7 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
-  // hiển thị danh sách giảm giá
-
-// console.log(image);
-
+  
 
   return (
     
@@ -727,9 +726,22 @@ const BookTour = () => {
                     {quantity2} x   {formatCurrency(datatourArray?.gia_treem)}
                   </p>
                 </div>
-
-               
-                <h1 className="mt-5">Áp dụng mã giảm giá:</h1>
+                    {/* input giảm giá */}
+                {/* <input
+                  type="text"
+                  placeholder="Nhập mã giảm giá "
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  style={{
+                    padding: "8px",
+                    fontSize: "14px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    width: "380px",
+                    marginTop: "10px",
+                  }}
+                /> */}
+                <h1>Áp dụng mã giảm giá:</h1>
                 <div>
                   <div className="radio-container">
                     {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (

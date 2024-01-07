@@ -27,10 +27,24 @@ class DiscountMessage extends Command
      */
     public function handle()
     {
-        $currentDateTime = Carbon::now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'); // chuyển sang múi giờ chuẩn giờ hiện tại
-        DB::table('discounts')
+        $currentDateTime = Carbon::now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+        // chuyển sang múi giờ chuẩn giờ hiện tại
+        $expiredDiscounts = DB::table('discounts')
             ->where('expiry_date', '<', $currentDateTime)
-            ->delete();
+            ->get();
+        foreach ($expiredDiscounts as $discount) {
+            DB::table('discounts')
+                ->where('id', $discount->id)
+                ->update(['trang_thai' => 0]);
+        }
+        $expiredDiscounts1 = DB::table('discounts')
+            ->where('expiry_date', '>', $currentDateTime)
+            ->get();
+
+        foreach ($expiredDiscounts1 as $discount) {
+            DB::table('discounts')
+                ->where('id', $discount->id)
+                ->update(['trang_thai' => 1]); // Sửa giá trị 0 thành 1
+        }
     }
-    
 }

@@ -166,9 +166,13 @@ const LayoutAdmin = () => {
             </p>
           </div>
           <Menu className="h-screen" theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item className="ml-[-10px]" key="1" icon={<AiFillFund />}>
-              <Link to="/admin/dashboard">Thống kê</Link>
-            </Menu.Item>
+          {(localStorage.getItem('role') === 'admin' ) &&
+              <Menu.Item key="1" icon={<AiFillFund />}>
+                <Link to="/admin/dashboard">Thống kê</Link>
+              </Menu.Item>
+            }
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') &&
+
             <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
                 <Link to="/admin/tour">Tất cả các tour</Link>
@@ -176,9 +180,7 @@ const LayoutAdmin = () => {
               <Menu.Item icon={<MdCategory />} key="2-2">
                 <Link to="/admin/tour/loai_tour">Danh mục tour</Link>
               </Menu.Item>
-              {/* <Menu.Item key="2-a3">
-                              <Link to="/admin/tour/diadiem">Địa điểm tour</Link>
-                          </Menu.Item> */}
+         
               <Menu.Item icon={<AiFillSchedule />} key="2-4">
                 <Link to="/admin/tour/lich_trinh">Lịch trình tour</Link>
               </Menu.Item>
@@ -195,11 +197,11 @@ const LayoutAdmin = () => {
                 <Menu.Item key="2-9-1">
                   <Link to="/admin/tour/discount/">Danh sách mã </Link>
                 </Menu.Item>
-                <Menu.Item key="2-9-2">
+                {/* <Menu.Item key="2-9-2">
                   <Link to="/admin/tour/tour_discount/">
                     Quản lý mã
                   </Link>
-                </Menu.Item>
+                </Menu.Item> */}
               </Menu.SubMenu>
 
               <Menu.SubMenu className="ml-[-30px]"
@@ -222,7 +224,7 @@ const LayoutAdmin = () => {
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>
-            </Menu.SubMenu>
+            </Menu.SubMenu>}
             <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
               <Menu.Item icon={<FaUser />} key="4-1">
                 <Link to="/admin/customer_account">Tài khoản </Link>

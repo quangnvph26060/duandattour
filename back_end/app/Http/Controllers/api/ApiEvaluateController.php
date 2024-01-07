@@ -101,23 +101,23 @@ class ApiEvaluateController extends Controller
         // tên tour 
         $name_tour = TourModel::select('id', 'ten_tour')->get();
         $evaluates = Evaluate::all();
-       // tạo 1 mảng rỗng 
-                $result = [];
+        // tạo 1 mảng rỗng 
+        $result = [];
         foreach ($evaluates as $evaluate) {
-             
+
             foreach ($users as $user) {
                 if ($evaluate->id_user == $user->id) {
                     $result['id_user'] = $user->name;
                 }
             }
-          
+
             foreach ($name_tour as $tour) {
                 if ($evaluate->id_tour == $tour->id) {
                     $result['id_tour'] = $tour->ten_tour;
                 }
-            }  
-            $evaluate->id_user = $result['id_user'] ?? $evaluate->id_user;  
-            $evaluate->id_tour = $result['id_tour'] ?? $evaluate->id_tour;   
+            }
+            $evaluate->id_user = $result['id_user'] ?? $evaluate->id_user;
+            $evaluate->id_tour = $result['id_tour'] ?? $evaluate->id_tour;
         }
 
         return response([
@@ -125,7 +125,8 @@ class ApiEvaluateController extends Controller
         ], 200);
     }
     // delete
-    public function deleteDanhGia($id){
+    public function deleteDanhGia($id)
+    {
         $tourDiscount = Evaluate::find($id);
 
         if (!$tourDiscount) {
@@ -136,6 +137,7 @@ class ApiEvaluateController extends Controller
 
         return response()->json(['message' => 'Tour discount deleted successfully']);
     }
+    // hiển thị ra dánh giá cho từng tour 
     public function showDanhGiaOnlyTour(Request $request)
     {
         $users = User::select('id', 'name', 'image')->get();

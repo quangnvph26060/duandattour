@@ -67,9 +67,12 @@ import Giohanguser2 from "./pages/giohanguser2";
 import Doimk from "./pages/changeMk";
 import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
 import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 import Favorite from "./pages/favorite";
+import Admin_DanhmucEdit from "./pages/Admin/Post/danh_muc/edit";
+import EDitbaivien from "./pages/Admin/Post/bai_viet/edit";
 export const router = createBrowserRouter([
 
   {
@@ -165,7 +168,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
+        element: localStorage.getItem("role") === 'admin' ? <Dashboard />:<AdminLoai_tour />,
       },
       {
         path: "tour",
@@ -346,7 +349,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "post/edit_danhmuc/:iddm",
-        element: <Admin_DanhmucADD />,
+        element: <Admin_DanhmucEdit />,
       },
 
       {
@@ -357,9 +360,10 @@ export const router = createBrowserRouter([
         path: "post/add_baiviet",
         element: <ADmin_postADD />,
       },
+      
       {
         path: "post/edit_baiviet/:idbv",
-        element: <ADmin_postADD />,
+        element: <EDitbaivien />,
       },
       // đánh giá
       {

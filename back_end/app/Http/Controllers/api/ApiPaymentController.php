@@ -121,7 +121,7 @@ class ApiPaymentController extends Controller
         return response()->json($thanhToan);
     }
     // thanh toán bằng tiền mặt 
-    public function CreatePaymentCash(Request $request,$idabc)
+    public function CreatePaymentCash(Request $request)
     {
         $paymentData = $request->all();
         
@@ -138,7 +138,8 @@ class ApiPaymentController extends Controller
                     'ghi_chu' => null,
                     'ma_ngan_hang' => null,
                     'ngay_thanh_toan' => date('Y-m-d H:i:s'),
-                    'id_dat_tour' =>  $idabc, //  $latestDatTour->id or lấy từ bên react sang 
+                    'id_dat_tour' =>  $$latestDatTour->id,
+                  
                 ]);
                 return response()->json($thanhToan, 201);
             }

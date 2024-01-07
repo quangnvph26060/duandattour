@@ -25,7 +25,12 @@ const Info_tour_bocking = () => {
   // ];
   const [paymentResult, setPaymentResult] = useState(null);
   useEffect(() => {
+    
+   
     const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('vnp_ResponseCode')){
+       alert('Thanh toán VNPAY thành công')
+    }
     const paymentData = {
       vnp_Amount: urlParams.get('vnp_Amount'), // tiền 
       vnp_BankCode: urlParams.get('vnp_BankCode'), // ngân hàng 

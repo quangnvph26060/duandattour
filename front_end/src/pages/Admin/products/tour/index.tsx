@@ -74,29 +74,30 @@ const AdminProduct = () => {
   return (
     <div>
       <div className="flex items-center justify-between  ">
+
         <h2 className="font-bold text-3xl whitespace-nowrap mr-7">Quản lý tour</h2>
-        <div className="table_tour">
+        <div className="float-right"> {localStorage.getItem("role") === 'admin' ? (
+          <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
+            <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
+              <AiOutlinePlus />
+              <span>Tạo mới tour</span>
+            </Link>
+          </Button>
+
+
+        ) : null}</div>
+      </div>
+      <br />
+
+      <div className="flex items-center justify-end mb-4 float-left">
+        <div> <div className="table_tour">
           <Button style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }} onClick={() => handleFilter("inactive")}>
             Không hoạt động
           </Button>
           <Button style={{ backgroundColor: '#63B3ED', color: '#FFFFFF' }} onClick={() => handleFilter("active")}>
             Hoạt động
           </Button>
-        </div>
-      </div>
-
-
-
-      {localStorage.getItem("role") === 'admin' ? (
-        <Button type="primary" danger>
-          <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
-            <AiOutlinePlus />
-            Tạo mới tour
-          </Link>
-        </Button>
-      ) : null}
-
-      <div className="flex items-center justify-end mb-4">
+        </div></div>
         <Input
           style={{ width: "250px" }}
           placeholder="Tìm kiếm lịch trình"
@@ -114,10 +115,10 @@ const AdminProduct = () => {
         bordered
         pagination={{ pageSize: 10 }}
       >
-        <Table.Column title="STT" dataIndex="id" key="id" />
+        <Table.Column title="ID" dataIndex="id" key="id" />
         <Table.Column title="Tên Tour" dataIndex="ten_tour" key="ten_tour" />
         <Table.Column
-          title="Loại Tour"
+          title="Mã Loại Tour"
           key="ma_loai_tour"
           render={(text, record) => (
             <span>
@@ -141,17 +142,37 @@ const AdminProduct = () => {
             />
           )}
         />
-        <Table.Column title="Giá Trẻ Em" dataIndex="gia_treem" key="gia_treem" />
-        <Table.Column title="Giá Người Lớn" dataIndex="gia_nguoilon" key="gia_nguoilon" />
+        <Table.Column title="Số Hành khách" dataIndex="soluong" key="soluong" />
+        <Table.Column
+          title="Ngày Tạo"
+          dataIndex="updated_at"
+          key="updated_at"
+          render={(text, record) => {
+            const updatedAtDate = new Date(record.updated_at);
+            const formattedDate = updatedAtDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+            return <span>{formattedDate}</span>;
+          }}
+        />
         <Table.Column
           title="Trạng thái"
-          dataIndex="trang_thai"
-          key="trang_thai"
-         
+          dataIndex="Trạng thái"
+          key="trạng thái"
+          render={(text, record) => {
+            const departureDate = new Date(record.lich_khoi_hanh);
+            const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const isExpired = formattedDate < ngayhientai;
+            return (
+              <span className={isExpired ? 'expired-text' : 'active-text'}>
+                {isExpired ? 'Không Hoạt Động' : 'Hoạt Động'}
+              </span>
+            );
+          }}
         />
 
         <Table.Column
-          title="Chi Tiết"
+          title="Sửa"
           key="edit"
           render={(text, record) => (
             localStorage.getItem("role") === 'admin' && (
@@ -161,10 +182,16 @@ const AdminProduct = () => {
                     <i className="fa fa-wrench"></i>
                   </Link>
                 </button>
+                <button className="ct-button">
+                  <a href={`/tours/${record.id}`} target="_blank" rel="noopener noreferrer">
+                    <p className='font-bold py-2 px-2'>Xem trước</p>
+                  </a>
+                </button>
               </div>
             )
           )}
         />
+
       </Table>
     </div>
   );
