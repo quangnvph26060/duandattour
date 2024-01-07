@@ -12,7 +12,7 @@ import Contact from "./pages/Client/contact";
 
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
-import Dashboard from "./pages/Admin/dashboard/dashboard";
+import Dashboard from "./pages/dashboard/dashboard";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edit";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -45,8 +45,8 @@ import Admin_TourImgEDit from "./pages/Admin/products/Tour_img/edit";
 import ADmin_Hoadon from "./pages/Admin/products/Hoa_don";
 import ADmin_DatTour from "./pages/Admin/products/Dat_tour";
 import AdminProduct from "./pages/Admin/products/tour";
+import QLuser from "./pages/qluser"
 import { Route, Routes } from "react-router-dom";
-import QLuser from "./pages/qluser";
 import Admin_Acountkhachhang_Permisssions from "./pages/Admin/user/khach_hang/permissions";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import ChatComponent from "./pages/Admin/products/Message/ChatBox";
@@ -64,15 +64,20 @@ import Info_tour_bocking from "./pages/Client/Info_tour_bocking";
 import Giohanguser from "./pages/giohanguser";
 import Giohanguser1 from "./pages/giohanguser1";
 import Giohanguser2 from "./pages/giohanguser2";
-import Doimk from "./pages/changeMk";
+import Dmkuser from "./pages/changeMk";
+import Test from "./pages/text";
+import Favorite from "./pages/favorite";
 import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
 import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
-import Favorite from "./pages/favorite";
+
 import Admin_DanhmucEdit from "./pages/Admin/Post/danh_muc/edit";
 import EDitbaivien from "./pages/Admin/Post/bai_viet/edit";
+import Banner_logo from "./pages/Admin/products/Banner_logo";
+import Add_Banner from "./pages/Admin/products/Banner_logo/add";
+import Edit_banner from "./pages/Admin/products/Banner_logo/edit";
 export const router = createBrowserRouter([
 
   {
@@ -100,6 +105,10 @@ export const router = createBrowserRouter([
       {
         path: "favorite",
         element: <Favorite />,
+      },
+      {
+        path: "test",
+        element: <Test />,
       },
       {
         path: "tour/:diem_den",
@@ -139,6 +148,10 @@ export const router = createBrowserRouter([
         element: <QLuser />,
       },
       {
+        path: "profile",
+        element: <QLuser />
+      },
+      {
         path: "/giohanguser",
         element: <Giohanguser />
       },
@@ -152,7 +165,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/changeMk",
-        element: <Doimk />
+        element: <Dmkuser />
       },
     ],
   },
@@ -218,29 +231,42 @@ export const router = createBrowserRouter([
         path: "tour/lich_trinh/edit/:idlt",
         element: <Admin_LichtrinhEDit />,
       },
+      // {
+      //   path: "tour/loai_khach_san",
+      //   element: <ADmin_khachsan />,
+      // },
+      // {
+      //   path: "tour/loai_khach_san/add",
+      //   element: <ADmin_KhachsanADD />,
+      // },
+      // {
+      //   path: "tour/loai_khach_san/edit/:idkhachsan",
+      //   element: <ADmin_KhachsanEdit />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien",
+      //   element: <ADmin_Phuontien />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien/add",
+      //   element: <ADmin_PhuontiengADD />,
+      // },
+      // {
+      //   path: "tour/loai_phuong_tien/edit/:idPhuongTien",
+      //   element: <ADmin_Phuongtienedit />,
+      // },
+
       {
-        path: "tour/loai_khach_san",
-        element: <ADmin_khachsan />,
+        path: "banner_logo",
+        element: <Banner_logo/>
       },
       {
-        path: "tour/loai_khach_san/add",
-        element: <ADmin_KhachsanADD />,
+        path: "add_banner",
+        element: <Add_Banner/>
       },
       {
-        path: "tour/loai_khach_san/edit/:idkhachsan",
-        element: <ADmin_KhachsanEdit />,
-      },
-      {
-        path: "tour/loai_phuong_tien",
-        element: <ADmin_Phuontien />,
-      },
-      {
-        path: "tour/loai_phuong_tien/add",
-        element: <ADmin_PhuontiengADD />,
-      },
-      {
-        path: "tour/loai_phuong_tien/edit/:idPhuongTien",
-        element: <ADmin_Phuongtienedit />,
+        path: "edit_banner",
+        element: <Edit_banner/>
       },
       {
         path: "customer_account",

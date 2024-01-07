@@ -16,10 +16,10 @@ class ApiFavoriteController extends Controller
         $userFavorites = Favorite::where('user_id', $userId)->get();
         $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
         $Favorite = [];
-        foreach ($tours as $tour) {
-            foreach ($userFavorites as $item) {
-                if ($tour->id == $item->tour_id) {
-                    $Favorite[] = $tour;
+        foreach($tours as $tour){
+            foreach($userFavorites as $item){
+                if($tour->id == $item->tour_id){
+                   $Favorite[] = $tour;
                 }
             }
         }

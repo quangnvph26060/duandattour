@@ -70,7 +70,7 @@ const ChatComponent = () => {
         try {
             await axios.post('http://localhost:8000/api/messages', {
                 content: newMessage,
-                userid: parseInt(usersId), 
+                userid: parseInt(usersId),
                 receiver: receiverId
             });
             setNewMessage('');
@@ -116,8 +116,10 @@ const ChatComponent = () => {
                                     className="user-card"
                                     onClick={() => setReceiverId(user.id)}
                                 >
-                                    <img className="avatar" src="mark_avatar.jpg" alt="Mark Avatar" />
-                                    <h4>{user.name}</h4>
+                                    <div className='flex gap-2'>
+                                        <img className="avatar" src="mark_avatar.jpg" alt="Mark Avatar" />
+                                        <h4>{user.name}</h4>
+                                    </div>
                                 </li>
                             ))}
                     </div>
