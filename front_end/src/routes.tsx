@@ -162,7 +162,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
+        element: localStorage.getItem("role") === 'admin' ? <Dashboard />:<AdminLoai_tour />,
       },
       {
         path: "tour",

@@ -99,7 +99,7 @@ const LayoutAdmin = () => {
             </p>
           </div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien') &&
+            {(localStorage.getItem('role') === 'admin' ) &&
               <Menu.Item key="1" icon={<AiFillFund />}>
                 <Link to="/admin/tour/dat_tour">Thống kê</Link>
               </Menu.Item>

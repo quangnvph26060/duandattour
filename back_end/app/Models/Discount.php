@@ -17,6 +17,7 @@ class Discount extends Model
         'expiry_date',
         'percentage',
         'minprice',
+        'trang_thai',
        
     ];
 
