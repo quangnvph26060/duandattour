@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, Upload } from 'antd';
+import { Form, Button, Input, Upload, Radio, Space } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
@@ -17,22 +17,27 @@ const AdminLoai_tourEdit: React.FC = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    if (LoaiTour.trang_thai !== undefined) {
+      setCurrentTrangThai(LoaiTour.trang_thai);
+      form.setFieldsValue({
+        trang_thai: LoaiTour.trang_thai, // Set the value for the 'trang_thai' field in the form
+      });
+    }
     form.setFieldsValue({
       hinh: LoaiTour.image,
       ten_loai_tour: LoaiTour.ten_loai_tour,
       thoi_gian: moment(LoaiTour.thoi_gian).format('YYYY-MM-DD'),
-
     });
   }, [LoaiTour]);
 
   const navigate = useNavigate();
-
+  const [currentTrangThai, setCurrentTrangThai] = useState<number | undefined>(undefined);
   const onFinish = async (values: ILoaiTour) => {
     try {
       const formData = new FormData();
       formData.append('image', values.image.fileList[0].originFileObj);
       formData.append('ten_loai_tour', values.ten_loai_tour);
-
+      formData.append('trang_thai', values.trang_thai);
       const response = await axios.post(
         `http://127.0.0.1:8000/api/admin/loaitour/${idLoaiTour}`,
         formData,
@@ -95,7 +100,21 @@ const AdminLoai_tourEdit: React.FC = () => {
         >
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </Form.Item>
-
+        <Form.Item
+          className="w-full"
+          label="Trạng thái"
+          name="trang_thai"
+          rules={[
+            { required: true, message: "Vui lòng chọn trạng thái!" },
+          ]}
+        >
+          <Radio.Group style={{ width: '100%' }} defaultValue={currentTrangThai}>
+            <Space direction="vertical">
+              <Radio value={1}>Kích hoạt</Radio>
+              <Radio value={0}>Vô hiệu hóa</Radio>
+            </Space>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Sửa

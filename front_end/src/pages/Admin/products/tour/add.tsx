@@ -6,7 +6,7 @@ import {
   DatePicker,
   Select,
   InputNumber,
-  message,
+  message, Checkbox, Space
 } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -80,6 +80,7 @@ const AdminTourAdd: React.FC = () => {
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
+    formData.append("trang_thai", values.trang_thai);
     formData.append("ma_loai_tour", values.ma_loai_tour);
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
@@ -372,6 +373,21 @@ const AdminTourAdd: React.FC = () => {
                 ]}
               >
                 <Input placeholder="Nhập số lượng hành khách" />
+              </Form.Item>
+              <Form.Item
+                className="w-full"
+                label="Trạng thái"
+                name="trang_thai"
+                rules={[
+                  { required: true, message: "Vui lòng chọn checkout!" },
+                ]}
+              >
+                <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
+                  <Space direction="vertical">
+                    <Checkbox value={1}>Kích hoạt</Checkbox>
+                    <Checkbox value={0}>Vô hiệu hóa</Checkbox>
+                  </Space>
+                </Checkbox.Group>
               </Form.Item>
               <Form.Item
                 className="w-full"

@@ -83,6 +83,7 @@ class ApiLoaiTourController extends Controller
         // Tạo một mảng dữ liệu từ request
         $loaiTourData = [
             'ten_loai_tour' => $request->ten_loai_tour,
+            'trang_thai' => $request->trang_thai,
             'thoi_gian' => $thoi_gian,
         ];
 
@@ -152,6 +153,7 @@ class ApiLoaiTourController extends Controller
 
         // Cập nhật các trường dữ liệu khác từ request
         $loaiTourModel->ten_loai_tour = $request->input('ten_loai_tour');
+        $loaiTourModel->trang_thai = $request->input('trang_thai'); // Sửa tại đây
         $loaiTourModel->thoi_gian = Carbon::parse($request->input('thoi_gian'))->format('Y-m-d');
 
         // Lưu các thay đổi vào cơ sở dữ liệu

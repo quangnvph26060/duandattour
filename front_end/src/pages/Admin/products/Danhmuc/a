@@ -1,0 +1,160 @@
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Input, Upload, Radio, Space } from 'antd';
+import { UploadOutlined } from "@ant-design/icons";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
+import { ILoaiTour } from '../../../../interface/loaiTour';
+import axios from 'axios';
+import moment from 'moment';
+
+const AdminLoai_tourEdit: React.FC = () => {
+    const { idLoaiTour } = useParams < { idLoaiTour: any } > ();
+    const { data: LoaiTourData } = useGetLoaiTourByIdQuery(idLoaiTour || "");
+    const LoaiTour = LoaiTourData || {};
+    const [updateLoaiTour] = useEditLoaiTourMutation();
+    const [currentImage, setCurrentImage] = useState < string | undefined > ('');
+    const [name, setName] = useState('');
+    const [form] = Form.useForm();
+    const [imageFile, setImageFile] = useState < File > ();
+
+    useEffect(() => {
+        if (LoaiTour.image) {
+            setCurrentImage(`http://localhost:8000/storage/${LoaiTour.image}`);
+            form.setFieldsValue({ image: LoaiTour.image });
+        }
+        if (LoaiTour.trang_thai !== undefined) {
+            setCurrentTrangThai(LoaiTour.trang_thai);
+        }
+        setName(LoaiTour.ten_loai_tour);
+        form.setFieldsValue({
+            ten_loai_tour: LoaiTour.ten_loai_tour,
+            trang_thai: LoaiTour.trang_thai,
+        });
+    }, [LoaiTour, form]);
+
+    const [currentTrangThai, setCurrentTrangThai] = useState < number | undefined > (undefined);
+    const [fileError, setFileError] = useState < string > ('');
+
+    const handleImageChange = (info: any) => {
+        const { file } = info;
+        if (file.status === 'done') {
+            setCurrentImage(URL.createObjectURL(file.originFileObj));
+            setImageFile(file.originFileObj);
+            form.setFieldsValue({ image: file.originFileObj });
+            setFileError('');
+        } else if (file.status === 'error') {
+            setFileError('File upload failed');
+        }
+    };
+
+    const navigate = useNavigate();
+
+    const onFinish = async (values: ILoaiTour) => {
+        try {
+            const formData = new FormData();
+            if (!imageFile) {
+                setFileError('Vui lòng chọn ảnh');
+                return;
+            }
+            formData.append('image', imageFile);
+
+            formData.append('ten_loai_tour', values.ten_loai_tour);
+            formData.append('trang_thai', values.trang_thai);
+
+            const response = await axios.put(
+                `http://127.0.0.1:8000/api/admin/loaitour/${idLoaiTour}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                console.log('Thành công');
+                console.log(response);
+                navigate('/admin/tour/loai_tour');
+            } else {
+                console.log('Yêu cầu thất bại');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return (
+        <div className="container">
+            <header className="mb-4">
+                <h2 className="font-bold text-2xl">Chỉnh sửa loại tour</h2>
+            </header>
+            <Form
+                className="tour-form"
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                style={{ maxWidth: 600 }}
+                onFinish={onFinish}
+                autoComplete="off"
+                form={form}
+            >
+                <Form.Item
+                    label="Image"
+                    name="image"
+                    rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+                >
+                    <Upload
+                        accept="image/*"
+                        listType="picture"
+                        beforeUpload={() => false}
+                        onChange={handleImageChange}
+                    >
+                        <Button icon={<UploadOutlined />} type="button">
+                            Chọn ảnh
+                        </Button>
+                    </Upload>
+                </Form.Item>
+
+                <Form.Item
+                    label="Tên loại tour"
+                    name="ten_loai_tour"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập tên loại tour!' },
+                        { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
+                    ]}
+                >
+                    <Input value={name} onChange={(e) => setName(e.target.value)} />
+                </Form.Item>
+                <Form.Item
+                    className="w-full"
+                    label="Trạng thái"
+                    name="trang_thai"
+                    rules={[
+                        { required: true, message: "Vui lòng chọn trạng thái!" },
+                    ]}
+                >
+                    <Radio.Group style={{ width: '100%' }} defaultValue={currentTrangThai}>
+                        <Space direction="vertical">
+                            <Radio value={1}>Kích hoạt</Radio>
+                            <Radio value={0}>Vô hiệu hóa</Radio>
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button type="primary" htmlType="submit">
+                        Sửa
+                    </Button>
+                    <Button
+                        type="default"
+                        className="ml-2"
+                        onClick={() => navigate('/admin/tour/loai_tour')}
+                    >
+                        Quay lại
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
+    );
+};
+
+export default AdminLoai_tourEdit;

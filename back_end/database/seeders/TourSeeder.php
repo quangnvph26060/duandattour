@@ -26,7 +26,7 @@ class TourSeeder extends Seeder
             // 'gia_khuyen_mai' => 999,
             'mo_ta' => 'tour ok chưa bro',
             'soluong' =>  3,
-            'trang_thai' => '0',
+            'trang_thai' => '1',
             'ma_loai_tour' => '1',
 
         ]);

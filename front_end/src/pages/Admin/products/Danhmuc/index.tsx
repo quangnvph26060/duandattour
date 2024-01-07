@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Table, Button, Skeleton, Popconfirm, Alert, Input } from 'antd';
+import { Table, Button, Skeleton, Popconfirm, Alert, Input, Checkbox } from 'antd';
+import './index.css'
 import { Link } from 'react-router-dom';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useGetLoaiTourQuery, useRemoveLoaiTourMutation } from '../../../../api/LoaiTourApi';
@@ -32,11 +33,12 @@ const AdminLoai_tour = (props) => {
 
     const tourArray = filteredDataSource.length > 0 ? filteredDataSource : tourdata?.data || [];
 
-    const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian }) => ({
+    const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian, trang_thai }) => ({
         key: id,
         image,
         ten_loai_tour,
-        thoi_gian
+        thoi_gian,
+        trang_thai
     }));
 
     const columns = [
@@ -63,6 +65,17 @@ const AdminLoai_tour = (props) => {
             title: "Thời gian",
             dataIndex: "thoi_gian",
             key: "thoi_gian",
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "trang_thai",
+            key: "trang_thai",
+            render: (trang_thai) => (
+                <div
+                    className="status-circle"
+                    style={{ backgroundColor: trang_thai === 1 ? '#00FF00' : '#FF0000' }}
+                ></div>
+            ),
         },
         {
             title: 'Action',

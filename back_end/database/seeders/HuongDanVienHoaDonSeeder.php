@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
 class HuongDanVienHoaDonSeeder extends Seeder
 {
     /**
@@ -14,10 +15,10 @@ class HuongDanVienHoaDonSeeder extends Seeder
     {
         DB::table('huong_dan_vien_hoa_dons')->insert([
             [
-             'hdv_id' => 1,
-             'hoadon_id'=>1,
+                'hdv_id' => 1,
+                'hoadon_id' => 1,
             ]
-             
-         ]);
+
+        ]);
     }
 }
