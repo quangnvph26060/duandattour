@@ -3,7 +3,7 @@
   Điểm đến :
 </label>
 <select
-
+style={w}
 id="destination"
 
 value={selectedDestination}

@@ -12,7 +12,37 @@
 
   border: burlywood;
 }
+.select-wrapper {
+  position: relative;
+  width: 120px;
+}
 
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #ccc;
+}
+
+select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none;
+}
+
+select:focus {
+  outline: none;
+  border-color: #555;
+}
 .price-c {
   font-weight: 700;
   color: #2d4271;

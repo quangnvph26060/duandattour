@@ -585,14 +585,16 @@ const HomePage = () => {
                 <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
                   Điểm đi:
                 </label>
-                <select id="destination" value={selectedDeparture} onChange={(e) => setSelectedDeparture(e.target.value)}>
-                  <option value="">Chọn điểm đi</option>
-                  {provinces.map((province) => (
-                    <option key={province.code} value={province.name}>
-                      {province.name}
-                    </option>
-                  ))}
-                </select>
+                <div class="select-wrapper">
+  <select id="destination" value={selectedDeparture} onChange={(e) => setSelectedDeparture(e.target.value)}>
+    <option value="">Chọn điểm đi</option>
+    {provinces.map((province) => (
+      <option key={province.code} value={province.name}>
+        {province.name}
+      </option>
+    ))}
+  </select>
+</div>
               </div>
             </div>
           </div>
@@ -613,7 +615,7 @@ const HomePage = () => {
                   Điểm đến:
                 </label>
                 <select id="destination" value={selectedDestination} onChange={(e) => setSelectedDestination(e.target.value)}>
-                  <option value="">Chọn điểm đi</option>
+                  <option  value="">Chọn điểm đi</option>
                   {provinces.map((province) => (
                     <option key={province.code} value={province.name}>
                       {province.name}
