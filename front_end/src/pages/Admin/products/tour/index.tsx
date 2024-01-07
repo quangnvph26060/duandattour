@@ -145,20 +145,9 @@ const AdminProduct = () => {
         <Table.Column title="Giá Người Lớn" dataIndex="gia_nguoilon" key="gia_nguoilon" />
         <Table.Column
           title="Trạng thái"
-          dataIndex="Trạng thái"
-          key="trạng thái"
-          render={(text, record) => {
-            const departureDate = new Date(record.lich_khoi_hanh);
-            const currentDate = new Date(); // Lấy ngày hiện tại
-            console.log(departureDate, currentDate);
-
-            const isExpired = departureDate < currentDate;
-            return (
-              <span className={isExpired ? 'expired-text' : 'active-text'}>
-                {isExpired ? 'Không Hoạt Động' : 'Hoạt Động'}
-              </span>
-            );
-          }}
+          dataIndex="trang_thai"
+          key="trang_thai"
+         
         />
 
         <Table.Column

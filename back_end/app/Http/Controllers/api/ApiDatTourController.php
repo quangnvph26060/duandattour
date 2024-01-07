@@ -61,7 +61,7 @@ class ApiDatTourController extends Controller
             $soLuongKhach = 1;
         }
         $tourone = TourModel::find($datTour['id_tour']);
-     
+        
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
             // dd($createDatTour->ten_khach_hang);
@@ -80,7 +80,10 @@ class ApiDatTourController extends Controller
             $notification->save();
             // $latestThanhToan = ThanhToan::latest('created_at')->first();
             // dd($latestThanhToan);
+
+             // Gọi hàm trong ApiPaymentController
             Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
+
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);

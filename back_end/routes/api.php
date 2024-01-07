@@ -204,6 +204,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('evaluate')->group(function () {
         Route::get('/', [ApiEvaluateController::class, 'showDanhGia']);
         Route::delete('/{id}', [ApiEvaluateController::class, 'deleteDanhGia']);
+        Route::post('/showDanhGiaOnlyTour', [ApiEvaluateController::class, 'showDanhGiaOnlyTour']);
     });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);

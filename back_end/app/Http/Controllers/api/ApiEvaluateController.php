@@ -136,4 +136,25 @@ class ApiEvaluateController extends Controller
 
         return response()->json(['message' => 'Tour discount deleted successfully']);
     }
+    public function showDanhGiaOnlyTour(Request $request)
+    {
+        $users = User::select('id', 'name', 'image')->get();
+        $evaluate = Evaluate::where('id_tour', '=', $request->input('id'))->get();
+        
+        $result = [];
+        foreach ($evaluate as $item) {
+            foreach ($users as $user) {
+                if ($user['id'] == $item['id_user']) {
+                    $userDetails = [
+                        'name' => $user['name'],
+                        'image' => $user['image']
+                    ];
+                    $item['id_user'] = $userDetails;
+                }
+            }
+            $result[] = $item;
+        }
+        
+        return response()->json(['result' => $evaluate]);
+    }
 }
