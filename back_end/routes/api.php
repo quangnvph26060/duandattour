@@ -341,6 +341,7 @@ Route::prefix('admin')->group(function () {
         // Chi tiết booking tour
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
+        Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
     });
     Route::prefix('postdm')->group(function () {
         Route::get('/', [ApiPostDanhmucController::class, 'index']);

@@ -43,6 +43,7 @@ const initialFormData = {
   so_luong_khach: 1,
   ma_khach_hang: "",
 };
+
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true); // tiền mặt
@@ -76,6 +77,7 @@ const BookTour = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);
     setIsChecked(false);
+    alert(123);
   };
   // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
@@ -273,7 +275,7 @@ const BookTour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
 
     if (isChecked) {
       // tiền mặt
@@ -353,7 +355,7 @@ const BookTour = () => {
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
   // hiển thị danh sách giảm giá
 
-console.log(image);
+// console.log(image);
 
 
   return (
@@ -741,8 +743,9 @@ console.log(image);
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.discount_code}</h1>
-                              <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              <h1>{item.percentage}% {item.discount_code}</h1>
+                            
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
 
                             </div>
                           </div>
@@ -757,8 +760,8 @@ console.log(image);
                                 onChange={handlegiamgia}
                               />
                               <div>
-                                <h1>{item.discount_code}</h1>
-                                <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              <h1>{item.percentage}% {item.discount_code}</h1>
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                               </div>
                             </div>
                           </>

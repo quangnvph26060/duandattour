@@ -151,7 +151,7 @@ const DetailPage = (props: Props) => {
                 {selectedStars > 0 && (
         <div>
           {Array.from({ length: selectedStars }).map((_, index) => (
-            <span className="text-[30px ]" key={index} style={{ color: 'gold' }}>&#9733;</span>
+            <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
           ))}
         </div>
       )}

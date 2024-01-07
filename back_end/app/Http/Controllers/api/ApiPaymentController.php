@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\ThanhToan;
 use App\Models\DatTour;
+use App\Models\ThanhToanDetail;
 use Illuminate\Http\Request;
 
 class ApiPaymentController extends Controller
@@ -94,7 +95,9 @@ class ApiPaymentController extends Controller
         $paymentData = $request->all();
         if ($paymentData['vnp_ResponseCode'] == '00') {
             $latestDatTour = DatTour::latest('created_at')->first();
-            $thanhToan = ThanhToan::create([
+            $latestDatTour->trang_thai =1;
+            $latestDatTour->save();
+            $thanhToan = ThanhToanDetail::create([
                 'ma_giao_dich' => $paymentData['vnp_TxnRef'],
                 'tong_tien_tt' => $paymentData['vnp_Amount'],
                 'pttt' => 'transfer',
@@ -118,9 +121,10 @@ class ApiPaymentController extends Controller
         return response()->json($thanhToan);
     }
     // thanh toán bằng tiền mặt 
-    public function CreatePaymentCash(Request $request)
+    public function CreatePaymentCash(Request $request,$idabc)
     {
         $paymentData = $request->all();
+        
         if ($paymentData['payment_method'] === 'cash') {
 
             $latestDatTour = DatTour::latest('created_at')->first();
@@ -134,7 +138,7 @@ class ApiPaymentController extends Controller
                     'ghi_chu' => null,
                     'ma_ngan_hang' => null,
                     'ngay_thanh_toan' => date('Y-m-d H:i:s'),
-                    'id_dat_tour' =>  $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
+                    'id_dat_tour' =>  $idabc, //  $latestDatTour->id or lấy từ bên react sang 
                 ]);
                 return response()->json($thanhToan, 201);
             }

@@ -11,4 +11,5 @@ export interface Dattour {
     trang_thai: number;
     ma_khach_hang: string;
     id_tour: number | string;
+    
 }
