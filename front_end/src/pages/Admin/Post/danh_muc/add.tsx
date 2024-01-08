@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, Upload } from 'antd';
+import React from "react";
+import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { UploadOutlined } from "@ant-design/icons";
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
-import { ILoaiTour } from '../../../../interface/loaiTour';
-import axios from 'axios';
-import "../../../css.css";
+import { useNavigate } from "react-router-dom";
+import { useAddpostdmMutation } from "../../../../api/postdm";
+import { Ipostdm } from "../../../../interface/postdm";
 
-const AdminLoai_tourEdit: React.FC = () => {
-  const { idLoaiTour } = useParams<{ idLoaiTour: any }>();
-  const { data: LoaiTourData } = useGetLoaiTourByIdQuery(idLoaiTour || "");
-  const LoaiTour = LoaiTourData || {};
-  const [updateLoaiTour] = useEditLoaiTourMutation();
+const { Option } = Select;
 
 type FieldType = {
   id: number;
   image: string;
-  ten_loai_tour: string;
+
+  ten_dm: string;
 };
 
+const Admin_DanhmucADD: React.FC = () => {
+  const [addLoaiTour] = useAddpostdmMutation();
   const navigate = useNavigate();
 
-  const onFinish = (values: ILoaiTour) => {
+  const onFinish = (values: Ipostdm) => {
     const formData = new FormData();
-
-    formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("ten_dm", values.ten_dm); // Thêm các trường dữ liệu khác vào formData (nếu cần)
 
     addLoaiTour(formData)
       .unwrap()
@@ -36,68 +34,64 @@ type FieldType = {
 
     console.log(values);
   };
-
   return (
-    <div className="container">
-      <header className="mb-4">
-        <h2 className="font-bold text-2xl">Chỉnh sửa loại tour</h2>
+    <div className="container mx-auto p-6 bg-white shadow-md rounded-md mt-8 justify-center">
+      <header className="mb-4 text-center">
+        <h2 className="font-bold text-2xl ext-gray-800">Tạo mới danh mục</h2>
       </header>
-      <Form
-        className="tour-form"
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
-        onFinish={onFinish}
-        autoComplete="off"
-        form={form}
-      >
-        <Form.Item
-          label="Image"
-          name="image"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+      <div className="flex items-center justify-center">
+        <Form
+          className="tour-form"
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={{ maxWidth: 600 }}
+          onFinish={onFinish}
+          autoComplete="off"
         >
-          <div className='upload-image'>
+
+          <Form.Item
+            label="Tên danh mục"
+            name="ten_dm"
+            rules={[
+              { required: true, message: "Vui lòng nhập tên loại tour!" },
+              { min: 3, message: "Tên tour ít nhất 3 ký tự" },
+            ]}
+            className="py-5"
+          >
+            <Input className="w-[500px] border-2 border-gray-300 p-2 rounded-md" />
+          </Form.Item>
+          <Form.Item
+            label="Image"
+            name="hinh"
+            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          >
             <Upload
               accept="image/*"
               listType="picture"
               beforeUpload={() => false}
+              className="flex w-[500px] items-center justify-between border-2 border-gray-300 p-2 rounded-md"
             >
-              <Button icon={<UploadOutlined />} type="button">
-                Chọn ảnh
-              </Button>
+              <span className="text-gray-600 px-1">Chọn ảnh</span>
+              <Button icon={<UploadOutlined />} type="button" />
             </Upload>
-          </div>
-
-        </Form.Item>
-        <Form.Item
-          label="Tên loại tour"
-          name="ten_loai_tour"
-          rules={[
-            { required: true, message: 'Vui lòng nhập tên loại tour!' },
-            { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
-          ]}
-        >
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className="btn-button-sub-pt">
-            <Button type="primary" htmlType="submit" className="submit-click">
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }} className="mt-10 py-5">
+            <Button type="primary" htmlType="submit" className="mr-2 bg-blue-400">
               Thêm
             </Button>
             <Button
               type="default"
-              className="ml-2"
-              onClick={() => navigate("/admin/tour/loai_tour")}
+              onClick={() => navigate("/admin/post/danhmuc_post")}
+              className="bg-red-500 hover:bg-white text-white"
             >
               Quay lại
             </Button>
-          </div>
-        </Form.Item>
-      </Form>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 };
 
-export default AdminLoai_tourEdit;
+export default Admin_DanhmucADD;

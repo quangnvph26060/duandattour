@@ -120,81 +120,81 @@ const ADmin_postADD: React.FC = () => {
     },
   ];
   return (
-    <div className="container flex gap-3">
-      <div className="w-1/3 ">
+    <div className="container mx-auto justify-center flex gap-4 p-5">
+      <div className="w-1/3 bg-slate-100 p-6 shadow-2xl rounded-xl">
         <header className="mb-4">
-          <h2 className="font-bold text-2xl">Tạo mới tour</h2>
+          <h2 className="font-bold text-2xl text-gray-800 text-center">Tạo mới bài viết</h2>
         </header>
-        <Form
-          className="tour-form"
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Form.Item
-            label="Tên bài viết"
-            name="ten"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên tour!" },
-              { min: 3, message: "Tên tour ít nhất 3 ký tự" },
-            ]}
+        <div className="flex items-center justify-center">
+          <Form
+            className="tour-form"
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            onFinish={onFinish}
+            autoComplete="off"
           >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Nội dung "
-            name="mo_ta"
-            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-          >
-            <CKEditor
-              editor={ClassicEditor}
-              // config={{
-              //   extraPlugins: [EasyImage],
-              //   // Cấu hình thêm plugin Easy Image
-
-              // }}
-              data={editorData}
-              onChange={handleEditorChange}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Loại bài viết"
-            name="ma_loai_tour"
-            rules={[
-              { required: true, message: "Vui lòng Chọn Mã Loại bài viết" },
-            ]}
-          >
-            <Select defaultValue="Chọn" style={{ width: 100 }}>
-              {/* {loaitourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
-            ))} */}
-            </Select>
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Thêm
-            </Button>
-            <Button
-              type="default"
-              className="ml-2"
-              onClick={() => navigate("/admin/tour")}
+            <Form.Item
+              label="Tên bài viết"
+              name="ten"
+              rules={[
+                { required: true, message: "Vui lòng nhập tên tour!" },
+                { min: 3, message: "Tên tour ít nhất 3 ký tự" },
+              ]}
+              className="py-7"
             >
-              Quay lại
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-      <div className="w-2/3">
-        {/* Add your table component here */}
-        <Table dataSource={dataSource} columns={columns} />
+              <Input className="w-[350px] mx-auto" />
+            </Form.Item>
+
+
+            <Form.Item
+              label="Mô tả bài viết"
+              name="mo_ta"
+              rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+              className=""
+            >
+              <CKEditor
+                editor={ClassicEditor}
+                data={editorData}
+                onChange={handleEditorChange}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Loại bài viết"
+              name="ma_loai_tour"
+              rules={[
+                { required: true, message: "Vui lòng chọn Mã Loại bài viết" },
+              ]}
+              className="pt-2"
+            >
+              <Select defaultValue="Chọn" style={{ width: 150 }}>
+                {/* {loaitourArrary.map((option) => (
+            <Option key={option.id} value={option.id}>{option.ten_loai_tour}</Option>
+          ))} */}
+              </Select>
+            </Form.Item>
+
+            <div className="py-6">
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                  Thêm
+                </Button>
+                <Button
+                  type="default"
+                  className="ml-2 "
+                  onClick={() => navigate("/admin/tour")}
+                >
+                  Quay lại
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
+        </div>
       </div>
     </div>
+
   );
 };
 

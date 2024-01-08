@@ -97,7 +97,7 @@ const Admin_baiviet = () => {
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý  bài viết</h2>
         <Button type="primary" danger>
-          <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
+          <Link to="/admin/post/add_baiviet" className="flex items-center space-x-2">
             <AiOutlinePlus />
             Tạo mới bài viết
           </Link>
