@@ -21,6 +21,7 @@ class DatTour extends Model
             'ngay_het_han',
             'so_luong_khach',
             'trang_thai',
+            'xac_nhan',
             'ma_khach_hang',
             'id_tour',
     ];

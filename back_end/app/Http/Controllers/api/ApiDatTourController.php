@@ -81,8 +81,8 @@ class ApiDatTourController extends Controller
             $notification->id_tour = $datTour['id_tour'];
             $notification->save();
 
-            $apiPaymentController = new ApiPaymentController();
-            $apiPaymentController->CreatePaymentCash($request,$createDatTour->id);
+            // $apiPaymentController = new ApiPaymentController();
+            // $apiPaymentController->CreatePaymentCash($request,$createDatTour->id);
             Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
 
             return response()->json(['createDatTour' => $createDatTour]);
@@ -233,6 +233,19 @@ class ApiDatTourController extends Controller
             return response()->json(['message' => 'Xác nhận đơn hàng thành công!!'], 200);
         }else{
             return response()->json(['message' => 'Xác nhận đơn hàng không thành công!!'], 404);
+        }
+    }
+
+    public function updateStatusConfirm(Request $request, $id){
+        $datTour = DatTour::find($id);
+        if($datTour){
+            $datTour->update([
+                'trang_thai' => $request->input('trang_thai'),
+                'xac_nhan' => $request->input('xac_nhan') // Trường bạn muốn cập nhật là 'status'
+            ]);
+            return response()->json(['message' => 'update thành công!!'], 200);
+        }else{
+            return response()->json(['message' => 'update không thành công!!'], 404);
         }
     }
     public function CountTour(Request $request)

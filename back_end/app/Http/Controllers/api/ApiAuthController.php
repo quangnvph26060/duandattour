@@ -9,6 +9,7 @@ use App\Models\UsersModel;
 use App\Models\User;
 use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
@@ -109,5 +110,27 @@ class ApiAuthController extends Controller
             'message' => 'Thông tin người dùng đã được cập nhật.',
             'data' => $user
         ]);
+    }
+
+    public function reset(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Email không tồn tại'], 404);
+        }
+
+        $password = Str::random(10); // Mật khẩu ngẫu nhiên
+
+        $user->password = Hash::make($password);
+        $user->save();
+        // dd($password);
+        // Gửi email chứa mật khẩu đến người dùng
+        Mail::to($user->email)->send(new ResetPassword ($user, $password));
+
+        return response()->json(['message' => 'Mật khẩu đã được đặt lại và gửi đến email của người dùng'],200);
     }
 }

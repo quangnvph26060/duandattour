@@ -70,6 +70,7 @@ import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 import Favorite from "./pages/favorite";
+import ResetPassword from "./pages/Client/resetPassword";
 export const router = createBrowserRouter([
 
   {
@@ -150,6 +151,11 @@ export const router = createBrowserRouter([
       {
         path: "/changeMk",
         element: <Doimk />
+      },
+
+      {
+        path: "/resetPassword",
+        element: <ResetPassword />
       },
     ],
   },
