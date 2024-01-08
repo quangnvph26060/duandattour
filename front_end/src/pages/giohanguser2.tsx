@@ -88,23 +88,7 @@ const Giohanguser = () => {
     //  nội dung đánh giá 
     const [inputValue, setInputValue] = useState('');
     // xử lý đánh giá 
-    const addToFavorites = (id) => {
-        const token = localStorage.getItem('token');
-        axios.post('http://127.0.0.1:8000/api/evaluate', { so_sao: selectedStars, noi_dung: inputValue, id_tour: id }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then(response => {
-                // Xử lý kết quả thành công
-                console.log(response.data);
-                setInputValue("")
-            })
-            .catch(error => {
-                alert('Nội dung chứa từ ngữ nhạy cảm')
-                console.error(error);
-            });
-    };
+  
     // 
 
     const [evaluations, setEvaluations] = useState([]);
@@ -126,6 +110,24 @@ const Giohanguser = () => {
             })
             .catch(error => {
                 // Xử lý lỗi
+                console.error(error);
+            });
+    };
+    const addToFavorites = (id,version) => {
+        const token = localStorage.getItem('token');
+        axios.post('http://127.0.0.1:8000/api/evaluate', { so_sao: selectedStars, noi_dung: inputValue, id_tour: id,version:version }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(response => {
+                // Xử lý kết quả thành công
+                console.log(response.data);
+                setInputValue("")
+                findEvaluate();
+            })
+            .catch(error => {
+                alert('Nội dung chứa từ ngữ nhạy cảm')
                 console.error(error);
             });
     };
@@ -185,6 +187,7 @@ const Giohanguser = () => {
                         </div>
                         {evaluations.map((item) => (
                             <div key={item}>
+                                  
                                 <div className='px-2'>
                                     <h1 className='text-2xl font-medium'> {item.ten_loai_tour.ten_loai_tour}</h1>
                                 </div>
@@ -220,7 +223,8 @@ const Giohanguser = () => {
                                                     <div>
                                                         <p className='mb-2'>{item.so_luong_khach}người {calculateDaysDifference(item.tour.ngay_ket_thuc, item.tour.lich_khoi_hanh)}đêm</p>
                                                     </div>
-                                                    {item.danh_gia ? (
+                                                 
+                                                    {item.danh_gia && item.danh_gia.version == item.id ? (
 
                                                         <>
                                                             <p className='flex items-center text-base font-semibold'>Đánh giá: {item.danh_gia.so_sao} <span className='ml-1'><img src="https://cdn-icons-png.flaticon.com/128/2107/2107957.png" alt="" width={'16px'} height={'16px'} /></span> </p>
@@ -251,7 +255,7 @@ const Giohanguser = () => {
                                                                 </div>
                                                                 <div>
                                                                     <input className='w-[500px] input-rate h-8 px-3 py-1 rounded-tl-md rounded-bl-md ' type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} style={{ border: "1px solid" }} />
-                                                                <button className='px-3 py-1 h-8 rounded-tr-md rounded-br-md' style={{ background: "green", color: "white" }} onClick={() => addToFavorites(item.id_tour)}>Đánh giá </button> 
+                                                                <button className='px-3 py-1 h-8 rounded-tr-md rounded-br-md' style={{ background: "green", color: "white" }} onClick={() => addToFavorites(item.id_tour,item.id)}>Đánh giá </button> 
                                                                 </div>
                                                                 </div>
                                                                
