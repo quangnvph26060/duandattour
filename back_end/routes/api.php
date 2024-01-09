@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 use App\Http\Controllers\Api\ApiEvaluateController;
+use App\Http\Controllers\api\ApiLogoController;
 use App\Http\Controllers\Api\BannerLogoController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
@@ -340,12 +341,19 @@ Route::prefix('admin')->group(function () {
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
         Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
     });
-    Route::prefix('bannerlogo')->group(function(){
+    Route::prefix('banner')->group(function(){
         Route::get('/', [BannerLogoController::class, 'index']);
         Route::post('/', [BannerLogoController::class, 'store']);
         Route::get('/{id}', [BannerLogoController::class, 'show']);
         Route::put('/{id}', [BannerLogoController::class, 'update']);
         Route::delete('/{id}', [BannerLogoController::class, 'destroy']);
+    });
+    Route::prefix('logo')->group(function(){
+        Route::get('/', [ApiLogoController::class, 'index']);
+        Route::post('/', [ApiLogoController::class, 'store']);
+        Route::get('/{id}', [ApiLogoController::class, 'show']);
+        Route::put('/{id}', [ApiLogoController::class, 'update']);
+        Route::delete('/{id}', [ApiLogoController::class, 'destroy']);
     });
 
     

@@ -21,15 +21,15 @@ class BannerLogoController extends Controller
         } else {
             return response()->json(['error' => 'không thể thêm ảnh'], 500);
         }
-        if ($request->hasFile('hinh_logo') && $request->file('hinh_logo')->isValid()) {
-            $imageLogo = uploadFile('hinh_logo', $request->file('hinh_logo'));
-        } else {
-            return response()->json(['error' => 'không thể thêm ảnh'], 500);
-        }
+        // if ($request->hasFile('hinh_logo') && $request->file('hinh_logo')->isValid()) {
+        //     $imageLogo = uploadFile('hinh_logo', $request->file('hinh_logo'));
+        // } else {
+        //     return response()->json(['error' => 'không thể thêm ảnh'], 500);
+        // }
         $update_banner = BannerLogoModel::create([
             'link_banner' => $request->link_banner,
             'image_banner' => $imageBanner,
-            'image_logo' => $imageLogo,
+           
             
         ]);
         return response()->json(['message' => 'Thêm ảnh và logo thành công']);
@@ -48,8 +48,8 @@ class BannerLogoController extends Controller
         $banner_logo=BannerLogoModel::find($id);
     
         // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
-        if ($request->hasFile('image_banner')) {
-            $image = $request->file('image_banner');
+        if ($request->hasFile('hinh_banner')) {
+            $image = $request->file('hinh_banner');
             
             // Xóa ảnh hiện tại nếu có
             if ($banner_logo->image) {
@@ -65,10 +65,10 @@ class BannerLogoController extends Controller
         }
        
         // Cập nhật các trường dữ liệu khác
-        $banner_logo->fresh();
+      
         $banner_logo->link_banner = $request->input('link_banner');
         
-        dd($banner_logo);
+       
         // Lưu các thay đổi
        $banner_logo->save();
     

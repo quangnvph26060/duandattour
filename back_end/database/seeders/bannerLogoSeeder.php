@@ -16,7 +16,6 @@ class bannerLogoSeeder extends Seeder
         //
         DB::table('banner_logo')->insert([
             'image_banner'=>"hình 1",
-            'image_logo'=>'hinh logo',
             'link_banner'=>'abc',
         ]);
     }

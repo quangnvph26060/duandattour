@@ -11,7 +11,6 @@ class BannerLogoModel extends Model
     protected $table="banner_logo";
     protected $fillable=[
         'image_banner',
-        'image_logo',
         'link_banner',
     ];
 }
