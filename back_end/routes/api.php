@@ -78,7 +78,8 @@ foreach ($expiredDiscounts1 as $discount) {
 
 //end api demo
 
-
+// đánh giá về số sao cho tour đó 
+Route::post('/so_sao_tour', [ApiEvaluateController::class, 'so_sao']);
 // đếm tour đã đi thành công 
 Route::get('CountTour', [ApiDatTourController::class, 'CountTour']);
 

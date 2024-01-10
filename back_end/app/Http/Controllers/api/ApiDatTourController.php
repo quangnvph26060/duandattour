@@ -42,27 +42,17 @@ class ApiDatTourController extends Controller
 
     public function createDatTour(Request $request)
     {
-
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
-        
         // $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
         $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
         $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-        // $createDatTour = DatTour::create($datTour);
-        // return response()->json(['createDatTour' => $createDatTour]);
         if ($request->has('so_luong_khach')) {
-            // Trường 'so_luong_khach' đã tồn tại trong yêu cầu HTTP
-            // Tiếp tục truy cập vào giá trị của trường 'so_luong_khach'
             $soLuongKhach = $request->input('so_luong_khach');
-            // Tiếp tục xử lý với giá trị $soLuongKhach
         } else {
-            // Trường 'so_luong_khach' không tồn tại trong yêu cầu HTTP
-            // Thực hiện xử lý mặc định ở đây (ví dụ: gán giá trị mặc định là 1)
             $soLuongKhach = 1;
         }
         $tourone = TourModel::find($datTour['id_tour']);
-        
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
             // dd($createDatTour->ten_khach_hang);
@@ -71,7 +61,6 @@ class ApiDatTourController extends Controller
                 $tourone->soluong = $soluong;
                 $tourone->save();
             }
-
             // thông báo khi đặt hàng thành công gửi về admin
             $notification = new NotificationModel();
             $notification->name_user = $createDatTour->ten_khach_hang;
@@ -80,10 +69,7 @@ class ApiDatTourController extends Controller
             $notification->loai_thong_bao = "Đặt tour";
             $notification->id_tour = $datTour['id_tour'];
             $notification->save();
-
-     
             Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
-
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);

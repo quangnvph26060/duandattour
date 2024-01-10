@@ -263,7 +263,7 @@ class ApiDiscountController extends Controller
         return response()->json(['status' => 'success']);
     }
     public function filterDicscount(Request $request) {
-        $result = Discount::where('minprice', '>', $request->input('price_tour'))
+        $result = Discount::where('minprice', '<', $request->input('price_tour'))
         ->where('trang_thai', '!=', 0) // Kiểm tra trạng thái khác 0
         ->get();
 
