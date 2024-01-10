@@ -129,8 +129,15 @@ class ApiDatTourController extends Controller
 
     public function getListBookingTour()
     {
-
         $bookings = DatTour::with('ThanhToan', 'tours.images')->get();
+        
+        foreach ($bookings as $booking) {
+            if ($booking->ThanhToan === null) {
+                $booking->load('ThanhToanDeltail');
+                unset($booking->ThanhToan);
+            }
+        }
+        
         return response()->json(['data' => $bookings], 200);
     }
 

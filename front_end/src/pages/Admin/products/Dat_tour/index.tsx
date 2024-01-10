@@ -54,8 +54,11 @@ const ADmin_DatTour = (props: Props) => {
   const [dataQuanly, setDataQuanly] = useState<IQuanlyDattour[]>([]);
 
   const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
-  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
 
+  const ThanhToaninfor = DataQuanly.length > 0 ? DataQuanly[0].thanh_toan : null;
+  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
+//  console.log(Tourinfo);
+ 
   const [selectedId, setSelectedId] = useState("");
   useEffect(() => {
     if (DataQuanly) {
@@ -115,34 +118,7 @@ const ADmin_DatTour = (props: Props) => {
     // Thêm các cột khác tương ứng với thông tin người đặt
   ];
 
-  const statusConfirm = [
-    {
-      title: "Tên người đặt",
-      dataIndex: "trang_thai",
-      key: "trang_thai",
-    },
-    {
-      title: "Email người đặt",
-      dataIndex: "xac_nhan",
-      key: "xac_nhan",
-    },
-    // Thêm các cột khác tương ứng với thông tin người đặt
-  ];
-  // Lấy dữ liệu cho trang hiện tại
-
-  // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-  // useRemove();
-
-  // const confirm = (id: any) => {
-  //     if(!window.confirm('bạn có muốn xóa không ')){
-  //         return
-  //     }
-  //     removeProduct(id);
-
-  // };
-
-  //  const dattour = dattour?.data || [];
-
+  
   const dataSource = sortedData.map(
     ({
       id,
@@ -156,9 +132,13 @@ const ADmin_DatTour = (props: Props) => {
       id_tour,
       image_dd,
       so_luong_khach,
+      // tong_tien_tt,
       ten_tour,
       tours,
-    }: IQuanlyDattour) => ({
+      thanh_toan,
+      thanh_toan_deltail
+    }
+    : IQuanlyDattour) => ({
       key: id,
       ngay_dat,
       email,
@@ -168,9 +148,12 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
+      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
+      thanh_toan,
+      thanh_toan_deltail
     })
   );
 
@@ -243,6 +226,22 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "so_luong_khach",
       key: "so_luong_khach",
       className: "font-medium",
+    },
+    {
+      title: <span style={tableStyles}>Tổng tiền</span>,
+      dataIndex: "tong_tien_tt",
+      className: "font-medium",
+      key: "tong_tien_tt",
+      render: (text, record) => (
+        <span>
+        {record.thanh_toan && record.thanh_toan.tong_tien_tt ? (
+          record.thanh_toan.tong_tien_tt
+        ) : (
+          record.thanh_toan_deltail.tong_tien_tt
+        )}
+      </span>
+      ),
+
     },
     {
       title: <span style={tableStyles}>Trạng thái thanh toán</span>,
@@ -436,11 +435,11 @@ const ADmin_DatTour = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-            {statusConfirm.map((column) => (
+            {/* {statusConfirm.map((column) => (
                     <td key={column.key} className="py-2 px-4">
                       {selectedData[column.dataIndex]}
                     </td>
-                  ))}
+                  ))} */}
             </tbody>
           </table>
         </div>

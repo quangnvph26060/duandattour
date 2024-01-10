@@ -175,10 +175,10 @@ const ResetPassword = () => {
                     </aside> */}
 
                     {/*  */}
-                    <article className='w-4/5 container border border-gray-300 rounded-lg '>
+                    <article className='container mx-auto border border-gray-300 rounded-lg '>
                         <div className="wrapper p-md-4 px-5 ">
-                            <div className="heading py-4">
-                                <h5 className="text-xl font-medium">Quên mật khẩu</h5>
+                            <div className="heading py-2 mt-4">
+                                <h5 className="text-xl text-center font-medium">Quên mật khẩu</h5>
                                 {/* <p className=" mb-4">
                                     Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho
                                     người khác
@@ -186,11 +186,11 @@ const ResetPassword = () => {
                             </div>
                             <form className="change-password px-5" onSubmit={resetPassword}>
                                 <div className="col-12">
-                                    <div className="mb-3 row flex justify-between">
-                                        <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label py-2">Email</label>
-                                        <div className="col-sm-7 px-5">
+                                    <div className="mb-3">
+                                        <div className='text-center py-3'><label htmlFor="inputOldPassword" className="col-sm-3 col-form-label">Email:</label></div>
+                                        <div className="col-sm-7 text-center">
                                             <input
-                                                className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3"
+                                                className="form-control border border-gray-300 rounded-md lg:w-[400px] md:w-[250px] h-10 px-3"
                                                 id="email"
                                                 name="email"
                                                 placeholder="Email"
