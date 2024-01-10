@@ -28,6 +28,13 @@ const style: React.CSSProperties = {
 };
 const Dashboard = () => {
   //loc 
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const [filteredData, setFilteredData] = useState([]);
   const [dailyRevenueData, setDailyRevenueData] = useState([]);
   const fetchDailyRevenueData = async (start, end) => {
@@ -303,7 +310,7 @@ const Dashboard = () => {
             <div>
               <p className="text-xl font-medium">Doanh thu hôm nay</p>
               <p className="text-xl font-semibold">
-                {statistical.totalRevenueToday} vnđ
+              {formatCurrency(statistical.totalRevenueToday)}
               </p>
             </div>
           </div>
@@ -435,7 +442,7 @@ const Dashboard = () => {
       <div className="top 5 mt-10 justify-normal mx-auto ml-10 gap-20 flex">
   <div className="top5rate ">
   <h2 className="text-2xl font-medium ">Top 5 tour hot</h2>
-  {/* <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr>
           <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>ID</th>
@@ -450,11 +457,11 @@ const Dashboard = () => {
           </tr>
         ))}
       </tbody>
-    </table> */}
+    </table>
   </div>
   <div className="top5buy ">
   <h2 className="text-2xl font-bold">Top 5 rating</h2>
-  {/* <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr>
           <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên địa điểm</th>
@@ -469,7 +476,7 @@ const Dashboard = () => {
           </tr>
         ))}
       </tbody>
-    </table> */}
+    </table>
   </div>
       </div>
     </div>
