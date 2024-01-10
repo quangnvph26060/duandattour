@@ -1,121 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, Upload } from 'antd';
+import React from "react";
+import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { UploadOutlined } from "@ant-design/icons";
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEditLoaiTourMutation, useGetLoaiTourByIdQuery } from '../../../../api/LoaiTourApi';
-import { ILoaiTour } from '../../../../interface/loaiTour';
-import axios from 'axios';
-import "../../../css.css";
+import { useNavigate } from "react-router-dom";
+import { useAddpostdmMutation } from "../../../../api/postdm";
+import { Ipostdm } from "../../../../interface/postdm";
 
-const AdminLoai_tourEdit: React.FC = () => {
-  const { idLoaiTour } = useParams<{ idLoaiTour: any }>();
-  const { data: LoaiTourData } = useGetLoaiTourByIdQuery(idLoaiTour || "");
-  const LoaiTour = LoaiTourData || {};
-  const [updateLoaiTour] = useEditLoaiTourMutation();
+const { Option } = Select;
 
-  const [name, setName] = useState('');
-  const [form] = Form.useForm();
+type FieldType = {
+  id: number;
+  image: string;
 
-  useEffect(() => {
-    form.setFieldsValue({
-      hinh: LoaiTour.image,
-      ten_loai_tour: LoaiTour.ten_loai_tour,
+  ten_dm: string;
+};
 
-    });
-  }, [LoaiTour]);
-
+const Admin_DanhmucADD: React.FC = () => {
+  const [addLoaiTour] = useAddpostdmMutation();
   const navigate = useNavigate();
 
-  const onFinish = async (values: ILoaiTour) => {
-    try {
-      const formData = new FormData();
-      formData.append('image', values.image.fileList[0].originFileObj);
-      formData.append('ten_loai_tour', values.ten_loai_tour);
+  const onFinish = (values: Ipostdm) => {
+    const formData = new FormData();
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("ten_dm", values.ten_dm); // Thêm các trường dữ liệu khác vào formData (nếu cần)
 
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/admin/loaitour/${idLoaiTour}`,
-        formData,
-        {
-          headers: {
-            'X-HTTP-Method-Override': 'PUT',
-          },
-        }
-      );
+    addLoaiTour(formData)
+      .unwrap()
+      .then(() => navigate("/admin/post/danhmuc_post"))
+      .catch((error) => {
+        console.log(error);
+        // Xử lý lỗi (nếu có)
+      });
 
-      if (response.status === 200) {
-        console.log('Thành công');
-        console.log(response);
-        window.location.href = 'http://localhost:5173/admin/tour/loai_tour';
-      } else {
-        console.log('Yêu cầu thất bại');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(values);
   };
-
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Chỉnh sửa loại tour</h2>
+        <h2 className="font-bold text-2xl">Tạo mới danh mục</h2>
       </header>
       <Form
         className="tour-form"
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
+        style={{ maxWidth: 600 }}
         onFinish={onFinish}
         autoComplete="off"
-        form={form}
       >
-        <Form.Item
-          label="Image"
-          name="image"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-        >
-          <div className='upload-image'>
-            <Upload
-              accept="image/*"
-              listType="picture"
-              beforeUpload={() => false}
-            >
-              <Button icon={<UploadOutlined />} type="button">
-                Chọn ảnh
-              </Button>
-            </Upload>
-          </div>
 
-        </Form.Item>
         <Form.Item
-          label="Tên loại tour"
-          name="ten_loai_tour"
+          label="Tên danh mục"
+          name="ten_dm"
           rules={[
-            { required: true, message: 'Vui lòng nhập tên loại tour!' },
-            { min: 3, message: 'Tên tour ít nhất 3 ký tự' },
+            { required: true, message: "Vui lòng nhập tên loại tour!" },
+            { min: 3, message: "Tên tour ít nhất 3 ký tự" },
           ]}
         >
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <Input />
         </Form.Item>
-
+        <Form.Item
+          label="Image"
+          name="hinh"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+        >
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <Button icon={<UploadOutlined />} type="button">
+              Chọn ảnh
+            </Button>
+          </Upload>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className='btn-button-sub'>
-            <Button type="primary" htmlType="submit" className='submit-click'>
-              Sửa
-            </Button>
-            <Button
-              type="default"
-              className="ml-2"
-              onClick={() => navigate('/admin/tour')}
-            >
-              Quay lại
-            </Button>
-          </div>
-
+          <Button type="primary" htmlType="submit">
+            Thêm
+          </Button>
+          <Button
+            type="default"
+            className="ml-2"
+            onClick={() => navigate("/admin/post/danhmuc_post")}
+          >
+            Quay lại
+          </Button>
         </Form.Item>
       </Form>
     </div>
   );
 };
 
-export default AdminLoai_tourEdit;
+export default Admin_DanhmucADD;

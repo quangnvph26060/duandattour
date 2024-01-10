@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 import { useStateContext } from '../context/ContextProvider';
+import { Avatar } from 'antd';
 
 
 const Login = () => {
@@ -58,6 +59,7 @@ const Login = () => {
         password,
       });
       if (response.status === 200) {
+        console.log(response.data)
         const token = response.data.access_token;
         const role = response.data.role;
       
@@ -65,7 +67,7 @@ const Login = () => {
         localStorage.setItem("role", role);
         localStorage.setItem("id", response.data.data.id);
         // authContext.storeAuthData(token,role);
-      //  setUser(response.data.role);
+        //  setUser(response.data.role);
         alert("Đăng nhập thành công");
         if(localStorage.getItem("role") === 'admin'){
  

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Form, Button, Input, Select } from "antd";
-import axios from "axios";
-import { IDiscount } from "../../../../interface/discount";
-
+import React ,{useState}from 'react';
+import { Form, Button, Input, DatePicker, Select } from 'antd';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
+import { useAddDiaDiemMutation, useRemoveDiaDiemMutation } from "../../../../api/DiaDiemApi";
+import { IDiaDiem } from "../../../../interface/diadiem";
+import "../../../css.css";
 const { Option } = Select;
 
 const AdminGiam_GiaEdit: React.FC = () => {

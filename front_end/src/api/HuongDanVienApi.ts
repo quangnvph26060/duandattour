@@ -55,10 +55,6 @@ export const {
     useGetHuongDanVienByIdQuery,
     useAddHuongDanVienMutation,
     useRemoveHuongDanVienMutation
-    // useAddLoaiTourMutation,
-    // useEditLoaiTourMutation,
-    // useGetLoaiTourByIdQuery,
-    // useRemoveLoaiTourMutation
 
 } = HuongDanVienApi;
 export const HuongDanVienRedeucer = HuongDanVienApi.reducer;

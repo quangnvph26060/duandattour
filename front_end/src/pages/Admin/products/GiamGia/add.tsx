@@ -1,30 +1,29 @@
-import React from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Form, Button, Input, DatePicker, Select } from "antd";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import { useAddDiscountMutation } from "../../../../api/discountApi";
 import { IDiscount } from "../../../../interface/discount";
 
 const { Option } = Select;
 
 type FieldType = {
-    id: number;
-    ten_loai_tour: string;
-
+  id: number;
+  ten_loai_tour: string;
 };
 
 const AdminGiam_GiaADD: React.FC = () => {
-    const [addDiscount] = useAddDiscountMutation();
-    const navigate = useNavigate();
+  const [addDiscount] = useAddDiscountMutation();
+  const navigate = useNavigate();
 
-    const onFinish = (values: IDiscount) => {
-        addDiscount(values)
-            .unwrap()
-            .then(() => navigate("/admin/tour/discount"));
-    };
-    const disabledDate = (current: number) => {
-        // Get the current date
-        const currentDate = new Date();
+  const onFinish = (values: IDiscount) => {
+    addDiscount(values)
+      .unwrap()
+      .then(() => navigate("/admin/tour/discount"));
+  };
+  const disabledDate = (current: number) => {
+    // Get the current date
+    const currentDate = new Date();
 
         // Disable dates before the current date
         return current && current < currentDate.setHours(0, 0, 0, 0);

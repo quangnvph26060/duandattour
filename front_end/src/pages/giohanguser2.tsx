@@ -84,6 +84,8 @@ const Giohanguser = () => {
     const [selectedStars, setSelectedStars] = useState(0);
     const handleStarClick = (rating) => {
         setSelectedStars(rating);
+        console.log('132',selectedStars);
+        
     };
     //  nội dung đánh giá 
     const [inputValue, setInputValue] = useState('');
@@ -237,19 +239,19 @@ const Giohanguser = () => {
                                                             <div id={`inputContainer-${item.id}`} className="hidden ">
                                                                 <div className=' flex flex-col'>
                                                                 <div className="rate  mb-5 mt-3 flex gap-2">
-                                                                    <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                    <h2  style={{ color: selectedStars >= 1 ? 'yellow' : 'gray' }} className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(1)} />
                                                                     </h2>
-                                                                    <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                    <h2 style={{ color: selectedStars >= 2 ? 'yellow' : 'gray' }} className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(2)} />
                                                                     </h2>
-                                                                    <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                    <h2 style={{ color: selectedStars >= 3 ? 'yellow' : 'gray' }} className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(3)} />
                                                                     </h2>
-                                                                    <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                    <h2 style={{ color: selectedStars >= 4 ? 'yellow' : 'gray' }} className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(4)} />
                                                                     </h2>
-                                                                    <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
+                                                                    <h2 style={{ color: selectedStars >= 5 ? 'yellow' : 'gray' }}className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
                                                                         <FaStar onClick={() => handleStarClick(5)} />
                                                                     </h2>
                                                                 </div>

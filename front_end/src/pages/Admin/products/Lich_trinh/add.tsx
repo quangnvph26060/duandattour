@@ -51,7 +51,7 @@ const Admin_LichtrinhADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
+        style={{ maxWidth: "100%"  }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -70,14 +70,14 @@ const Admin_LichtrinhADD: React.FC = () => {
           name="noi_dung"
         >
           <div className=''>
-            <CKEditor
-              editor={ClassicEditor}
-              data={editorData}
-              onChange={handleEditorChange}
-
-            />
+             <CKEditor
+            editor={ClassicEditor}
+            data={editorData}
+            onChange={handleEditorChange}
+            
+          />
           </div>
-
+         
         </Form.Item>
         <Form.Item
           label="Thời gian"
@@ -91,7 +91,7 @@ const Admin_LichtrinhADD: React.FC = () => {
           name="id_tour"
           rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
         >
-          <Select defaultValue="Chọn" style={{}}>
+          <Select defaultValue="Chọn" style={{ }}>
             {tourArray.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
@@ -99,18 +99,18 @@ const Admin_LichtrinhADD: React.FC = () => {
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <div className="btn-button-sub">
-            <Button type="primary" htmlType="submit" className="submit-click" >
-              Thêm
-            </Button>
-            <Button
-              type="default"
-              className="ml-2"
-              onClick={() => navigate("/admin/tour/lich_trinh")}
-            >
-              Quay lại
-            </Button>
+          <Button type="primary" htmlType="submit" className="submit-click" >
+            Thêm
+          </Button>
+          <Button
+            type="default"
+            className="ml-2"
+            onClick={() => navigate("/admin/tour/loai_tour")}
+          >
+            Quay lại
+          </Button>
           </div>
-
+          
         </Form.Item>
       </Form>
     </div>

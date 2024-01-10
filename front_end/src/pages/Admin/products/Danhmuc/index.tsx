@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Table, Button, Skeleton, Popconfirm, Alert, Input } from 'antd';
+import { Table, Button, Skeleton, Popconfirm, Alert, Input, Checkbox } from 'antd';
+import './index.css'
 import { Link } from 'react-router-dom';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useGetLoaiTourQuery, useRemoveLoaiTourMutation } from '../../../../api/LoaiTourApi';
@@ -32,11 +33,12 @@ const AdminLoai_tour = (props) => {
 
     const tourArray = filteredDataSource.length > 0 ? filteredDataSource : tourdata?.data || [];
 
-    const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian }) => ({
+    const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian, trang_thai }) => ({
         key: id,
         image,
         ten_loai_tour,
-        thoi_gian
+        thoi_gian,
+        trang_thai
     }));
 
     const columns = [
@@ -63,6 +65,17 @@ const AdminLoai_tour = (props) => {
             title: "Thời gian",
             dataIndex: "thoi_gian",
             key: "thoi_gian",
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "trang_thai",
+            key: "trang_thai",
+            render: (trang_thai) => (
+                <div
+                    className="status-circle"
+                    style={{ backgroundColor: trang_thai === 1 ? '#00FF00' : '#FF0000' }}
+                ></div>
+            ),
         },
         {
             title: 'Action',
@@ -100,7 +113,7 @@ const AdminLoai_tour = (props) => {
                 <h2 className="font-bold text-2xl">Quản lý loại tour</h2>
 
                 {localStorage.getItem("role") === 'admin' ? (
-                    <Button type="primary" danger>
+                    <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600" >
                         <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
                             <AiOutlinePlus />
                             Tạo mới loại tour
@@ -108,13 +121,14 @@ const AdminLoai_tour = (props) => {
                     </Button>
                 ) : null}
             </header>
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="flex items-center justify-end mb-4">
                 <Input
+                    style={{ width: "250px" }}
                     placeholder="Tìm kiếm lịch trình"
                     value={searchValue}
                     onChange={handleSearchChange}
                 />
-                <Button style={{ backgroundColor: 'blue' }} type="primary" onClick={handleSearch}>
+                <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
                     Tìm kiếm
                 </Button>
             </div>

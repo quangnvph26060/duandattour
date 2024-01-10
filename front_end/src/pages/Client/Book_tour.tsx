@@ -19,8 +19,15 @@ import { Dattour } from "../../interface/Dattour";
 import logo from "./img/logo.jpg";
 import axios from "axios";
 import "./css/style.css";
+import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 type Props = {};
-
+const formatCurrency = (value) => {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formatter.format(value);
+};
 const img = {
   borderRadius: "10px",
   witdh: "100px",
@@ -36,6 +43,7 @@ const initialFormData = {
   so_luong_khach: 1,
   ma_khach_hang: "",
 };
+
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true); // tiền mặt
@@ -60,15 +68,13 @@ const BookTour = () => {
     setShowMore(!showMore);
 
   };
-
-
-
   const [isChecked1, setIsChecked1] = useState(false); // chuyển khoản
 
   const handleRadioChange1 = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);
     setIsChecked(false);
+
   };
   // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
@@ -132,7 +138,7 @@ const BookTour = () => {
   const { data: Tourdata } = useGetDattourbyIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-
+  const image = datatourArray?.image_dd || [];
 
 
   // Lấy token từ localStorage
@@ -188,17 +194,17 @@ const BookTour = () => {
     const gianho = datatourArray?.gia_treem;
     let giamgiaressult = (quantity * gialon + quantity2 * gianho)
     if (parseInt(event.target.value) > 100) {
-      
+
       giamgiaressult -= parseInt(event.target.value);
-    } else if (parseInt(event.target.value) < 100) { 
+    } else if (parseInt(event.target.value) < 100) {
       giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
     }
     setradioValue(parseInt(event.target.value));
-    console.log('234',radioValue);
-    
+    console.log('234', radioValue);
+
     setSelectedValue(giamgiaressult);
     console.log('123', selectedValue);
-    
+
   };
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
@@ -276,12 +282,12 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-      
+
         let requestData = {
           vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
-        
+
         const paymentResponse = await axios.post(
           "http://localhost:8000/api/cash",
           requestData
@@ -309,7 +315,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount:  couponData.length > 0 ? calculateTotalPrice()* 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice()* 100,
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() * 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice() * 100,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -327,16 +333,17 @@ const BookTour = () => {
 
 
   };
-
-
-  // đanh giá 
+  // đanh giá
   const [selectedStars, setSelectedStars] = useState(0);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id });
+        const response = await axios.post(
+          "http://localhost:8000/api/so_sao_tour",
+          { id_tour: datatourArray?.id }
+        );
         setSelectedStars(response.data);
+
       } catch (error) {
         console.error(error);
       }
@@ -346,6 +353,7 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.id, Tourdata?.data]);
+
 
   // giảm giá  option
   const [inputGiamGia, setinputGiamGia] = useState([]);
@@ -363,53 +371,41 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
-  
+
 
   return (
-    <div className="container mx-auto">
+
+    <div className=" mx-auto  ">
       {/* header trên thôn tin dưới */}
-      <div className="info mt-14 mx-auto w-10/12 ">
+      <div className="info mx-auto  mt-14 w-10/12  ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-          <div className="img-book w-1/3">
-            {datatourArray.images && datatourArray.images.length > 0 ? (
-              <div>
-                {datatourArray.images.map((image) => (
-                  <img
-                    key={image.id}
-                    style={img}
-                    src={`http://localhost:8000/storage/${image.image_path}`}
-                    alt={`Image ${image.id}`}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p>Không có hình ảnh cho tour này.</p>
-            )}
-          </div>
+
+          {image && image.length > 0 ? (
+
+            <img
+              className="min-h-[300px] w-1/3 rounded-l-lg"
+              key={image.id}
+
+              src={`http://localhost:8000/storage/${image}`}
+              alt={`Image ${image.id}`}
+            />
+
+          ) : (
+            <p>Không có hình ảnh cho tour này.</p>
+          )}
+
 
           <div className="infoo">
-            <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
-              {selectedStars ? (
-                <div className="rate  mb-5 mt-[-25px] flex gap-2">
-                  <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                </div>
-              ) : (
-                <p></p>
-              )}
+            <div className="h-[300px] w-[530]  rounded-md  py-5 px-5">
+              <div className="rate    flex gap-2">
+                {selectedStars > 0 && (
+                  <div>
+                    {Array.from({ length: selectedStars }).map((_, index) => (
+                      <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
+                    ))}
+                  </div>
+                )}
+              </div>
               <div className=" font-bold text-[#2D4271] text-[20px] py-5">
                 <h2>{datatourArray?.ten_tour}</h2>
               </div>
@@ -423,7 +419,7 @@ const BookTour = () => {
                 Ngày kết thúc {datatourArray?.ngay_ket_thuc}
               </p>
               <p className="mt-1 text-[#2D4271] text-[16px] font-medium">
-                Nơi khởi hành: {datatourArray?.diem_khoi_hanh}
+                Nơi khởi hành: {datatourArray?.diem_di}
               </p>
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
                 Số chỗ còn nhận: {datatourArray?.soluong}
@@ -496,6 +492,7 @@ const BookTour = () => {
                   <input
                     type="text"
                     id="ten_khach_hang"
+                    className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     name="ten_khach_hang"
                     value={formData.ten_khach_hang}
                     onChange={handleChange}
@@ -689,13 +686,13 @@ const BookTour = () => {
               </p>
 
               <div className="name flex gap-3 mt-4">
-                {images && images.length > 0 ? (
+                {image && image.length > 0 ? (
                   <div>
                     {/* {images.map((image) => ( */}
                     <img
-                      key={images[0].id}
+                      key={image[0].id}
                       style={img}
-                      src={`http://localhost:8000/storage/${images[0].image_path}`}
+                      src={`http://localhost:8000/storage/${image}`}
                     />
                     {/* ))} */}
                   </div>
@@ -742,7 +739,7 @@ const BookTour = () => {
                   </p>
                   <p className="text-red-400">
                     {" "}
-                    {quantity} x {datatourArray?.gia_nguoilon}
+                    {quantity} x  {formatCurrency(datatourArray?.gia_nguoilon)}
                   </p>
                 </div>
                 <div className="flex mt-6 justify-between">
@@ -750,10 +747,10 @@ const BookTour = () => {
                     Trẻ em
                   </p>
                   <p className="text-red-400">
-                    {quantity2} x {datatourArray?.gia_treem}{" "}
+                    {quantity2} x   {formatCurrency(datatourArray?.gia_treem)}
                   </p>
                 </div>
-                    {/* input giảm giá */}
+                {/* input giảm giá */}
                 {/* <input
                   type="text"
                   placeholder="Nhập mã giảm giá "
@@ -768,6 +765,7 @@ const BookTour = () => {
                     marginTop: "10px",
                   }}
                 /> */}
+               
                 <h1>Áp dụng mã giảm giá:</h1>
                 <div>
                   <div className="radio-container">
@@ -782,8 +780,9 @@ const BookTour = () => {
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.discount_name}</h1>
-                              <p>Những tour trên {item.minprice}</p>
+                              <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"} {item.discount_code}</h1>
+
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
 
                             </div>
                           </div>
@@ -798,18 +797,16 @@ const BookTour = () => {
                                 onChange={handlegiamgia}
                               />
                               <div>
-                                <h1>{item.discount_name}</h1>
-                                <p>Những tour trên {item.minprice}</p>
+                                <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"}  {item.discount_code}</h1>
+                                <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                               </div>
                             </div>
                           </>
                         )}
                       </>
-
                     ))}
-
                   </div>
-                  <button id="show-more-button" onClick={handleShowMore}>
+                  <button id="show-more-button " className="border-2 border-black px-4 mt-3 rounded-md hover:border-blue-500 " onClick={handleShowMore}>
                     {showMore ? 'Thu gọn' : 'Xem thêm'}
                   </button>
                 </div>
@@ -851,18 +848,18 @@ const BookTour = () => {
                   {/* mỗi input giảm giá */}
                   {couponData.length > 0 ? (
                     <p className="text-red-400 text-[28px]">
-                      {calculateTotalPrice()} VNĐ 
+                      {calculateTotalPrice()} VNĐ
                     </p>
                   ) : selectedValue ? (
                     <p className="text-red-400 text-[28px]">
-                      {selectedValue} VNĐ 
+                      {selectedValue} VNĐ
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
                       {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
                     </p>
                   )}
-                  
+
 
 
                 </div>

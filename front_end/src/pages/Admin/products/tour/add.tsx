@@ -7,6 +7,7 @@ import {
   Select,
   InputNumber,
   message,
+  Checkbox, Space
 } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +44,7 @@ type FieldType = {
 
 const AdminTourAdd: React.FC = () => {
   const [editorData, setEditorData] = useState("");
-
+  const [imageList, setImageList] = useState([]);
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
     setEditorData(data);
@@ -65,9 +66,10 @@ const AdminTourAdd: React.FC = () => {
     const formData = new FormData();
 
     // Kiểm tra nếu có hình ảnh được chọn
-    if (values.hinh && values.hinh.fileList.length > 0) {
-      // Lưu hình ảnh vào formData
-      formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    if (imageList && imageList.length > 0) {
+      imageList.forEach((file) => {
+        formData.append('hinh[]', file.originFileObj);
+      });
     }
     formData.append("image", values.image.fileList[0].originFileObj);
     formData.append("ten_tour", values.ten_tour);
@@ -79,6 +81,7 @@ const AdminTourAdd: React.FC = () => {
     formData.append("gia_nguoilon", values.gia_nguoilon);
     formData.append("gia_treem", values.gia_treem);
     formData.append("soluong", values.soluong);
+    formData.append("trang_thai", values.trang_thai);
     formData.append("ma_loai_tour", values.ma_loai_tour);
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
@@ -95,7 +98,7 @@ const AdminTourAdd: React.FC = () => {
         setErrors(error.data.message);
       });
   };
-
+  const { Option } = Select;
   const { data: loaitourdata } = useGetLoaiTourQuery();
   const { data: huongdanviendata } = useGetHuongDanVienQuery();
   const loaitourArrary = loaitourdata?.data || [];
@@ -147,7 +150,7 @@ const AdminTourAdd: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl">Tạo mới tour</h2>
+        <h2 className="font-bold text-2xl text-center ">Tạo mới tour</h2>
       </header>
       <div>
         {contextHolder}
@@ -156,12 +159,12 @@ const AdminTourAdd: React.FC = () => {
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: "100%" }}
+
           onFinish={onFinish}
           autoComplete="off"
         >
-          <div className="flex  container mx-auto">
-            <div className="w-1/2">
+          <div className="text-center container ">
+            <div className="">
               <Form.Item
                 className="w-full"
                 label="Tên tour"
@@ -183,43 +186,48 @@ const AdminTourAdd: React.FC = () => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item
-                label="Ảnh đại diện"
-                name="image"
-                rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-              >
-                <Upload
-                  accept="image/*"
-                  listType="picture"
-                  beforeUpload={() => false}
+              <div className="upload-wrapper">
+                <Form.Item
+                  label="Ảnh đại diện"
+                  name="image"
+                  rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+                  className="custom-form-item image_dt"
                 >
-                  <Button icon={<UploadOutlined />} type="button">
-                    Chọn ảnh
-                  </Button>
-                </Upload>
-              </Form.Item>
-              <Form.Item
-                className="w-full "
-                label="Hình ảnh mô tả"
-                name="hinh"
-                rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-              >
-                <Upload
-                  className=""
-                  accept="image/*" // Chỉ chấp nhận các định dạng ảnh
-                  listType="picture"
-                  beforeUpload={() => false} // Ngăn chặn việc tự động tải lên trước đó
-                >
-                  <Button
-                    icon={<UploadOutlined />}
-                    type="button"
-                    onClick={handleButtonClick}
-                    className={ButtonImage}
+                  <Upload
+                    accept="image/*"
+                    listType="picture"
+                    beforeUpload={() => false}
+
                   >
-                    Chọn ảnh
-                  </Button>
-                </Upload>
-              </Form.Item>
+                    <Button icon={<UploadOutlined />} type="button" className="image_ul">
+                      Chọn ảnh
+                    </Button>
+                  </Upload>
+                </Form.Item>
+
+                <Form.Item
+                  label="Hình ảnh"
+                  name="hinh[]"
+                  rules={[{ required: true, message: 'Vui lòng chọn ảnh' }]}
+                  className="custom-form-item"
+                >
+                  <Upload
+                    accept="image/*" // Chỉ chấp nhận các định dạng ảnh
+                    listType="picture"
+                    multiple // Cho phép chọn nhiều file
+                    beforeUpload={() => false}
+                    onChange={(info) => {
+                      const { fileList } = info;
+                      // Lưu danh sách hình ảnh đã chọn vào imageList
+                      setImageList(fileList);
+                    }}
+                  >
+                    <Button icon={<UploadOutlined />} type="button">
+                      Chọn ảnh
+                    </Button>
+                  </Upload>
+                </Form.Item>
+              </div>
 
 
               <Form.Item
@@ -228,8 +236,13 @@ const AdminTourAdd: React.FC = () => {
                 name="diem_di"
                 rules={[{ required: true, message: "Vui lòng chọn điểm đi!" }]}
               >
-                <Select defaultValue="Chọn điểm đi " onChange={handleChange}>
-                  <Option value="">Chọn điểm đi</Option>
+                <Select
+                  showSearch
+                  placeholder="Chọn điểm đi"
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {provinces.map((province) => (
                     <Option key={province.code} value={province.name}>
                       {province.name}
@@ -242,7 +255,14 @@ const AdminTourAdd: React.FC = () => {
                 name="diem_den"
                 rules={[{ required: true, message: 'Vui lòng chọn điểm đến!' }]}
               >
-                <Select defaultValue="Chọn điểm đến" mode="multiple">
+                <Select
+                  showSearch
+                  mode="multiple"
+                  placeholder="Chọn điểm đến"
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {provinces2.map((province) => (
                     <Option key={province.code} value={province.name}>
                       {province.name}
@@ -250,6 +270,7 @@ const AdminTourAdd: React.FC = () => {
                   ))}
                 </Select>
               </Form.Item>
+
               <Form.Item
                 className="w-full"
                 label="Lịch khởi hành"
@@ -277,7 +298,7 @@ const AdminTourAdd: React.FC = () => {
                 />
               </Form.Item>
             </div>
-            <div className="w-1/2">
+            <div className="">
               <Form.Item
                 className="w-full"
                 label="Giá Người lớn"
@@ -327,10 +348,11 @@ const AdminTourAdd: React.FC = () => {
 
               <Form.Item
                 className="w-full"
-                label="Mô Tả"
+                label="Mô Tả  "
                 name="mo_ta"
                 rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
               >
+                <br /><br /> <br />
                 <CKEditor
                   editor={ClassicEditor}
                   // config={{
@@ -352,6 +374,22 @@ const AdminTourAdd: React.FC = () => {
               >
                 <Input />
               </Form.Item>
+              <Form.Item
+                className="w-full"
+                label="Trạng thái"
+                name="trang_thai"
+                rules={[
+                  { required: true, message: "Vui lòng chọn checkout!" },
+                ]}
+              >
+                <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
+                  <Space direction="vertical">
+                    <Checkbox value={1}>Kích hoạt</Checkbox>
+                    <Checkbox value={0}>Vô hiệu hóa</Checkbox>
+                  </Space>
+                </Checkbox.Group>
+              </Form.Item>
+
               <Form.Item
                 className="w-full"
                 label="Loại Tour"

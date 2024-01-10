@@ -94,6 +94,12 @@ const Admin_Lichtrinh = (props: Props) => {
       title: "Nội dung",
       dataIndex: "noi_dung",
       key: "noi_dung",
+      render: (text) => (
+        <div>
+          {/* Hiển thị mô tả toàn bộ */}
+          <div dangerouslySetInnerHTML={{ __html: text }} />
+        </div>
+      ),
     },
     {
       title: "Thời gian",
@@ -162,24 +168,21 @@ const Admin_Lichtrinh = (props: Props) => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
-
-        {localStorage.getItem("role") === 'admin' ? (
-          <Button type="primary" danger>
-            <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
-              <AiOutlinePlus />Tạo mới lịch trình
-            </Link>
-          </Button>
-        ) : null}
+        <Button type="primary" danger>
+          <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
+            <AiOutlinePlus />Tạo mới lịch trình
+          </Link>
+        </Button>
       </header>
 
-      <div className="flex items-center space-x-2 mb-4">
+      <div className="flex items-center justify-end mb-4">
         <Input
+          style={{ width: "250px" }}
           placeholder="Tìm kiếm lịch trình"
           value={searchValue}
           onChange={handleSearchChange}
-
         />
-        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
+        <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
           Tìm kiếm
         </Button>
       </div>
