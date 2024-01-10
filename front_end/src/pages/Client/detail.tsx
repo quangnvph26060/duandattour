@@ -225,7 +225,7 @@ const DetailPage = (props: Props) => {
                 </div>
                 <div className="Description justify-between flex gap-20   mt-5 py-4">
                   <div className="Desc w-3/6 text-[#2D4271] text-[15px]">
-                    <p className="max-w-[500px]">{datatourArray?.mo_ta}</p>
+                  <p className="max-w-[500px]" dangerouslySetInnerHTML={{ __html: datatourArray?.mo_ta }}>{ }</p>
                     <div className="h-[230px] w-[2/3] border rounded-md mt-3 bg-white py-5 px-5">
                       <p className="mt-1 flex gap-2 text-[#2D4271] text-[16px] font-medium">
                         Khởi hành:{" "}
@@ -396,13 +396,14 @@ const DetailPage = (props: Props) => {
               <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
                 <h2>Lịch trình</h2>
               </div>
-              <div className=" flex gap-2  lichtring max-h-[2000px] border bg-white rounded-[6px] border-gray-300 ">
+              <div className=" flex gap-2  lichtring max-h-[2000px]  bg-white rounded-[6px] border-gray-300 ">
                 <div className="w-2/3">
                   <div className="max-w-full">
-                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc">
+                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc describe">
                       {datatourArray && datatourArray.lich_t_rinh ? (
                         datatourArray.lich_t_rinh.map((tieude) => (
-                          <li key={tieude.id}>{tieude.noi_dung}</li>
+                          <li key={tieude.id} dangerouslySetInnerHTML={{ __html: tieude.noi_dung }}></li>
+
                         ))
                       ) : (
                         <p>Không có lịch trình.</p>
