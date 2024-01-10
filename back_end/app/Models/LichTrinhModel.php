@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LichTrinhModel extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $table="lich_trinh";
-    protected $fillable=[
+    use HasFactory, SoftDeletes;
+    protected $table = "lich_trinh";
+    protected $fillable = [
         'noi_dung',
-        'thoi_gian',
         'status',
         'id_tour'
     ];

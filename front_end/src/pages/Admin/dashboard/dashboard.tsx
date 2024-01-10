@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Form, DatePicker, Button  } from 'antd';
+import { Form, DatePicker, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 
@@ -13,7 +13,7 @@ import {
   Legend,
 
   PieChart,
-  LineChart, Line, Tooltip ,
+  LineChart, Line, Tooltip,
   Pie,
 } from "recharts";
 import axios from "axios";
@@ -38,13 +38,13 @@ const Dashboard = () => {
         )}&end_date=${end.format("YYYY-MM-DD")}`
       );
       const data = response.data.data;
-  
+
       // Chuyển đổi dữ liệu thành mảng objects để phù hợp với Recharts
       const chartData = Object.keys(data).map((date) => ({
         date,
         revenue: data[date],
       }));
-  
+
       setDailyRevenueData(chartData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -216,22 +216,22 @@ const Dashboard = () => {
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const remainder = rating - fullStars;
-  
+
     const stars = Array(fullStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />);
-    
+
     if (remainder > 0) {
       stars.push(<FontAwesomeIcon icon={faStarHalfAlt} color="gold" />);
     }
-  
+
     const remainingStars = 5 - fullStars - (remainder > 0 ? 1 : 0);
     stars.push(...Array(remainingStars).fill(<FontAwesomeIcon icon={faStar} color="gold" />));
-  
+
     return stars;
   };
-  
+
   return (
     <div>
-    
+
       <div>
         <h1 className="text-3xl p-5 font-semibold">Quản lý du lịch</h1>
         <hr />
@@ -340,39 +340,39 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="  p-6">
-      <h2 className="text-xl">Doanh thu từ ngày</h2>
-      <Form onFinish={onFinish}>
-      
-        <div className="flex">
-       
-        <Form.Item  name="startDate">
-          <DatePicker style={{ width: '200px' }} />
-        </Form.Item>
-        <Form.Item name="endDate">
-          <DatePicker style={{ width: '200px' }} />
-        </Form.Item>
-        <Form.Item className="">
-          <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-            Search
-          </Button>
-        </Form.Item>
-        </div>
-       
-    
-      </Form>
+        <h2 className="text-xl">Doanh thu từ ngày</h2>
+        <Form onFinish={onFinish}>
 
-      
-      <div className="chart-item mt-10">
- 
-  <BarChart width={800} height={400} barSize={70} data={dailyRevenueData}>
-    <CartesianGrid stroke="#ccc" />
-    <XAxis dataKey="date" />
-    <YAxis />
-    <Tooltip formatter={(value) => `${value} VNĐ`} />
-    <Legend />
-    <Bar name="Doanh thu" dataKey="revenue" fill={getRandomColor()} />
-  </BarChart>
-</div>
+          <div className="flex">
+
+            <Form.Item name="startDate">
+              <DatePicker style={{ width: '200px' }} />
+            </Form.Item>
+            <Form.Item name="endDate">
+              <DatePicker style={{ width: '200px' }} />
+            </Form.Item>
+            <Form.Item className="">
+              <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                Search
+              </Button>
+            </Form.Item>
+          </div>
+
+
+        </Form>
+
+
+        <div className="chart-item mt-10">
+
+          <BarChart width={800} height={400} barSize={70} data={dailyRevenueData}>
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip formatter={(value) => `${value} VNĐ`} />
+            <Legend />
+            <Bar name="Doanh thu" dataKey="revenue" fill={getRandomColor()} />
+          </BarChart>
+        </div>
       </div>
 
       <div className="flex gap-3 p-6">
@@ -433,44 +433,44 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="top 5 mt-10 justify-normal mx-auto ml-10 gap-20 flex">
-  <div className="top5rate ">
-  <h2 className="text-2xl font-medium ">Top 5 tour hot</h2>
-  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-      <thead>
-        <tr>
-          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>ID</th>
-          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên Địa Điểm</th>
-        </tr>
-      </thead>
-      <tbody>
-        {results.map(result => (
-          <tr key={result.id}>
-            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id}</td>
-            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.ten}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-  <div className="top5buy ">
-  <h2 className="text-2xl font-bold">Top 5 rating</h2>
-  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-      <thead>
-        <tr>
-          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên địa điểm</th>
-          <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Rating</th>
-        </tr>
-      </thead>
-      <tbody>
-        {results1.map(result => (
-          <tr >
-            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id_tour}</td>
-            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> {renderStars(result.average_rating)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        <div className="top5rate ">
+          <h2 className="text-2xl font-medium ">Top 5 tour hot</h2>
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>ID</th>
+                <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên Địa Điểm</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map(result => (
+                <tr key={result.id}>
+                  <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id}</td>
+                  <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.ten}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="top5buy ">
+          <h2 className="text-2xl font-bold">Top 5 rating</h2>
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Tên địa điểm</th>
+                <th style={{ borderBottom: '2px solid black', padding: '8px', textAlign: 'left' }}>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results1.map(result => (
+                <tr >
+                  <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id_tour}</td>
+                  <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> {renderStars(result.average_rating)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

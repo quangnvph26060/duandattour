@@ -63,6 +63,49 @@ class ApiStatisticalController extends Controller
     
         return response()->json(['doanhthu' => $totalRevenueByMonth], 200);
     }
+    
+    // thống kê trạng thái tour
+
+    public function tourStatusStatistics(){
+        $statisticalStatus = [];
+        $totalToursPaid = ThanhToanDetail::count();
+        $totalToursUnpaid = ThanhToan::count();
+        $totalToursCancelled = DatTour::withTrashed()->whereNotNull('deleted_at')->count();
+        $statisticalStatus['totalToursPaid'] = $totalToursPaid;
+        $statisticalStatus['totalToursUnpaid'] = $totalToursUnpaid;
+        $statisticalStatus['totalToursCancelled'] = $totalToursCancelled;
+        return response()->json(['statisticalStatus'=> $statisticalStatus]);
+    }
+    
+
+    public function getStatisticalDate(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $totalMoneys = [];
+    
+        // Xử lý logic lọc dữ liệu dựa trên khoảng ngày
+    
+        // Ví dụ: Lấy dữ liệu từ database trong khoảng ngày đã cho
+        $filteredDatas = ThanhToanDetail::whereBetween('ngay_thanh_toan', [$startDate, $endDate])->get();
+    
+        foreach ($filteredDatas as $filteredData) {
+            $totalMoney = $filteredData->tong_tien_tt;
+            $paymentDate = $filteredData->ngay_thanh_toan;
+    
+            // Check nếu ngày đã tồn tại trong mảng $totalMoneys
+            if (isset($totalMoneys[$paymentDate])) {
+                // Cộng tổng tiền hiện tại với giá trị mới
+                $totalMoneys[$paymentDate] += $totalMoney;
+            } else {
+                // Thêm ngày vào mảng $totalMoneys và gán tổng tiền
+                $totalMoneys[$paymentDate] = $totalMoney;
+            }
+        }
+    
+        // Trả về dữ liệu đã lọc
+        return response()->json(['data' => $totalMoneys]);
+    }
     // thống kê top 5 tour đánh giá cao nhất
     public function topFiveTours()
     {
@@ -122,36 +165,4 @@ class ApiStatisticalController extends Controller
 //     console.error(error);
 //   });
 
-    
-    // thống kê trạng thái tour
-
-    public function tourStatusStatistics(){
-        $statisticalStatus = [];
-        $totalToursPaid = ThanhToanDetail::count();
-        $totalToursUnpaid = ThanhToan::count();
-        $totalToursCancelled = DatTour::withTrashed()->whereNotNull('deleted_at')->count();
-        $statisticalStatus['totalToursPaid'] = $totalToursPaid;
-        $statisticalStatus['totalToursUnpaid'] = $totalToursUnpaid;
-        $statisticalStatus['totalToursCancelled'] = $totalToursCancelled;
-        return response()->json(['statisticalStatus'=> $statisticalStatus]);
-    }
-    
-
-    public function getStatisticalDate(Request $request){
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $totalMoneys=[];
-        // Xử lý logic lọc dữ liệu dựa trên khoảng ngày
-
-        // Ví dụ: Lấy dữ liệu từ database trong khoảng ngày đã cho
-        $filteredDatas = ThanhToanDetail::whereBetween('ngay_thanh_toan', [$startDate, $endDate])->get();
-        foreach($filteredDatas as $filteredData){
-            $totalMoney = $filteredData->tong_tien_tt;
-            $paymentDate = $filteredData->ngay_thanh_toan;
-            $totalMoneys[$paymentDate]=$totalMoney;
-        }
-        
-        // Trả về dữ liệu đã lọc
-        return response()->json(['data' => $totalMoneys]);
-    }
 }

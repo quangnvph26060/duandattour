@@ -204,6 +204,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('evaluate')->group(function () {
         Route::get('/', [ApiEvaluateController::class, 'showDanhGia']);
         Route::delete('/{id}', [ApiEvaluateController::class, 'deleteDanhGia']);
+        Route::post('/showDanhGiaOnlyTour', [ApiEvaluateController::class, 'showDanhGiaOnlyTour']);
     });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
@@ -340,6 +341,7 @@ Route::prefix('admin')->group(function () {
         // Chi tiết booking tour
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
+        Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
     });
     Route::prefix('postdm')->group(function () {
         Route::get('/', [ApiPostDanhmucController::class, 'index']);

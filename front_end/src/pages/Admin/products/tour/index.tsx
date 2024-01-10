@@ -156,19 +156,9 @@ const AdminProduct = () => {
         />
         <Table.Column
           title="Trạng thái"
-          dataIndex="Trạng thái"
-          key="trạng thái"
-          render={(text, record) => {
-            const departureDate = new Date(record.lich_khoi_hanh);
-            const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-            const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-            const isExpired = formattedDate < ngayhientai;
-            return (
-              <span className={isExpired ? 'expired-text' : 'active-text'}>
-                {isExpired ? 'Không Hoạt Động' : 'Hoạt Động'}
-              </span>
-            );
-          }}
+          dataIndex="trang_thai"
+          key="trang_thai"
+
         />
 
         <Table.Column

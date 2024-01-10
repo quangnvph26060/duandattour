@@ -31,7 +31,7 @@ const Admin_LichtrinhEdit: React.FC = () => {
       form.setFieldsValue({
         tieu_de: postDataResponse.tieu_de,
         noi_dung: postDataResponse.noi_dung,
-        thoi_gian: moment(postDataResponse.thoi_gian).format('YYYY-MM-DD'),
+
         id_tour: postDataResponse.id_tour,
       });
 
@@ -49,7 +49,6 @@ const Admin_LichtrinhEdit: React.FC = () => {
       const formData = new FormData();
       formData.append("tieu_de", values.tieu_de);
       formData.append("noi_dung", editorData);
-      formData.append("thoi_gian", moment().format());
       formData.append("id_tour", values.id_tour);
 
       const response = await axios.post(
@@ -97,9 +96,7 @@ const Admin_LichtrinhEdit: React.FC = () => {
             onChange={handleEditorChange}
           />
         </Form.Item>
-        <Form.Item label="Publish Date" name="thoi_gian" rules={[{ required: true, message: 'Please enter publish date!' }]}>
-          <Input type="date" />
-        </Form.Item>
+
         <Form.Item label="Tour" name="id_tour" rules={[{ required: true, message: 'Please select tour!' }]}>
           <Select defaultValue="Select" style={{ width: 400 }}>
             {tourArray.map((option) => (

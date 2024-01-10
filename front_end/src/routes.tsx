@@ -67,8 +67,10 @@ import Giohanguser2 from "./pages/giohanguser2";
 import Doimk from "./pages/changeMk";
 import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
 import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+import Admin_Danhmucedit from "./pages/Admin/Post/danh_muc/edit";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
+import ADmin_postedit from "./pages/Admin/Post/bai_viet/edit";
 import Favorite from "./pages/favorite";
 export const router = createBrowserRouter([
 
@@ -91,9 +93,9 @@ export const router = createBrowserRouter([
       {
         path: "tour",
         element: <TourPage />,
-    },
-     
-     
+      },
+
+
       {
         path: "favorite",
         element: <Favorite />,
@@ -118,7 +120,7 @@ export const router = createBrowserRouter([
         path: "booktour/:idTour",
         element: <BookTour />,
       },
-      
+
       {
         path: "booktour",
         element: <BookTour />,
@@ -165,7 +167,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
+        element: localStorage.getItem("role") === 'huong_dan_vien' ? <Admin_Account_huongdanvien /> : <Dashboard />,
       },
       {
         path: "tour",
@@ -247,7 +249,7 @@ export const router = createBrowserRouter([
         path: 'customer_feedback',
         element: <ChatComponent />
       },
-      
+
       {
         path: "customer_account/edit/:idrole",
         element: <Admin_Acountkhachhang_Roles />,
@@ -346,7 +348,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "post/edit_danhmuc/:iddm",
-        element: <Admin_DanhmucADD />,
+        element: <Admin_Danhmucedit />,
       },
 
       {
@@ -359,7 +361,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "post/edit_baiviet/:idbv",
-        element: <ADmin_postADD />,
+        element: <ADmin_postedit />,
       },
       // đánh giá
       {

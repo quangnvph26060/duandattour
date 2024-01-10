@@ -166,3 +166,30 @@ margin-top: 80px;
   top: 200px;
   left: -380px;
 }
+
+.max-w-full .describe {
+  width: 1350px;
+  height: 800px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.max-w-full .describe::-webkit-scrollbar {
+  width: 10px;
+
+}
+
+
+.max-w-full .describe::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/ .max-w-full .describe::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.max-w-full .describe::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

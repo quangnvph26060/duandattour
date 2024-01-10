@@ -79,13 +79,13 @@ const Admin_LichtrinhADD: React.FC = () => {
           </div>
 
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Thời gian"
           name="lich_khoi_hanh"
           rules={[{ required: true, message: 'Vui lòng nhập lịch khởi hành!' }]}
         >
           <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Tour"
           name="id_tour"

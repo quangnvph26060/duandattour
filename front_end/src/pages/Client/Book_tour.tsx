@@ -43,6 +43,7 @@ const initialFormData = {
   so_luong_khach: 1,
   ma_khach_hang: "",
 };
+
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true); // tiền mặt
@@ -76,6 +77,7 @@ const BookTour = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);
     setIsChecked(false);
+    alert(123);
   };
   // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
@@ -273,7 +275,7 @@ const BookTour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
 
     if (isChecked) {
       // tiền mặt
@@ -334,24 +336,7 @@ const BookTour = () => {
   };
 
 
-  // đanh giá 
-  const [selectedStars, setSelectedStars] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id });
-        setSelectedStars(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    if (datatourArray?.id !== undefined && Tourdata?.data) {
-      fetchData();
-    }
-  }, [datatourArray?.id, Tourdata?.data]);
-
+ 
   // giảm giá  option
   const [inputGiamGia, setinputGiamGia] = useState([]);
   useEffect(() => {
@@ -370,7 +355,7 @@ const BookTour = () => {
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
   // hiển thị danh sách giảm giá
 
-console.log(image);
+// console.log(image);
 
 
   return (
@@ -397,27 +382,7 @@ console.log(image);
 
           <div className="infoo">
             <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
-              {selectedStars ? (
-                <div className="rate  mb-5 mt-[-25px] flex gap-2">
-                  <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                  <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                    <FaStar />
-                  </h2>
-                </div>
-              ) : (
-                <p></p>
-              )}
+             
               <div className=" font-bold text-[#2D4271] text-[20px] py-5">
                 <h2>{datatourArray?.ten_tour}</h2>
               </div>
@@ -778,8 +743,9 @@ console.log(image);
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.discount_code}</h1>
-                              <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              <h1>{item.percentage}% {item.discount_code}</h1>
+                            
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
 
                             </div>
                           </div>
@@ -794,8 +760,8 @@ console.log(image);
                                 onChange={handlegiamgia}
                               />
                               <div>
-                                <h1>{item.discount_code}</h1>
-                                <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              <h1>{item.percentage}% {item.discount_code}</h1>
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                               </div>
                             </div>
                           </>
