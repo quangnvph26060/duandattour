@@ -104,7 +104,8 @@ const LayoutAdmin = () => {
                 <Link to="/admin/tour/dat_tour">Thống kê</Link>
               </Menu.Item>
             }
-            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') && <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
+            {(localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'nhan_vien' || localStorage.getItem('role') === 'customer_feedback') && 
+            <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
                 <Link to="/admin/tour">Tất cả các tour</Link>
               </Menu.Item>

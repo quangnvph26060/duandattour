@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('so_sao');
             $table->string('id_tour');
             $table->text('noi_dung');
+            $table->integer('version')->default(1);
             $table->timestamps();
         });
     }
