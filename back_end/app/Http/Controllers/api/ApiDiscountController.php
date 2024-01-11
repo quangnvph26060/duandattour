@@ -36,7 +36,7 @@ class ApiDiscountController extends Controller
             'percentage' => 'required|integer',
             'expiry_date' => 'required|date',
             'minprice' => 'required',
-          
+            
         ]);
 
         // Kiểm tra điều kiện discount_condition và percentage
@@ -56,7 +56,7 @@ class ApiDiscountController extends Controller
         $discount->expiry_date = $validatedData['expiry_date'];
         $discount->percentage = $validatedData['percentage'];
         $discount->minprice = $validatedData['minprice'];
-       
+        $discount->trang_thai = 1;
         $discount->save();
 
         // Trả về kết quả thành công
@@ -263,7 +263,10 @@ class ApiDiscountController extends Controller
         return response()->json(['status' => 'success']);
     }
     public function filterDicscount(Request $request) {
-        $result=  Discount::where('minprice','>',$request->input('price_tour'))->get();
-        return response()->json(['data'=>$result]);
+        $result = Discount::where('minprice', '<', $request->input('price_tour'))
+        ->where('trang_thai', '!=', 0) // Kiểm tra trạng thái khác 0
+        ->get();
+
+    return response()->json(['data' => $result]);
     }
 }

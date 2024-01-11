@@ -29,7 +29,7 @@ const AdminGiam_Gia = (props: Props) => {
         discount_code,
         percentage,
         expiry_date,
-        minprice,
+        minprice,trang_thai
     
     }: IDiscount) => ({
         key: id,
@@ -38,7 +38,7 @@ const AdminGiam_Gia = (props: Props) => {
         discount_code,
         percentage,
         expiry_date,
-        minprice,
+        minprice,trang_thai
     }));
     const columns = [
         {
@@ -85,9 +85,23 @@ const AdminGiam_Gia = (props: Props) => {
             dataIndex: "expiry_date",
             key: "expiry_date",
             render: (expiry_date: string) => {
-                const formattedDate = expiry_date.substring(0, 10);
+                const date = new Date(expiry_date);
+                const formattedDate = date.toLocaleDateString();
                 return formattedDate;
-              },
+            },
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "trang_thai",
+            key: "trang_thai",
+            render: (trang_thai: number) => {
+                if (trang_thai == 1) {
+                    return "Hoạt động";
+                } else {
+                    return "Ngừng hoạt động";
+                 
+                }
+            },
         },
         {
             title: "Action",

@@ -1,7 +1,7 @@
 type Props = {};
 
 // import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert , message, Switch, Input} from "antd";
+import { Table, Button, Skeleton, Popconfirm, Alert, message, Switch, Input } from "antd";
 import { Link } from "react-router-dom";
 import { useGetLichTrinhQuery, useRemoveLichTrinhMutation } from "../../../../api/LichTrinhApi";
 import { useGetTourQuery } from "../../../../api/TourApi";

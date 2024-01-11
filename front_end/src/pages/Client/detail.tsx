@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import './css/style.css'
+import "./css/style.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -20,6 +20,10 @@ import {
   useGetdetailTourByIdQuery,
 } from "../../api/TourApi";
 import "../css.css";
+import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 type Props = {};
 const formatCurrency = (value) => {
@@ -29,6 +33,16 @@ const formatCurrency = (value) => {
   });
   return formatter.format(value);
 };
+const sliderSettings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true, // Tự động chuyển đổi
+  autoplaySpeed: 3000, // Thời gian giữa các chuyển đổi (miliseconds)
+};
+
 const DetailPage = (props: Props) => {
   const radius = {
     borderRadius: "10px",
@@ -43,12 +57,11 @@ const DetailPage = (props: Props) => {
   const radius1 = {
     borderRadius: "10px",
     height: "200px",
-  
   };
   const radius2 = {
     borderRadius: "10px",
     height: "325px",
-   width:'638px'
+    width: "638px",
   };
   const img1 = {
     borderRadius: "5px",
@@ -70,6 +83,55 @@ const DetailPage = (props: Props) => {
   const formattedString = locations.join(", ");
   const images = datatourArray?.image_path || [];
   console.log(images);
+  // đanh giá
+  const [selectedStars, setSelectedStars] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/so_sao_tour",
+          { id_tour: datatourArray?.id }
+        );
+        setSelectedStars(response.data);
+     
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (datatourArray?.id !== undefined && Tourdata?.data) {
+      fetchData();
+    }
+  }, [datatourArray?.id, Tourdata?.data]);
+
+  const colorArray = ['96EFFF', '#6DA4AA', '#FAEF9B', '#43766C', '#FF004D', '#F3CCF3'];
+
+  const getRandomColor = () => {
+    // Chọn ngẫu nhiên một màu từ mảng
+    const randomIndex = Math.floor(Math.random() * colorArray.length);
+    return colorArray[randomIndex];
+  };
+  const [showEvaluate, setshowEvaluate] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/admin/evaluate/showDanhGiaOnlyTour",
+          {
+            id: datatourArray?.id,
+          }
+        );
+        setshowEvaluate(response.data.result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (datatourArray?.id != undefined) {
+      fetchData();
+    }
+  }, [datatourArray?.id]);
+
 
   return (
     <div className=" mb-[1900px]">
@@ -85,6 +147,15 @@ const DetailPage = (props: Props) => {
                     <p className="text-[26px] text-[#2D4271] font-bold">
                       {datatourArray?.ten_tour}
                     </p>
+                    <div className="rate  mb-5  flex gap-2">
+                      {selectedStars > 0 && (
+                        <div>
+                          {Array.from({ length: selectedStars }).map((_, index) => (
+                            <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="price  buy flex gap-5 ">
@@ -94,40 +165,25 @@ const DetailPage = (props: Props) => {
                     <p className="mt-2">/khách</p>
                     <div></div>
                     <button
-  type="button"
-  className=" text-white h-[50px] w-[230px] bg-[#fe2214] hover:bg-white hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
->
-  <svg
-    className="w-3.5 h-3.5 mr-2"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
-    viewBox="0 0 18 21"
-  >
-    <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-  </svg>
-  <Link className="font-bold" to={`/booktour/${idTour}`}>Đặt ngay</Link>
-</button>
-
+                      type="button"
+                      className=" text-white h-[50px] w-[230px] bg-[#fe2214] hover:bg-white hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      <svg
+                        className="w-3.5 h-3.5 mr-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 18 21"
+                      >
+                        <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                      </svg>
+                      <Link className="font-bold" to={`/booktour/${idTour}`}>
+                        Đặt ngay
+                      </Link>
+                    </button>
                   </div>
                 </div>
-                <div className="rate  mb-5 mt-[-25px] flex gap-2">
-                  <h2 className="text-yellow-300 text-[25px]">
-                    <FaStar />
-                  </h2>
-                  <h2 className="text-yellow-300 text-[25px]">
-                    <FaStar />
-                  </h2>
-                  <h2 className="text-yellow-300 text-[25px]">
-                    <FaStar />
-                  </h2>
-                  <h2 className="text-yellow-300 text-[25px]">
-                    <FaStar />
-                  </h2>
-                  <h2 className="text-yellow-300 text-[25px]">
-                    <FaStar />
-                  </h2>
-                </div>
+
                 <div className="Image   gap-5 flex">
                   {images && images.length > 0 ? (
                     <div className="max-h-[535px]">
@@ -160,7 +216,6 @@ const DetailPage = (props: Props) => {
                         <img
                           src={`http://localhost:8000/storage/${images[1]}`}
                           style={radius2}
-                          
                         />
                       </div>
                     </div>
@@ -170,7 +225,7 @@ const DetailPage = (props: Props) => {
                 </div>
                 <div className="Description justify-between flex gap-20   mt-5 py-4">
                   <div className="Desc w-3/6 text-[#2D4271] text-[15px]">
-                    <p className="max-w-[500px]">{datatourArray?.mo_ta}</p>
+                  <p className="max-w-[500px]" dangerouslySetInnerHTML={{ __html: datatourArray?.mo_ta }}>{ }</p>
                     <div className="h-[230px] w-[2/3] border rounded-md mt-3 bg-white py-5 px-5">
                       <p className="mt-1 flex gap-2 text-[#2D4271] text-[16px] font-medium">
                         Khởi hành:{" "}
@@ -327,7 +382,6 @@ const DetailPage = (props: Props) => {
                       <img
                         key={index + 1}
                         style={radius3}
-                       
                         src={`http://localhost:8000/storage/${image}`}
                         alt={`Image ${image.id}`}
                       />
@@ -342,14 +396,14 @@ const DetailPage = (props: Props) => {
               <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
                 <h2>Lịch trình</h2>
               </div>
-              <div className=" flex gap-2  lichtring max-h-[2000px] border bg-white rounded-[6px] border-gray-300 ">
-                
+              <div className=" flex gap-2  lichtring max-h-[2000px]  bg-white rounded-[6px] border-gray-300 ">
                 <div className="w-2/3">
                   <div className="max-w-full">
-                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc">
+                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc describe">
                       {datatourArray && datatourArray.lich_t_rinh ? (
                         datatourArray.lich_t_rinh.map((tieude) => (
-                          <li key={tieude.id}>{tieude.noi_dung}</li>
+                          <li key={tieude.id} dangerouslySetInnerHTML={{ __html: tieude.noi_dung }}></li>
+
                         ))
                       ) : (
                         <p>Không có lịch trình.</p>
@@ -358,7 +412,41 @@ const DetailPage = (props: Props) => {
                   </div>
                 </div>
               </div>
+              <div className="bg-white container-detail mx-auto box-border">
+                <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
+                  <h2>Đánh giá</h2>
+                  <div>
+                    {/* Check if showEvaluate is not empty before rendering */}
+                    {showEvaluate && showEvaluate.length > 0 && (
+                      <div className="mt-5">
+                        {showEvaluate && showEvaluate.length > 0 && (
+                          <Slider {...sliderSettings}>
+                            {/* Loop through each evaluation in showEvaluate */}
+                            {showEvaluate.map((evaluation) => (
+                              <div className=" " key={evaluation.id}>
+                                <div className="flex items-center justify-center">
+                                  <img
+                                    className="rounded-full"
+                                    src={`http://localhost:8000/storage/${evaluation.id_user.image}`}
+                                    alt="Customer Avatar"
+                                    style={{ width: "50px", height: "50px" }}
+                                  />
 
+                                </div>
+
+                                <p className="text-sm">{evaluation.noi_dung}</p>
+                                <p style={{ color: getRandomColor() }} className="ml-2  text-sm">
+                                  {evaluation.id_user.name}
+                                </p>
+                              </div>
+                            ))}
+                          </Slider>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
               <div className=" chitiet mx-auto container-detail box-border mt-10">
                 <div className="flex-row gap-[48px] flex justify-between">
                   <div className=" w-1/2">
@@ -397,11 +485,9 @@ const DetailPage = (props: Props) => {
                         </div>
                         <div className="text-blue-700 px-4 mt-4 flex gap-2 ">
                           Điểm đến :<h2 className="mt-1"></h2>{" "}
-                          {datatourArray?.diem_den  }{" "}
+                          {datatourArray?.diem_den}{" "}
                         </div>
                       </div>
-
-                     
                     </div>
                   </div>
                   <div className="  w-1/2">
@@ -429,7 +515,7 @@ const DetailPage = (props: Props) => {
                           Người lớn (Từ 12 tuổi trở lên){" "}
                         </p>{" "}
                         <p className="mt-4 px-4">
-                        {formatCurrency(datatourArray?.gia_nguoilon)}
+                          {formatCurrency(datatourArray?.gia_nguoilon)}
                         </p>{" "}
                         {/* <p className="text-[#2D4271] px-4 mt-4 mr-[150px] ">
                         {" "}
@@ -442,7 +528,7 @@ const DetailPage = (props: Props) => {
                           Trẻ em{" "}
                         </p>{" "}
                         <p className="mt-4 text-red-500 ml-10 px-4">
-                        {formatCurrency(datatourArray?.gia_treem)}
+                          {formatCurrency(datatourArray?.gia_treem)}
                         </p>{" "}
                         {/* <p className=" px-4 mt-4 mr-[150px] ml-5 text-red-500">
                         {" "}
@@ -463,20 +549,21 @@ const DetailPage = (props: Props) => {
                   <div className="flex flex-col w-1/2">
                     {" "}
                     <button
-      className={`bg-gray-300 justify-between hover:bg-gray-400 text-[#2D4271] text-center font-bold py-2 px-4 rounded inline-flex items-center ${isContentVisible ? 'open' : ''}`}
-      onClick={toggleContent}
-    >
-      <span>Giá tour bao gồm</span>
-      <h2>
-        <FaLongArrowAltDown />
-      </h2>
-      {isContentVisible && (
-        <div className="hidden-content">
-          {/* Nội dung bạn muốn hiển thị */}
-          <p>Some hidden content here...</p>
-        </div>
-      )}
-    </button>
+                      className={`bg-gray-300 justify-between hover:bg-gray-400 text-[#2D4271] text-center font-bold py-2 px-4 rounded inline-flex items-center ${isContentVisible ? "open" : ""
+                        }`}
+                      onClick={toggleContent}
+                    >
+                      <span>Giá tour bao gồm</span>
+                      <h2>
+                        <FaLongArrowAltDown />
+                      </h2>
+                      {isContentVisible && (
+                        <div className="hidden-content">
+                          {/* Nội dung bạn muốn hiển thị */}
+                          <p>Some hidden content here...</p>
+                        </div>
+                      )}
+                    </button>
                     <button className="mt-5 bg-gray-300  justify-between hover:bg-gray-400 text-[#2D4271] text-center font-bold py-2 px-4 rounded inline-flex items-center">
                       <span>Giá tour bao gồm</span>
                       <h2>

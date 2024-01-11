@@ -32,6 +32,23 @@ const HeaderWebsite = () => {
 
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
+  const [imagesData, setImagesData] = useState([]);
+
+  useEffect(() => {
+    const fetchImagesData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/admin/bannerlogo"
+        );
+        setImagesData(response.data); // Assuming the API response is an array of image data
+      } catch (error) {
+        console.error("Error fetching image data:", error);
+      }
+    };
+
+    fetchImagesData();
+  }, []);
+
   useEffect(() => {
     if (token) {
       // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -51,6 +68,14 @@ const HeaderWebsite = () => {
     }
   }, [token]);
   const { data: Data, error, isLoading } = useGetMenuQuery();
+
+  const parentCallback = () => {
+    console.log("parentCallback");
+  };
+
+  //
+
+  // const navigate = useNavigate();
 
   if (isLoading) {
     return <div>Đang tải dữ liệu...</div>;
@@ -79,7 +104,7 @@ const HeaderWebsite = () => {
 
       setFilteredTours(filteredTours);
       setSearched(true);
-      navigate('/tour', { state: { matchedResults: filteredTours } });
+      navigate("/tour", { state: { matchedResults: filteredTours } });
     } catch (error) {
       // setError("Error searching tours.");
     }
@@ -112,13 +137,23 @@ const HeaderWebsite = () => {
     });
     console.log(combinedData);
   }
+
   return (
     <div>
       {" "}
       <div className="menu flex items-center justify-between">
         <div className="flex">
           <a href="/">
-            <img style={rounded} src={logo} alt="logo" width="100px" />
+            {imagesData.length > 0 ? (
+              <img
+                style={rounded}
+                src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
+                alt=""
+                width="100px"
+              />
+            ) : (
+              <span></span>
+            )}
           </a>
 
           <nav className="font-semibold p-4 pt-8 pl-18">
@@ -195,16 +230,26 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-
           <div className="search mt-2   tours-center">
-            <input style={{ width: '220px' }} className="border-yellow-300 border-[3px] px- py-2 rounded"
+            <input
+              style={{ width: "220px" }}
+              className="border-yellow-300 border-[3px] px- py-2 rounded"
               type="text"
               placeholder="Search...."
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button>
-
+            <button
+              className="bg-blue-500 text-white py-2 px-3 rounded ml-2"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+            {token && (
+            <Link to={'/favorite'} className="px-3">
+               <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
+            </Link>
+          )}
           </div>
 
           <div className="ml-2">

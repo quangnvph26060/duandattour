@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useGetTourQuery } from '../../../../api/TourApi';
-import { useEditLichTrinhMutation, useGetLichTrinhIdQuery } from '../../../../api/LichTrinhApi';
-import { ILichTrinh } from '../../../../interface/lichtrinh';
-const { Option } = Select;
+import React, { useEffect, useState } from "react";
+import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useEditKhachSanMutation,
+  useGetKhachSanByIdQuery,
+} from "../../../../api/KhachSanApi";
+import { IKhachSan } from "../../../../interface/khachsan";
+import axios from "axios";
 
-type FieldType = {
-  id: number;
-  tieu_de: string;
-  thoi_gian: Date,
-  noi_dung: string,
-  id_tour: bigint
-};
-
-const Admin_LichtrinhEDit: React.FC = () => {
-  const navigate = useNavigate();
-  const { data: tourdata } = useGetTourQuery();
-  const tourArrary = tourdata?.date || [];
-
-  const { idlichtrinh } = useParams<{ idlichtrinh: any }>();
-  const { data: LichTrinhData } = useGetLichTrinhIdQuery(idlichtrinh || "");
-  const LichTrinh = LichTrinhData || {};
-  const [updateLichTrinh] = useEditLichTrinhMutation();
+const ADmin_KhachsanEdit: React.FC = () => {
+  const { idkhachsan } = useParams<{
+    idkhachsan: any;
+  }>();
+  const { data: LoaiKhachSanData } = useGetKhachSanByIdQuery(idkhachsan || "");
+  const LoaiKhachSan = LoaiKhachSanData || {};
+  const [updateLoaiKhachSan] = useEditKhachSanMutation();
+  const [imageButtonClass, setImageButtonClass] = useState("");
+  const [ButtonImage, setButtonImage] = useState("");
+  const handleButtonClick = () => {
+    // Thêm class mới khi button được click
+    setImageButtonClass("new-class");
+    setButtonImage("add-class");
+  };
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [form] = Form.useForm();
   useEffect(() => {
-    if (LichTrinh.date && LichTrinh.date.tieu_de && LichTrinh.date.noi_dung && LichTrinh.date.thoi_gian && LichTrinh.date.id_tour) {
+    if (
+      LoaiKhachSan.data &&
+      LoaiKhachSan.data.ten_khach_san &&
+      LoaiKhachSan.data.image &&
+      LoaiKhachSan.data.dia_chi &&
+      LoaiKhachSan.data.so_sao
+    ) {
       form.setFieldsValue({
         tieu_de: LichTrinh.date.tieu_de,
         noi_dung: LichTrinh.data.noi_dung,
@@ -36,16 +41,38 @@ const Admin_LichtrinhEDit: React.FC = () => {
         id_tour: LichTrinh.data.id_tour,
       });
     }
-  }, [LichTrinh]);
+  }, [LoaiKhachSan]);
+  // debugger;
+  const navigate = useNavigate();
 
-  const onFinish = (values: ILichTrinh) => {
-    updateLichTrinh({ ...values, id: idlichtrinh })
-      .unwrap()
-      .then(() => navigate("/admin/tour/lichtrinh"))
-      .catch((error) => {
-        setErrors(error.data.message);
-        setLoading(false);
-      });
+  const onFinish = async (values: IKhachSan) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", values.image.fileList[0].originFileObj);
+      formData.append("ten_khach_san", values.ten_khach_san);
+      formData.append("dia_chi", values.dia_chi);
+      formData.append("so_sao", values.so_sao);
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/admin/khachsan/${idkhachsan}`,
+        formData,
+        {
+          headers: {
+            "X-HTTP-Method-Override": "PUT",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Thành công");
+        console.log(response);
+        window.location.href =
+          "http://localhost:5173/admin/tour/loai_khach_san";
+      } else {
+        console.log("Yêu cầu thất bại");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -63,53 +90,67 @@ const Admin_LichtrinhEDit: React.FC = () => {
         onFinish={onFinish}
         autoComplete="off"
       >
+       
         <Form.Item
-          label="Tiêu đề"
-          name="tieu_de"
+          label="Tên khách sạn"
+          name="ten_khach_san"
           rules={[
-            { required: true, message: 'Vui lòng nhập tiêu đề ' },
-            { min: 3, message: 'Tiêu đề tour ít nhất 3 ký tự' },
+            { required: true, message: "Vui lòng nhập tên khách sạn!" },
+            { min: 3, message: " Khách sạn ít nhất 3 ký tự" },
           ]}
+          validateStatus={errors ? "error" : ""}
+          help={errors}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label="Nội dung"
-          name="noi_dung"
+          label="Địa chỉ"
+          name="dia_chi"
           rules={[
-            { required: true, message: 'Vui lòng nhập nội dung' },
-            { min: 3, message: 'Nội dung ít nhất 3 ký tự' },
+            { required: true, message: "Vui lòng nhập địa chỉ khách sạn!" },
+            { min: 3, message: " Khách sạn ít nhất 3 ký tự" },
           ]}
+          validateStatus={errors ? "error" : ""}
+          help={errors}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label="Thời gian"
-          name="thời gian"
-          rules={[{ required: true, message: 'Vui lòng chọn thời gian!' }]}
+          label="Số sao"
+          name="so_sao"
+          rules={[
+            { required: true, message: "Vui lòng nhập số sao khách sạn!" },
+          ]}
+          validateStatus={errors ? "error" : ""}
+          help={errors}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <Input />
         </Form.Item>
         <Form.Item
-          label="ID Tour"
-          name="id_tour"
-          rules={[{ required: true, message: 'Vui lòng chọn ID Tour!' }]}
+          label="Image"
+          name="image"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
-          <Select defaultValue="Chọn" style={{ width: "100%" }}>
-            {tourArrary.map((option) => (
-              <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
-            ))}
-          </Select>
+          <Upload
+            accept="image/*"
+            listType="picture"
+            beforeUpload={() => false}
+          >
+           <Button icon={<UploadOutlined />} type="button" onClick={handleButtonClick} className={imageButtonClass}>
+                Chọn ảnh
+              </Button>
+          </Upload>
         </Form.Item>
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className='btn-button-sub'>
-            <Button type="primary" htmlType="submit" className='submit-click'>
+          <div className="btn-button-sub">
+            <Button type="primary" htmlType="submit" className="submit-click">
               Sửa
             </Button>
             <Button
               type="default"
               className="ml-2"
-              onClick={() => navigate('/admin/tour')}
+              onClick={() => navigate("/admin/tour/loai_khach_san")}
             >
               Quay lại
             </Button>

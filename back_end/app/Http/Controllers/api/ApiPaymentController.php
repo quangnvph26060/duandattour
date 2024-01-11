@@ -95,7 +95,7 @@ class ApiPaymentController extends Controller
         $paymentData = $request->all();
         if ($paymentData['vnp_ResponseCode'] == '00') {
             $latestDatTour = DatTour::latest('created_at')->first();
-            $latestDatTour->trang_thai =1;
+            $latestDatTour->trang_thai = 1;
             $latestDatTour->save();
             $thanhToan = ThanhToanDetail::create([
                 'ma_giao_dich' => $paymentData['vnp_TxnRef'],
@@ -107,17 +107,16 @@ class ApiPaymentController extends Controller
                 'ngay_thanh_toan' => $paymentData['vnp_PayDate'],
                 'id_dat_tour' => $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
             ]);
-
             return response()->json($thanhToan, 201);
         }
 
         return response()->json(['error' => 'Payment failed'], 400);
     }
-    // hiển thị  kết quả
+    // hiển thị  kết quả 
     public function getPaymentData(Request $request)
     {
         $paymentData = $request->all();
-        $thanhToan = ThanhToan::where('ma_giao_dich', $paymentData['vnp_TxnRef'])->first();
+        $thanhToan = ThanhToanDetail::where('ma_giao_dich', $paymentData['vnp_TxnRef'])->first();
         return response()->json($thanhToan);
     }
     // thanh toán bằng tiền mặt 
@@ -138,13 +137,15 @@ class ApiPaymentController extends Controller
                     'ghi_chu' => null,
                     'ma_ngan_hang' => null,
                     'ngay_thanh_toan' => date('Y-m-d H:i:s'),
-                    'id_dat_tour' =>  $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
+                    'id_dat_tour' =>  $latestDatTour->id,
+                  
                 ]);
                 return response()->json($thanhToan, 201);
             }
         }
         return response()->json(['error' => 'Payment failed'], 400);
     }
+    
     public function getBookingTour($id)
     {
         $bookingtour = DatTour::find($id);

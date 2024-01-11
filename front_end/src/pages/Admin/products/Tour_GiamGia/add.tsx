@@ -64,8 +64,8 @@ const Admin_TourDiscountADD: React.FC = () => {
           validateStatus={errors ? 'error' : ''}
           help={errors}
         >
-          <Select defaultValue="Chọn" style={{ width: "100%", }}>
-            {discountArrary.map((option) => (
+        <Select defaultValue="Chọn" style={{ width: "100%",}}>
+          {discountArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.discount_name}</Option>
             ))}
           </Select>
@@ -77,8 +77,8 @@ const Admin_TourDiscountADD: React.FC = () => {
             { required: true, message: 'Vui lòng chọn tour ' },
           ]}
         >
-          <Select defaultValue="Chọn" style={{ width: "100%", }}>
-            {tourArrary.map((option) => (
+        <Select defaultValue="Chọn" style={{ width: "100%",}}>
+          {tourArrary.map((option) => (
               <Option key={option.id} value={option.id}>{option.ten_tour}</Option>
             ))}
           </Select>
@@ -86,18 +86,18 @@ const Admin_TourDiscountADD: React.FC = () => {
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <div className='btn-button-sub'>
-            <Button type="primary" htmlType="submit" className='submit-click'>
-              Thêm
-            </Button>
-            <Button
-              type="default"
-              className="ml-2"
-              onClick={() => navigate('/admin/tour/tour_discount')}
-            >
-              Quay lại
-            </Button>
+          <Button type="primary" htmlType="submit" className='submit-click'>
+            Thêm
+          </Button>
+          <Button
+            type="default"
+            className="ml-2"
+            onClick={() => navigate('/admin/tour/tour_discount')}
+          >
+            Quay lại
+          </Button>
           </div>
-
+         
         </Form.Item>
       </Form>
     </div>

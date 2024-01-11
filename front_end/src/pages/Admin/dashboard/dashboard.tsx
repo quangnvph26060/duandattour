@@ -460,7 +460,7 @@ const Dashboard = () => {
     </table>
   </div>
   <div className="top5buy ">
-  <h2 className="text-2xl font-bold">Top 5 rating</h2>
+  <h2 className="text-2xl font-bold">Top 5 rating abc</h2>
   <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr>
@@ -472,7 +472,18 @@ const Dashboard = () => {
         {results1.map(result => (
           <tr >
             <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}>{result.id_tour}</td>
-            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> {renderStars(result.average_rating)}</td>
+            <td style={{ borderBottom: '1px solid black', padding: '8px', textAlign: 'left' }}> 
+          
+            {[1, 2, 3, 4, 5].map((star) => (
+                      <h2
+                        key={star}
+                        style={{ color: result.average_rating >= star ? 'yellow' : 'gray' }}
+                        className={`text-${result.average_rating >= star ? "yellow" : "gray"}-300 text-[25px]`}
+                      >
+                        <FaStar />
+                      </h2>
+                    ))}
+            </td>
           </tr>
         ))}
       </tbody>

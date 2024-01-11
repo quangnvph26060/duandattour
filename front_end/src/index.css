@@ -4,20 +4,17 @@
 @tailwind utilities;
 
 /* component tailwind */
-@layer components {
-  .menu-items {
+@layer components{
+  .menu-items{
     @apply inline-block border-b-4 border-white hover:border-black;
   }
-
   .mega-menu-items {
     @apply inline-block hover:text-red-500 cursor-pointer px-[7px] text-sm text-gray-500;
+  }  
+  .mega-menu-title{
+    @apply  font-semibold text-xl mb-5 text-blue-800;
   }
-
-  .mega-menu-title {
-    @apply font-semibold text-xl mb-5 text-blue-800;
-  }
-
-  .max-withd {
+  .max-withd{
     @apply w-[1500px] container
   }
 }

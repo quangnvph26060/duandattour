@@ -47,16 +47,16 @@ class ApiNewsController extends Controller
         $news->tieu_de = $request->input('tieu_de');
         $news->noi_dung = $request->input('noi_dung');
         $news->ngay_dang = $request->input('ngay_dang');
-        if ($request->hasFile('image_path')) {
-            $image = $request->file('image_path');
+        if ($request->hasFile('hinh')) {
+            $image = $request->file('hinh');
 
             // Xóa ảnh hiện tại nếu có
-            if ($news->image_path) {
+            if ($news->hinh) {
                 Storage::disk('public')->delete($news->image);
             }
 
             // Lưu trữ ảnh mới
-            $imagePath = $image->store('image_path', 'public');
+            $imagePath = $image->store('hinh', 'public');
 
             // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
             $news->image = $imagePath;

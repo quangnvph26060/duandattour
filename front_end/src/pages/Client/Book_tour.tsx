@@ -43,6 +43,7 @@ const initialFormData = {
   so_luong_khach: 1,
   ma_khach_hang: "",
 };
+
 const BookTour = () => {
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true); // tiền mặt
@@ -67,16 +68,13 @@ const BookTour = () => {
     setShowMore(!showMore);
 
   };
-
-
-
   const [isChecked1, setIsChecked1] = useState(false); // chuyển khoản
 
   const handleRadioChange1 = () => {
     setIsChecked1(!isChecked1);
     setIsChecked1(true);
     setIsChecked(false);
-    alert(123);
+
   };
   // check điều khoản
   const [isAgreed, setIsAgreed] = useState(false);
@@ -196,16 +194,17 @@ const BookTour = () => {
     const gianho = datatourArray?.gia_treem;
     let giamgiaressult = (quantity * gialon + quantity2 * gianho)
     if (parseInt(event.target.value) > 100) {
+
       giamgiaressult -= parseInt(event.target.value);
     } else if (parseInt(event.target.value) < 100) {
-
       giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
     }
     setradioValue(parseInt(event.target.value));
-    console.log('123', radioValue);
+    console.log('234', radioValue);
 
-    // console.log(selectedValue);
     setSelectedValue(giamgiaressult);
+    console.log('123', selectedValue);
+
   };
   const [couponData, setCouponData] = useState("");
   const [error, setError] = useState("");
@@ -274,7 +273,7 @@ const BookTour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
 
     if (isChecked) {
       // tiền mặt
@@ -283,11 +282,12 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-        
+
         let requestData = {
           vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
         };
+
         const paymentResponse = await axios.post(
           "http://localhost:8000/api/cash",
           requestData
@@ -315,7 +315,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount:  couponData.length > 0 ? calculateTotalPrice()* 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice()* 100,
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() * 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice() * 100,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -333,28 +333,17 @@ const BookTour = () => {
 
 
   };
-
-
-  // đanh giá 
-  // const [selectedStars, setSelectedStars] = useState(0);
-  // if (datatourArray?.id !== undefined) {
-  //   axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id })
-  //     .then(response => {
-  //       // Xử lý phản hồi thành công từ server (nếu cần)
-  //       setSelectedStars(response.data);
-  //     })
-  //     .catch(error => {
-  //       // Xử lý lỗi (nếu có)
-  //       console.error(error);
-  //     });
-  // }
+  // đanh giá
   const [selectedStars, setSelectedStars] = useState(0);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8000/api/so_sao_tour', { id_tour: datatourArray?.id });
+        const response = await axios.post(
+          "http://localhost:8000/api/so_sao_tour",
+          { id_tour: datatourArray?.id }
+        );
         setSelectedStars(response.data);
+
       } catch (error) {
         console.error(error);
       }
@@ -364,6 +353,7 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.id, Tourdata?.data]);
+
 
   // giảm giá  option
   const [inputGiamGia, setinputGiamGia] = useState([]);
@@ -381,56 +371,41 @@ const BookTour = () => {
       fetchData();
     }
   }, [datatourArray?.gia_nguoilon, Tourdata?.data]);
-  // hiển thị danh sách giảm giá
-
-console.log(image);
 
 
   return (
-    
+
     <div className=" mx-auto  ">
       {/* header trên thôn tin dưới */}
       <div className="info mx-auto  mt-14 w-10/12  ">
         <div className="max-h-[300px] hh gap-4 flex bg-[#f9f9f9]">
-          
-            {image && image.length > 0 ? (
-             
-                  <img
-                  className="min-h-[300px] w-1/3 rounded-l-lg"
-                    key={image.id}
-                 
-                    src={`http://localhost:8000/storage/${image}`}
-                    alt={`Image ${image.id}`}
-                  />
-              
-            ) : (
-              <p>Không có hình ảnh cho tour này.</p>
-            )}
-   
+
+          {image && image.length > 0 ? (
+
+            <img
+              className="min-h-[300px] w-1/3 rounded-l-lg"
+              key={image.id}
+
+              src={`http://localhost:8000/storage/${image}`}
+              alt={`Image ${image.id}`}
+            />
+
+          ) : (
+            <p>Không có hình ảnh cho tour này.</p>
+          )}
+
 
           <div className="infoo">
-            <div className="h-[300px] w-[530]  rounded-md mt-3  py-5 px-5">
-              {/* {selectedStars ? (
-                  <div className="rate  mb-5 mt-[-25px] flex gap-2">
-                    <h2 className={`text-${selectedStars >= 1 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 2 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 3 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 4 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
-                    <h2 className={`text-${selectedStars >= 5 ? 'yellow' : 'gray'}-300 text-[25px]`}>
-                      <FaStar />
-                    </h2>
+            <div className="h-[300px] w-[530]  rounded-md  py-5 px-5">
+              <div className="rate    flex gap-2">
+                {selectedStars > 0 && (
+                  <div>
+                    {Array.from({ length: selectedStars }).map((_, index) => (
+                      <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
+                    ))}
                   </div>
-              ):(
-                <p></p>
-              )} */}
+                )}
+              </div>
               <div className=" font-bold text-[#2D4271] text-[20px] py-5">
                 <h2>{datatourArray?.ten_tour}</h2>
               </div>
@@ -775,9 +750,23 @@ console.log(image);
                     {quantity2} x   {formatCurrency(datatourArray?.gia_treem)}
                   </p>
                 </div>
-
+                {/* input giảm giá */}
+                {/* <input
+                  type="text"
+                  placeholder="Nhập mã giảm giá "
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  style={{
+                    padding: "8px",
+                    fontSize: "14px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    width: "380px",
+                    marginTop: "10px",
+                  }}
+                /> */}
                
-                <h1 className="mt-5">Áp dụng mã giảm giá:</h1>
+                <h1>Áp dụng mã giảm giá:</h1>
                 <div>
                   <div className="radio-container">
                     {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (
@@ -791,8 +780,9 @@ console.log(image);
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.discount_code}</h1>
-                              <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                              <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"} {item.discount_code}</h1>
+
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
 
                             </div>
                           </div>
@@ -807,16 +797,14 @@ console.log(image);
                                 onChange={handlegiamgia}
                               />
                               <div>
-                                <h1>{item.discount_code}</h1>
-                                <p className="text-gray-400 text-xs"> HSD{item.expiry_date}</p>
+                                <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"}  {item.discount_code}</h1>
+                                <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                               </div>
                             </div>
                           </>
                         )}
                       </>
-
                     ))}
-
                   </div>
                   <button id="show-more-button " className="border-2 border-black px-4 mt-3 rounded-md hover:border-blue-500 " onClick={handleShowMore}>
                     {showMore ? 'Thu gọn' : 'Xem thêm'}
@@ -860,18 +848,18 @@ console.log(image);
                   {/* mỗi input giảm giá */}
                   {couponData.length > 0 ? (
                     <p className="text-red-400 text-[28px]">
-                      {calculateTotalPrice()} VNĐ 
+                      {calculateTotalPrice()} VNĐ
                     </p>
                   ) : selectedValue ? (
                     <p className="text-red-400 text-[28px]">
-                      {selectedValue} VNĐ 
+                      {selectedValue} VNĐ
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
                       {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
                     </p>
                   )}
-                  
+
 
 
                 </div>

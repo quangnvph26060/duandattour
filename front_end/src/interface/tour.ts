@@ -6,6 +6,7 @@ export interface ITour {
     image_path: string;
     diem_den: string;
     lich_khoi_hanh: Date;
+    thoi_gian: Date;
     ngay_ket_thuc: Date;
     gia_nguoilon: number;
     gia_treem: number;

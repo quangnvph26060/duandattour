@@ -15,6 +15,7 @@ class LoaiTourModel extends Model
         'image',
         'ten_loai_tour',
         'thoi_gian',
+        'trang_thai',
         'id_tour'  // Thêm id_tour làm trường có thể điền
     ];
 

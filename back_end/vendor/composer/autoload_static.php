@@ -360,8 +360,8 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -563,6 +563,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'App\\Http\\Controllers\\api\\ApiTourImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourImageController.php',
         'App\\Http\\Controllers\\api\\ApiTourKhachSanController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourKhachSanController.php',
         'App\\Http\\Controllers\\api\\ApiTourPhuongTienController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/ApiTourPhuongTienController.php',
+        'App\\Http\\Controllers\\api\\BannerLogoController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/BannerLogoController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -590,6 +591,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'App\\Mail\\DatHang' => __DIR__ . '/../..' . '/app/Mail/DatHang.php',
         'App\\Mail\\RegisterHuongDanVien' => __DIR__ . '/../..' . '/app/Mail/RegisterHuongDanVien.php',
         'App\\Mail\\RegisterUser' => __DIR__ . '/../..' . '/app/Mail/RegisterUser.php',
+        'App\\Models\\BannerLogoModel' => __DIR__ . '/../..' . '/app/Models/BannerLogoModel.php',
         'App\\Models\\DatTour' => __DIR__ . '/../..' . '/app/Models/DatTour.php',
         'App\\Models\\DiaDiemModel' => __DIR__ . '/../..' . '/app/Models/DiaDiemModel.php',
         'App\\Models\\Discount' => __DIR__ . '/../..' . '/app/Models/Discount.php',
@@ -764,6 +766,7 @@ class ComposerStaticInit65f88ff2e15b3af6e4c949e0c4ba32e5
         'Database\\Seeders\\TourPhuongTienSeeder' => __DIR__ . '/../..' . '/database/seeders/TourPhuongTienSeeder.php',
         'Database\\Seeders\\TourSeeder' => __DIR__ . '/../..' . '/database/seeders/TourSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
+        'Database\\Seeders\\bannerLogoSeeder' => __DIR__ . '/../..' . '/database/seeders/bannerLogoSeeder.php',
         'Database\\Seeders\\news' => __DIR__ . '/../..' . '/database/seeders/news.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',

@@ -12,7 +12,6 @@ const rounded = {
 };
 
 const QLuser = () => {
-
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [name, setName] = useState('');
@@ -178,7 +177,7 @@ const QLuser = () => {
                                     Thông tin cá nhân
                                 </h1>
                                 <div className="border bg-red-500 rounded-lg  text-[#ffffff] py-2" onClick={toggleDiv}>
-                                    <p className="mx-5">  Chỉnh sửa thông tin</p>
+                                    <button><p className="mx-5">  Chỉnh sửa thông tin</p></button>
 
                                 </div>
                             </div>
@@ -199,7 +198,6 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">{usersId.name}</td>
                                             <td className=" px-6 py-4 text-right">
-
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -211,7 +209,6 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">{count || 0}</td>
                                             <td className="px-6 py-4 text-right">
-
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -223,7 +220,6 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">{usersId.email}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -235,45 +231,9 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">{usersId.sdt}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-
                                             </td>
                                         </tr>
-                                        {/* <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Ngày sinh
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-
-                                            </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Giới tính
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-
-                                            </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                Quốc tịch
-                                            </th>
-                                            <td className="px-6 py-4">Chưa có thông tin</td>
-                                            <td className="px-6 py-4 text-right mr-4">
-
-                                            </td>
-                                        </tr> */}
+                                       
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th
                                                 scope="row"
@@ -283,7 +243,6 @@ const QLuser = () => {
                                             </th>
                                             <td className="px-6 py-4">{usersId.dia_chi}</td>
                                             <td className="px-6 py-4 text-right mr-4">
-
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -312,13 +271,15 @@ const QLuser = () => {
                 >
                     <div className="border rounded-md fixed top-[5%] left-[25%] z-20 bg-[#ffffff] w-1/2 shadow-2xl shadow-gray-400">
                         <div className="flex justify-between items-center px-5 py-3 border-b bg-blue-500 rounded-tl-md rounded-tr-md ">
-                            <p className=" text-lg font-semibold  text-[#ffffff] ">
-                                Sửa thông tin cá nhân
-                            </p>
-                            <div className="close-img" onClick={closeDiv}>
+                            <button>
+                                <p className=" text-lg font-semibold  text-[#ffffff] ">
+                                    Sửa thông tin cá nhân
+                                </p>
+                            </button>
+                            <button className="close-img" onClick={closeDiv}>
                                 <img src="/src/img/close.png" alt="" />
-                                Đóng
-                            </div>
+                                <p className='bg-slate-600'>Đóng</p>
+                            </button>
                         </div>
                         {/* modal */}
                         <form

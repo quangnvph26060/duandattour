@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 const rounded = { borderRadius: '25px' };
 
 import { useLocation } from "react-router-dom"
+import image from "antd/es/image";
 interface Tour {
   id: number;
   ten_tour: string;
@@ -68,29 +69,6 @@ const TourPage: React.FC = () => {
     return numberOfDays;
   }
 
-
-  // const [searchTerm, setSearchTerm] = useState("");
-  // // const [tours, setTours] = useState<IPour[]>([]);
-  // const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // const [searched, setSearched] = useState(false); // Biến flag để theo dõi trạng thái tìm kiếm
-
-  // useEffect(() => {
-  //   const fetchTours = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
-  //       setTours(response.data.data);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //       setError("Error retrieving tours.");
-  //     }
-  //   };
-
-  //   fetchTours();
-  // }, []);
   const [tourdiemden, setTour] = useState([]);
   const { diem_den } = useParams<{ diem_den: any }>();
   useEffect(() => {
@@ -111,7 +89,6 @@ const TourPage: React.FC = () => {
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
     // Cập nhật nội dung tương ứng với tham số mới
   }, [diem_den]);
-
 
 
   const [filteredTours, setFilteredTours] = useState([]);
@@ -197,6 +174,19 @@ const TourPage: React.FC = () => {
         alert("Bạn chưa đăng nhập!");
       });
   };
+
+  const reloadTour = (e) => {
+    e.preventDefault();
+    window.location.reload();
+  };
+
+  console.log("selectedDayRange:", selectedDayRange);
+  console.log("selectedNumberOfPeople:", selectedNumberOfPeople);
+  console.log("matchedResults:", matchedResults);
+  console.log("filteredTours:", filteredTours);
+  console.log("tourdiemden:", tourdiemden);
+
+
 
 
   return (
@@ -411,7 +401,7 @@ const TourPage: React.FC = () => {
         {/*conten-right*/}
         <article className='w-3/4'>
           <p className='text-center text-2xl font-semibold'>Kết quả tìm kiếm tour du lịch</p>
-          <div className='py-5 mb-3'><hr className='bg-black h-[1.5px]' /></div>
+          <div className='py-5 mb-3'><hr className='bg-black h-[1px]' /></div>
           <div className='grid grid-cols-3 gap-7 container mx-auto'>
             {(selectedDayRange || selectedNumberOfPeople
               ? filteredTours
@@ -424,13 +414,12 @@ const TourPage: React.FC = () => {
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
-                        to={``}  // Update the 'to' prop to navigate to the favorite page
-                        className='mega-menu-items'
-                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                        to={``}  // Cập nhật thuộc tính 'to' để điều hướng đến trang yêu thích
+                        className='mega-menu-items flex items-center'
+                        onClick={() => addToFavorites(items.id)} // Sử dụng trực tiếp items.id thay vì hoveredItemId
                       >
                         {/* Thêm vào sản phẩm yêu thích */}
-                        <i className="fa-regular fa-heart text-white"></i>
+                        <i className="far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300">&#xf004;</i>
                       </Link>
                     </div>
 

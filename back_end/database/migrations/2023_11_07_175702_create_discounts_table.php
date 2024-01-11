@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('discount_code')->unique()->comment('mã giảm giá');
             $table->integer('percentage')->comment('phần trăm giảm giá');
             $table->date('expiry_date')->comment('ngày hết hạn');
-            
+            $table->tinyInteger('trang_thai')->default(1);
             $table->integer('minprice')->comment('điều kiện áp dụng');
             $table->timestamps();
         });

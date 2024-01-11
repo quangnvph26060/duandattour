@@ -195,11 +195,7 @@ const LayoutAdmin = () => {
                 <Menu.Item key="2-9-1">
                   <Link to="/admin/tour/discount/">Danh sách mã </Link>
                 </Menu.Item>
-                <Menu.Item key="2-9-2">
-                  <Link to="/admin/tour/tour_discount/">
-                    Quản lý mã
-                  </Link>
-                </Menu.Item>
+               
               </Menu.SubMenu>
 
               <Menu.SubMenu className="ml-[-30px]"
@@ -239,6 +235,9 @@ const LayoutAdmin = () => {
                 </Menu.Item>
               </Menu.SubMenu>
             </Menu.SubMenu>
+            <Menu.Item>
+                <Link to={'/admin/banner_logo'}>Quản lý banner</Link>
+              </Menu.Item>
             <Menu.Item icon={<FaPowerOff />} key="5-1-2">
               <button onClick={handleLogout}>Đăng xuất</button>
             </Menu.Item>

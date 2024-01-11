@@ -161,24 +161,24 @@ const Admin_Acountkhachhang_Permisssions: React.FC = () => {
               rules={[{ required: true, message: "Vui lòng nhập quyền !" }]}
             >
               <div className="flex gap-5 items-center">
-                <Input />
-                <div className="btn-button-sub-role">
-                  <Button type="primary" htmlType="submit" className="submit-click">
-                    Thêm Quyền
-                  </Button>
-                  <Button
-                    type="default"
-                    className="ml-2"
-                    onClick={() => navigate("/admin/customer_account")}
-                  >
-                    Quay lại
-                  </Button>
-                </div>
-
+              <Input />
+              <div className="btn-button-sub-role">
+              <Button type="primary" htmlType="submit" className="submit-click">
+                Thêm Quyền
+              </Button>
+              <Button
+                type="default"
+                className="ml-2"
+                onClick={() => navigate("/admin/customer_account")}
+              >
+                Quay lại
+              </Button>
               </div>
 
+              </div>
+             
             </Form.Item>
-
+           
           </Form>
         </div>
       </div>
