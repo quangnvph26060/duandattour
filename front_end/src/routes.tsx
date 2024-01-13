@@ -12,7 +12,7 @@ import Contact from "./pages/Client/contact";
 
 import LayoutAdmin from "./components/layouts/LayoutADmim";
 import { Navigate } from "react-router-dom";
-import Dashboard from "./pages/dashboard/dashboard";
+import Dashboard from "./pages/Admin/dashboard/dashboard";
 import AdminTourAdd from "./pages/Admin/products/tour/add";
 import AdminTourEdit from "./pages/Admin/products/tour/edit";
 import AdminLoai_tour from "./pages/Admin/products/Danhmuc";
@@ -178,10 +178,11 @@ export const router = createBrowserRouter([
       localStorage.getItem("role") === 'huong_dan_vien' ? <LayoutAdmin /> : <Navigate to="/" />,
 
     children: [
-      { index: true, element: <Navigate to="dashboard" /> },
+      { index: true, element: <Navigate to="dashboard"/> },
       {
         path: "dashboard",
         element: localStorage.getItem("role") === 'admin' ? <Dashboard />:<AdminLoai_tour />,
+       
       },
       {
         path: "tour",

@@ -17,7 +17,7 @@ import {
   Pie,
 } from "recharts";
 import axios from "axios";
-import Chart from "./ChartComponent";
+
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -106,7 +106,7 @@ const Dashboard = () => {
     fetchData1();
   }, []); // Run once on component mount
 
-  const colors = ["red", "blue"]; // Mảng các màu cho từng loại dữ liệu
+  const colors = ["red", "blue","yellow"]; // Mảng các màu cho từng loại dữ liệu
   const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
   const PieChartSatusTour = () => {
     const dataPie = [

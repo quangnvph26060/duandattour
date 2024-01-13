@@ -82,12 +82,24 @@ const Dashboard = () => {
 
     fetchData();
   }, []); // Run once on component mount
-//table dat nhieu
-const columnsTopaddress = [
-  { title: 'ID', dataIndex: 'id', key: 'id' },
-  { title: 'Tên tour', dataIndex: 'ten', key: 'ten' },
-];
-
+  //table dat nhieu
+  const columnsTopaddress = [
+    {
+      title: (
+        <span className="font-bold text-xl">
+          ID
+        </span>
+      ),
+      dataIndex: "id",
+      key: "id",
+      render: text => <span style={{ fontSize: '18px' }}>{text}</span>
+    },
+    {  title: (
+      <span className="font-bold text-xl">
+        Tên tour
+      </span>
+    ), dataIndex: "ten", key: "ten", render: text => <span style={{ fontSize: '18px' }}>{text}</span> },
+  ];
 
   //top rating
   const [results1, setResults1] = useState([]);
@@ -114,44 +126,68 @@ const columnsTopaddress = [
     fetchData1();
   }, []); // Run once on component mount
   console.log(results1);
-//bang rateing
-const renderRating = (value) => {
-  // Customize the rendering of the rating here
-  const stars = Array.from({ length: 5 }, (_, index) => (
-    <span className="text-2xl" key={index} style={{ color: index < value ? 'gold' : 'gray' }}>★</span>
-  ));
-  return <span>{stars}</span>;
-};
-const columnsRating = [
-  { title: 'Tên tour', dataIndex: 'id_tour', key: 'id_tour' },
-  { title: 'Rating', dataIndex: 'average_rating', key: 'average_rating',render:renderRating },
-];
-console.log(results1);
+  //bang rateing
+  const renderRating = (value) => {
+    // Customize the rendering of the rating here
+    const stars = Array.from({ length: 5 }, (_, index) => (
+      <span
+        className="text-2xl"
+        key={index}
+        style={{ color: index < value ? "gold" : "gray" }}
+      >
+        ★
+      </span>
+    ));
+    return <span>{stars}</span>;
+  };
+  const columnsRating = [
+    {  title: (
+      <span className="font-bold text-xl">
+        Tên tour
+      </span>
+    ), dataIndex: "id_tour", key: "id_tour" , render: text => <span style={{ fontSize: '18px' }}>{text}</span>},
+    {
+      title: (
+        <span className="font-bold text-xl">
+          Rating
+        </span>
+      ),
+      dataIndex: "average_rating",
+      key: "average_rating",
+      render: renderRating,
+      
+    },
+  ];
+  console.log(results1);
 
-//bieu do tron
+  //bieu do tron
   const [pieChartSatusTour, setPieChartSatusTour] = useState([]);
-  const colors = ['#FFBC2C', '#86B86B'];  // Thêm màu nếu cần
+  const colors = ["#FFBC2C", "#86B86B"]; // Thêm màu nếu cần
   const fetchData2 = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics");
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/admin/statistical/tourStatusStatistics"
+      );
 
-      const totalToursPaid = response.data.statisticalStatus.totalToursPaid || 0;
-      const totalToursUnpaid = response.data.statisticalStatus.totalToursUnpaid || 0;
+      const totalToursPaid =
+        response.data.statisticalStatus.totalToursPaid || 0;
+      const totalToursUnpaid =
+        response.data.statisticalStatus.totalToursUnpaid || 0;
       const totalTours = totalToursPaid + totalToursUnpaid;
 
       const newData1 = [
-        { name: 'Đã thanh toán', value: totalToursPaid, color: colors[0] },
-        { name: 'Chưa thanh toán', value: totalToursUnpaid, color: colors[1] },
+        { name: "Đã thanh toán", value: totalToursPaid, color: colors[0] },
+        { name: "Chưa thanh toán", value: totalToursUnpaid, color: colors[1] },
       ];
 
       setPieChartSatusTour(newData1);
     } catch (error) {
-      console.error('Lỗi khi lấy dữ liệu:', error);
+      console.error("Lỗi khi lấy dữ liệu:", error);
     }
   };
 
   useEffect(() => {
-    fetchData2  ();
+    fetchData2();
   }, []);
 
   const getRandomColor = () => {
@@ -162,7 +198,14 @@ console.log(results1);
     }
     return color;
   };
-
+  const getRandomColor2 = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
   const monthColors = Array.from({ length: 12 }, getRandomColor);
   const [statistical, setStatistical] = useState([]);
   const Statistical = () => {
@@ -384,7 +427,7 @@ console.log(results1);
         </div>
       </div>
 
-      <div className="flex gap-3 p-6">
+      <div className="flex gap-3 p-6 text-xl font-medium">
         <label htmlFor="">Lọc dữ liệu theo năm:</label>
         <div>
           <select name="" id="" onChange={handleYearChange}>
@@ -406,9 +449,9 @@ console.log(results1);
       </div>
 
       <div className="chart-container flex  gap-10">
-        <div className="chart-item chart-item-left">
-          <h3>
-            Biểu đồ doanh thu của năm {selectedYear ? selectedYear : "2023"}
+        <div className="chart-item chart-item-left ">
+          <h3 className="text-xl font-medium">
+            Biểu đồ doanh thu của năm {selectedYear ? selectedYear : "2024"}
           </h3>
           <br />
           <BarChart width={1000} height={400} data={columnChart}>
@@ -417,41 +460,60 @@ console.log(results1);
             <YAxis />
             <Tooltip formatter={(value) => `${value} VNĐ`} />
             <Legend />
-            <Bar dataKey="doanh_thu" name="Doanh thu" fill={getRandomColor()} />
+            <Bar
+              dataKey="doanh_thu"
+              name="Doanh thu"
+              fill={getRandomColor2()}
+            />
 
             {/* Thêm các cột khác tương tự */}
           </BarChart>
         </div>
-        <div className="chart-item chart-item-right">
-          <h3>Biểu đồ tròn</h3>
+        <div className="chart-item chart-item-right ">
+          <h3 className="text-xl font-medium">Biểu đồ tròn</h3>
           <PieChart width={500} height={300}>
-      <Pie
-        data={pieChartSatusTour}
-        dataKey="value"
-        nameKey="name"
-        cx="50%"
-        cy="50%"
-        outerRadius={80}
-        label
-        labelLine={false}
-      >
-        {pieChartSatusTour.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
+            <Pie
+              data={pieChartSatusTour}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              label
+              labelLine={false}
+            >
+              {pieChartSatusTour.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={colors[index % colors.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
         </div>
       </div>
       <div className="top 5 mt-10 justify-normal gap-40 mx-auto ml-10  flex">
-     <div>
-     <h2 className="text-2xl font-bold">Top 5 tour hot</h2>
-      <Table dataSource={results} columns={columnsTopaddress} pagination={false}> </Table>
-     </div>
+        <div>
+          <h2 className="text-2xl font-bold">Top 5 tour hot</h2>
+          <Table
+            dataSource={results}
+            columns={columnsTopaddress}
+            pagination={false}
+          >
+            {" "}
+          </Table>
+        </div>
         <div className="top5buy ">
           <h2 className="text-2xl font-bold">Top 5 rating</h2>
-          <Table dataSource={results1} columns={columnsRating} pagination={false}> </Table>
+          <Table
+            dataSource={results1}
+            columns={columnsRating}
+            pagination={false}
+          >
+            {" "}
+          </Table>
         </div>
       </div>
     </div>

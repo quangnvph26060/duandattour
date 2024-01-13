@@ -11,6 +11,8 @@ import {
   Switch,
   message,
   Select,
+  DatePicker,
+  Input,
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,6 +26,7 @@ import { Modal, Descriptions } from "antd";
 
 const ADmin_DatTour = (props: Props) => {
   const [filterStatus, setFilterStatus] = useState("all"); // Mặc định là "all", có thể là "chuathanhtoan" hoặc "dathanhtoan"
+  //filter 
 
   const [sortedData, setSortedData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
@@ -408,6 +411,18 @@ const ADmin_DatTour = (props: Props) => {
     },
     // Thêm các cột khác tương ứng với thông tin tour
   ];
+  //loc ngay
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    setDateRange(dates);
+  };
+  const [searchTourName, setSearchTourName] = useState("");
+
+// Thêm hàm để cập nhật giá trị tên tour khi người dùng thay đổi
+const handleSearchTourNameChange = (event) => {
+  setSearchTourName(event.target.value);
+};
   const filteredDataSource = dataSource.filter((record) => {
     if (filterStatus === "chuathanhtoan") {
       return record.trang_thai === 0; // Lọc các tour có trang_thai bằng 0 (Chưa thanh toán)
@@ -415,7 +430,32 @@ const ADmin_DatTour = (props: Props) => {
       return record.trang_thai === 1; // Lọc các tour có trang_thai bằng 1 (Đã thanh toán)
     }
     return true; // Trả về tất cả các bản ghi nếu filterStatus là "all"
-  });
+  }
+  )
+  .filter((record) => {
+    // Logic lọc theo ngày
+    if (dateRange[0] && dateRange[1]) {
+      const orderDate = new Date(record.ngay_dat);
+      return orderDate >= dateRange[0] && orderDate <= dateRange[1];
+    }
+    return true;
+  })
+  .filter((record) => {
+    // Logic lọc theo tên tour
+    if (searchTourName) {
+      if (
+        !record.tours?.ten_tour
+          .toLowerCase()
+          .includes(searchTourName.toLowerCase())
+      ) {
+        return false;
+      }
+    }
+    // Các điều kiện lọc khác (trạng thái, ngày) ở đây...
+
+    return true;
+  })
+  
 
   return (
     <div>
@@ -423,6 +463,14 @@ const ADmin_DatTour = (props: Props) => {
         <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
       </header>
       <div>
+      <div>
+      <Input
+        placeholder="Tìm kiếm theo tên tour"
+        value={searchTourName}
+        onChange={handleSearchTourNameChange}
+      />
+        <DatePicker.RangePicker onChange={handleDateChange} />
+      </div>
         <Button onClick={() => setFilterStatus("chuathanhtoan")}>
           Tour chưa thanh toán
         </Button>
