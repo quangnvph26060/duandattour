@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 use App\Http\Controllers\Api\ApiEvaluateController;
 use App\Http\Controllers\Api\BannerLogoController;
+use App\Http\Controllers\Api\ApiPostController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -78,7 +79,8 @@ foreach ($expiredDiscounts1 as $discount) {
 
 //end api demo
 
-
+// đánh giá về số sao cho tour đó 
+Route::post('/so_sao_tour', [ApiEvaluateController::class, 'so_sao']);
 // đếm tour đã đi thành công 
 Route::get('CountTour', [ApiDatTourController::class, 'CountTour']);
 
@@ -102,7 +104,7 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-
+Route::put('/password/reset',[ApiAuthController::class,'reset'])->name('reset');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
@@ -339,6 +341,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
         Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
+        Route::put('/updateStatusConfirm/{id}', [ApiDatTourController::class, 'updateStatusConfirm']);
     });
     Route::prefix('bannerlogo')->group(function(){
         Route::get('/', [BannerLogoController::class, 'index']);
@@ -347,6 +350,12 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [BannerLogoController::class, 'update']);
         Route::delete('/{id}', [BannerLogoController::class, 'destroy']);
     });
-
+    Route::prefix('post')->group(function () {
+        Route::get('/', [ApiPostController::class, 'index']);
+        Route::post('/', [ApiPostController::class, 'store']);
+        Route::get('/{id}', [ApiPostController::class, 'show']);
+        Route::put('/{id}', [ApiPostController::class, 'update']);
+        Route::delete('/{id}', [ApiPostController::class, 'destroy']);
+    });
     
 });

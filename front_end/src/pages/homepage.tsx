@@ -872,7 +872,7 @@ const HomePage = () => {
       </div>
 
       {/*  */}
-      <div className="content">
+      {/* <div className="content">
         <h2 className="mt-5 home-page__title mb-5">ĐIỂM ĐẾN CHO CẶP ĐÔI!</h2>
         <div className="product-list hover-image grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4">
           {destinations.map((destination) => (
@@ -895,7 +895,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
       <div className="lg:m-10 m-0">
         <div>
           <p className="font-bold text-[30px] text-[#2d4271]">

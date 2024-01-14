@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Input, Upload } from "antd";
+import { Form, Button, Input, Upload, Checkbox, Space } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAddLoaiTourMutation } from "../../../../api/LoaiTourApi";
@@ -15,6 +15,7 @@ const AdminLoai_tourADD: React.FC = () => {
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
     formData.append("ten_loai_tour", values.ten_loai_tour);
     formData.append("thoi_gian", moment().format()); // Thêm các trường dữ liệu khác vào formData (nếu cần)
+    formData.append("trang_thai", values.trang_thai);
 
     addLoaiTour(formData)
       .unwrap()
@@ -37,7 +38,7 @@ const AdminLoai_tourADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
+        style={{ maxWidth: 600 }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -46,7 +47,6 @@ const AdminLoai_tourADD: React.FC = () => {
           name="hinh"
           rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
-          <div className="upload-image">
           <Upload
             accept="image/*"
             listType="picture"
@@ -56,11 +56,9 @@ const AdminLoai_tourADD: React.FC = () => {
               Chọn ảnh
             </Button>
           </Upload>
-          </div>
-         
         </Form.Item>
         <Form.Item
-          label="Tên loại tour" 
+          label="Tên loại tour"
           name="ten_loai_tour"
           rules={[
             { required: true, message: "Vui lòng nhập tên loại tour!" },
@@ -69,10 +67,23 @@ const AdminLoai_tourADD: React.FC = () => {
         >
           <Input />
         </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <div className="btn-button-sub">
-          <Button type="primary" htmlType="submit" className="submit-click" >
+        <Form.Item
+          className="w-full"
+          label="Trạng thái"
+          name="trang_thai"
+          rules={[
+            { required: true, message: "Vui lòng chọn checkout!" },
+          ]}
+        >
+          <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
+            <Space direction="vertical">
+              <Checkbox value={1}>Kích hoạt</Checkbox>
+              <Checkbox value={0}>Vô hiệu hóa</Checkbox>
+            </Space>
+          </Checkbox.Group>
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
             Thêm
           </Button>
           <Button
@@ -82,8 +93,6 @@ const AdminLoai_tourADD: React.FC = () => {
           >
             Quay lại
           </Button>
-          </div>
-          
         </Form.Item>
       </Form>
     </div>

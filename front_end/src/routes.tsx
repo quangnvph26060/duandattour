@@ -73,6 +73,8 @@ import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
 
+import ResetPassword from "./pages/Client/resetPassword";
+
 import Admin_DanhmucEdit from "./pages/Admin/Post/danh_muc/edit";
 import EDitbaivien from "./pages/Admin/Post/bai_viet/edit";
 import Banner_logo from "./pages/Admin/products/Banner_logo";
@@ -166,6 +168,11 @@ export const router = createBrowserRouter([
       {
         path: "/changeMk",
         element: <Dmkuser />
+      },
+
+      {
+        path: "/resetPassword",
+        element: <ResetPassword />
       },
     ],
   },

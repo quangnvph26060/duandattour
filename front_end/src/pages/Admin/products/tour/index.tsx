@@ -143,7 +143,7 @@ const AdminProduct = () => {
           )}
         />
         <Table.Column title="Số Hành khách" dataIndex="soluong" key="soluong" />
-        <Table.Column
+        {/* <Table.Column
           title="Ngày Tạo"
           dataIndex="updated_at"
           key="updated_at"
@@ -153,23 +153,17 @@ const AdminProduct = () => {
 
             return <span>{formattedDate}</span>;
           }}
-        />
-        <Table.Column
-          title="Trạng thái"
-          dataIndex="Trạng thái"
-          key="trạng thái"
-          render={(text, record) => {
-            const departureDate = new Date(record.lich_khoi_hanh);
-            const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-            const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-            const isExpired = formattedDate < ngayhientai;
-            return (
-              <span className={isExpired ? 'expired-text' : 'active-text'}>
-                {isExpired ? 'Không Hoạt Động' : 'Hoạt Động'}
-              </span>
-            );
-          }}
-        />
+        /> */}
+       <Table.Column title="Trạng thái" dataIndex="trang_thai" key="trang_thai" 
+
+render={(trang_thai) => {
+  return (
+    <span style={{ color: trang_thai === 0 ? "red" : "green" }}>
+        {trang_thai === 0 ? "Không hoạt động" : "Đang hoạt động"}
+    </span>
+  );
+}}
+/>
 
         <Table.Column
           title="Sửa"

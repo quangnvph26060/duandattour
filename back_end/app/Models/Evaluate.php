@@ -14,6 +14,7 @@ class Evaluate extends Model
         'id_user',
         'so_sao',
         'id_tour',
-        'noi_dung'
+        'noi_dung',
+        'version',
     ];
 }

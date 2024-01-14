@@ -85,7 +85,6 @@ const DetailPage = (props: Props) => {
   console.log(images);
   // đanh giá
   const [selectedStars, setSelectedStars] = useState(0);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,6 +93,7 @@ const DetailPage = (props: Props) => {
           { id_tour: datatourArray?.id }
         );
         setSelectedStars(response.data);
+     
       } catch (error) {
         console.error(error);
       }
@@ -103,8 +103,8 @@ const DetailPage = (props: Props) => {
       fetchData();
     }
   }, [datatourArray?.id, Tourdata?.data]);
-  console.log(selectedStars);
-  const colorArray = ['96EFFF','#6DA4AA', '#FAEF9B', '#43766C', '#FF004D', '#F3CCF3'];
+
+  const colorArray = ['96EFFF', '#6DA4AA', '#FAEF9B', '#43766C', '#FF004D', '#F3CCF3'];
 
   const getRandomColor = () => {
     // Chọn ngẫu nhiên một màu từ mảng
@@ -131,7 +131,7 @@ const DetailPage = (props: Props) => {
       fetchData();
     }
   }, [datatourArray?.id]);
-  console.log(showEvaluate);
+
 
   return (
     <div className=" mb-[1900px]">
@@ -148,14 +148,14 @@ const DetailPage = (props: Props) => {
                       {datatourArray?.ten_tour}
                     </p>
                     <div className="rate  mb-5  flex gap-2">
-                {selectedStars > 0 && (
-        <div>
-          {Array.from({ length: selectedStars }).map((_, index) => (
-            <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
-          ))}
-        </div>
-      )}
-                </div>
+                      {selectedStars > 0 && (
+                        <div>
+                          {Array.from({ length: selectedStars }).map((_, index) => (
+                            <span className="text-[30px]" key={index} style={{ color: 'gold' }}>&#9733;</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="price  buy flex gap-5 ">
@@ -183,7 +183,7 @@ const DetailPage = (props: Props) => {
                     </button>
                   </div>
                 </div>
-           
+
                 <div className="Image   gap-5 flex">
                   {images && images.length > 0 ? (
                     <div className="max-h-[535px]">
@@ -225,7 +225,7 @@ const DetailPage = (props: Props) => {
                 </div>
                 <div className="Description justify-between flex gap-20   mt-5 py-4">
                   <div className="Desc w-3/6 text-[#2D4271] text-[15px]">
-                    <p className="max-w-[500px]">{datatourArray?.mo_ta}</p>
+                  <p className="max-w-[500px]" dangerouslySetInnerHTML={{ __html: datatourArray?.mo_ta }}>{ }</p>
                     <div className="h-[230px] w-[2/3] border rounded-md mt-3 bg-white py-5 px-5">
                       <p className="mt-1 flex gap-2 text-[#2D4271] text-[16px] font-medium">
                         Khởi hành:{" "}
@@ -396,13 +396,14 @@ const DetailPage = (props: Props) => {
               <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
                 <h2>Lịch trình</h2>
               </div>
-              <div className=" flex gap-2  lichtring max-h-[2000px] border bg-white rounded-[6px] border-gray-300 ">
+              <div className=" flex gap-2  lichtring max-h-[2000px]  bg-white rounded-[6px] border-gray-300 ">
                 <div className="w-2/3">
                   <div className="max-w-full">
-                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc">
+                    <ul className="mb-4 font-medium text-[#2D4271] text-[16px] py-5 p-8 pt-12 text-left list-disc describe">
                       {datatourArray && datatourArray.lich_t_rinh ? (
                         datatourArray.lich_t_rinh.map((tieude) => (
-                          <li key={tieude.id}>{tieude.noi_dung}</li>
+                          <li key={tieude.id} dangerouslySetInnerHTML={{ __html: tieude.noi_dung }}></li>
+
                         ))
                       ) : (
                         <p>Không có lịch trình.</p>
@@ -430,13 +431,13 @@ const DetailPage = (props: Props) => {
                                     alt="Customer Avatar"
                                     style={{ width: "50px", height: "50px" }}
                                   />
-                                 
+
                                 </div>
 
                                 <p className="text-sm">{evaluation.noi_dung}</p>
                                 <p style={{ color: getRandomColor() }} className="ml-2  text-sm">
-                                    {evaluation.id_user.name}
-                                  </p>
+                                  {evaluation.id_user.name}
+                                </p>
                               </div>
                             ))}
                           </Slider>
@@ -548,9 +549,8 @@ const DetailPage = (props: Props) => {
                   <div className="flex flex-col w-1/2">
                     {" "}
                     <button
-                      className={`bg-gray-300 justify-between hover:bg-gray-400 text-[#2D4271] text-center font-bold py-2 px-4 rounded inline-flex items-center ${
-                        isContentVisible ? "open" : ""
-                      }`}
+                      className={`bg-gray-300 justify-between hover:bg-gray-400 text-[#2D4271] text-center font-bold py-2 px-4 rounded inline-flex items-center ${isContentVisible ? "open" : ""
+                        }`}
                       onClick={toggleContent}
                     >
                       <span>Giá tour bao gồm</span>
@@ -651,9 +651,9 @@ const DetailPage = (props: Props) => {
                         </svg>
                         Đặt ngay
                       </button>
-                     <div className="border px-5 py-2.5 rounded-lg bg-white">
-                      <a href="">Xem chi tiết</a>
-                     </div>
+                      <div className="border px-5 py-2.5 rounded-lg bg-white">
+                        <a href="">Xem chi tiết</a>
+                      </div>
                     </div>
                   </div>
                 </div>

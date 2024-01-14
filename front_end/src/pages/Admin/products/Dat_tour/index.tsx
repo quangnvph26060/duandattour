@@ -64,8 +64,11 @@ const ADmin_DatTour = (props: Props) => {
   const [dataQuanly, setDataQuanly] = useState<IQuanlyDattour[]>([]);
 
   const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
-  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
 
+  const ThanhToaninfor = DataQuanly.length > 0 ? DataQuanly[0].thanh_toan : null;
+  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
+//  console.log(Tourinfo);
+ 
   const [selectedId, setSelectedId] = useState("");
   useEffect(() => {
     if (DataQuanly) {
@@ -174,21 +177,6 @@ const ADmin_DatTour = (props: Props) => {
   ];
 
   
-  // Lấy dữ liệu cho trang hiện tại
-
-  // 2 const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-  // useRemove();
-
-  // const confirm = (id: any) => {
-  //     if(!window.confirm('bạn có muốn xóa không ')){
-  //         return
-  //     }
-  //     removeProduct(id);
-
-  // };
-
-  //  const dattour = dattour?.data || [];
-
   const dataSource = sortedData.map(
     ({
       id,
@@ -202,9 +190,13 @@ const ADmin_DatTour = (props: Props) => {
       id_tour,
       image_dd,
       so_luong_khach,
+      tong_tien_tt,
       ten_tour,
       tours,
-    }: IQuanlyDattour) => ({
+      thanh_toan,
+      thanh_toan_deltail
+    }
+    : IQuanlyDattour) => ({
       key: id,
       ngay_dat,
       email,
@@ -214,9 +206,12 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
+      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
+      thanh_toan,
+      thanh_toan_deltail
     })
   );
 
@@ -289,6 +284,21 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "so_luong_khach",
       key: "so_luong_khach",
       className: "font-medium",
+    },
+    {
+      title: <span style={tableStyles}>Tổng tiền</span>,
+      dataIndex: "tong_tien_tt",
+      className: "font-medium",
+      key: "tong_tien_tt",
+      render: (text, record) => (
+        <span>
+          {record.thanh_toan && record.thanh_toan.tong_tien_tt ? (
+            record.thanh_toan.tong_tien_tt
+          ) : (
+            record.thanh_toan_deltail && record.thanh_toan_deltail.tong_tien_tt
+          )}
+        </span>
+      ),
     },
     {
       title: <span style={tableStyles}>Trạng thái thanh toán</span>,
@@ -462,25 +472,29 @@ const handleSearchTourNameChange = (event) => {
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý Đơn </h2>
       </header>
-      <div>
-      <div>
-      <Input
+      <div className="flex justify-between">
+      <div className="">
+       
+      <Input className="h-[40px]"
         placeholder="Tìm kiếm theo tên tour"
         value={searchTourName}
         onChange={handleSearchTourNameChange}
       />
-        <DatePicker.RangePicker onChange={handleDateChange} />
+        <DatePicker.RangePicker className="mt-2 h-[40px]" onChange={handleDateChange} />
       </div>
-        <Button onClick={() => setFilterStatus("chuathanhtoan")}>
+      <div className="flex gap-3">
+      <Button className="text-white h-[40px] bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => setFilterStatus("chuathanhtoan")}>
           Tour chưa thanh toán
         </Button>
-        <Button onClick={() => setFilterStatus("dathanhtoan")}>
+        <Button className="text-gray-900 bg-gradient-to-r h-[40px] from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => setFilterStatus("dathanhtoan")}>
           Tour đã thanh toán
         </Button>
       </div>
+       
+      </div>
       {/* {isRemoveSuccess && <Alert message="Xóa thành công" type="success" />} */}
       {
-        <Table
+        <Table className="mt-5"
           dataSource={filteredDataSource}
           columns={columns}
           pagination={{ pageSize: 3 }}

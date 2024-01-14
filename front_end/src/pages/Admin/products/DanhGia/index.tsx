@@ -60,9 +60,11 @@ const AdminDanhGia = () => {
                 <td className="border p-2">{danhgia.id_user}</td>
                 <td className="border p-2 text-center item">
                   <div className="rate justify-center flex gap-2">
+                    
                     {[1, 2, 3, 4, 5].map((star) => (
                       <h2
                         key={star}
+                        style={{ color: danhgia.so_sao >= star ? 'yellow' : 'gray' }}
                         className={`text-${danhgia.so_sao >= star ? "yellow" : "gray"}-300 text-[25px]`}
                       >
                         <FaStar />

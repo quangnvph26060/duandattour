@@ -11,6 +11,7 @@ const Admin_baiviet = () => {
   const navigate = useNavigate();
 
   const [dataSource, setDataSource] = useState([]);
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   useEffect(() => {
     if (tourdata?.data) {
@@ -34,14 +35,20 @@ const Admin_baiviet = () => {
       }, 1000);
     }
   }, [isRemoveSuccess, navigate]);
-
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+console.log(tourdata);
 
   const handleExpand = (key) => {
     const updatedDataSource = dataSource.map((item) =>
       item.key === key ? { ...item, expand: !item.expand } : item
     );
     setDataSource(updatedDataSource);
+  };
+
+  const handleClose = (key) => {
+    setExpandedDescriptions({
+      ...expandedDescriptions,
+      [key]: false, // Đặt expand về false khi đóng nội dung
+    });
   };
 
   const columns = [
@@ -71,12 +78,41 @@ const Admin_baiviet = () => {
       title: "Nội dung",
       dataIndex: "mo_ta",
       key: "mo_ta",
-      render: (text) => (
-        <div>
-          {/* Hiển thị mô tả toàn bộ */}
-          <div dangerouslySetInnerHTML={{ __html: text }} />
-        </div>
-      ),
+      render: (text, record) => {
+        const isExpanded = expandedDescriptions[record.key];
+        const truncatedText = text.slice(0, 100); // Điều chỉnh giới hạn ký tự theo ý muốn
+
+        return (
+          <div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: isExpanded ? text : truncatedText + (text.length > 100 ? "..." : ""),
+              }}
+            />
+            {!isExpanded && text.length > 100 && (
+              <Button
+                type="link"
+                onClick={() =>
+                  setExpandedDescriptions({
+                    ...expandedDescriptions,
+                    [record.key]: true,
+                  })
+                }
+              >
+                Xem thêm
+              </Button>
+            )}
+            {isExpanded && (
+              <Button
+                type="link"
+                onClick={() => handleClose(record.key)}
+              >
+                Đóng lại
+              </Button>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: "Ngày đăng",
@@ -113,14 +149,13 @@ const Admin_baiviet = () => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý  bài viết</h2>
-        <Button type="primary" danger>
+        <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
           <Link to="/admin/post/add_baiviet" className="flex items-center space-x-2">
             <AiOutlinePlus />
             Tạo mới bài viết
           </Link>
         </Button>
       </header>
-      {/* Add your table component here */}
       <Table dataSource={dataSource} columns={columns} />
     </div>
   );

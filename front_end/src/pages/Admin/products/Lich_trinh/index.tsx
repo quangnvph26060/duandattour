@@ -14,6 +14,12 @@ import { AiOutlinePlus } from "react-icons/ai";
 const Admin_Lichtrinh = (props: Props) => {
   const { data: lictrinhdata, error, isLoading } = useGetLichTrinhQuery();
   const { data: tourdata } = useGetTourQuery();
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const handleExpand = (key) => {
+    const updatedExpanded = { ...expandedDescriptions, [key]: !expandedDescriptions[key] };
+    setExpandedDescriptions(updatedExpanded);
+  };
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
@@ -89,22 +95,30 @@ const Admin_Lichtrinh = (props: Props) => {
       ),
       dataIndex: "key",
       key: "key",
-    },
-    {
+    }, {
       title: "Nội dung",
       dataIndex: "noi_dung",
       key: "noi_dung",
-      render: (text) => (
-        <div>
-          {/* Hiển thị mô tả toàn bộ */}
-          <div dangerouslySetInnerHTML={{ __html: text }} />
-        </div>
-      ),
-    },
-    {
-      title: "Thời gian",
-      dataIndex: "thoi_gian",
-      key: "thoi_gian",
+      render: (text, record) => {
+        const isExpanded = expandedDescriptions[record.key];
+        const truncatedText = text.slice(0, 100); // Điều chỉnh giới hạn ký tự theo ý muốn
+
+        return (
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: isExpanded ? text : truncatedText + (text.length > 100 ? "..." : "") }} />
+            {!isExpanded && text.length > 100 && (
+              <Button type="link" onClick={() => handleExpand(record.key)}>
+                Xem thêm
+              </Button>
+            )}
+            {isExpanded && (
+              <Button type="link" onClick={() => handleExpand(record.key)}>
+                Đóng lại
+              </Button>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: "Tour tương ứng",
@@ -168,7 +182,7 @@ const Admin_Lichtrinh = (props: Props) => {
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
-        <Button type="primary" danger>
+        <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
           <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
             <AiOutlinePlus />Tạo mới lịch trình
           </Link>

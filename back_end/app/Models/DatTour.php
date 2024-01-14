@@ -21,6 +21,7 @@ class DatTour extends Model
             'ngay_het_han',
             'so_luong_khach',
             'trang_thai',
+            'xac_nhan',
             'ma_khach_hang',
             'id_tour',
     ];
@@ -28,6 +29,12 @@ class DatTour extends Model
     public function ThanhToan()
     {
         return $this->hasOne(ThanhToan::class, 'id_dat_tour');
+    }
+
+    
+    public function ThanhToanDeltail()
+    {
+        return $this->hasOne(ThanhToanDetail::class, 'id_dat_tour');
     }
 
     public function tours()

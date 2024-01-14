@@ -119,9 +119,10 @@ const Login = () => {
                 className="form-input mt-4"
               />
               <br />
-              <a href="#" className="text-blue-500 text-sm mt-3">
-                Quên mật khẩu?
-              </a>
+              <Link to={`/resetPassword`}> Quên mật khẩu? </Link>
+              {/* <a href="#" className="text-blue-500 text-sm mt-3">
+               
+              </a> */}
               <br />
               <button
                 type="submit"
