@@ -48,8 +48,8 @@ class BannerLogoController extends Controller
         $banner_logo=BannerLogoModel::find($id);
     
         // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
-        if ($request->hasFile('hinh_banner')) {
-            $image = $request->file('hinh_banner');
+        if ($request->hasFile('image_banner')) {
+            $image = $request->file('image_banner');
             
             // Xóa ảnh hiện tại nếu có
             if ($banner_logo->image) {
@@ -63,6 +63,7 @@ class BannerLogoController extends Controller
             $banner_logo->image = $image_banner;
             
         }
+        
        
         // Cập nhật các trường dữ liệu khác
       
