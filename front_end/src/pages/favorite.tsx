@@ -194,38 +194,36 @@ const Favorite = () => {
         <div>
           <div className='container mx-auto border border-gray-400 rounded-lg text-center lg:w-[1200px] md:w-[700px] mb:w-[300px]'><h1 className='text-xl font-semibold pb-5 py-4'>Các Tour Đã Lưu</h1></div>
           <div className='flex gap-4 py-4 container mx-auto'>
-            {tourfavorite.map((item) => (
-              <div key={item.tour_id} className="tour-item bg-white rounded-t-lg w-[330px] shadow-lg">
-                {/* <div className="tour-image">
-                  <img
-                    src={`http://localhost:8000/storage/${item.image_path}`}
-                    alt="Tour Image"
-                    style={{ width: "200px", cursor: "pointer" }}
-                  />
-                </div> */}
-                <img src="https://media.travel.com.vn/destination/tf_220222113311_677514.jpg" className='w-[310px] h-[240px] rounded-t-lg' alt="" />
-                <div className="tour-details">
-                  <p className='py-2 px-3'>Ngày khởi hành: {item.lich_khoi_hanh}</p>
-                  <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
-                  <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
+          {tourfavorite.map((item) => (
+            
+            <div key={item.tour_id} className="tour-item bg-white rounded-t-lg w-[330px] shadow-lg">
+            <a href={`http://localhost:5173/tours/${item.id}`}>
+                      <img src={`http://127.0.0.1:8000/storage/${item.image_dd}`} className='w-[310px] h-[240px] rounded-t-lg' alt="" /> </a>
+             <div className="tour-details">
+               <p className='py-2 px-3'>Ngày khởi hành: {item.lich_khoi_hanh}</p>
+               <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
+             
+          
+             <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
 
-                  <div className='px-3 pb-3 flex gap-10 justify-between'>
-                    <button
-                      onClick={() => removeFromFavorites(item.id)}
-                      className='flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition'
-                    >
-                      <i className="far fa-trash-alt mr-2"></i>
-                      Xóa
-                    </button>
-                    <p className='flex items-center px-5 text-red-500 font-semibold py-3 text-2xl'>
-                      <i className="fas fa-money-bill-wave mr-2"></i>
-                      {item.gia_nguoilon}₫
-                    </p>
-                  </div>
-                  {/* Thêm các chi tiết khác về tour tại đây */}
-                </div>
-              </div>
-            ))}
+             <div className='px-3 pb-3 flex gap-10 justify-between'>
+               <button
+                 onClick={() => removeFromFavorites(item.id)}
+                 className='flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition'
+               >
+                 <i className="far fa-trash-alt mr-2"></i>
+                 Xóa
+               </button>
+               <p className='flex items-center px-5 text-red-500 font-semibold py-3 text-2xl'>
+                 <i className="fas fa-money-bill-wave mr-2"></i>
+                 {item.gia_nguoilon}₫
+               </p>
+             </div>
+             {/* Thêm các chi tiết khác về tour tại đây */}
+           </div>
+         </div>
+      
+       ))}
           </div>
         </div>
       </div>
