@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Upload, message } from 'antd';
+import { Form, Button, Upload, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,13 +8,20 @@ const Add_Banner = () => {
 
     const onFinish = async (values: any) => {
         try {
+            // Validate link format
+            const linkRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+            if (!linkRegex.test(values.link_banner)) {
+                message.error('Invalid link format. Please enter a valid URL.');
+                return;
+            }
+
             // Prepare form data
             const formData = new FormData();
             formData.append('hinh_banner', values.hinh_banner[0].originFileObj); // Use originFileObj to get the file
-            formData.append('hinh_logo', values.hinh_logo[0].originFileObj);
+            formData.append('link_banner', values.link_banner); // Include the link in form data
 
             // Make a POST request using Axios
-            await axios.post('http://localhost:8000/api/admin/bannerlogo', formData, {
+            await axios.post('http://localhost:8000/api/admin/banner', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -31,7 +38,7 @@ const Add_Banner = () => {
 
     return (
         <div className="container mx-auto mt-10 p-6 bg-white border rounded-md shadow-md max-w-screen-md">
-            <h2 className="font-bold text-2xl mb-6">Thêm Banner & Logo mới</h2>
+            <h2 className="font-bold text-2xl mb-6">Thêm Banner mới</h2>
             <Form
                 name="addBannerForm"
                 onFinish={onFinish}
@@ -54,17 +61,14 @@ const Add_Banner = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Upload Image Logo"
-                    name="hinh_logo"
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => e.fileList}
-                    rules={[{ required: true, message: 'Please upload an image for the logo!' }]}
+                    label="Link Banner"
+                    name="link_banner"
+                    rules={[
+                        { required: true, message: 'Please enter a link for the banner!' },
+                        { type: 'url', message: 'Please enter a valid URL for the banner link!' },
+                    ]}
                 >
-                    <Upload beforeUpload={() => false} accept="image/*">
-                        <Button className="bg-blue-500 text-white hover:bg-blue-700">
-                            Click to Upload
-                        </Button>
-                    </Upload>
+                    <Input placeholder="Enter link for the banner" />
                 </Form.Item>
 
                 <Form.Item className="py-5" wrapperCol={{ offset: 8, span: 16 }}>

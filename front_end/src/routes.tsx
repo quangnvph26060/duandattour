@@ -69,11 +69,18 @@ import Test from "./pages/text";
 import Favorite from "./pages/favorite";
 import Admin_Danhmuc_baiviet from "./pages/Admin/Post/danh_muc";
 import Admin_DanhmucADD from "./pages/Admin/Post/danh_muc/add";
+
 import Admin_baiviet from "./pages/Admin/Post/bai_viet";
 import ADmin_postADD from "./pages/Admin/Post/bai_viet/add";
+
+import Admin_DanhmucEdit from "./pages/Admin/Post/danh_muc/edit";
+import EDitbaivien from "./pages/Admin/Post/bai_viet/edit";
 import Banner_logo from "./pages/Admin/products/Banner_logo";
 import Add_Banner from "./pages/Admin/products/Banner_logo/add";
 import Edit_banner from "./pages/Admin/products/Banner_logo/edit";
+import Logo from "./pages/Admin/products/Logo";
+import Add_logo from "./pages/Admin/products/Logo/add";
+import Edit_logo from "./pages/Admin/products/Logo/edit";
 export const router = createBrowserRouter([
 
   {
@@ -95,7 +102,9 @@ export const router = createBrowserRouter([
       {
         path: "tour",
         element: <TourPage />,
-      },
+    },
+     
+     
       {
         path: "favorite",
         element: <Favorite />,
@@ -124,6 +133,7 @@ export const router = createBrowserRouter([
         path: "booktour/:idTour",
         element: <BookTour />,
       },
+      
       {
         path: "booktour",
         element: <BookTour />,
@@ -174,7 +184,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" /> },
       {
         path: "dashboard",
-        element: localStorage.getItem("role") === 'huong_dan_vien' ?<Admin_Account_huongdanvien /> :<Dashboard />  ,
+        element: localStorage.getItem("role") === 'admin' ? <Dashboard />:<AdminLoai_tour />,
       },
       {
         path: "tour",
@@ -258,8 +268,20 @@ export const router = createBrowserRouter([
         element: <Add_Banner/>
       },
       {
-        path: "edit_banner",
+        path: "/admin/banner_logo/edit/:id",
         element: <Edit_banner/>
+      },
+      {
+        path: "logo",
+        element: <Logo/>
+      },
+      {
+        path: "add_logo",
+        element: <Add_logo/>
+      },
+      {
+        path: "/admin/logo/edit/:id",
+        element: <Edit_logo/>
       },
       {
         path: "customer_account",
@@ -269,10 +291,7 @@ export const router = createBrowserRouter([
         path: 'customer_feedback',
         element: <ChatComponent />
       },
-      // {
-      //   path: "customer_account/add",
-      //   element: <Admin_Acountkhachhang_Roles />,
-      // },
+      
       {
         path: "customer_account/edit/:idrole",
         element: <Admin_Acountkhachhang_Roles />,
@@ -371,7 +390,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "post/edit_danhmuc/:iddm",
-        element: <Admin_DanhmucADD />,
+        element: <Admin_DanhmucEdit />,
       },
 
       {
@@ -382,9 +401,10 @@ export const router = createBrowserRouter([
         path: "post/add_baiviet",
         element: <ADmin_postADD />,
       },
+      
       {
         path: "post/edit_baiviet/:idbv",
-        element: <ADmin_postADD />,
+        element: <EDitbaivien />,
       },
       // đánh giá
       {

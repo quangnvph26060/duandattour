@@ -145,16 +145,17 @@ const Admin_Khachhang: React.FC<Props> = () => {
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý tài khoản</h2>
       </header>
-      <div className="flex items-center space-x-2 mb-4">
-        <Input
-          placeholder="Tìm kiếm khách hàng"
-          value={searchValue}
-          onChange={handleSearchChange}
-        />
-        <Button style={{ backgroundColor: "blue" }} type="primary" onClick={handleSearch}>
-          Tìm kiếm
-        </Button>
-      </div>
+      <div className="flex items-center justify-end mb-4">
+  <Input
+    style={{ width: "250px" }}
+    placeholder="Tìm kiếm lịch trình"
+    value={searchValue}
+    onChange={handleSearchChange}
+  />
+  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
+</div>
       {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
     </div>
   );

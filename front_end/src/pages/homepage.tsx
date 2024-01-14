@@ -117,11 +117,29 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [imagesData, setImagesData] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [provinces, setProvinces] = useState([]);
+  const [provinces2, setProvinces2] = useState([]);
+  useEffect(() => {
+    fetch("https://provinces.open-api.vn/api/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Lỗi khi lấy dữ liệu từ API");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProvinces(data);
+        setProvinces2(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        const response = await axios.get('http://localhost:8000/api/admin/banner');
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
         console.error('Error fetching image data:', error);
@@ -151,19 +169,39 @@ const HomePage = () => {
         }
       });
 
+      console.log('matchedResults:', matchedResults);
       setSearchResults(response.data.data);
-      const filteredResults = response.data.data.filter((tour: Tour) =>
-        tour.ngay_ket_thuc.includes(selectedDate) &&
-        tour.lich_khoi_hanh.includes(selectedDepartureDate) &&
-        tour.diem_den === selectedDestination &&
-        tour.diem_di === selectedDeparture
-      );
 
+
+      let filteredResults = response.data.data || []
+
+      if (selectedDate) {
+        filteredResults = filteredResults.filter(tour => tour.ngay_ket_thuc.includes(selectedDate))
+      }
+      if (selectedDepartureDate) {
+        filteredResults = filteredResults.filter(tour => tour.lich_khoi_hanh.includes(selectedDepartureDate))
+      }
+      if (selectedDestination) {
+        filteredResults = filteredResults.filter(tour => tour.diem_den === selectedDestination)
+      }
+      if (selectedDeparture) {
+        filteredResults = filteredResults.filter(tour => tour.diem_di === selectedDeparture)
+      }
       setMatchedResults(filteredResults);
 
       if (filteredResults.length > 0) {
         // Chuyển trang khi có kết quả tìm kiếm chính xác
+        console.log('filteredResult:', filteredResults);
         navigate('/tour', { state: { matchedResults: filteredResults } });
+      } else {
+        // Hiển thị thông báo không tìm thấy tour và xác nhận chuyển trang
+        const confirmMessage = 'Không tìm thấy tour. Bạn có muốn chuyển trang đến /tour không?';
+        const shouldNavigate = window.confirm(confirmMessage);
+
+        // Nếu người dùng xác nhận muốn chuyển trang, thực hiện chuyển trang tới `/tour` với trạng thái trống
+        if (shouldNavigate) {
+          navigate('/tour', { state: {} });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -207,7 +245,24 @@ const HomePage = () => {
       handleSendMessage();
     }
   };
+  const addToFavorites = (tourId) => {
+    const token = localStorage.getItem('token');
 
+    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        // Xử lý kết quả thành công
+        console.log(response.data);
+      })
+      .catch(error => {
+        // Xử lý lỗi
+        console.error(error);
+        alert("Bạn chưa đăng nhập!");
+      });
+  };
   const sendAutoReply = userMessage => {
     let autoReply;
     if (userMessage.includes('loại tour')) {
@@ -231,12 +286,20 @@ const HomePage = () => {
     const minutes = date.getMinutes();
     return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
   };
+  function calculateNumberOfDays(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
+    const timeDifference = Math.abs(endDate - startDate);
+    const numberOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    return numberOfDays;
+  }
   const [tourKM, setTourKM] = useState([]);
 
   const getTourKM = () => {
     axios
-      .get("http://127.0.0.1:8000/api/listtourKM")
+      .get("http://127.0.0.1:8000/api/admin/tour")
       .then((response) => {
         console.log(response.data.data);
         const tourKMData = response.data.data.map((tour) => {
@@ -415,51 +478,7 @@ const HomePage = () => {
   ];
   return (
     <div className="bg-white rounded-lg shadow block-all">
-      <div className="  ">
-        {isChatVisible && (
-          <div className="chat-box">
-            <div className="chat-header">
-              <img src={logo} alt="logo" width="30px" />
-              <h3 className="chat-title">PolyTour</h3>
-            </div>
-            <div className="message-list" ref={messageListRef}>
-              {messageHistory.map((message, index) => (
-                <div key={index} className={`message ${message.sender}`}>
-                  <div className="message-text">{message.text}</div>
-                  <div className="message-timestamp">
-                    {formatTimestamp(message.timestamp)}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="input-area">
-              <div className="input-container">
-                <input
-                  type="text"
-                  placeholder="Nhập tin nhắn..."
-                  className="message-input"
-                  value={inputValue}
-                  onChange={(event) => setInputValue(event.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <button className="send-button" onClick={handleSendMessage}>
-                  Gửi
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="icon" onClick={handleToggleChat}>
-          <div>
-            <FontAwesomeIcon
-              icon={faFacebookMessenger}
-              style={{ color: "blue", fontSize: "30px" }}
-            />
-          </div>
-        </div>
-      </div>
+      <MessageChatBox />
 
       <div
         className="mt-5 mb-5"
@@ -500,13 +519,15 @@ const HomePage = () => {
                 >
                   {'<'}
                 </Button>
-                <img
-                  src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
-                  alt=""
-                  className="rounded"
-                  width="600px"
-                  height="500px"
-                />
+                <a href="">
+                  <img
+                    src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
+                    alt=""
+                    className="rounded"
+                    width="600px"
+                    height="500px"
+                  />
+                </a>
                 <Button
                   type="primary"
                   onClick={handleNext}
@@ -518,6 +539,8 @@ const HomePage = () => {
               </>
             )}
           </div>
+
+
         </Slider>
       </div>
       <div
@@ -581,69 +604,18 @@ const HomePage = () => {
               />
               <div className="flex flex-col ml-3">
                 <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
-                  Điểm đi :
+                  Điểm đi:
                 </label>
-                <select
-
-                  id="depeparture"
-
-                  value={selectedDeparture}
-                  onChange={(e) => setSelectedDeparture(e.target.value)}
-                >
-                  <option value="Hà Nội"> Hà Nội</option>
-                  <option value="Đà Nẵng">Đà Nẵng</option>
-                  <option value="Hcm">Hồ Chí Minh </option>
-                  <option value="Hải Phòng">Hải Phòng</option>
-
-                  <option value="Cần Thơ">Cần Thơ</option>
-                  <option value="An Giang">An Giang</option>
-                  <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                  <option value="Bắc Giang">Bắc Giang</option>
-                  <option value="Bắc Kạn">Bắc Kạn</option>
-                  <option value="Bạc Liêu">Bạc Liêu</option>
-                  <option value="Bắc Ninh">Bắc Ninh</option>
-                  <option value="Bến Tre">Bến Tre</option>
-                  <option value="Bình Định">Bình Định</option>
-                  <option value="Bình Dương">Bình Dương</option>
-                  <option value="Bình Phước">Bình Phước</option>
-                  <option value="Bình Thuận">Bình Thuận</option>
-                  <option value="Cà Mau">Cà Mau</option>
-                  <option value="Cao Bằng">Cao Bằng</option>
-                  <option value="Đắk Lắk">Đắk Lắk</option>
-                  <option value="Đắk Nông">Đắk Nông</option>
-                  <option value="Điện Biên">Điện Biên</option>
-                  <option value="Đồng Nai">Đồng Nai</option>
-                  <option value="Đồng Tháp">Đồng Tháp</option>
-                  <option value="Gia Lai">Gia Lai</option>
-                  <option value="Hà Giang">Hà Giang</option>
-                  <option value="Hà Nam">Hà Nam</option>
-                  <option value="Hà Tĩnh">Hà Tĩnh</option>
-                  <option value="Hải Dương">Hải Dương</option>
-                  <option value="Hậu Giang">Hậu Giang</option>
-                  <option value="Hòa Bình">Hòa Bình</option>
-                  <option value="Hưng Yên">Hưng Yên</option>
-                  <option value="Khánh Hòa">Khánh Hòa</option>
-                  <option value="Kiên Giang">Kiên Giang</option>
-                  <option value="Kon Tum">Kon Tum</option>
-                  <option value="Lai Châu">Lai Châu</option>
-                  <option value="Lâm Đồng">Lâm Đồng</option>
-                  <option value="Lạng Sơn">Lạng Sơn</option>
-                  <option value="Lào Cai">Lào Cai</option>
-                  <option value="Long An">Long An</option>
-                  <option value="Nam Định">Nam Định</option>
-                  <option value="Nghệ An">Nghệ An</option>
-                  <option value="Ninh Bình">Ninh Bình</option>
-                  <option value="Ninh Thuận">Ninh Thuận</option>
-                  <option value="Phú Thọ">Phú Thọ</option>
-                  <option value="Phú Yên">Phú Yên</option>
-                  <option value="Quảng Bình">Quảng Bình</option>
-                  <option value="Quảng Nam">Quảng Nam</option>
-                  <option value="Quảng Ngãi">Quảng Ngãi</option>
-                  <option value="Quảng Ninh">Quảng Ninh</option>
-                  <option value="Quảng Trị">Quảng Trị</option>
-                  <option value="Sóc Trăng">Sóc Trăng</option>
-                  <option value="Sơn La">Sơn La</option>
-                </select>
+                <div class="select-wrapper">
+                  <select id="destination" value={selectedDeparture} onChange={(e) => setSelectedDeparture(e.target.value)}>
+                    <option value="">Chọn điểm đi</option>
+                    {provinces.map((province) => (
+                      <option key={province.code} value={province.name}>
+                        {province.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -651,8 +623,8 @@ const HomePage = () => {
             <img src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png" alt="" />
           </div>
 
-          <div className="flex items-center mr-4">
-            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+          <div className="flex tours-center mr-4">
+            <div className="flex icon-sheach tours-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
                 alt=""
@@ -661,68 +633,15 @@ const HomePage = () => {
 
               <div className="flex flex-col ml-3">
                 <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
-                  Điểm đến :
+                  Điểm đến:
                 </label>
-                <select
-
-                  id="destination"
-
-                  value={selectedDestination}
-                  onChange={(e) => setSelectedDestination(e.target.value)}
-                >
-                  <option value="Hà Nội"> Hà Nội</option>
-                  <option value="Miền Tây">MT </option>
-                  <option value="Hcm">Hồ Chí Minh </option>
-                  <option value="Hải Phòng">Hải Phòng</option>
-                  <option value="Đà Nẵng">Đà Nẵng</option>
-                  <option value="Cần Thơ">Cần Thơ</option>
-                  <option value="An Giang">An Giang</option>
-                  <option value="Bà Rịa">Bà Rịa - Vũng Tàu</option>
-                  <option value="Bắc Giang">Bắc Giang</option>
-                  <option value="Bắc Kạn">Bắc Kạn</option>
-                  <option value="Bạc Liêu">Bạc Liêu</option>
-                  <option value="Bắc Ninh">Bắc Ninh</option>
-                  <option value="Bến Tre">Bến Tre</option>
-                  <option value="Bình Định">Bình Định</option>
-                  <option value="Bình Dương">Bình Dương</option>
-                  <option value="Bình Phước">Bình Phước</option>
-                  <option value="Bình Thuận">Bình Thuận</option>
-                  <option value="Cà Mau">Cà Mau</option>
-                  <option value="Cao Bằng">Cao Bằng</option>
-                  <option value="Đắk Lắk">Đắk Lắk</option>
-                  <option value="Đắk Nông">Đắk Nông</option>
-                  <option value="Điện Biên">Điện Biên</option>
-                  <option value="Đồng Nai">Đồng Nai</option>
-                  <option value="Đồng Tháp">Đồng Tháp</option>
-                  <option value="Gia Lai">Gia Lai</option>
-                  <option value="Hà Giang">Hà Giang</option>
-                  <option value="Hà Nam">Hà Nam</option>
-                  <option value="Hà Tĩnh">Hà Tĩnh</option>
-                  <option value="Hải Dương">Hải Dương</option>
-                  <option value="Hậu Giang">Hậu Giang</option>
-                  <option value="Hòa Bình">Hòa Bình</option>
-                  <option value="Hưng Yên">Hưng Yên</option>
-                  <option value="Khánh Hòa">Khánh Hòa</option>
-                  <option value="Kiên Giang">Kiên Giang</option>
-                  <option value="Kon Tum">Kon Tum</option>
-                  <option value="Lai Châu">Lai Châu</option>
-                  <option value="Lâm Đồng">Lâm Đồng</option>
-                  <option value="Lạng Sơn">Lạng Sơn</option>
-                  <option value="Lào Cai">Lào Cai</option>
-                  <option value="Long An">Long An</option>
-                  <option value="Nam Định">Nam Định</option>
-                  <option value="Nghệ An">Nghệ An</option>
-                  <option value="Ninh Bình">Ninh Bình</option>
-                  <option value="Ninh Thuận">Ninh Thuận</option>
-                  <option value="Phú Thọ">Phú Thọ</option>
-                  <option value="Phú Yên">Phú Yên</option>
-                  <option value="Quảng Bình">Quảng Bình</option>
-                  <option value="Quảng Nam">Quảng Nam</option>
-                  <option value="Quảng Ngãi">Quảng Ngãi</option>
-                  <option value="Quảng Ninh">Quảng Ninh</option>
-                  <option value="Quảng Trị">Quảng Trị</option>
-                  <option value="Sóc Trăng">Sóc Trăng</option>
-                  <option value="Sơn La">Sơn La</option>
+                <select id="destination" value={selectedDestination} onChange={(e) => setSelectedDestination(e.target.value)}>
+                  <option value="">Chọn điểm đi</option>
+                  {provinces.map((province) => (
+                    <option key={province.code} value={province.name}>
+                      {province.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -795,7 +714,7 @@ const HomePage = () => {
             {images.map((image) => (
               <div
                 key={image.id}
-                className="bg-gray-100 p-4 rounded-lg flex flex-col items-center "
+                className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center "
               >
                 <img
                   className="mt-4 rounded-lg w-full h-50 object-cover"
@@ -812,62 +731,55 @@ const HomePage = () => {
         <h2 className="lg:m-10 mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
           ƯU ĐÃI TOUR GIỜ CHÓT!
         </h2>
-        <div className="product-list grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:m-10 m-0">
-          {tourKM.map((item) => (
-            <div
-              key={item.id}
-              className="bg-gray-100 p-4 rounded-lg flex flex-col items-center"
-            >
-              {item.images.map((image) => (
-                <img
-                  key={image.id}
-                  className="mt-4 rounded-lg w-full h-60 object-cover"
-                  src={`http://localhost:8000/storage/${image.image_path}`}
-                  alt={`Ảnh ${item.ten_tour}`}
-                />
-              ))}
-              <div className="product-details mt-4">
-                <div className="info-row data">
-                  <p>{item.lich_khoi_hanh}</p>-<p>{item.soluong} ngày</p>
+        <div className='grid grid-cols-3 gap-7 container mx-auto with-250px'>
+          {tourKM.slice(0, 3).map((items) => (
+            <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
+
+              <div className=' bg-white rounded-t-lg shadow-xl'>
+
+                <div className="relative">
+                  <div className="py-2 absolute top-0 left-1">
+
+                  </div>
+                  <div className="relative">
+                    <div className="py-2 absolute top-0 left-1">
+                      <Link
+                        to={``}  // Update the 'to' prop to navigate to the favorite page
+                        className='mega-menu-items'
+                        onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
+                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                      >
+                        {/* Thêm vào sản phẩm yêu thích */}
+                        <i className="fa-regular fa-heart text-white"></i>
+                      </Link>
+                    </div>
+
+                  </div>
+                  {items.image_dd && (
+                    <img
+                      className="mt-4 rounded-lg w-full h-60 object-cover"
+                      src={`http://localhost:8000/storage/${items.image_dd}`}
+                      alt={`Ảnh ${items.ten_tour}`}
+                    />
+                  )}
                 </div>
-                <Link to={`/booktour/${item.id}`} className="text-blue-500 hover:underline">
-                  <h3 className="text-lg font-bold">{item.ten_tour}</h3>
-                </Link>
-                <p className="price">Giá: {formatCurrency(15000000)}</p>
-                <p
-                  style={{
-                    color: "#fd5056",
-                    fontSize: "18px",
-                    fontWeight: "700",
-                  }}
-                >
-                  {formatCurrency(item.gia_tour)}
-                </p>
-                <p className="text mt-2">{item.mo_ta}</p>
 
-                <p className="text mt-2">
-                  Nơi Khởi Hành: {item.diem_khoi_hanh}
-                </p>
-
-                <button
-                  style={{
-                    backgroundColor: "#fd5056",
-                    float: "right",
-                    borderRadius: "5px",
-                  }}
-                  className="button-wrapper py-2 px-2 text-white mt-5"
-                >
-                  Giảm 6%
-                </button>
-                <button
-                  id="countdown-btn"
-                  style={{ color: "#4D4AEF" }}
-                  className="mt-4 w-full text-center bg-blue-400  py-2 px-4 rounded"
-                >
-                  {/* Còn 00 ngày {formatTime(remainingTime)} */}
-                  <Countdown expiryDate={item.max_expiry_date} />
-                  {/* {item.max_expiry_date} */}
-                </button>
+                <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
+                <Link to={`/tours/${items.id}`}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
+                <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
+                <div className='flex gap-2 py-2 px-4'>
+                  <p className='text-sm'>Nơi khởi hành: {items.diem_di}</p>
+                  <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+                </div>
+                <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {formatCurrency(items.gia_treem)} </p>
+                <div className='grid grid-cols-2 justify-between px-4 p-1'>
+                  <p className=' font-bold '>Giá Người Lớn: {formatCurrency(items.gia_nguoilon)}</p>
+                  <div className='bg-yellow-300 mt-10 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
+                </div>
+                <div className="px-3 py-4 grid grid-cols-2 gap-7">
+                  <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
+                  <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
+                </div>
               </div>
             </div>
           ))}
@@ -883,7 +795,7 @@ const HomePage = () => {
             {sales.map((sale) => (
               <div
                 key={sale.id}
-                className="lg:w-full md:w-1/2 bg-gray-100 p-4 mt-5 rounded-lg items-center flex lg:flex-row flex-col  lg:mx-4 "
+                className="lg:w-full md:w-1/2 bg-gray-100 p-4 mt-5 rounded-lg tours-center flex lg:flex-row flex-col  lg:mx-4 "
               >
                 <div className="tour-uudai lg:w-1/4 w-full">
                   <img
@@ -915,7 +827,7 @@ const HomePage = () => {
                   <p className="text-[#6c757d] text-[14px] mb-4">
                     Vé máy bay khứ hồi Vietravel Airlines + Phòng KS + Ăn sáng{" "}
                   </p>
-                  <div className="flex items-center mb-4">
+                  <div className="flex tours-center mb-4">
                     <img
                       src="https://cdn-icons-png.flaticon.com/128/3272/3272491.png"
                       alt=""
@@ -926,7 +838,7 @@ const HomePage = () => {
                       Tuyệt vời
                     </div>
                   </div>
-                  <div className="flex items-center ">
+                  <div className="flex tours-center ">
                     <img
                       src="https://cdn-icons-png.flaticon.com/128/12348/12348181.png"
                       alt=""
@@ -938,12 +850,12 @@ const HomePage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="lg:w-1/4 w-full flex flex-col  pl-5 lg:items-end">
+                <div className="lg:w-1/4 w-full flex flex-col  pl-5 lg:tours-end">
                   <p className="price-c mb-2">Giá chỉ từ : </p>
                   <p className=" price-t mb-2 ">{formatCurrency(sale.price)}</p>
 
                   <p className="mb-2">{sale.code}</p>
-                  <div className="flex justify-between items-center mt-4 mb-2">
+                  <div className="flex justify-between tours-center mt-4 mb-2">
                     <button className="mr-2 text-center bg-white text-blue-500 py-2 px-4 rounded hover:bg-red-500 hover:text-white">
                       Ngày Khác
                     </button>
@@ -994,7 +906,7 @@ const HomePage = () => {
             Vì sao chọn Poly tour
           </p>
           <div className="flex flex-wrap">
-            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col items-center gap-2 py-4">
+            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col tours-center gap-2 py-4">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2953/2953363.png"
                 alt=""
@@ -1007,7 +919,7 @@ const HomePage = () => {
               <p>Đầu tiên tại việt nam </p>
               <p>Ứng dụng công nghệ mới nhất</p>
             </div>
-            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col items-center gap-2 py-4">
+            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col tours-center gap-2 py-4">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2953/2953363.png"
                 alt=""
@@ -1020,7 +932,7 @@ const HomePage = () => {
               <p>Đầu tiên tại việt nam </p>
               <p>Ứng dụng công nghệ mới nhất</p>
             </div>
-            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col items-center gap-2 py-4">
+            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col tours-center gap-2 py-4">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2953/2953363.png"
                 alt=""
@@ -1033,7 +945,7 @@ const HomePage = () => {
               <p>Đầu tiên tại việt nam </p>
               <p>Ứng dụng công nghệ mới nhất</p>
             </div>
-            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col items-center gap-2 py-4">
+            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col tours-center gap-2 py-4">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2953/2953363.png"
                 alt=""
@@ -1046,7 +958,7 @@ const HomePage = () => {
               <p>Đầu tiên tại việt nam </p>
               <p>Ứng dụng công nghệ mới nhất</p>
             </div>
-            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col items-center gap-2 py-4">
+            <div className="lg:w-1/3 text-base w-full md:w-1/2 icon-select flex flex-col tours-center gap-2 py-4">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2953/2953363.png"
                 alt=""

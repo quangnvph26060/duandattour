@@ -58,8 +58,8 @@ const AdminDanhGia = () => {
               <tr key={danhgia.id} className="border">
                 <td className="border p-2">{danhgia.id}</td>
                 <td className="border p-2">{danhgia.id_user}</td>
-                <td className="border p-2 center-content">
-                  <div className="rate ml-[120px] mb-5 mt-[-25px] flex gap-2">
+                <td className="border p-2 text-center item">
+                  <div className="rate justify-center flex gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <h2
                         key={star}
@@ -70,9 +70,9 @@ const AdminDanhGia = () => {
                     ))}
                   </div>
                 </td>
-                <td className="border p-2">{danhgia.id_tour}</td>
+                <td className="border  p-2">{danhgia.id_tour}</td>
                 <td className="border p-2">{danhgia.noi_dung}</td>
-                <td className="border p-2">
+                <td className="border text-center p-2">
                   <Button type="primary" danger onClick={() => handleDelete(danhgia.id)}>
                     Xóa
                   </Button>

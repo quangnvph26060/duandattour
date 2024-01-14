@@ -1,15 +1,35 @@
 const rounded = {
   borderRadius: "25px",
 };
+import axios from "axios";
+import { IPour } from "../../interface/home";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import logo from "../img/logo.jpg";
 import { useGetMenuQuery } from "../../api/menu";
 import { data } from "autoprefixer";
 import "../../page.css";
-import axios from "axios";
-
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 const HeaderWebsite = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tours, setTours] = useState<IPour[]>([]);
+  const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  const [searched, setSearched] = useState(false);
+  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState<Tour[]>([]);
+  const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
+
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
   const [imagesData, setImagesData] = useState([]);
@@ -17,15 +37,19 @@ const HeaderWebsite = () => {
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        const response = await axios.get(
+          "http://localhost:8000/api/admin/logo"
+        );
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
-        console.error('Error fetching image data:', error);
+        console.error("Error fetching image data:", error);
       }
     };
 
     fetchImagesData();
   }, []);
+
+  // console.log('545',imagesData);
 
   useEffect(() => {
     if (token) {
@@ -49,9 +73,9 @@ const HeaderWebsite = () => {
 
   const parentCallback = () => {
     console.log("parentCallback");
-  }
+  };
 
-  // 
+  //
 
   // const navigate = useNavigate();
 
@@ -67,17 +91,38 @@ const HeaderWebsite = () => {
   let loaiTour: string[] = [];
   let diemDens: string[] = [];
 
-  // if (menuData) {
-  //   // Lặp qua mảng data để trích xuất thông tin
-  //   menuData.forEach((item) => {
-  //     if (item && item.loaiTour) {
-  //       loaiTour.push(item.loaiTour.ten_loai_tour); // Thêm tên loại tour vào mảng
-  //       diemDens = [...diemDens, ...item.diemDens]; // Thêm tất cả địa điểm vào mảng
-  //     }
-  //   });
-  // }
-  // console.log(loaiTour);
-  // console.log(diemDens);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+      setSearchResults(response.data.data);
+      const filteredTours = response.data.data.filter((tour: Tour) =>
+        tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setMatchedResults(filteredTours);
+
+      setFilteredTours(filteredTours);
+      setSearched(true);
+      navigate("/tour", { state: { matchedResults: filteredTours } });
+    } catch (error) {
+      // setError("Error searching tours.");
+    }
+  };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setFilteredTours([]);
+    setSearched(false);
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const displayedTours = searched ? filteredTours : tours;
   const combinedData = {};
   if (menuData) {
     menuData.forEach((item) => {
@@ -94,8 +139,6 @@ const HeaderWebsite = () => {
     });
     console.log(combinedData);
   }
-
-  
 
   return (
     <div>
@@ -189,20 +232,28 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="border-yellow-300
-border-[3px] px-2 py-2  rounded"
-          />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">
-            Search
-          </button>
-          {token && (
+          <div className="search mt-2   tours-center">
+            <input
+              style={{ width: "220px" }}
+              className="border-yellow-300 border-[3px] px- py-2 rounded"
+              type="text"
+              placeholder="Search...."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <button
+              className="bg-blue-500 text-white py-2 px-3 rounded ml-2"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+            {token && (
             <Link to={'/favorite'} className="px-3">
                <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
             </Link>
           )}
+          </div>
+
           <div className="ml-2">
             {token ? (
               <Link to="/profile">

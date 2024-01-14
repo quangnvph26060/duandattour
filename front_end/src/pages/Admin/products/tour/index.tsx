@@ -77,16 +77,19 @@ const AdminProduct = () => {
 
         <h2 className="font-bold text-3xl whitespace-nowrap mr-7">Quản lý tour</h2>
         <div className="float-right"> {localStorage.getItem("role") === 'admin' ? (
-          <Button type="primary" danger>
-            <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2 ">
+          <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
+            <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
               <AiOutlinePlus />
-              Tạo mới tour
+              <span>Tạo mới tour</span>
             </Link>
           </Button>
+
+
         ) : null}</div>
       </div>
+      <br />
 
-      <div className="flex items-center justify-end mb-4">
+      <div className="flex items-center justify-end mb-4 float-left">
         <div> <div className="table_tour">
           <Button style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }} onClick={() => handleFilter("inactive")}>
             Không hoạt động
@@ -179,11 +182,16 @@ const AdminProduct = () => {
                     <i className="fa fa-wrench"></i>
                   </Link>
                 </button>
-                <button className="ct-button">  <Link to={`/tours/${record.id}`}><p className='font-bold py-2 px-2'>Xem trước</p></Link></button>
+                <button className="ct-button">
+                  <a href={`/tours/${record.id}`} target="_blank" rel="noopener noreferrer">
+                    <p className='font-bold py-2 px-2'>Xem trước</p>
+                  </a>
+                </button>
               </div>
             )
           )}
         />
+
       </Table>
     </div>
   );

@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 use App\Http\Controllers\Api\ApiEvaluateController;
+use App\Http\Controllers\api\ApiLogoController;
 use App\Http\Controllers\Api\BannerLogoController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
@@ -30,8 +31,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ApiNewsController;
 
+use App\Http\Controllers\Api\ApiNotificationController;
+use App\Http\Controllers\Api\ApiStatisticalController;
+use App\Models\DatTour;
+use App\Models\TourModel;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
+use Mews\Purifier\Facades\Purifier;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,16 +50,33 @@ use Carbon\Carbon;
 */
 
 // api demo
-Route::get('a',[ApiDatTourController::class,'demo']);
-Route::get('demo',function(){
-    $today= Carbon::today(); // Lấy ngày tháng năm hiện tại
-    $today1 = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-   return response()->json([
-    'today'=>$today,
-    'today+1'=>$today1,
-   ]);
+Route::get('a', [ApiDatTourController::class, 'demo']);
+Route::get('demo', function () {
+    $currentDateTime = Carbon::now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+    // chuyển sang múi giờ chuẩn giờ hiện tại
+    $expiredDiscounts = DB::table('discounts')
+        ->where('expiry_date', '<', $currentDateTime)
+        ->get();
+
+    foreach ($expiredDiscounts as $discount) {
+
+        DB::table('discounts')
+            ->where('id', $discount->id)
+            ->update(['trang_thai' => 0]);
+    }
+    $expiredDiscounts1 = DB::table('discounts')
+    ->where('expiry_date', '>', $currentDateTime)
+    ->get();
+
+foreach ($expiredDiscounts1 as $discount) {
+    DB::table('discounts')
+        ->where('id', $discount->id)
+        ->update(['trang_thai' => 1]); // Sửa giá trị 0 thành 1
+}
 });
-Route::get('abc',[ApiDiscountController::class,'abc']);
+
+
+
 //end api demo
 
 
@@ -162,6 +185,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('discount')->group(function () {
         Route::get('/', [ApiDiscountController::class, 'showDiscount']);
         Route::post('/', [ApiDiscountController::class, 'store']);
+        Route::post('/filterDicscount', [ApiDiscountController::class, 'filterDicscount']); // lọc giảm giá theo giá tour
         Route::get('/{id}', [ApiDiscountController::class, 'show']);
         Route::put('update/{id}', [ApiDiscountController::class, 'update']);
         Route::delete('/{id}', [ApiDiscountController::class, 'destroy']);
@@ -172,6 +196,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [ApiDiscountController::class, 'tour_discount_show']);
         Route::put('update/{id}', [ApiDiscountController::class, 'tour_discount_update']);
         Route::delete('/{id}', [ApiDiscountController::class, 'tour_discount_delete']);
+    });
+    Route::prefix('evaluate')->group(function () {
+        Route::get('/', [ApiEvaluateController::class, 'showDanhGia']);
+        Route::delete('/{id}', [ApiEvaluateController::class, 'deleteDanhGia']);
+        Route::post('/showDanhGiaOnlyTour', [ApiEvaluateController::class, 'showDanhGiaOnlyTour']);
     });
     Route::prefix('user')->group(function () {
         Route::get('/', [ApiPermissionsController::class, 'index']);
@@ -214,14 +243,8 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiLoaiPhuongTienController::class, 'update']); // sủa theo id
         Route::delete('/{id}', [ApiLoaiPhuongTienController::class, 'destroy']); // xóa theo id
     });
-    Route::prefix('huongdanvien')->group(function () {
-        Route::get('/', [ApiHuongDanVienController::class, 'index']);
-        Route::post('/', [ApiHuongDanVienController::class, 'store']);
-        Route::get('/{id}', [ApiHuongDanVienController::class, 'show']);
-        Route::put('/{id}', [ApiHuongDanVienController::class, 'update']);
-        Route::delete('/{id}', [ApiHuongDanVienController::class, 'destroy']);
-        // Route::post('testmail',[ApiHuongDanVienController::class,'testMail']);
-    });
+
+
     Route::prefix('diadiem')->group(function () {
         Route::get('/', [ApiDiaDiemController::class, 'index']);
         Route::post('/', [ApiDiaDiemController::class, 'store']);
@@ -282,6 +305,30 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ApiNewsController::class, 'destroy']);
     });
 
+    // api thông báo
+    Route::prefix('notification')->group(function () {
+        Route::get('/', [ApiNotificationController::class, 'getlistNotification']);
+        Route::put('/updateStatusNotification', [ApiNotificationController::class, 'updateStatusNotification']);
+    });
+
+    // api thống kê
+    Route::prefix('statistical')->group(function () {
+        // đếm để thống kê doanh thu trang web
+        Route::get('/', [ApiStatisticalController::class, 'getStatistical']);
+        Route::get('/tourStatusStatistics', [ApiStatisticalController::class, 'tourStatusStatistics']);
+        Route::get('/getStatisticalDate', [ApiStatisticalController::class, 'getStatisticalDate']);
+        Route::get('/columnChart/{year?}', [ApiStatisticalController::class, 'columnChart']);
+        Route::get('/years', function () {
+            // Lấy danh sách các năm từ 1900 đến năm hiện tại
+            $currentYear = date('Y');
+            $years = range($currentYear, 2000);
+        
+            return response()->json(['years' => $years], 200);
+        });
+        Route::get('/topFiveTours', [ApiStatisticalController::class, 'topFiveTours']);
+        Route::get('/topAddress', [ApiStatisticalController::class, 'topAddress']);
+    });
+
     Route::prefix('dattour')->group(function () {
         //list all BookingTour
         Route::get('/getListBookingTour', [ApiDatTourController::class, 'getListBookingTour']);
@@ -292,13 +339,21 @@ Route::prefix('admin')->group(function () {
         // Chi tiết booking tour
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
+        Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
     });
-    Route::prefix('bannerlogo')->group(function(){
+    Route::prefix('banner')->group(function(){
         Route::get('/', [BannerLogoController::class, 'index']);
         Route::post('/', [BannerLogoController::class, 'store']);
         Route::get('/{id}', [BannerLogoController::class, 'show']);
-        Route::put('/{id}', [BannerLogoController::class, 'update']);
+        Route::post('/{id}', [BannerLogoController::class, 'update']);
         Route::delete('/{id}', [BannerLogoController::class, 'destroy']);
+    });
+    Route::prefix('logo')->group(function(){
+        Route::get('/', [ApiLogoController::class, 'index']);
+        Route::post('/', [ApiLogoController::class, 'store']);
+        Route::get('/{id}', [ApiLogoController::class, 'show']);
+        Route::put('/{id}', [ApiLogoController::class, 'update']);
+        Route::delete('/{id}', [ApiLogoController::class, 'destroy']);
     });
 
     

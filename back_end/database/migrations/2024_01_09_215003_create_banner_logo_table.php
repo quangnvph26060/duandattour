@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('banner_logo', function (Blueprint $table) {
             $table->id();
-            $table->string('image_banner')->nullable();
-            $table->string('image_logo')->nullable();
-            $table->string('link_banner')->nullable();
+            $table->string('image_banner');
+            $table->string('link_banner');
             $table->timestamps();
-           
         });
     }
 

@@ -1,124 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button, Input, DatePicker, Select, InputNumber, Popconfirm, Table } from "antd";
-import { AiOutlineLoading3Quarters, AiOutlinePlus } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
-import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
-import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
-import { ITour } from "../../../../interface/tour";
-import { useAddTourMutation } from "../../../../api/TourApi";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-import { Upload } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Input, Select, Upload } from "antd";
+import { useNavigate } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
-// import ImgCrop from 'antd-img-crop';
-import { PlusOutlined } from "@ant-design/icons";
-
+import { useAddpostMutation } from "../../../../api/post";
+import { useGetpostdmQuery } from "../../../../api/postdm";
+import { Ipost } from "../../../../interface/post";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import moment from 'moment';
 const { Option } = Select;
+
 type FieldType = {
   id: number;
-  ten: string;
-
+  ten_post: string;
+  image: string;
   mo_ta: string;
-  loai_danh_muc: string;
+  ngay_dang: string;
+  id_postdm: string;
 };
 
-const ADmin_postADD: React.FC = () => {
-  const [editorData, setEditorData] = useState("");
+const Admin_DanhmucADD: React.FC = () => {
+  const [addLoaiTour] = useAddpostMutation();
+  const navigate = useNavigate();
+  const [editorData, setEditorData] = useState('');
+  const { data: postdmdata } = useGetpostdmQuery();
+  const postdmArrary = postdmdata?.data || [];
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
     setEditorData(data);
   };
-  //   const [addTour] = useAddTourMutation();
-  //   const [loading, setLoading] = useState(false);
-  //   const [errors, setErrors] = useState(null);
 
-  const onFinish = (values: FieldType) => {
+  const onFinish = (values: Ipost) => {
     const formData = new FormData();
-
-    // Kiểm tra nếu có hình ảnh được chọn
-
-    formData.append("ten_tour", values.ten_tour);
+    formData.append("hinh", values.hinh.fileList[0].originFileObj);
+    formData.append("ten_post", values.ten_post);
 
     values.mo_ta = editorData;
     formData.append("mo_ta", values.mo_ta);
+    formData.append("ngay_dang", moment().format()); // Sử dụng ngày hiện tại
+    formData.append("id_postdm", values.id_postdm);
 
-    // addTour(formData) // Sử dụng formData chứa hình ảnh
-    //   .unwrap()
-    //   .then(() => navigate("/admin/tour"))
-    //   .catch((error) => {
-    //     setErrors(error.data.message);
-    //   });
+    addLoaiTour(formData)
+      .unwrap()
+      .then(() => navigate("/admin/post/bai_viet"))
+      .catch((error) => {
+        console.log(error);
+        // Xử lý lỗi (nếu có)
+      });
+
+    console.log(values);
   };
 
-  const { data: loaitourdata } = useGetLoaiTourQuery();
-  const { data: huongdanviendata } = useGetHuongDanVienQuery();
-  const loaitourArrary = loaitourdata?.data || [];
-  const huongdanvienArrary = huongdanviendata?.data || [];
-  const navigate = useNavigate();
-  const [provinces, setProvinces] = useState([]);
-  const [provinces2, setProvinces2] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("");
-  const dataSource = [
-    {
-      key: 1,
-      ten_bai_viet: "Bài viết cương",
-      image: "image_url_1.jpghttps://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/399083074_666738505589224_5550605208199897590_n.jpg?stp=dst-jpg_p843x403&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=Z6q--I4u1U4AX-mpVqv&_nc_ht=scontent.fhan14-3.fna&oh=00_AfAhGnPQEVEVOXt_CGOJHdx5C6cGjN-dFNyeuyhTrrPEMA&oe=6566DDAE", // You can use the image URL or any other representation you need
-      mo_ta: "Mô tả bài viết 1",
-    },
-    {
-      key: 2,
-      ten_bai_viet: "Bài viết thái",
-      image: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/399083074_666738505589224_5550605208199897590_n.jpg?stp=dst-jpg_p843x403&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=Z6q--I4u1U4AX-mpVqv&_nc_ht=scontent.fhan14-3.fna&oh=00_AfAhGnPQEVEVOXt_CGOJHdx5C6cGjN-dFNyeuyhTrrPEMA&oe=6566DDAE",
-      mo_ta: "Mô tả bài viết 2",
-    },
-    // Add more data objects as needed
-  ];
-
-  const columns = [
-
-    {
-      title: "Tên bài viết",
-      dataIndex: "ten_bai_viet",
-      key: "ten_bai_viet",
-    },
-    {
-      title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
-      render: (image) => (
-        <img src={image} alt="Bài viết" style={{ maxWidth: "100px", maxHeight: "100px" }} />
-      ),
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "mo_ta",
-      key: "mo_ta",
-    },
-    {
-      title: "Action",
-      render: ({ key: id }) => {
-        return (
-          <>
-            <div className="flex space-x-2">
-              <Popconfirm
-                title="Bạn có muốn xóa?"
-                onConfirm={() => confirm(id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button type="primary" danger>
-                  Xóa
-                </Button>
-              </Popconfirm>
-              {/* Add other action buttons or links here */}
-            </div>
-          </>
-        );
-      },
-    },
-  ];
   return (
     <div className="container mx-auto justify-center flex gap-4 p-5">
       <div className="w-1/3 bg-slate-100 p-6 shadow-2xl rounded-xl">
@@ -198,4 +131,4 @@ const ADmin_postADD: React.FC = () => {
   );
 };
 
-export default ADmin_postADD;
+export default Admin_DanhmucADD;

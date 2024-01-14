@@ -150,7 +150,7 @@ const AdminTourAdd: React.FC = () => {
   return (
     <div className="container">
       <header className="mb-4">
-        <h2 className="font-bold text-2xl text-center ">Thêm mới tour</h2>
+        <h2 className="font-bold text-2xl text-center ">Tạo mới tour</h2>
       </header>
       <div>
         {contextHolder}

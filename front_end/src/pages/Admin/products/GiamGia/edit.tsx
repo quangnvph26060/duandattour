@@ -23,6 +23,7 @@ const AdminGiam_GiaEdit: React.FC = () => {
           percentage: LoaiTour.percentage,
           discount_condition: LoaiTour.discount_condition,
           expiry_date: LoaiTour.expiry_date,
+          minprice: LoaiTour.minprice,
         });
       })
       .catch((error) => {
@@ -84,6 +85,15 @@ const AdminGiam_GiaEdit: React.FC = () => {
           name="percentage"
           rules={[
             { required: true, message: "Vui lòng nhập giá trị giảm giá!" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Điều kiện giảm giá"
+          name="minprice"
+          rules={[
+            { required: true, message: 'Vui lòng nhập Điều kiện giảm giá' },
           ]}
         >
           <Input />
