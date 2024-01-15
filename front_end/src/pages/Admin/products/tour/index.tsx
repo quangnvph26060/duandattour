@@ -154,7 +154,7 @@ const AdminProduct = () => {
             return <span>{formattedDate}</span>;
           }}
         />
-        <Table.Column
+        {/* <Table.Column
           title="Trạng thái"
           dataIndex="Trạng thái"
           key="trạng thái"
@@ -166,6 +166,17 @@ const AdminProduct = () => {
             return (
               <span className={isExpired ? 'expired-text' : 'active-text'}>
                 {isExpired ? 'Không Hoạt Động' : 'Hoạt Động'}
+              </span>
+            );
+          }}
+        /> */}
+
+        <Table.Column title="Trạng thái" dataIndex="trang_thai" key="trang_thai" 
+
+          render={(trang_thai) => {
+            return (
+              <span style={{ color: trang_thai === 0 ? "red" : "green" }}>
+                  {trang_thai === 0 ? "Không hoạt động" : "Đang hoạt động"}
               </span>
             );
           }}
