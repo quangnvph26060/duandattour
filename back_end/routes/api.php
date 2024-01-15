@@ -119,10 +119,15 @@ Route::get('/getToursByDestination', [ApiTourController::class, 'getToursByDesti
 Route::get('/getListDiemDen', [ApiSearchController::class, 'getListDiemDen']);
 //api láy all điểm đi của tour làm chức năng search
 Route::get('/getListDiemDi', [ApiSearchController::class, 'getListDiemDi']);
-//api search
+//api searchRoute::get('/getcontact', [ApiContactController::class, 'getcontact']);
 Route::get('/searchTour', [ApiSearchController::class, 'searchTour']);
 // api List tour kM
 Route::get('/listtourKM', [ApiTourController::class, 'getlisttourKM']);
+// api list tour az
+Route::get('/listtourAz', [ApiTourController::class, 'getListTourAz']);
+Route::get('/listtourZa', [ApiTourController::class, 'getListTourZa']);
+Route::get('/listTourByPrice', [ApiTourController::class, 'getListTourByPrice']);
+Route::get('/listTourByPriceDescending', [ApiTourController::class, 'getListTourByPriceDescending']);
 // api contact
 Route::get('/getcontact', [ApiContactController::class, 'getcontact']);
 Route::post('/contact', [ApiContactController::class, 'sendContactForm'])->name('contact');
