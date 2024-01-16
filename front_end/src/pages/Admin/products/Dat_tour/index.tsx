@@ -206,7 +206,7 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
-      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
+      tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
