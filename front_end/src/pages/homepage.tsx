@@ -158,55 +158,18 @@ const HomePage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesData.length);
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/api/admin/tour/', {
-        params: {
-          ngayDen: selectedDate,
-          lichKhoiHanh: selectedDepartureDate,
-          diemDen: selectedDestination,
-          diemDi: selectedDeparture
-        }
-      });
-
-      console.log('matchedResults:', matchedResults);
-      setSearchResults(response.data.data);
-
-
-      let filteredResults = response.data.data || []
-
-      if (selectedDate) {
-        filteredResults = filteredResults.filter(tour => tour.ngay_ket_thuc.includes(selectedDate))
-      }
-      if (selectedDepartureDate) {
-        filteredResults = filteredResults.filter(tour => tour.lich_khoi_hanh.includes(selectedDepartureDate))
-      }
-      if (selectedDestination) {
-        filteredResults = filteredResults.filter(tour => tour.diem_den === selectedDestination)
-      }
-      if (selectedDeparture) {
-        filteredResults = filteredResults.filter(tour => tour.diem_di === selectedDeparture)
-      }
-      setMatchedResults(filteredResults);
-
-      if (filteredResults.length > 0) {
-        // Chuyển trang khi có kết quả tìm kiếm chính xác
-        console.log('filteredResult:', filteredResults);
-        navigate('/tour', { state: { matchedResults: filteredResults } });
-      } else {
-        // Hiển thị thông báo không tìm thấy tour và xác nhận chuyển trang
-        const confirmMessage = 'Không tìm thấy tour. Bạn có muốn chuyển trang đến /tour không?';
-        const shouldNavigate = window.confirm(confirmMessage);
-
-        // Nếu người dùng xác nhận muốn chuyển trang, thực hiện chuyển trang tới `/tour` với trạng thái trống
-        if (shouldNavigate) {
-          navigate('/tour', { state: {} });
-        }
-      }
-    } catch (error) {
-      console.error(error);
+  const handleSearch = () => {
+    if (selectedDeparture && selectedDestination && selectedDepartureDate) {
+      const url = `/searchtour/${selectedDeparture}/${selectedDestination}/${selectedDepartureDate}`;
+      // Chuyển hướng đến URL tìm kiếm
+      // window.location.href = url;
+    } else {
+      const url = `/searchtour`;
+      // Chuyển hướng đến URL tìm kiếm
+      // window.location.href = url;
     }
   };
+  
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat("vi-VN", {
@@ -478,7 +441,7 @@ const HomePage = () => {
   ];
   return (
     <div className="bg-white rounded-lg shadow block-all">
-     <MessageChatBox/>
+     {/* <MessageChatBox/> */}
 
       <div
         className="mt-5 mb-5"
@@ -574,7 +537,7 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center mr-4">
+          {/* <div className="flex items-center mr-4">
             <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
               <img src="https://cdn-icons-png.flaticon.com/128/61/61469.png" alt="" width={"20px"} />
 
@@ -590,7 +553,7 @@ const HomePage = () => {
                 </select>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center mr-4">
             <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
               <img
@@ -642,13 +605,21 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-
-          <button
-            className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full  h-[72px]"
-            onClick={handleSearch}
-          >
-            Tìm kiếm
-          </button>
+          {/* console.log(selectedDepartureDate);
+          console.log(selectedDestination);
+          console.log(selectedDeparture); */}
+          <Link
+              to={`/searchtour/${selectedDeparture || "defaultDeparture"}/${selectedDestination || "defaultDestination"}/${selectedDepartureDate ||   "defaultDepartureDate"}`}
+              className="mega-menu-items"
+            >
+              <button
+                className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full h-[72px]"
+                onClick={handleSearch}
+              >
+                Tìm kiếm
+              </button>
+            </Link>
+         
         </div>
       </div>
 
@@ -773,6 +744,7 @@ const HomePage = () => {
                   <div className='bg-yellow-300 mt-10 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
                 </div>
                 <div className="px-3 py-4 grid grid-cols-2 gap-7">
+                  
                   <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
                   <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
                 </div>

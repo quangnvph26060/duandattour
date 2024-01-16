@@ -36,7 +36,7 @@ interface Tour {
   soluong: number;
 }
 
-const TourPage: React.FC = () => {
+const searchTour: React.FC = () => {
   const location = useLocation();
   const matchedResults: Tour[] = location.state?.matchedResults || [];
 
@@ -69,21 +69,25 @@ const TourPage: React.FC = () => {
   }
   const [tourdiemden, setTour] = useState([]);
   const { diem_den } = useParams<{ diem_den: any }>();
+  const { diem_di } = useParams<{ diem_di: any }>();
+  const { lich_khoi_hanh } = useParams<{ lich_khoi_hanh: any }>();
+  console.log(diem_den);
+  
   useEffect(() => {
     axios
       .get(
-        `http://127.0.0.1:8000/api/getToursByDestination?diem_den=${diem_den}`
+        `http://127.0.0.1:8000/api/listTourForm?diem_den=${diem_den}&diem_di=${diem_di}&lich_khoi_hanh=${lich_khoi_hanh}`
       )
       .then((response) => {
-        console.log(response.data.tourdiemden);
-        setTour(response.data.tourdiemden);
+        console.log(response.data.result);
+        setTour(response.data.result);
       });
-    if (diem_den === undefined) {
+    if (diem_den === 'defaultDeparture' && lich_khoi_hanh === 'defaultDepartureDate' && diem_di === 'defaultDestination') {
       axios
-        .get(`http://127.0.0.1:8000/api/getToursByDestination?diem_den`)
+        .get(`http://127.0.0.1:8000/api/listTourForm`)
         .then((response) => {
-          console.log("123jhgkjg", response.data.tourdiemden);
-          setTour(response.data.tourdiemden);
+          console.log("123jhgkjg", response.data.result);
+          setTour(response.data.result);
         });
     }
     console.log(`Tham số diem_den đã thay đổi thành: ${diem_den}`);
@@ -91,77 +95,77 @@ const TourPage: React.FC = () => {
   }, [diem_den]);
 
 
-  const performAction = (value) => {
-    if (value === 'sortAZ') {
-        axios
-          .get(
-            `http://127.0.0.1:8000/api/listtourAz?diem_den=${diem_den}`
-          )
-          .then((response) => {
-            console.log(response.data.tourdiemden);
-            setTour(response.data.tourdiemden);
-          });
-        if (diem_den === undefined) {
-          axios
-            .get(`http://127.0.0.1:8000/api/listtourAz?diem_den`)
-            .then((response) => {
-              console.log("123jhgkjg", response.data.tourdiemden);
-              setTour(response.data.tourdiemden);
-            });
-        }
-    } else if (value === 'sortZA') {
-      axios
-      .get(
-        `http://127.0.0.1:8000/api/listtourZa?diem_den=${diem_den}`
-      )
-      .then((response) => {
-        console.log(response.data.tourdiemden);
-        setTour(response.data.tourdiemden);
-      });
-    if (diem_den === undefined) {
-      axios
-        .get(`http://127.0.0.1:8000/api/listtourZa?diem_den`)
-        .then((response) => {
-          console.log("123jhgkjg", response.data.tourdiemden);
-          setTour(response.data.tourdiemden);
-        });
-    }
-    } else if (value === 'sortPriceAsc') {
-      axios
-      .get(
-        `http://127.0.0.1:8000/api/listTourByPrice?diem_den=${diem_den}`
-      )
-      .then((response) => {
-        console.log(response.data.tourdiemden);
-        setTour(response.data.tourdiemden);
-      });
-    if (diem_den === undefined) {
-      axios
-        .get(`http://127.0.0.1:8000/api/listTourByPrice?diem_den`)
-        .then((response) => {
-          console.log("123jhgkjg", response.data.tourdiemden);
-          setTour(response.data.tourdiemden);
-        });
-    }
-    } else if (value === 'sortPriceDesc') {
-      axios
-      .get(
-        `http://127.0.0.1:8000/api/listTourByPriceDescending?diem_den=${diem_den}`
-      )
-      .then((response) => {
-        console.log(response.data.tourdiemden);
-        setTour(response.data.tourdiemden);
-      });
-    if (diem_den === undefined) {
-      axios
-        .get(`http://127.0.0.1:8000/api/listTourByPriceDescending?diem_den`)
-        .then((response) => {
-          console.log("123jhgkjg", response.data.tourdiemden);
-          setTour(response.data.tourdiemden);
-        });
-    }
-    }
-  };
+//   const performAction = (value) => {
+//     if (value === 'sortAZ') {
+//         axios
+//           .get(
+//             `http://127.0.0.1:8000/api/listtourAz?diem_den=${diem_den}`
+//           )
+//           .then((response) => {
+//             console.log(response.data.tourdiemden);
+//             setTour(response.data.tourdiemden);
+//           });
+//         if (diem_den === undefined) {
+//           axios
+//             .get(`http://127.0.0.1:8000/api/listtourAz?diem_den`)
+//             .then((response) => {
+//               console.log("123jhgkjg", response.data.tourdiemden);
+//               setTour(response.data.tourdiemden);
+//             });
+//         }
+//     } else if (value === 'sortZA') {
+//       axios
+//       .get(
+//         `http://127.0.0.1:8000/api/listtourZa?diem_den=${diem_den}`
+//       )
+//       .then((response) => {
+//         console.log(response.data.tourdiemden);
+//         setTour(response.data.tourdiemden);
+//       });
+//     if (diem_den === undefined) {
+//       axios
+//         .get(`http://127.0.0.1:8000/api/listtourZa?diem_den`)
+//         .then((response) => {
+//           console.log("123jhgkjg", response.data.tourdiemden);
+//           setTour(response.data.tourdiemden);
+//         });
+//     }
+//     } else if (value === 'sortPriceAsc') {
+//       axios
+//       .get(
+//         `http://127.0.0.1:8000/api/listTourByPrice?diem_den=${diem_den}`
+//       )
+//       .then((response) => {
+//         console.log(response.data.tourdiemden);
+//         setTour(response.data.tourdiemden);
+//       });
+//     if (diem_den === undefined) {
+//       axios
+//         .get(`http://127.0.0.1:8000/api/listTourByPrice?diem_den`)
+//         .then((response) => {
+//           console.log("123jhgkjg", response.data.tourdiemden);
+//           setTour(response.data.tourdiemden);
+//         });
+//     }
+//     } else if (value === 'sortPriceDesc') {
+//       axios
+//       .get(
+//         `http://127.0.0.1:8000/api/listTourByPriceDescending?diem_den=${diem_den}`
+//       )
+//       .then((response) => {
+//         console.log(response.data.tourdiemden);
+//         setTour(response.data.tourdiemden);
+//       });
+//     if (diem_den === undefined) {
+//       axios
+//         .get(`http://127.0.0.1:8000/api/listTourByPriceDescending?diem_den`)
+//         .then((response) => {
+//           console.log("123jhgkjg", response.data.tourdiemden);
+//           setTour(response.data.tourdiemden);
+//         });
+//     }
+//     }
+//   };
 
   const [filteredTours, setFilteredTours] = useState([]);
 
@@ -234,7 +238,7 @@ const TourPage: React.FC = () => {
           <div className="py-5 mb-3">
             <hr className="bg-black h-[1px]" />
           </div>
-          <div className="flex gap-3 bg-white shadow-xl rounded-sm py-5">
+          {/* <div className="flex gap-3 bg-white shadow-xl rounded-sm py-5">
             <p>Xếp theo :</p>
             <div>
               <input
@@ -283,11 +287,14 @@ const TourPage: React.FC = () => {
               />
               <label htmlFor="sortPriceDesc">Giá giảm dần</label>
             </div>
-          </div>
+          </div> */}
+          {/* {diem_den==='defaultDeparture' || diem_di === 'defaultDestination' || lich_khoi_hanh === 'defaultDepartureDate' ? (<span>Kết quả tìm kiếm của bạn</span>): (<span>Du lịch {diem_den} khởi hành từ {diem_di}</span>)} */}
+          <span>Kết quả tìm kiếm của bạn</span>
+          {/* <h2>Du lịch khởi hành từ HÀ NỘI</h2> */}
           <div className="py-5 mb-3">
             <hr className="bg-black h-[1px] shadow-xl" />
           </div>
-          <div className="grid grid-cols-4 gap-7 container mx-auto">
+          {tourdiemden.length >0 ? (  <div className="grid grid-cols-4 gap-7 container mx-auto">
             {tourdiemden
               .slice(
                 (currentPage - 1) * itemsPerPage,
@@ -368,7 +375,8 @@ const TourPage: React.FC = () => {
                   </div>
                 </div>
               ))}
-          </div>
+          </div>):(<span>Không tìm thấy tour nào</span>)}
+        
           {/* Pagination */}
           <div className="flex justify-center mt-5">
             <button
@@ -407,4 +415,4 @@ const TourPage: React.FC = () => {
   );
 };
 
-export default TourPage;
+export default searchTour;

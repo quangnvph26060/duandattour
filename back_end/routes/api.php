@@ -128,6 +128,10 @@ Route::get('/listtourAz', [ApiTourController::class, 'getListTourAz']);
 Route::get('/listtourZa', [ApiTourController::class, 'getListTourZa']);
 Route::get('/listTourByPrice', [ApiTourController::class, 'getListTourByPrice']);
 Route::get('/listTourByPriceDescending', [ApiTourController::class, 'getListTourByPriceDescending']);
+
+Route::get('/listTourForm', [ApiTourController::class, 'searchListTourForm']);
+
+Route::get('/searchListTour', [ApiTourController::class, 'searchListTour']);
 // api contact
 Route::get('/getcontact', [ApiContactController::class, 'getcontact']);
 Route::post('/contact', [ApiContactController::class, 'sendContactForm'])->name('contact');

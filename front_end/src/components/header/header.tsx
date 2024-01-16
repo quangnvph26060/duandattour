@@ -22,7 +22,7 @@ interface Tour {
   soluong: number;
 }
 const HeaderWebsite = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [tours, setTours] = useState<IPour[]>([]);
   const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
   const [searched, setSearched] = useState(false);
@@ -89,25 +89,16 @@ const HeaderWebsite = () => {
   let loaiTour: string[] = [];
   let diemDens: string[] = [];
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
-      setSearchResults(response.data.data);
-      const filteredTours = response.data.data.filter((tour: Tour) =>
-        tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setMatchedResults(filteredTours);
 
-      setFilteredTours(filteredTours);
-      setSearched(true);
-      navigate("/tour", { state: { matchedResults: filteredTours } });
-    } catch (error) {
-      // setError("Error searching tours.");
-    }
+  const handleSearch = () => {
+    // Xử lý tìm kiếm dữ liệu
+  
+    // Đặt lại giá trị searchTerm thành null
+    setSearchTerm("");
   };
 
   const handleResetSearch = () => {
@@ -143,26 +134,29 @@ const HeaderWebsite = () => {
       {" "}
       <div className="menu flex items-center justify-between">
         <div className="flex">
-          <a href="/">
-            {imagesData.length > 0 ? (
-              <img
-                style={rounded}
-                src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
-                alt=""
-                width="100px"
-              />
-            ) : (
-              <span></span>
-            )}
-          </a>
 
+          <Link to={""} className="menu-items">
+            {imagesData.length > 0 ? (
+                <img
+                  style={rounded}
+                  src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
+                  alt=""
+                  width="100px"
+                />
+              ) : (
+                <span></span>
+              )}
+          </Link>
           <nav className="font-semibold p-4 pt-8 pl-18">
             <div className="max-w-7xl flex justify-between items-center mx-auto relative">
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
-                  <a href="/" className="">
-                    PolyTour
-                  </a>
+                <Link to={""} className="menu-items">
+                  PolyTour
+                </Link>
+                  {/* <a href="/" className="">
+                   
+                  </a> */}
                 </li>
 
                 <li className="group visible">
@@ -239,12 +233,14 @@ const HeaderWebsite = () => {
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            <button
-              className="bg-blue-500 text-white py-2 px-3 rounded ml-2"
-              onClick={handleSearch}
-            >
+         <Link
+            to={`/tour/${searchTerm}`}
+            className="mega-menu-items"
+          >
+            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>
               Search
             </button>
+          </Link>
             {token && (
             <Link to={'/favorite'} className="px-3">
                <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>

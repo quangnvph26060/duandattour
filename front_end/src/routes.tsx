@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/homepage";
 import TourPage from "./pages/tour";
+import SearchTour from "./pages/searchTour";
 import News from "./pages/newspage";
 import Posts from "./pages/post";
 // import TitelPage from "./pages/TitelPage";
@@ -101,7 +102,7 @@ export const router = createBrowserRouter([
       {
         path: "tour",
         element: <TourPage />,
-    },
+      },
      
      
       {
@@ -116,6 +117,21 @@ export const router = createBrowserRouter([
         path: "tour/:diem_den",
         element: <TourPage />,
       },
+
+      {
+        path: "searchtour/:diem_den/:diem_di/:lich_khoi_hanh",
+        element: <SearchTour />,
+      },
+
+      {
+        path: "searchtour",
+        element: <SearchTour />,
+      },
+
+      // {
+      //   path: "tour/:search",
+      //   element: <TourPage />,
+      // },
       {
         path: "signin",
         element: <SignIn />,
@@ -149,10 +165,10 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <QLuser />,
       },
-      {
-        path: "profile",
-        element: <QLuser />
-      },
+      // {
+      //   path: "profile",
+      //   element: <QLuser />
+      // },
       {
         path: "/giohanguser",
         element: <Giohanguser />

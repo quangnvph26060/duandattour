@@ -31,19 +31,24 @@ class ApiTourController extends Controller
 
         return response()->json(['data' => $tour]);
     }
-
     public function getToursByDestination(Request $request)
     {
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->where('trang_thai',1)->get();
+        $tourdiemden = TourModel::with('images')
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('ten_tour', 'like', "%{$query}%")
+                    ->orWhere('diem_den', 'like', "%{$query}%");
+            })
+            ->where('trang_thai', 1)
+            ->get();
+    
         foreach ($tourdiemden as $tourdiemdens) {
-
             $tourttcount = DatTour::where('trang_thai', 1)
                 ->where('id_tour', $tourdiemdens->id)
                 ->count();
             $tourdiemdens->tourttcount = $tourttcount;
         }
-
+    
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -254,7 +259,13 @@ class ApiTourController extends Controller
 
     public function getListTourAz(Request $request){
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->where('trang_thai',1) ->orderBy('ten_tour', 'asc')->get();
+        $tourdiemden = TourModel::with('images')
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('ten_tour', 'like', "%{$query}%")
+                ->orWhere('diem_den', 'like', "%{$query}%");
+        })
+        ->where('trang_thai', 1)
+        ->orderBy('ten_tour', 'asc')->get();
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -262,7 +273,13 @@ class ApiTourController extends Controller
     public function getListTourZa(Request $request)
     {
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->where('trang_thai',1)   ->orderBy('ten_tour', 'desc')->get();
+        $tourdiemden = TourModel::with('images')
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('ten_tour', 'like', "%{$query}%")
+                ->orWhere('diem_den', 'like', "%{$query}%");
+        })
+        ->where('trang_thai', 1)
+        ->orderBy('ten_tour', 'desc')->get();
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -270,7 +287,12 @@ class ApiTourController extends Controller
     public function getListTourByPrice(Request $request)
     {
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->where('trang_thai',1)  ->orderBy('gia_nguoilon', 'asc')->get();
+        $tourdiemden = TourModel::with('images')
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('ten_tour', 'like', "%{$query}%")
+                ->orWhere('diem_den', 'like', "%{$query}%");
+        })
+        ->where('trang_thai', 1)->orderBy('gia_nguoilon', 'asc')->get();
         $tourdiemdencout = $tourdiemden->count();
         return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
     }
@@ -278,10 +300,32 @@ class ApiTourController extends Controller
     public function getListTourByPriceDescending(Request $request)
     {
         $query = $request->input('diem_den');
-        $tourdiemden = TourModel::with('images')->where('diem_den', 'like', "%{$query}%")->where('trang_thai',1)->orderBy('gia_nguoilon', 'desc')->get();
+        $tourdiemden = TourModel::with('images')
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('ten_tour', 'like', "%{$query}%")
+                    ->orWhere('diem_den', 'like', "%{$query}%");
+            })
+            ->where('trang_thai', 1)
+            ->orderBy('gia_nguoilon', 'desc')->get();
         $tourdiemdencout = $tourdiemden->count();
-        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
+        return response()->json(['tourdiemden' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);   
+    }
 
+    public function searchListTour (Request $request){
+        $query = $request->input('ten_tour');
+        $tourdiemden = TourModel::with('images')->where('ten_tour', 'like', "%{$query}%")->where('trang_thai',1)->get();
+        $tourdiemdencout = $tourdiemden->count();
+        return response()->json(['data' => $tourdiemden, 'tourdiemdencout' => $tourdiemdencout], 200);
+    }
+
+    public function searchListTourForm(Request $request)  {
+
+        $tour = TourModel::where('diem_den', 'like', '%' . $request->input('diem_den') . '%')
+        ->where('trang_thai',1)
+        ->orWhere('lich_khoi_hanh','=',$request->input('lich_khoi_hanh'))
+        ->orWhere('diem_di','=',$request->input('diem_di'))
         
+        ->get();
+        return response()->json(['result'=>$tour]);
     }
 }
