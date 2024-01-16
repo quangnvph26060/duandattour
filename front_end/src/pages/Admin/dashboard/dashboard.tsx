@@ -28,6 +28,13 @@ const style: React.CSSProperties = {
 };
 const Dashboard = () => {
   //loc 
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const [filteredData, setFilteredData] = useState([]);
   const [dailyRevenueData, setDailyRevenueData] = useState([]);
   const fetchDailyRevenueData = async (start, end) => {
@@ -303,7 +310,7 @@ const Dashboard = () => {
             <div>
               <p className="text-xl font-medium">Doanh thu hôm nay</p>
               <p className="text-xl font-semibold">
-                {statistical.totalRevenueToday} vnđ
+              {formatCurrency(statistical.totalRevenueToday)}
               </p>
             </div>
           </div>

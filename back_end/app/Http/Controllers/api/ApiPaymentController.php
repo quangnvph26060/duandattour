@@ -138,8 +138,7 @@ class ApiPaymentController extends Controller
                     'ghi_chu' => null,
                     'ma_ngan_hang' => null,
                     'ngay_thanh_toan' => date('Y-m-d H:i:s'),
-                    'id_dat_tour' =>  $$latestDatTour->id,
-                  
+                    'id_dat_tour' =>  $latestDatTour->id, //  $latestDatTour->id or lấy từ bên react sang 
                 ]);
                 return response()->json($thanhToan, 201);
             }

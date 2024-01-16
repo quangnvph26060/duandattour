@@ -176,7 +176,7 @@ const TourPage: React.FC = () => {
                   {items.image_dd && (
                     <img
                       className="mt-4 rounded-lg w-full h-60 object-cover"
-                      src={`http://localhost:8000/storage/${items.image_dd[1]}`}
+                      src={`http://localhost:8000/storage/${items.image_dd}`}
                       alt={`Ảnh ${items.ten_tour}`}
                     />
                   )}

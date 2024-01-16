@@ -103,7 +103,7 @@ Route::post('/cash', [ApiPaymentController::class, 'CreatePaymentCash']);
 Route::get('/showResult', [ApiPaymentController::class, 'getPaymentData']);
 
 Route::post('/login', [ApiAuthLoginController::class, 'login'])->name('login');
-
+Route::put('/password/reset',[ApiAuthController::class,'reset'])->name('reset');
 //api chi tiet tour
 Route::get('getDatTour/{id}', [ApiDatTourController::class, 'getDatTour']);
 Route::get('showDattour', [ApiDatTourController::class, 'indexDat']);
@@ -340,6 +340,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/getBookingTourDeltail/{id}', [ApiDatTourController::class, 'getBookingTourDeltail']);
         Route::put('/updateStatus/{id}', [ApiDatTourController::class, 'updateStatus']);
         Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
+        Route::put('/updateStatusConfirm/{id}', [ApiDatTourController::class, 'updateStatusConfirm']);
     });
     Route::prefix('banner')->group(function(){
         Route::get('/', [BannerLogoController::class, 'index']);

@@ -61,8 +61,11 @@ const ADmin_DatTour = (props: Props) => {
   const [dataQuanly, setDataQuanly] = useState<IQuanlyDattour[]>([]);
 
   const Tourinfo = DataQuanly.length > 0 ? DataQuanly[0].tours : null;
-  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
 
+  const ThanhToaninfor = DataQuanly.length > 0 ? DataQuanly[0].thanh_toan : null;
+  // const UserInfo = DataQuanly.length>0 ? DataQuanly[0]
+//  console.log(Tourinfo);
+ 
   const [selectedId, setSelectedId] = useState("");
   useEffect(() => {
     if (DataQuanly) {
@@ -199,9 +202,13 @@ const ADmin_DatTour = (props: Props) => {
       id_tour,
       image_dd,
       so_luong_khach,
+      // tong_tien_tt,
       ten_tour,
       tours,
-    }: IQuanlyDattour) => ({
+      thanh_toan,
+      thanh_toan_deltail
+    }
+    : IQuanlyDattour) => ({
       key: id,
       ngay_dat,
       email,
@@ -211,9 +218,12 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
+      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
+      thanh_toan,
+      thanh_toan_deltail
     })
   );
 
@@ -286,6 +296,22 @@ const ADmin_DatTour = (props: Props) => {
       dataIndex: "so_luong_khach",
       key: "so_luong_khach",
       className: "font-medium",
+    },
+    {
+      title: <span style={tableStyles}>Tổng tiền</span>,
+      dataIndex: "tong_tien_tt",
+      className: "font-medium",
+      key: "tong_tien_tt",
+      render: (text, record) => (
+        <span>
+        {record.thanh_toan && record.thanh_toan.tong_tien_tt ? (
+          record.thanh_toan.tong_tien_tt
+        ) : (
+          record.thanh_toan_deltail.tong_tien_tt
+        )}
+      </span>
+      ),
+
     },
     {
       title: <span style={tableStyles}>Trạng thái thanh toán</span>,
@@ -581,6 +607,25 @@ const ADmin_DatTour = (props: Props) => {
             </div>
           </div>
         )}
+        <div className="p-4">
+          <h2 className="text-xl font-bold mb-4">Xác nhận trạng thái</h2>
+          <table className="w-full table-auto border-collapse border rounded">
+            <thead>
+              <tr className="border-b">
+                <th className="py-2 px-4">Chuyển trạng thái thanh toán</th>
+                <th className="py-2 px-4">Xác nhận Tour</th>
+                <th className="py-2 px-4">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            {/* {statusConfirm.map((column) => (
+                    <td key={column.key} className="py-2 px-4">
+                      {selectedData[column.dataIndex]}
+                    </td>
+                  ))} */}
+            </tbody>
+          </table>
+        </div>
       </Modal>
     </div>
   );

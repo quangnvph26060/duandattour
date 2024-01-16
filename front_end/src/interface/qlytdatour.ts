@@ -28,6 +28,19 @@ export interface IQuanlyDattour {
         created_at: string;
         updated_at: string;
       };
+      thanh_toan_deltail: {
+        id_tt: number;
+        ma_giao_dich: number;
+        tong_tien_tt: number;
+        pttt: string;
+        ma_phan_hoi: string | null;
+        ghi_chu: string | null;
+        ma_ngan_hang: string | null;
+        ngay_thanh_toan: string;
+        id_dat_tour: number;
+        created_at: string;
+        updated_at: string;
+      };
       tours: {
         id: number;
         ten_tour: string;
@@ -48,4 +61,5 @@ export interface IQuanlyDattour {
         updated_at: string | null;
         deleted_at: string | null;
       };
+      
     }

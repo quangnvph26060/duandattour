@@ -3,6 +3,8 @@ import { Button, Popconfirm, Table, message } from 'antd';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
+// ... (your imports)
+
 const Logo = () => {
   const [imagesData, setImagesData] = useState([]);
   const navigate = useNavigate();
@@ -33,21 +35,29 @@ const Logo = () => {
     }
   };
 
+  const dataSource = imagesData
+    ? imagesData.map(({ id, image_logo }, index) => ({
+        key: id,
+        image_logo,
+        index,
+      }))
+    : [];
+
   const columns = [
     {
       title: 'ID hình ảnh',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'key',
+      key: 'key',
     },
     {
       title: 'Hình ảnh Logo',
-      dataIndex: 'hinh_logo',
-      key: 'hinh_logo',
-      render: (hinh_logo, record) => (
+      dataIndex: 'image_logo', // Corrected from 'hinh_logo'
+      key: 'image_logo',
+      render: (image_logo) => (
         <img
-          src={`http://localhost:8000/storage/${hinh_logo}`}
-          alt={`Image ${record.id}`}
-          style={{ width: '100px', cursor: 'pointer' }}
+          src={`http://localhost:8000/storage/${image_logo}`}
+          alt={image_logo} // Dynamic alt attribute
+          style={{ width: '200px', cursor: 'pointer' }}
         />
       ),
     },
@@ -86,9 +96,10 @@ const Logo = () => {
           + Thêm mới Logo
         </button>
       </div>
-      <Table dataSource={imagesData} columns={columns} pagination={{ pageSize: 4 }} />
+      <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />
     </div>
   );
 };
 
 export default Logo;
+

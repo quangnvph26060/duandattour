@@ -81,6 +81,7 @@ import Edit_banner from "./pages/Admin/products/Banner_logo/edit";
 import Logo from "./pages/Admin/products/Logo";
 import Add_logo from "./pages/Admin/products/Logo/add";
 import Edit_logo from "./pages/Admin/products/Logo/edit";
+import ResetPassword from "./pages/Client/resetPassword";
 export const router = createBrowserRouter([
 
   {
@@ -169,6 +170,11 @@ export const router = createBrowserRouter([
       {
         path: "/changeMk",
         element: <Dmkuser />
+      },
+
+      {
+        path: "/resetPassword",
+        element: <ResetPassword />
       },
     ],
   },
