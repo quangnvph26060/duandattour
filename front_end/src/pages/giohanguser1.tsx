@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const rounded = {
     borderRadius: '25px',
 };
-const Giohanguser = () => {
+const Giohanguser1 = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [data, setUserTours] = useState([]);
@@ -116,7 +116,7 @@ const Giohanguser = () => {
         const toursByLoaiTourData = {};
         data.forEach((user) => {
             if (user.trang_thai === 0) {
-                const loaiTour = user.tours.loai_tours.ten_loai_tour;
+                const loaiTour = user.tours?.loai_tours?.ten_loai_tour;
                 if (!toursByLoaiTourData[loaiTour]) {
                     toursByLoaiTourData[loaiTour] = [];
                 }
@@ -255,4 +255,4 @@ const Giohanguser = () => {
     )
 }
 
-export default Giohanguser
+export default Giohanguser1

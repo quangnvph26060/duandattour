@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Form, DatePicker, Button, Table } from "antd";
+import { Form,Rate , DatePicker, Button, Table } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
 import {
@@ -136,10 +136,13 @@ const Dashboard = () => {
   //bang rateing
   const renderRating = (value) => {
     // Customize the rendering of the rating here
+    const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
     const stars = Array.from({ length: 5 }, (_, index) => (
       <span
+      
         className="text-2xl"
         key={index}
+        title={desc[index]}
         style={{ color: index < value ? "gold" : "gray" }}
       >
         ★
@@ -148,11 +151,16 @@ const Dashboard = () => {
     return <span>{stars}</span>;
   };
   const columnsRating = [
-    {  title: (
-      <span className="font-bold text-xl">
-        Tên tour
-      </span>
-    ), dataIndex: "id_tour", key: "id_tour" , render: text => <span style={{ fontSize: '18px' }}>{text}</span>},
+    {
+      title: (
+        <span className="font-bold text-xl">
+          Tên tour
+        </span>
+      ),
+      dataIndex: "id_tour",
+      key: "id_tour",
+      render: (text) => <span style={{ fontSize: '18px' }}>{text}</span>,
+    },
     {
       title: (
         <span className="font-bold text-xl">
@@ -162,7 +170,6 @@ const Dashboard = () => {
       dataIndex: "average_rating",
       key: "average_rating",
       render: renderRating,
-      
     },
   ];
   console.log(results1);
@@ -375,7 +382,7 @@ const Dashboard = () => {
             <div>
               <p className="text-xl font-medium">Doanh thu tháng này</p>
               <p className="text-xl font-semibold">
-                {statistical.totalRevenueThisMonth} vnđ
+               {formatCurrency (statistical.totalRevenueThisMonth)} vnđ
               </p>
             </div>
           </div>
@@ -390,7 +397,7 @@ const Dashboard = () => {
             <div>
               <p className="text-xl font-medium">Doanh thu năm nay</p>
               <p className="text-xl font-semibold">
-                {statistical.totalRevenueThisYear} vnđ
+             {formatCurrency   (statistical.totalRevenueThisYear)} vnđ
               </p>
             </div>
           </div>

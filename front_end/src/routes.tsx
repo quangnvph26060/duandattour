@@ -80,6 +80,9 @@ import EDitbaivien from "./pages/Admin/Post/bai_viet/edit";
 import Banner_logo from "./pages/Admin/products/Banner_logo";
 import Add_Banner from "./pages/Admin/products/Banner_logo/add";
 import Edit_banner from "./pages/Admin/products/Banner_logo/edit";
+import Logo from "./pages/Admin/products/Logo";
+import Add_logo from "./pages/Admin/products/Logo/add";
+import EditLogo from "./pages/Admin/products/Logo/edit";
 export const router = createBrowserRouter([
 
   {
@@ -147,12 +150,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <QLuser />,
+        element: localStorage.getItem("token")?<QLuser />: <HomePage />,
       },
-      {
-        path: "profile",
-        element: <QLuser />
-      },
+    
       {
         path: "/giohanguser",
         element: <Giohanguser />
@@ -174,6 +174,7 @@ export const router = createBrowserRouter([
         path: "/resetPassword",
         element: <ResetPassword />
       },
+     
     ],
   },
 
@@ -263,7 +264,6 @@ export const router = createBrowserRouter([
       //   path: "tour/loai_phuong_tien/edit/:idPhuongTien",
       //   element: <ADmin_Phuongtienedit />,
       // },
-
       {
         path: "banner_logo",
         element: <Banner_logo/>
@@ -273,9 +273,22 @@ export const router = createBrowserRouter([
         element: <Add_Banner/>
       },
       {
-        path: "edit_banner",
+        path: "/admin/banner_logo/edit/:id",
         element: <Edit_banner/>
       },
+      {
+        path: "logo",
+        element: <Logo/>
+      },
+      {
+        path: "add_logo",
+        element: <Add_logo/>
+      },
+      {
+        path: "/admin/logo/edit/:id",
+        element: <EditLogo/>
+      },
+    
       {
         path: "customer_account",
         element: <Admin_Khachhang />,

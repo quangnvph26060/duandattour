@@ -92,12 +92,10 @@ class ApiAuthController extends Controller
     public function updateUser(Request $request)
     {
         $user = User::find($request->input('id'));
-        if (!$user) {
-            return response()->json([
-                'message' => 'Người dùng không tồn tại',
-            ], 404);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('hinh', 'public');
+            $user->image = $imagePath;
         }
-    
         $user->update([
             'name' => $request->input('name'),
             'dia_chi' => $request->input('dia_chi'),

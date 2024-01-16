@@ -7,7 +7,7 @@ import { useGetLoaiTourQuery, useRemoveLoaiTourMutation } from '../../../../api/
 import { ILoaiTour } from '../../../../interface/loaiTour';
 
 const AdminLoai_tour = (props) => {
-    const { data: tourdata, error, isLoading } = useGetLoaiTourQuery();
+    const { data: tourdata, error, isLoading,refetch } = useGetLoaiTourQuery();
     const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveLoaiTourMutation();
     const [searchValue, setSearchValue] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -34,6 +34,7 @@ const AdminLoai_tour = (props) => {
     const tourArray = filteredDataSource.length > 0 ? filteredDataSource : tourdata?.data || [];
 
     const dataSource = tourArray.map(({ id, image, ten_loai_tour, thoi_gian, trang_thai }) => ({
+        
         key: id,
         image,
         ten_loai_tour,

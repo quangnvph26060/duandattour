@@ -13,6 +13,8 @@ class ApiPaymentController extends Controller
     // thanh toán vnpay
     public function vnpay_payment(Request $request)
     {
+        $tongtien = $request->input('vnp_Amount');
+        $tongtientt = intval(str_replace(['.', '₫'], ['', ''], $tongtien));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://localhost:5173/bookingtour/".$request->input('id_dat_tour'); // bên react
         $vnp_TmnCode = "EAJULQG0"; // Mã website tại VNPAY
@@ -20,7 +22,7 @@ class ApiPaymentController extends Controller
         $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã đơn hàng (có thể thay đổi theo nhu cầu)
         $vnp_OrderInfo =  $request->input('vnp_OrderInfo'); // Thông tin đơn hàng (có thể thay đổi theo nhu cầu)
         $vnp_OrderType = $request->input('vnp_OrderType'); // Loại đơn hàng (có thể thay đổi theo nhu cầu)
-        $vnp_Amount = $request->input('vnp_Amount'); // Số tiền (đơn vị: VNĐ) (có thể thay đổi theo nhu cầu)
+        $vnp_Amount = $tongtientt *100; // Số tiền (đơn vị: VNĐ) (có thể thay đổi theo nhu cầu)
         $vnp_Locale = 'vn'; // Ngôn ngữ hiển thị trang thanh toán
         $vnp_BankCode = 'NCB'; // Mã ngân hàng (nếu có)
         $vnp_IpAddr = $request->ip(); // Địa chỉ IP của khách hàng
@@ -97,9 +99,11 @@ class ApiPaymentController extends Controller
             $latestDatTour = DatTour::latest('created_at')->first();
             $latestDatTour->trang_thai = 1;
             $latestDatTour->save();
+            $tongtien =  $paymentData['vnp_Amount'];
+            $tongtientt = intval(str_replace(['.', '₫'], ['', ''], $tongtien));
             $thanhToan = ThanhToanDetail::create([
                 'ma_giao_dich' => $paymentData['vnp_TxnRef'],
-                'tong_tien_tt' => $paymentData['vnp_Amount'],
+                'tong_tien_tt' => $tongtientt/100,
                 'pttt' => 'transfer',
                 'ma_phan_hoi' => $paymentData['vnp_ResponseCode'],
                 'ghi_chu' => null,
@@ -128,10 +132,11 @@ class ApiPaymentController extends Controller
 
             $latestDatTour = DatTour::latest('created_at')->first();
             if ($latestDatTour->trang_thai == '0') {
-                // rồi làm quản lý đặt tour thì cập nhật lại trang thái thì mới vào vào bảng thanh toán 
+                $tongtien =  $paymentData['vnp_Amount'];
+                $tongtientt = intval(str_replace(['.', '₫'], ['', ''], $tongtien));
                 $thanhToan = ThanhToan::create([
                     'ma_giao_dich' => rand(1, 100),
-                    'tong_tien_tt' => $paymentData['vnp_Amount'],
+                    'tong_tien_tt' => $tongtientt,
                     'pttt' => $paymentData['payment_method'],
                     'ma_phan_hoi' => null,
                     'ghi_chu' => null,

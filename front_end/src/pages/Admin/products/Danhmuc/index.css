@@ -3,3 +3,10 @@
     height: 10px;
     border-radius: 50%;
 }
+.ant-upload-list {
+    display: flex;
+    height: 100%;
+}
+.ant-form-item-explain {
+    margin-top: 25px;
+}

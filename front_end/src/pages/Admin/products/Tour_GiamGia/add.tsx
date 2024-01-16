@@ -51,7 +51,7 @@ const Admin_TourDiscountADD: React.FC = () => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: "100%" }}
+        style={{ width: 700}}
         onFinish={onFinish}
         autoComplete="off"
       >

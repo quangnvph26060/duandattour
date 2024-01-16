@@ -69,7 +69,7 @@ const Login = () => {
         // authContext.storeAuthData(token,role);
         //  setUser(response.data.role);
         alert("Đăng nhập thành công");
-        if(localStorage.getItem("role") === 'admin'){
+        if(localStorage.getItem("role") === 'admin'|| localStorage.getItem("role") === 'nhan_vien'){
  
           window.location.href = 'http://localhost:5173/admin';
         }else{

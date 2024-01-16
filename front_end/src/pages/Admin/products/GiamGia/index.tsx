@@ -1,45 +1,52 @@
-type Props = {};
+ 
 
-// import { IProduct } from "@/interfaces/product";
-import { useEffect } from "react";
+import { useState } from "react";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
-import useNavigate from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useGetDiscountQuery,useRemoveDiscountMutation } from "../../../../api/discountApi";
+import {
+  useGetDiscountQuery,
+  useRemoveDiscountMutation,
+} from "../../../../api/discountApi";
 import { IDiscount } from "../../../../interface/discount";
 
+const AdminGiam_Gia = () => {
+  const { data: discountdata, error, isLoading } = useGetDiscountQuery();
+  const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
+    useRemoveDiscountMutation();
+  const [filterActive, setFilterActive] = useState(null);
 
+  const confirm = (id: any) => {
+    removeProduct(id);
+  };
 
-const AdminGiam_Gia = (props: Props) => {
-    const { data: discountdata, error, isLoading } = useGetDiscountQuery();
-    const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-     useRemoveDiscountMutation();
-    const confirm = (id: any) => {
-        removeProduct(id);
-    };
-  
- //   const navigate = useNavigate();
-    const tourArray = discountdata || [];
-    const dataSource = tourArray.map((
-    { 
-        id,
-        discount_name,
-        discount_condition,
-        discount_code,
-        percentage,
-        expiry_date,
-        minprice,trang_thai
-    
+  const tourArray = discountdata || [];
+  const dataSource = tourArray.map(
+    ({
+      id,
+      discount_name,
+      discount_condition,
+      discount_code,
+      percentage,
+      expiry_date,
+      minprice,
+      trang_thai,
     }: IDiscount) => ({
-        key: id,
-        discount_name,
-        discount_condition,
-        discount_code,
-        percentage,
-        expiry_date,
-        minprice,trang_thai
-    }));
+      key: id,
+      discount_name,
+      discount_condition,
+      discount_code,
+      percentage,
+      expiry_date,
+      minprice,
+      trang_thai,
+    })
+  );
+
+  const filteredDataSource = filterActive === null
+    ? dataSource
+    : dataSource.filter((item) => item.trang_thai === filterActive);
+
     const columns = [
         {
             title: "ID",
@@ -129,22 +136,40 @@ const AdminGiam_Gia = (props: Props) => {
             },
         },
     ];
-   
-    return (
-        <div>
-            <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-2xl">Quản lý Mã giảm giá</h2>
-                <Button type="primary" danger>
-                    <Link to="/admin/tour/discount/add" className="flex items-center space-x-2">
-                        <AiOutlinePlus />
-                        Thêm Mã giảm giá 
-                    </Link>
-                </Button>
-            </header>
-           {isRemoveSuccess && <Alert message="Success Text" type="success" />}
-            {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
-        </div>
-    );
+
+  return (
+    <div>
+      <header className="mb-4 flex justify-between items-center">
+        <h2 className="font-bold text-2xl">Quản lý Mã giảm giá</h2>
+        <Button type="primary" danger>
+          <Link to="/admin/tour/discount/add" className="flex items-center space-x-2">
+            <AiOutlinePlus />
+            Thêm Mã giảm giá
+          </Link>
+        </Button>
+      </header>
+      {isRemoveSuccess && <Alert message="Success Text" type="success" />}
+      <div>
+        <Button style={{ backgroundColor: '#63B3ED', color: '#FFFFFF' ,marginRight: "5px"}}
+          type={filterActive === 1 ? "primary" : "default"}
+          onClick={() => setFilterActive(1)}
+        >
+          Hoạt động
+        </Button>
+        <Button  style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }}
+          type={filterActive === 0 ? "primary" : "default"}
+          onClick={() => setFilterActive(0)}
+        >
+          Không hoạt động
+        </Button>
+      </div>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <Table dataSource={filteredDataSource} columns={columns} />
+      )}
+    </div>
+  );
 };
 
 export default AdminGiam_Gia;

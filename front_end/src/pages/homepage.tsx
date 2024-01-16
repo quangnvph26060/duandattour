@@ -139,7 +139,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        const response = await axios.get('http://localhost:8000/api/admin/banner');
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
         console.error('Error fetching image data:', error);

@@ -10,7 +10,7 @@ import Item from 'antd/es/list/Item';
 const rounded = {
     borderRadius: '25px',
 };
-const Giohanguser = () => {
+const Giohanguser2 = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [data, setUserTours] = useState([]);
@@ -191,7 +191,7 @@ const Giohanguser = () => {
                             <div key={item}>
                                   
                                 <div className='px-2'>
-                                    <h1 className='text-2xl font-medium'> {item.ten_loai_tour.ten_loai_tour}</h1>
+                                    <h1 className='text-2xl font-medium'> {item?.ten_loai_tour?.ten_loai_tour}</h1>
                                 </div>
                                 <div>
                                     <p className='py-3'>{item.tour.lich_khoi_hanh} - {item.tour.ngay_ket_thuc}</p>
@@ -200,7 +200,7 @@ const Giohanguser = () => {
                                         <div>
                                             <div className='flex gap-4'>
                                                 <img
-                                                    src={`http://localhost:8000/storage/${item.tour.image_path}`}
+                                                    src={`http://localhost:8000/storage/${item.tour.image_dd}`}
                                                     style={{
                                                         width: '200px',
                                                         height: '250px',
@@ -284,4 +284,4 @@ const Giohanguser = () => {
     )
 }
 
-export default Giohanguser
+export default Giohanguser2

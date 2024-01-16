@@ -99,7 +99,7 @@ const Giohanguser = () => {
         // Lọc và nhóm các tours đã đặt theo loại tour
         const toursByLoaiTourData = {};
         data.forEach((user) => {
-            const loaiTour = user.tours.loai_tours.ten_loai_tour;
+            const loaiTour = user.tours.loai_tours?.ten_loai_tour;
             if (!toursByLoaiTourData[loaiTour]) {
                 toursByLoaiTourData[loaiTour] = [];
             }

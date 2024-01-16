@@ -23,13 +23,16 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiContactController;
 use App\Http\Controllers\Api\ApiHuongDanVienTourController;
 use App\Http\Controllers\Api\ApiEvaluateController;
-use App\Http\Controllers\Api\BannerLogoController;
+
 use App\Http\Controllers\Api\ApiPostController;
+use App\Http\Controllers\API\ApiPostDanhmucController;
 use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ApiNewsController;
+use App\Http\Controllers\API\BannerLogoController;
+use App\Http\Controllers\API\ApiLogoController;
 
 use App\Http\Controllers\Api\ApiNotificationController;
 use App\Http\Controllers\Api\ApiStatisticalController;
@@ -38,6 +41,7 @@ use App\Models\TourModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Mews\Purifier\Facades\Purifier;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -343,12 +347,12 @@ Route::prefix('admin')->group(function () {
         Route::put('/updateConfirm/{idConfirm}', [ApiDatTourController::class, 'updateConfirm']);
         Route::put('/updateStatusConfirm/{id}', [ApiDatTourController::class, 'updateStatusConfirm']);
     });
-    Route::prefix('bannerlogo')->group(function(){
-        Route::get('/', [BannerLogoController::class, 'index']);
-        Route::post('/', [BannerLogoController::class, 'store']);
-        Route::get('/{id}', [BannerLogoController::class, 'show']);
-        Route::put('/{id}', [BannerLogoController::class, 'update']);
-        Route::delete('/{id}', [BannerLogoController::class, 'destroy']);
+    Route::prefix('postdm')->group(function () {
+        Route::get('/', [ApiPostDanhmucController::class, 'index']);
+        Route::post('/', [ApiPostDanhmucController::class, 'store']);
+        Route::get('/{id}', [ApiPostDanhmucController::class, 'show']);
+        Route::put('/{id}', [ApiPostDanhmucController::class, 'update']);
+        Route::delete('/{id}', [ApiPostDanhmucController::class, 'destroy']);
     });
     Route::prefix('post')->group(function () {
         Route::get('/', [ApiPostController::class, 'index']);
@@ -357,5 +361,19 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiPostController::class, 'update']);
         Route::delete('/{id}', [ApiPostController::class, 'destroy']);
     });
-    
+    Route::prefix('banner')->group(function(){
+        Route::get('/', [BannerLogoController::class, 'index']);
+        Route::post('/', [BannerLogoController::class, 'store']);
+        Route::get('/{id}', [BannerLogoController::class, 'show']);
+        Route::post('/{id}', [BannerLogoController::class, 'update']);
+        Route::delete('/{id}', [BannerLogoController::class, 'destroy']);
+    });
+    Route::prefix('logo')->group(function(){
+        Route::get('/', [ApiLogoController::class, 'index']);
+        Route::post('/', [ApiLogoController::class, 'store']);
+        Route::get('/{id}', [ApiLogoController::class, 'show']);
+        Route::put('/{id}', [ApiLogoController::class, 'update']);
+        Route::delete('/{id}', [ApiLogoController::class, 'destroy']);
+    });
+
 });

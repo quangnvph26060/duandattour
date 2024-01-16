@@ -39,11 +39,12 @@ const AdminGiam_GiaADD: React.FC = () => {
                 name="basic"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
-                style={{ maxWidth: 600 }}
+                style={{ height:500,maxWidth: 1000 }}
                 onFinish={onFinish}
                 autoComplete="off"
             >
                 <Form.Item
+        
                     label="Tên Giảm Giá"
                     name="discount_name"
                     rules={[
@@ -105,7 +106,7 @@ const AdminGiam_GiaADD: React.FC = () => {
                     <DatePicker disabledDate={disabledDate} />
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Form.Item className="mt-5 " wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
                         Thêm
                     </Button>

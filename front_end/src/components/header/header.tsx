@@ -5,9 +5,9 @@ import axios from "axios";
 import { IPour } from "../../interface/home";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import logo from "../img/logo.jpg";
+
 import { useGetMenuQuery } from "../../api/menu";
-import { data } from "autoprefixer";
+
 import "../../page.css";
 interface Tour {
   id: number;
@@ -38,7 +38,7 @@ const HeaderWebsite = () => {
     const fetchImagesData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/admin/bannerlogo"
+          "http://localhost:8000/api/admin/logo"
         );
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
@@ -77,13 +77,13 @@ const HeaderWebsite = () => {
 
   // const navigate = useNavigate();
 
-  if (isLoading) {
-    return <div>Đang tải dữ liệu...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Đang tải dữ liệu...</div>;
+  // }
 
-  if (error) {
-    return <div>Có lỗi xảy ra: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div>Có lỗi xảy ra: {error.message}</div>;
+  // }
   const menuData = Data?.menuPhanCap || [];
 
   let loaiTour: string[] = [];
@@ -135,7 +135,7 @@ const HeaderWebsite = () => {
         combinedData[loaiTourName].push(...diemDens);
       }
     });
-    console.log(combinedData);
+    
   }
 
   return (
@@ -146,10 +146,11 @@ const HeaderWebsite = () => {
           <a href="/">
             {imagesData.length > 0 ? (
               <img
-                style={rounded}
+              className="rounded-3xl w-[50px] h-[50px] mt-4"
+             
                 src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
                 alt=""
-                width="100px"
+             
               />
             ) : (
               <span></span>
@@ -170,9 +171,9 @@ const HeaderWebsite = () => {
                     Tour
                   </Link>
                   {/* Menu phân cấp*/}
-                  <div className="container mx-auto max-w-full w-full">
+                  <div className="container mx-auto max-w-full w-full" style={{ zIndex: 10 }}>
                     <div className="">
-                      <ul className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
+                      <ul style={{ zIndex: 10 }} className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
                         {" "}
                         {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
                         {Object.keys(combinedData).map((loaiTourName) => (
@@ -184,7 +185,7 @@ const HeaderWebsite = () => {
                             </a>
                             <ul className="">
                               {combinedData[loaiTourName].map((diemDen) => (
-                                <li className="py-3" key={diemDen}>
+                                <li className="py-1" key={diemDen}>
                                   <Link
                                     to={`/tour/${diemDen}`}
                                     className="mega-menu-items"
@@ -196,14 +197,7 @@ const HeaderWebsite = () => {
                             </ul>
                           </li>
                         ))}
-                        <li className="py-1 pr-4">
-                          <a
-                            href=""
-                            className="mega-menu-items underline decoration-3 text-blue-600"
-                          >
-                            Xem tất cả
-                          </a>
-                        </li>
+                       
                       </ul>
                     </div>
                   </div>

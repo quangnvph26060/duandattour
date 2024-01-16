@@ -1,3 +1,11 @@
+// render: () => (
+//   <img
+//     src={`http://localhost:8000/storage/${imagesData[0].image_banner}`}
+//     alt={`img`}
+//     style={{ width: '200px', cursor: 'pointer' }}
+//   />
+// ),
+
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Popconfirm, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,7 +18,7 @@ const Banner_logo = () => {
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/bannerlogo');
+        const response = await axios.get('http://localhost:8000/api/admin/banner');
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
         console.error('Error fetching image data:', error);
@@ -20,14 +28,13 @@ const Banner_logo = () => {
     fetchImagesData();
   }, []);
 
-
   const dataSource = imagesData
-    ? imagesData.map(({ id, url }, index) => ({
-        key: id,
-        image_banner: url,
-        image_logo: url,
-        index,
-      }))
+    ? imagesData.map(({ id, url, image_banner, link_banner }, index) => ({
+      key: id,
+      image_banner,
+      link_banner,
+      index,
+    }))
     : [];
 
   const columns = [
@@ -49,16 +56,9 @@ const Banner_logo = () => {
       ),
     },
     {
-      title: 'Hình ảnh Logo',
-      dataIndex: 'image_logo',
-      key: 'image_logo',
-      render: () => (
-        <img
-          src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
-          alt={`img`}
-          style={{ width: '150px', cursor: 'pointer' }}
-        />
-      ),
+      title: 'Link Banner',
+      dataIndex: 'link_banner',
+      key: 'link_banner',
     },
     {
       title: 'Action',
@@ -75,7 +75,7 @@ const Banner_logo = () => {
                 Xóa
               </Button>
               <Button type="primary" className="bg-blue-500">
-                <Link to={''}>Sửa</Link>
+                <Link to={`/admin/banner_logo/edit/${id}`}>Sửa</Link>
               </Button>
             </div>
           </Popconfirm>
@@ -87,28 +87,28 @@ const Banner_logo = () => {
 
   const confirmDelete = async (id, index) => {
     try {
-      await axios.delete(`http://localhost:8000/api/admin/bannerlogo/${id}`);
-      message.success('Xóa ảnh thành công');
+      await axios.delete(`http://localhost:8000/api/admin/banner/${id}`);
+      message.success('Xóa thành công');
       // Refresh the imagesData after deletion
       const updatedImagesData = imagesData.slice();
       updatedImagesData.splice(index, 1);
       setImagesData(updatedImagesData);
     } catch (error) {
       console.error('Error deleting image:', error);
-      message.error('Xóa ảnh thất bại');
+      message.error('Xóa thất bại');
     }
   };
 
   return (
     <div>
-      <h1 className="text-2xl px-5 font-bold">Quản lý Banner & Logo</h1>
+      <h1 className="text-2xl px-5 font-bold">Quản lý Banner</h1>
       <div className="text-right px-5">
         <button
           className="px-5 py-2 bg-red-500 rounded-lg font-medium"
           type="button"
           onClick={() => navigate('/admin/add_banner')}
         >
-          + Thêm mới Banner & Logo
+          + Thêm mới Banner
         </button>
       </div>
       <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />

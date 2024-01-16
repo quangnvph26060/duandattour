@@ -103,7 +103,7 @@ const BookTour = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
     } else {
-      alert("tối thiểu số hành khách là 1");
+      alert("Tối thiểu số hành khách là 1");
       setQuantity(1);
     }
   };
@@ -200,10 +200,10 @@ const BookTour = () => {
       giamgiaressult = (giamgiaressult * (100 - parseInt(event.target.value))) / 100;
     }
     setradioValue(parseInt(event.target.value));
-    console.log('234', radioValue);
+
 
     setSelectedValue(giamgiaressult);
-    console.log('123', selectedValue);
+   
 
   };
   const [couponData, setCouponData] = useState("");
@@ -254,8 +254,9 @@ const BookTour = () => {
       }
 
     }
-
-    return totalPrice;
+    console.log('1234',formatCurrency(totalPrice));
+   
+    return formatCurrency(totalPrice);
   };
 
   const images = datatourArray?.images || [];
@@ -282,7 +283,10 @@ const BookTour = () => {
         setIsLoading(false);
         setResponseMessage(addTourResponse.message);
         // Xử lý kết quả thành công
-
+        // const chuoiGiaTri=couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice();
+        // const giaTriSo = parseInt(chuoiGiaTri.replace(/[^\d]/g, ""), 10);
+        // console.log('12345',giaTriSo);
+        
         let requestData = {
           vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue : calculateTotalPrice(),
           payment_method: "cash",
@@ -315,7 +319,7 @@ const BookTour = () => {
           vnp_TxnRef: Math.floor(Math.random() * 1000000).toString(),
           vnp_OrderInfo: "mô tả",
           vnp_OrderType: "atm",
-          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() * 100 : selectedValue ? selectedValue * 100 : calculateTotalPrice() * 100,
+          vnp_Amount: couponData.length > 0 ? calculateTotalPrice() : selectedValue ? selectedValue  : calculateTotalPrice() ,
           id_dat_tour: addTourResponse.createDatTour.id,
         };
 
@@ -424,18 +428,7 @@ const BookTour = () => {
               <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
                 Số chỗ còn nhận: {datatourArray?.soluong}
               </p>
-              <p className="mt-1   text-[#2D4271] text-[16px] font-medium">
-                Dịch vụ tùy chọn:
-                {datatourArray &&
-                  datatourArray.phuong_tien &&
-                  datatourArray.phuong_tien.map(
-                    (item) => item.loai_phuong_tien
-                  )}{" "}
-                + Khách Sạn
-                {datatourArray &&
-                  datatourArray.khach_san &&
-                  datatourArray.khach_san.map((item) => item.loai_khach_san)}
-              </p>
+            
             </div>
           </div>
         </div>
@@ -667,20 +660,7 @@ const BookTour = () => {
               <p className="mt-1 text-[#2D4271] text-[22px] font-bold">
                 Tóm tắt chuyến đi
               </p>
-              <p className=" text-[#2D4271] text-base font-semibold">
-                Dịch vụ tùy chọn:
-                {datatourArray &&
-                  datatourArray.phuong_tien &&
-                  datatourArray.phuong_tien.map(
-                    (item) => item.loai_phuong_tien
-                  )}{" "}
-                + Khách Sạn
-                {datatourArray &&
-                  datatourArray.khach_san &&
-                  datatourArray.khach_san.map(
-                    (item) => item.loai_khach_san
-                  )}{" "}
-              </p>
+            
               <p className=" text-[#2D4271] text-base font-semibold">
                 Tour trọn gói ({datatourArray?.soluong} khách){" "}
               </p>
@@ -772,7 +752,7 @@ const BookTour = () => {
                     {inputGiamGia.length > 0 && inputGiamGia.map((item, index) => (
                       <>
                         {index === 0 && (
-                          <div className="radio-item">
+                          <div className="radio-item" style={{ gap: '10px' }}>
                             <input
                               type="radio"
                               name="radio"
@@ -780,27 +760,27 @@ const BookTour = () => {
                               onChange={handlegiamgia}
                             />
                             <div>
-                              <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"} {item.discount_code}</h1>
-
+                              <h1> Giảm Giá {item.percentage}{item.percentage < 100 ? " %":" vnđ"} </h1>
+                              <p>Cho những tour trên {item.minprice}đ</p>
                               <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
-
                             </div>
                           </div>
                         )}
                         {showMore && index !== 0 && (
                           <>
-                            <div className="radio-item">
-                              <input
-                                type="radio"
-                                name="radio"
-                                value={item.percentage}
-                                onChange={handlegiamgia}
-                              />
-                              <div>
-                                <h1>{item.percentage }{item.percentage < 100 ? " %":" vnđ"}  {item.discount_code}</h1>
-                                <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
-                              </div>
+                             <div className="radio-item" style={{ gap: '10px' }}>
+                            <input
+                              type="radio"
+                              name="radio"
+                              value={item.percentage}
+                              onChange={handlegiamgia}
+                            />
+                            <div>
+                              <h1> Giảm Giá {item.percentage}{item.percentage < 100 ? " %":" vnđ"} </h1>
+                              <p>Cho những tour trên {item.minprice}đ</p>
+                              <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                             </div>
+                          </div>
                           </>
                         )}
                       </>
@@ -852,11 +832,11 @@ const BookTour = () => {
                     </p>
                   ) : selectedValue ? (
                     <p className="text-red-400 text-[28px]">
-                      {selectedValue} VNĐ
+                      {formatCurrency(selectedValue)} 
                     </p>
                   ) : (
                     <p className="text-red-400 text-[28px]">
-                      {quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem} VNĐ
+                      {formatCurrency(quantity * datatourArray?.gia_nguoilon + quantity2 * datatourArray?.gia_treem)}
                     </p>
                   )}
 

@@ -13,6 +13,13 @@ import { data } from "autoprefixer";
 type Props = {};
 
 const Info_tour_bocking = () => {
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const img = {
     borderRadius: "10px",
     witdh: "100px",
@@ -145,15 +152,15 @@ const Info_tour_bocking = () => {
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Trị giá booking
                 </p>
-                {DataThanhtoan && <p>{DataThanhtoan?.tong_tien_tt} đ</p>}
-                {paymentResult && <p>{paymentResult?.tong_tien_tt} đ</p>}
+                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
+                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Số tiền đã thanh toán
                 </p>
-                {DataThanhtoan && <p>{DataThanhtoan?.tong_tien_tt} đ</p>}
-                {paymentResult && <p>{paymentResult?.tong_tien_tt} đ</p>}
+                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
+                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
@@ -176,28 +183,21 @@ const Info_tour_bocking = () => {
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
-                  Hình thức thanh toán
+                  Hình thức thanh toán:
                 </p>
-                {paymentResult && <p>{paymentResult?.pttt} </p>}
-                <p>{DataThanhtoan?.pttt}</p>
+                {paymentResult && <p>{paymentResult?.pttt === "transfer" ?"Thanh toán chuyển khoản":""} </p>}
+                <p>{DataThanhtoan?.pttt==="cash"?"Tiền mặt":""}</p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Tình trạng
                 </p>
                 <p>
-                  Booking của quý khách đã được chúng tôi xác nhận thành công
+                  Booking của quý khách đang chờ chúng tôi phê duyệt, Quý khách đến quầy thanh toán để hoàn thành thụ tục
                 </p>
               </div>
-              <div className="flex gap-5 mt-5">
-                <p className="text-[16px] text-[#2D4271] font-bold">
-                  Thời hạn thanh toán
-                </p>
-                <p>
-                  07/10/23 17:59:12 (Theo giờ Việt Nam. Booking sẽ tự động hủy
-                  nếu quá thời hạn thanh toán trên)
-                </p>
-              </div>
+             
+            
             </div>
           </div>
         </div>

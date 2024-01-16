@@ -352,7 +352,7 @@ const AdminTourAdd: React.FC = () => {
                 name="mo_ta"
                 rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
               >
-                <br /><br /> <br />
+      
                 <CKEditor
                   editor={ClassicEditor}
                   // config={{

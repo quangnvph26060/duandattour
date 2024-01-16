@@ -1,15 +1,25 @@
 import React from "react";
-import { Form, Button, Input, Upload, Checkbox, Space } from "antd";
+import { Form, Button, Input, Upload, Checkbox, Space, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAddLoaiTourMutation } from "../../../../api/LoaiTourApi";
 import { ILoaiTour } from "../../../../interface/loaiTour";
-import moment from 'moment';
+import moment from "moment";
 
 const AdminLoai_tourADD: React.FC = () => {
   const [addLoaiTour] = useAddLoaiTourMutation();
   const navigate = useNavigate();
-
+  const success = () => {
+    message.success("Thêm loại tour thành công");
+  };
+  //khoang trang
+  const checkWhitespace = (rule, value, callback) => {
+    if (/\s/.test(value)) {
+      callback("Không được chứa khoảng trắng");
+    } else {
+      callback();
+    }
+  };
   const onFinish = (values: ILoaiTour) => {
     const formData = new FormData();
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
@@ -19,7 +29,10 @@ const AdminLoai_tourADD: React.FC = () => {
 
     addLoaiTour(formData)
       .unwrap()
-      .then(() => navigate("/admin/tour/loai_tour"))
+
+      .then(() =>  {
+        navigate("/admin/tour/loai_tour")
+        success()})
       .catch((error) => {
         console.log(error);
         // Xử lý lỗi (nếu có)
@@ -63,6 +76,7 @@ const AdminLoai_tourADD: React.FC = () => {
           rules={[
             { required: true, message: "Vui lòng nhập tên loại tour!" },
             { min: 3, message: "Tên tour ít nhất 3 ký tự" },
+            { validator: checkWhitespace } // Kiểm tra khoảng trắng
           ]}
         >
           <Input />
@@ -71,11 +85,9 @@ const AdminLoai_tourADD: React.FC = () => {
           className="w-full"
           label="Trạng thái"
           name="trang_thai"
-          rules={[
-            { required: true, message: "Vui lòng chọn checkout!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn checkout!" }]}
         >
-          <Checkbox.Group style={{ width: '100%' }} defaultValue={[1]}>
+          <Checkbox.Group style={{ width: "100%" }} defaultValue={[1]}>
             <Space direction="vertical">
               <Checkbox value={1}>Kích hoạt</Checkbox>
               <Checkbox value={0}>Vô hiệu hóa</Checkbox>

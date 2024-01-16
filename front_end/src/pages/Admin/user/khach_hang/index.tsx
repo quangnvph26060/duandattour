@@ -9,7 +9,7 @@ import { IUser, IRole, IPermission } from "../../../../interface/user";
 type Props = {};
 
 const Admin_Khachhang: React.FC<Props> = () => {
-  const { data: userdata, error, isLoading } = useGetUserQuery();
+  const { data: userdata, error, isLoading,refetch } = useGetUserQuery();
   const [searchValue, setSearchValue] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState<IUser[]>([]);
 
@@ -40,6 +40,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
   useEffect(() => {
     if (!isLoading) {
       setUserData(userdata || []);
+      refetch()
     }
   }, [isLoading]);
 
@@ -117,11 +118,11 @@ const Admin_Khachhang: React.FC<Props> = () => {
       dataIndex: "roles",
       key: "roles",
     },
-    {
-      title: "Quyền",
-      dataIndex: "permissions",
-      key: "permissions",
-    },
+    // {
+    //   title: "Quyền",
+    //   dataIndex: "permissions",
+    //   key: "permissions",
+    // },
     {
       title: "Action",
       render: ({ key: id }: any) => (
@@ -131,9 +132,9 @@ const Admin_Khachhang: React.FC<Props> = () => {
               <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
             </Button>
 
-            <Button type="primary" danger>
+            {/* <Button type="primary" danger>
               <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
-            </Button>
+            </Button> */}
           </div>
         ) : null
       ),

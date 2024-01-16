@@ -11,14 +11,14 @@ import { IRole } from "../../../../interface/user";
 const Admin_Acountkhachhang_Roles: React.FC = () => {
   const navigate = useNavigate();
   const { idrole } = useParams<{ idrole: any }>();
-  const { data: RoleData } = useGetRolesQuery(idrole || "");
+  const { data: RoleData,refetch } = useGetRolesQuery(idrole || "");
   const Roles = RoleData || {};
 
   const user = Roles.user; // Các vai trò
   const userRole = Roles.role; // Các vai trò
   const all_column_roles = Roles.all_column_roles; // vai trò của user đang phân
   // Trạng thái lựa chọn hiện tại
-
+const success = ('Cập nhật vai trò thành công')
   // add roles
   const [addRoles] = useAddRolesMutation();
   const [editRoles] = useEditRolesMutation();
@@ -37,14 +37,19 @@ const Admin_Acountkhachhang_Roles: React.FC = () => {
   const handleAddRoles = () => {
     editRoles({ role: selectedRole, id: idrole })
       .unwrap()
+     
       .then(() => {
+        refetch()
+     
         navigate("/admin/customer_account");
-        window.location.reload();
+  
       })
+    
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);
       });
+ 
   };
   const [selectedRole, setSelectedRole] = useState("");
 

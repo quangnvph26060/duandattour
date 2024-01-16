@@ -166,9 +166,10 @@ const LayoutAdmin = () => {
             </p>
           </div>
           <Menu className="h-screen" theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item className="ml-[-10px]" key="1" icon={<AiFillFund />}>
+          {localStorage.getItem('role') === 'admin' ? 
+            (  <Menu.Item className="ml-[-10px]" key="1" icon={<AiFillFund />}>
               <Link to="/admin/dashboard">Thống kê</Link>
-            </Menu.Item>
+            </Menu.Item>) : null}
             <Menu.SubMenu key="2" icon={<FaLuggageCart />} title="Tour du lịch">
               <Menu.Item icon={<FaSuitcase />} key="2-1">
                 <Link to="/admin/tour">Tất cả các tour</Link>

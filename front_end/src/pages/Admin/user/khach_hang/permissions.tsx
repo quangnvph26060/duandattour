@@ -11,7 +11,7 @@ import { IRole } from "../../../../interface/user";
 const Admin_Acountkhachhang_Permisssions: React.FC = () => {
   const navigate = useNavigate();
   const { idpermission } = useParams<{ idpermission: any }>();
-  const { data: PermissionsData } = useGetPermissionsQuery(idpermission || "");
+  const { data: PermissionsData, refetch } = useGetPermissionsQuery(idpermission || "");
   const Permissions = PermissionsData || {};
 
   const user = Permissions.user; // Các quyền và tt user
@@ -26,7 +26,9 @@ const Admin_Acountkhachhang_Permisssions: React.FC = () => {
   const onFinish = (values: IUser) => {
     addPermissions(values)
       .unwrap()
-      .then(() => navigate("/admin/customer_account"))
+      .then(() =>
+       navigate("/admin/customer_account"))
+       .then(()=> refetch())
       .catch((error) => {
         setErrors(error.data.message);
         setLoading(false);
@@ -71,10 +73,11 @@ const Admin_Acountkhachhang_Permisssions: React.FC = () => {
   // cập nhật quyền
   const handleAddPermissions = () => {
     editPermissions({ permission: selectedRoles, id: idpermission })
-      .unwrap()
-      .then(() => {
+      .unwrap().
+   
+      then(() => {
         navigate("/admin/customer_account");
-        window.location.reload();
+     
       })
       .catch((error) => {
         setErrors(error.data.message);

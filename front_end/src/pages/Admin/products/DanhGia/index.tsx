@@ -74,11 +74,12 @@ const AdminDanhGia = () => {
                 </td>
                 <td className="border  p-2">{danhgia.id_tour}</td>
                 <td className="border p-2">{danhgia.noi_dung}</td>
+                {  localStorage.getItem("role") == 'admin' ?
                 <td className="border text-center p-2">
                   <Button type="primary" danger onClick={() => handleDelete(danhgia.id)}>
                     Xóa
                   </Button>
-                </td>
+                </td>:""}
               </tr>
             ))
           ) : (

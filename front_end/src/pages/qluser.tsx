@@ -15,6 +15,7 @@ const QLuser = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [name, setName] = useState('');
+    const [image, setImage] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [idCccd, setIdCccd] = useState('');
@@ -22,32 +23,40 @@ const QLuser = () => {
     const Td = JSON.parse(localStorage.getItem('id'));
 
     const role = localStorage.getItem('role');
-    useEffect(() => {
+    const [isDivVisible, setDivVisible] = useState(false);
+    const toggleDiv = () => {
+        setDivVisible(!isDivVisible);
+    };
+    const closeDiv = () => {
+        updateProfile();
+        setDivVisible(false);
+    };
+    const updateProfile = () => {
+        fetch("http://localhost:8000/api/user", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
 
-        if (token) {
-            // Gửi yêu cầu API để lấy thông tin người dùng từ token
-            fetch("http://localhost:8000/api/user", {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            },
+        })
+            .then((response) => response.json())
+            .then((userData) => {
+                setUserId(userData);
+                setName(userData.name);
+                setImage(userData.image);
+                setEmail(userData.email);
+                setPhoneNumber(userData.sdt);
+                setIdCccd(userData.cccd);
+                setAddress(userData.dia_chi);
+
             })
-                .then((response) => response.json())
-                .then((userData) => {
-                    setUserId(userData);
-
-                    setName(userData.name);
-                    setEmail(userData.email);
-                    setPhoneNumber(userData.sdt);
-                    setIdCccd(userData.cccd);
-                    setAddress(userData.dia_chi);
-
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-    }, [token])
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    useEffect(() => {
+        updateProfile();
+    }, [])
 
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -73,36 +82,33 @@ const QLuser = () => {
             console.error('Lỗi khi đăng xuất:', error);
         }
     };
-    const [isDivVisible, setDivVisible] = useState(false);
-
-    const toggleDiv = () => {
-
-        setDivVisible(!isDivVisible);
-    };
-
-    const closeDiv = () => {
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-        setDivVisible(false);
-    };
-    // console.log(usersId);
+    // const filePath = image;
+    // let fileName = filePath.split("\\").pop();
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+      };
     const handleUpdate = (e) => {
         e.preventDefault();
-        const userData = {
-            id: usersId.id,
-            name: name,
-            dia_chi: address, // Sử dụng trường 'dia_chi' thay cho 'address'
-            email: email,
-            sdt: phoneNumber, // Sử dụng trường 'sdt' thay cho 'phoneNumber'
-            cccd: idCccd, // Sử dụng trường 'cccd' thay cho 'idCccd'
-        };
+        const formData = new FormData();
+
+        formData.append('id', usersId.id);
+        formData.append('name', name);
+        formData.append('image', image); 
+        formData.append('dia_chi', address);
+        formData.append('email', email);
+        formData.append('sdt', phoneNumber);
+        formData.append('cccd', idCccd);
 
         axios
-            .put('http://127.0.0.1:8000/api/updateUser', userData)
+            .post('http://127.0.0.1:8000/api/updateUser', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Đặt kiểu nội dung là multipart/form-data
+                    'X-HTTP-Method-Override': 'PUT',
+                },
+            })
             .then((response) => {
                 console.log(response.data);
-                console.log('quang');
                 alert('Đã cập nhật thành công');
                 // Xử lý response từ phía server sau khi cập nhật thành công
             })
@@ -111,6 +117,7 @@ const QLuser = () => {
                 // Xử lý lỗi khi cập nhật không thành công
             });
     };
+
     const [count, setCount] = useState('');
     const id = usersId.id;
     axios.get('http://localhost:8000/api/CountTour', {
@@ -233,7 +240,7 @@ const QLuser = () => {
                                             <td className="px-6 py-4 text-right mr-4">
                                             </td>
                                         </tr>
-                                       
+
                                         <tr className="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th
                                                 scope="row"
@@ -268,6 +275,7 @@ const QLuser = () => {
                 <div
                     className="container mx-auto box-border bg-black bg-opacity-50 w-full h-[1000px] fixed z-10 top-0 "
                     id="buttonToShowHide"
+                    style={{ background: "none" }}
                 >
                     <div className="border rounded-md fixed top-[5%] left-[25%] z-20 bg-[#ffffff] w-1/2 shadow-2xl shadow-gray-400">
                         <div className="flex justify-between items-center px-5 py-3 border-b bg-blue-500 rounded-tl-md rounded-tr-md ">
@@ -278,7 +286,7 @@ const QLuser = () => {
                             </button>
                             <button className="close-img" onClick={closeDiv}>
                                 <img src="/src/img/close.png" alt="" />
-                                <p className='bg-slate-600'>Đóng</p>
+                                {/* <p className='bg-slate-600'>Đóng</p> */}
                             </button>
                         </div>
                         {/* modal */}
@@ -295,6 +303,16 @@ const QLuser = () => {
 
                                 />
                             </label>
+                            <label htmlFor="" className="form-edit">
+                                <p>Hình ảnh: </p>
+                                <img
+                                    src={`http://localhost:8000/storage/${image}`}
+                                    alt="Hình ảnh"
+                                    style={{ width: "100px", height: "100px", borderRadius: "50%" }} // Thay đổi kích thước hình ảnh theo yêu cầu
+                                />
+
+                            </label>
+                            <input type="file" name='image' onChange={handleImageChange} />
                             <label htmlFor="" className="mt-3 form-edit">
                                 <p className="mt-3">Địa chỉ email </p>
                                 <input
