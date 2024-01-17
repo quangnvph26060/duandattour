@@ -140,7 +140,7 @@ const Login = () => {
             </button>
           </a>
         </div>
-        <div className="flex justify-center mt-10">
+        {/* <div className="flex justify-center mt-10">
           <button className="flex items-center bg-blue-500 text-white py-2 px-4 rounded mr-2">
             <FontAwesomeIcon icon={faFacebook} className="mr-2" />
             Facebook
@@ -149,7 +149,7 @@ const Login = () => {
             <FontAwesomeIcon icon={faGoogle} className="mr-2" />
             Google
           </button>
-        </div>
+        </div> */}
         <footer className="mt-8 text-center text-gray-500">
           &copy; {new Date().getFullYear()} Your Website. All rights reserved.
         </footer>

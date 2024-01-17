@@ -161,7 +161,7 @@ const Dmkuser = () => {
                             </div>
                             <form className="change-password px-5" onSubmit={handlePasswordChange}>
                                 <div className="col-12">
-                                    <div className="mb-3 row flex justify-between">
+                                    <div className="mb-3 row flex ">
                                         <label htmlFor="inputOldPassword" className="col-sm-3 col-form-label py-2">Mật khẩu cũ</label>
                                         <div className="col-sm-7 px-5">
                                             <input
@@ -174,13 +174,13 @@ const Dmkuser = () => {
                                                 onChange={(e) => setOldPassword(e.target.value)}
                                             />
                                         </div>
-                                        <div className="col d-inline-flex align-items-center py-2">
+                                        {/* <div className="col d-inline-flex align-items-center py-2">
                                             <a className="font-medium pl-28 text-blue-500" onSubmit={handleForgotPassword} href="#">Quên mật khẩu?</a>
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div className="mb-3 row flex gap-32">
+                                    <div className="mb-3 row flex ">
                                         <label htmlFor="inputNewPassword" className="col-sm-3 col-form-label py-2">Mật khẩu mới</label>
-                                        <div className="col-sm-7 px-5">
+                                        <div className="col-sm-7  px-5">
                                             <input
                                                 className="form-control border border-gray-300 rounded-md lg:w-[500px] md:w-[300px] h-10 px-3"
                                                 id="PasswordNew"
@@ -194,7 +194,7 @@ const Dmkuser = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mb-3 row flex gap-20 container">
+                                <div className="mb-3 row flex  ">
                                     <label htmlFor="inputConfirmPassword" className="py-2">Nhập lại mật khẩu mới</label>
                                     <div className="col-sm-7 px-[7px]">
                                         <input

@@ -4,7 +4,13 @@ import { useGetTourByIdQuery } from '../api/TourApi';
 import { MdDeleteOutline } from "react-icons/md"
 
 const Favorite = () => {
-
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const handleLogout = async (e) => {
     e.preventDefault();
     const confirmLogout = window.confirm("Bạn chắc chắn muốn đăng xuất?");
@@ -204,7 +210,7 @@ const Favorite = () => {
                <p className="tour-name text-lg font-semibold px-3 text-blue-950 text-left">{item.ten_tour}</p>
              
           
-             <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_khoi_hanh}</p>
+             <p className='px-4 text-sm text-left pb-5 py-2'>Nơi khởi hành:{item.diem_di}</p>
 
              <div className='px-3 pb-3 flex gap-10 justify-between'>
                <button
@@ -216,7 +222,7 @@ const Favorite = () => {
                </button>
                <p className='flex items-center px-5 text-red-500 font-semibold py-3 text-2xl'>
                  <i className="fas fa-money-bill-wave mr-2"></i>
-                 {item.gia_nguoilon}₫
+                 {formatCurrency(item.gia_nguoilon)}
                </p>
              </div>
              {/* Thêm các chi tiết khác về tour tại đây */}

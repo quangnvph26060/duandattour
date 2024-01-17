@@ -11,6 +11,7 @@ use App\Models\ThanhToan;
 use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use App\Models\User;
+use App\Models\PostModel;
 use Illuminate\Http\Request;
 use PHPUnit\Metadata\Uses;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class ApiStatisticalController extends Controller
         $totalUser = User::whereHas('roles', function ($query) {
             $query->where('name', 'khach_hang');
         })->with('roles', 'roles.permissions')->count();
-        $totalNews = NewsModel::count();
+        $totalNews = PostModel::count();
         $currentDate = date('Y-m-d');
         $currentMonth = date('m');
         $currentYear = date('Y');

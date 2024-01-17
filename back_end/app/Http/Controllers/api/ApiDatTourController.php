@@ -249,7 +249,7 @@ class ApiDatTourController extends Controller
     public function CountTour(Request $request)
     {
         $countTour = DatTour::where('ma_khach_hang', $request->input('id'))->where('trang_thai', 1)
-        ->where('xac_nhan', 1)->count();
+       ->count();
         return response()->json(['count' => $countTour]);
     }
 }

@@ -273,9 +273,11 @@ Route::prefix('admin')->group(function () {
         Route::put('/{id}', [ApiLoaiTourController::class, 'update']);
         Route::delete('/{id}', [ApiLoaiTourController::class, 'destroy']);
     });
+    Route::get('/listtouradmin', [ApiTourController::class, 'index1']);
     Route::prefix('tour')->group(function () {
         Route::get('/{id}', [ApiTourController::class, 'ShowTour']);
         Route::get('/', [ApiTourController::class, 'index']);
+      
         Route::post('/', [ApiTourController::class, 'store']);
         // Route::get('/{id}', [ApiTourController::class, 'show']);
         Route::put('/{id}', [ApiTourController::class, 'update']);

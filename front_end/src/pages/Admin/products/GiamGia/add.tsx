@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Input, DatePicker, Select } from "antd";
+import { Form, Button, Input, DatePicker, Select, InputNumber } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useAddDiscountMutation } from "../../../../api/discountApi";
@@ -62,16 +62,17 @@ const AdminGiam_GiaADD: React.FC = () => {
                         { min: 5, message: 'Mã giảm giá ít nhất 5 ký tự' },
                     ]}
                 >
-                    <Input />
+                  <Input /> 
                 </Form.Item>
                 <Form.Item
                     label="Tổng phần trăm(%) / tiền(K)"
                     name="percentage"
                     rules={[
                         { required: true, message: 'Vui lòng nhập giá trị giảm giá!' },
+                        
                     ]}
                 >
-                    <Input />
+                     <InputNumber />
                 </Form.Item>
                 <Form.Item
                     label="Điều kiện áp dụng"

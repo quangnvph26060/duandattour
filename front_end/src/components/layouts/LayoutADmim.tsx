@@ -236,6 +236,14 @@ const LayoutAdmin = () => {
                 </Menu.Item>
               </Menu.SubMenu>
             </Menu.SubMenu>
+            <Menu.SubMenu key="6" icon={<MdPermMedia />} title="Banner logo  ">
+            <Menu.Item icon={<FaBook />} key="6-1-2">
+                  <Link to="/admin/banner_logo">Banner </Link>
+                </Menu.Item>
+                <Menu.Item icon={<FaBook />} key="6-1-3">
+                  <Link to="/admin/logo">Logo </Link>
+                </Menu.Item>
+            </Menu.SubMenu>
             <Menu.Item>
                 <Link to={'/admin/banner_logo'}>Quản lý banner</Link>
               </Menu.Item>

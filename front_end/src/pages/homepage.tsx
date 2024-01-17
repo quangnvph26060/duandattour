@@ -66,7 +66,7 @@ const buttonStyle = {
   cursor: "pointer",
   transition: "background 0.3s",
 };
-
+import '../page.css'
 const Countdown = ({ expiryDate }) => {
   const [remainingTime, setRemainingTime] = useState("");
 
@@ -343,8 +343,9 @@ const HomePage = () => {
           speed={500}
           slidesToShow={1}
           slidesToScroll={2}
-            arrows={false}
-            autoplay={true}
+          arrows={false}
+          autoplay={true}
+          autoplaySpeed={1000}
           responsive={[
             {
               breakpoint: 1024,
@@ -379,7 +380,7 @@ const HomePage = () => {
                     src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
 
                     alt=""
-                    className="rounded"
+                    className="rounded banner"
                     width="600px"
                     height="500px"
                   />
@@ -555,20 +556,20 @@ const HomePage = () => {
                 key={product.id}
                 className="bg-white p-4 rounded-lg shadow-md md:w-1/3 w-full"
               >
-                <Link to={`/tour/${product.id}`} key={product.id}>
+             
                   <img
                     className="rounded-lg w-full h-40 object-cover mb-4"
                     src={`http://localhost:8000/storage/${product.image}`}
                     alt={product.name}
                   />
-                </Link>
+               
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="lg:m-10 m-0">
+      {/* <div className="lg:m-10 m-0">
         <div className="lg:m-10 m-0">
           <h2 className="mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 cn_dl cl-td">
             KHÁM PHÁ SẢN PHẨM POLYTOUR!!!
@@ -600,25 +601,22 @@ const HomePage = () => {
               },
             ]}
           >
-            {latestTours.map((image1) => (
+            {latestTours.map((image5) => (
               <div
-                key={image1.id}
+                key={image5.id}
                 className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center "
               >
-                <Link to={`/tours/${image1.id}`}>
-                  <p className="font-bold py-2 px-2">
-                    {" "}
-                    <img
-                      className="mt-4 rounded-lg w-full h-50 object-cover"
-                      src={`http://localhost:8000/storage/${image1.image_dd}`}
-                    />
-                  </p>
-                </Link>
+
+                <Link to={`/tours/${image5.id}`}><p className='font-bold py-2 px-2'>  <img
+                  className="mt-4 rounded-lg w-full h-50 object-cover"
+                  src={`http://localhost:8000/storage/${image5.image_dd}`}
+                /></p></Link>
+
               </div>
             ))}
           </Slider>
         </div>
-      </div>
+      </div> */}
       {/*  */}
 
       <div className="lg:m-10 m-0 ">
@@ -681,19 +679,22 @@ const HomePage = () => {
                   <p className=" font-bold ">
                     Giá Người Lớn: {formatCurrency(items.gia_nguoilon)}
                   </p>
-                  <div className="bg-yellow-300 mt-10 py-2 text-center font-semibold rounded-xl text-white shadow-xl">
-                    10% Giảm
-                  </div>
+                
                 </div>
                 <div className="px-3 py-4 grid grid-cols-2 gap-7">
+                  <Link to={`/booktour/${items.id}`}>
                   <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">
-                    Đặt Ngay
-                  </button>
-                  <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl">
-                    <a href="" className="text-blue-600">
-                      Xem chi tiết
-                    </a>
-                  </button>
+                  Đặt Ngay
+                  </button></Link>
+                
+                  <Link to={`/tours/${items.id}`}>
+                      <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl">
+                        <p  className="text-blue-600">
+                          Xem chi tiết
+                        </p>
+                     
+                      </button>
+                      </Link>
                 </div>
               </div>
             </div>
@@ -766,7 +767,7 @@ const HomePage = () => {
                     arrows={false}
                     autoplay={true}
                     autoplaySpeed={3000}
-                    initialSlide={currentImageIndex} // Set the initial slide to the current main image index
+                    initialSlide={currentImageIndex} 
                     responsive={[
                       {
                         breakpoint: 1024,

@@ -41,12 +41,12 @@ const Logo = () => {
     },
     {
       title: 'Hình ảnh Logo',
-      dataIndex: 'hinh_logo',
-      key: 'hinh_logo',
-      render: (hinh_logo, record) => (
+      dataIndex: 'image_logo',
+      key: 'image_logo',
+      render: (image_logo) => (
         <img
-          src={`http://localhost:8000/storage/${hinh_logo}`}
-          alt={`Image ${record.id}`}
+          src={`http://localhost:8000/storage/${image_logo}`}
+      
           style={{ width: '100px', cursor: 'pointer' }}
         />
       ),

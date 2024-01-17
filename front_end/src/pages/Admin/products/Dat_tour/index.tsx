@@ -92,11 +92,11 @@ const ADmin_DatTour = (props: Props) => {
           if (message === "Xác nhận đơn đặt tour thành công") {
             // Chuyển hướng đến trang đã thanh toán
 
-            navigate("/admin/tour/tour_dathanhtoan");
+       
             refetch();
           } else if (message === "Cập nhập chưa thanh toán thành công!!") {
             // Chuyển hướng đến trang chưa thanh toán
-            navigate("/admin/tour/tour_chuathanhtoan");
+          
             refetch();
           }
 
@@ -206,7 +206,7 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
-      tong_tien_tt: ThanhToaninfor.tong_tien_tt,
+      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
@@ -414,11 +414,11 @@ const ADmin_DatTour = (props: Props) => {
       key: "gia_treem",
     },
 
-    {
-      title: "Mô Tả",
-      dataIndex: "mo_ta",
-      key: "mo_ta",
-    },
+    // {
+    //   title: "Mô Tả",
+    //   dataIndex: "mo_ta",
+    //   key: "mo_ta",
+    // },
     // Thêm các cột khác tương ứng với thông tin tour
   ];
   //loc ngay
@@ -497,7 +497,7 @@ const handleSearchTourNameChange = (event) => {
         <Table className="mt-5"
           dataSource={filteredDataSource}
           columns={columns}
-          pagination={{ pageSize: 3 }}
+          pagination={{ pageSize: 5 }}
         />
       }
 
@@ -577,8 +577,8 @@ const handleSearchTourNameChange = (event) => {
               </tbody>
             </table>
 
-            {/* Thông tin trạng thái thanh toán và xác nhận */}
-            <div className="mt-4">
+       
+            {/* <div className="mt-4">
               <h2 className="text-xl font-bold mb-2">Sửa Trạng thái</h2>
               <div>
                 <p>
@@ -587,10 +587,9 @@ const handleSearchTourNameChange = (event) => {
                     <Switch
                       defaultChecked={selectedData.trang_thai === 1}
                       onChange={(checked) => {
-                        // Nếu người dùng bật switch, set trạng thái thành 1 (Đã thanh toán)
-                        // Ngược lại, set trạng thái thành 0 (Chưa thanh toán)
+                  
                         const newTrangThai = checked ? 1 : 0;
-                        // Gọi hàm để lưu trạng thái mới (selectedData.id, newTrangThai, selectedXacNhan);
+                     
                       }}
                     />
                   ) : (
@@ -611,10 +610,9 @@ const handleSearchTourNameChange = (event) => {
                     <Switch
                       defaultChecked={selectedData.xac_nhan === 1}
                       onChange={(checked) => {
-                        // Nếu người dùng bật switch, set trạng thái thành 1 (Đã thanh toán)
-                        // Ngược lại, set trạng thái thành 0 (Chưa thanh toán)
+                    
                         const newxacnhan = checked ? 1 : 0;
-                        // Gọi hàm để lưu trạng thái mới (selectedData.id, newTrangThai, selectedXacNhan);
+                     
                       }}
                     />
                   ) : (
@@ -631,7 +629,7 @@ const handleSearchTourNameChange = (event) => {
                 </p>
               </div>
 
-              {/* Nút action để sửa trạng thái */}
+          
               <div className="mt-4">
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -640,7 +638,7 @@ const handleSearchTourNameChange = (event) => {
                   Lưu
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </Modal>

@@ -1,13 +1,12 @@
-
 import { FaQrcode, FaRegCalendarAlt, FaRegCalendarTimes } from "react-icons/fa";
-import { Link, useParams } from 'react-router-dom';
-import logo from "./img/logo.jpg"
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { format } from 'date-fns';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { Link, useParams } from "react-router-dom";
+import logo from "./img/logo.jpg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { format } from "date-fns";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useGetCheckbooktourQuery } from "../../api/Check";
 import { data } from "autoprefixer";
 type Props = {};
@@ -36,61 +35,60 @@ const Info_tour_bocking = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     // Kiểm tra nếu trạng thái đã được lưu trong localStorage
-    if (urlParams.get('vnp_ResponseCode') && !localStorage.getItem('paymentSuccess')) {
-      alert('Thanh toán VNPAY thành công');
+    if (
+      urlParams.get("vnp_ResponseCode") &&
+      !localStorage.getItem("paymentSuccess")
+    ) {
+      alert("Thanh toán VNPAY thành công");
       setAlertShown(true);
     }
     const paymentData = {
-      vnp_Amount: urlParams.get('vnp_Amount'), // tiền 
-      vnp_BankCode: urlParams.get('vnp_BankCode'), // ngân hàng 
-      vnp_PayDate: urlParams.get('vnp_PayDate'), // ngày thanh toán 
-      vnp_ResponseCode: urlParams.get('vnp_ResponseCode'), // trạng thái 
-      vnp_TxnRef: urlParams.get('vnp_TxnRef'),
+      vnp_Amount: urlParams.get("vnp_Amount"), // tiền
+      vnp_BankCode: urlParams.get("vnp_BankCode"), // ngân hàng
+      vnp_PayDate: urlParams.get("vnp_PayDate"), // ngày thanh toán
+      vnp_ResponseCode: urlParams.get("vnp_ResponseCode"), // trạng thái
+      vnp_TxnRef: urlParams.get("vnp_TxnRef"),
     };
 
-    axios.get('http://localhost:8000/api/showResult', { params: paymentData })
-      .then(response => {
+    axios
+      .get("http://localhost:8000/api/showResult", { params: paymentData })
+      .then((response) => {
         setPaymentResult(response.data);
         console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
-    axios.post('http://localhost:8000/api/paymentresult', paymentData)
-      .then(response => {
+    axios
+      .post("http://localhost:8000/api/paymentresult", paymentData)
+      .then((response) => {
         setPaymentResult(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
 
   useEffect(() => {
     if (alertShown) {
-      console.log('Alert shown:', paymentResult);
+      console.log("Alert shown:", paymentResult);
     }
   }, [alertShown, paymentResult]);
   ////
   const { id } = useParams<{ id: any }>();
   const { data: Data } = useGetCheckbooktourQuery(id || "");
   const DataCheck = Data?.data || [];
-  console.log('Daata:', DataCheck);
-  const DataTour = DataCheck.tours
+  console.log("Daata:", DataCheck);
+  const DataTour = DataCheck.tours;
   // console.log(DataTour);
-  const DataThanhtoan = DataCheck.thanh_toan
+  const DataThanhtoan = DataCheck.thanh_toan;
   // console.log(DataThanhtoan.tong_tien_tt);
   console.log(DataTour);
 
-
-
   return (
-
-
     <div className="w-[80%] max-h-max  mx-auto ">
-
-
-      <div className="flex gap-3">
+      <div className="flex gap-3 mb-52">
         <div className="w-2/3 ">
           {" "}
           <div className="thongtinlienlac border py-5 px-5  max-h-[1000px] bg-white rounded">
@@ -103,7 +101,9 @@ const Info_tour_bocking = () => {
             <div className="grid grid-cols-3 mt-5   ">
               <div className="py-5">
                 <p className="text-gray-400 text-[16px]">Họ tên</p>
-                <p className="text-[16px] text-[#2D4271] font-bold">{DataCheck.ten_khach_hang}</p>
+                <p className="text-[16px] text-[#2D4271] font-bold">
+                  {DataCheck.ten_khach_hang}
+                </p>
               </div>
               <div className="py-5">
                 <p className="text-gray-400 text-[16px]">Email</p>
@@ -113,7 +113,9 @@ const Info_tour_bocking = () => {
               </div>
               <div className="py-5">
                 <p className="text-gray-400 text-[16px]">Địa chỉ</p>
-                <p className="text-[16px] text-[#2D4271] font-bold">{DataCheck.dia_chi}</p>
+                <p className="text-[16px] text-[#2D4271] font-bold">
+                  {DataCheck.dia_chi}
+                </p>
               </div>
               <div>
                 <p className="text-gray-400 text-[16px]">Di động</p>
@@ -143,61 +145,81 @@ const Info_tour_bocking = () => {
                   Số booking
                 </p>
                 <p>
-                {DataThanhtoan && <p>{DataThanhtoan?.ma_giao_dich} </p>}
-                {paymentResult && <p>{paymentResult?.ma_giao_dich} </p>} (Quý khách vui lòng nhớ số booking để thuận tiện
-                  cho các giao dịch sau này)
+                  {DataThanhtoan && <p>{DataThanhtoan?.ma_giao_dich} </p>}
+                  {paymentResult && <p>{paymentResult?.ma_giao_dich} </p>} (Quý
+                  khách vui lòng nhớ số booking để thuận tiện cho các giao dịch
+                  sau này)
                 </p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Trị giá booking
                 </p>
-                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
-                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
+                {DataThanhtoan && (
+                  <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>
+                )}
+                {paymentResult && (
+                  <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>
+                )}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Số tiền đã thanh toán
                 </p>
-                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
-                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
+                {DataThanhtoan && (
+                  <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>
+                )}
+                {paymentResult && (
+                  <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>
+                )}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Trạng thái
                 </p>
                 {paymentResult ? (
-                  <p>{paymentResult?.ma_phan_hoi === "00" ? "Đã thanh toán" : "Chưa thanh toán"}</p>
+                  <p>
+                    {paymentResult?.ma_phan_hoi === "00"
+                      ? "Đã thanh toán"
+                      : "Chưa thanh toán"}
+                  </p>
                 ) : (
-                  <p>{DataCheck && DataCheck?.trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán"}</p>
+                  <p>
+                    {DataCheck && DataCheck?.trang_thai === 0
+                      ? "Chưa thanh toán"
+                      : "Đã thanh toán"}
+                  </p>
                 )}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Ngày đăng ký
                 </p>
-                {paymentResult && (
-                  <p>{(paymentResult?.updated_at)}</p>
-                )}
+                {paymentResult && <p>{paymentResult?.updated_at}</p>}
                 <p>{DataThanhtoan?.ngay_thanh_toan}</p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Hình thức thanh toán:
                 </p>
-                {paymentResult && <p>{paymentResult?.pttt === "transfer" ?"Thanh toán chuyển khoản":""} </p>}
-                <p>{DataThanhtoan?.pttt==="cash"?"Tiền mặt":""}</p>
+                {paymentResult && (
+                  <p>
+                    {paymentResult?.pttt === "transfer"
+                      ? "Thanh toán chuyển khoản"
+                      : ""}{" "}
+                  </p>
+                )}
+                <p>{DataThanhtoan?.pttt === "cash" ? "Tiền mặt" : ""}</p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Tình trạng
                 </p>
                 <p>
-                  Booking của quý khách đang chờ chúng tôi phê duyệt, Quý khách đến quầy thanh toán để hoàn thành thụ tục
+                  Booking của quý khách đang chờ chúng tôi phê duyệt, Quý khách
+                  đến quầy thanh toán để hoàn thành thụ tục
                 </p>
               </div>
-             
-            
             </div>
           </div>
         </div>
@@ -208,16 +230,23 @@ const Info_tour_bocking = () => {
             <br />
             <p className="mt-3"></p> <hr />
           </p>
-          <p className=" text-[#2D4271] text-base mt-5 font-semibold">
-            {DataTour?.ten_tour}
-          </p>
-          <p className=" text-[#2D4271] text-base font-semibold">
+          <div className="flex">
+            <img
+              className=" w-[50px], h-[70px] mt-8 ,px-2 rounded-md  "
+              src={`http://localhost:8000/storage/${DataTour?.image_dd}`}
+            />
+            <p className=" text-[#2D4271] text-base mt-5 font-semibold">
+              {DataTour?.ten_tour}
+            </p>
+          </div>
+
+          {/* <p className=" text-[#2D4271] text-base font-semibold">
             Số booking: 231007278935
             <p className="mt-3"></p> <hr />
             <p className=" text-[#2D4271] text-base mt-5 font-semibold">
               Mã tour: NDTUPV59160-009-121023VU
             </p>
-          </p>
+          </p> */}
 
           <div className="time mt-8 ">
             <div className="flex gap-5 items-center">
@@ -247,9 +276,9 @@ const Info_tour_bocking = () => {
             <p className=" text-[#2D4271] text-base mt-5 font-semibold">
               Nơi khởi hành {DataTour?.diem_khoi_hanh}
             </p>
-            <p className="text-center items-center ml-[50px] text-[200px]">
+            {/* <p className="text-center items-center ml-[50px] text-[200px]">
               <FaQrcode />
-            </p>
+            </p> */}
             <p className=" text-[#2D4271] text-base mt-5 font-normal">
               Để xem thông tin chương trình tour mới nhất Quý khách có thể dùng
               điện thoại để quét mã QR bên cạnh để truy cập vào website. Để cài
@@ -259,7 +288,8 @@ const Info_tour_bocking = () => {
           </div>
         </div>
       </div>
-      <div className="border py-5  px-5 rounded-md max-h-100px mt-14 bg-white w-full">
+
+      {/* <div className="border py-5  px-5 rounded-md max-h-100px mt-14 bg-white w-full">
         <p className="text-[22px]  text-red-500 font-bold">
           DANH SÁCH HÀNH KHÁCH
           <p className="mt-5">
@@ -299,7 +329,7 @@ const Info_tour_bocking = () => {
         <div>
 
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

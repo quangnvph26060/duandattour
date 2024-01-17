@@ -63,6 +63,16 @@ class ApiTourController extends Controller
         return response()->json(['data' => $tours]);
     }
 
+    public function index1()
+    {
+
+        $tours = TourModel::with('images', 'phuongTien', 'khachSan', 'lichTRinh')->get();
+        if ($tours->isEmpty()) {
+            return response()->json(['message' => 'No tours found'], 404);
+        }
+        return response()->json(['data' => $tours]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

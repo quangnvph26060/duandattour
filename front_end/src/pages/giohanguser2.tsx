@@ -168,15 +168,15 @@ const Giohanguser2 = () => {
 
                                 </div>
                             </div>
-                            <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt</h3></a>
-                            <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
+                            <a href="/giohanguser2"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt</h3></a>
+                            {/* <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a> */}
                             <a href="/favorite"><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
                     <article className='w-4/5 container'  >
                         <div className='flex border justify-between px-10 py-5 rounded-lg'>
-                            <a href="/giohanguser">Tất cả</a>
-                            <a href="/giohanguser1">Chưa thanh toánn</a>
+                           
+                            <a href="/giohanguser1">Chưa thanh toán</a>
                             <a href="giohanguser2">Đã Thanh toán</a>
                         </div>
                         <div className='py-5'>

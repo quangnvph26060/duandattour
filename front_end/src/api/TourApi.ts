@@ -16,7 +16,7 @@ const TourApi = createApi({
     }),
     endpoints: (builder) => ({
         getTour: builder.query<ITour[], void>({
-            query: () => `/tour`,
+            query: () => `/listtouradmin`,
             providesTags: ['Tour']
         }),
         addTour: builder.mutation<ITour, ITour>({
@@ -56,6 +56,7 @@ const TourApi = createApi({
             query: (id) => `/booktour/${id}`,
             providesTags: ['Tour']
         })
+        
 
 
     })

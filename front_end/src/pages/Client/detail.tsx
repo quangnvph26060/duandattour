@@ -43,7 +43,7 @@ const sliderSettings = {
   autoplay: true, // Tự động chuyển đổi
   autoplaySpeed: 3000, // Thời gian giữa các chuyển đổi (miliseconds)
 };
-
+import '../../page.css'
 const DetailPage = (props: Props) => {
   const radius = {
     borderRadius: "10px",
@@ -147,7 +147,7 @@ const DetailPage = (props: Props) => {
 
 
   return (
-    <div className="mb-[5000px]">
+    <div className="mb-[3000px]">
       <div className=" mx-auto box-border">
      
         {/* Header trên ội dung dưới*/}
@@ -428,7 +428,7 @@ const DetailPage = (props: Props) => {
               <div className="bg-white container-detail mx-auto box-border">
                 <div className="text-center font-bold text-[#2D4271] text-[25px] py-5">
                   <h2>Đánh giá</h2>
-                  <div>
+                  <div className="danhgia">
                     {/* Check if showEvaluate is not empty before rendering */}
                     {showEvaluate && showEvaluate.length > 0 && (
                       <div className="mt-5">
@@ -439,7 +439,7 @@ const DetailPage = (props: Props) => {
                               <div className=" " key={evaluation.id}>
                                 <div className="flex items-center justify-center">
                                   <img
-                                    className="rounded-full w-[50px], h-[50px]"
+                                    className=" rounded-full w-[50px], h-[50px]"
                                     src={`http://localhost:8000/storage/${evaluation.id_user.image}`}
                                 
                                 

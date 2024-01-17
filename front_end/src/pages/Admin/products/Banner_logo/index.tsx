@@ -47,9 +47,9 @@ const Banner_logo = () => {
       title: 'Hình ảnh Banner',
       dataIndex: 'image_banner',
       key: 'image_banner',
-      render: () => (
+      render: (image_banner) => (
         <img
-          src={`http://localhost:8000/storage/${imagesData[0].image_banner}`}
+          src={`http://localhost:8000/storage/${image_banner}`}
           alt={`img`}
           style={{ width: '200px', cursor: 'pointer' }}
         />

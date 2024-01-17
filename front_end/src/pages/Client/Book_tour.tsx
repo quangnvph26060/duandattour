@@ -761,7 +761,7 @@ const BookTour = () => {
                             />
                             <div>
                               <h1> Giảm Giá {item.percentage}{item.percentage < 100 ? " %":" vnđ"} </h1>
-                              <p>Cho những tour trên {item.minprice}đ</p>
+                              <p>Cho những tour trên {formatCurrency(item.minprice)}</p>
                               <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                             </div>
                           </div>
@@ -777,7 +777,7 @@ const BookTour = () => {
                             />
                             <div>
                               <h1> Giảm Giá {item.percentage}{item.percentage < 100 ? " %":" vnđ"} </h1>
-                              <p>Cho những tour trên {item.minprice}đ</p>
+                              <p>Cho những tour trên {formatCurrency(item.minprice)}</p>
                               <p className="text-gray-400 text-xs"> HSD {new Date(item.expiry_date).toLocaleDateString()}</p>
                             </div>
                           </div>
