@@ -4,20 +4,61 @@
 @tailwind utilities;
 
 /* component tailwind */
-@layer components{
-  .menu-items{
+@layer components {
+  .menu-items {
     @apply inline-block border-b-4 border-white hover:border-black;
   }
+
   .mega-menu-items {
     @apply inline-block hover:text-red-500 cursor-pointer px-[7px] text-sm text-gray-500;
-  }  
-  .mega-menu-title{
-    @apply  font-semibold text-xl mb-5 text-blue-800;
   }
-  .max-withd{
+
+  .mega-menu-title {
+    @apply font-semibold text-xl mb-5 text-blue-800;
+  }
+
+  .max-withd {
     @apply w-[1500px] container
   }
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  25%,
+  75% {
+    opacity: 1;
+  }
+}
+
+.an‌imate-fadeInOut {
+  animation: fadeInOut 3s ease-in-out;
+}
+
 
 /*detail*/
 .img-container {
@@ -34,35 +75,38 @@
   font-size: 30px;
 }
 
-  .hideText {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
-  
-  .showText {
-    max-height: 100px; /* or any value you want for max-height */
-    overflow: hidden;
-    transition: max-height 0.3s ease-in;
-  }
-  
-  .icon-button {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .icon-button:hover {
-    color: blue; /* Màu khi hover */
-  }
-  
-  
-  .eye-cursor {
-    cursor: pointer;
-  }
+.hideText {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.showText {
+  max-height: 100px;
+  /* or any value you want for max-height */
+  overflow: hidden;
+  transition: max-height 0.3s ease-in;
+}
+
+.icon-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.icon-button:hover {
+  color: blue;
+  /* Màu khi hover */
+}
+
+
+.eye-cursor {
+  cursor: pointer;
+}
+
 /*book*/
 
 .hh {

@@ -190,10 +190,10 @@ const Favorite = () => {
       </aside>
 
 
-      <div className="container mx-auto w-4/5" style={{ display: "flex", gap: "10px" }}>
+      <div className="container mx-auto" style={{ display: "flex", gap: "10px" }}>
         <div>
           <div className='container mx-auto border border-gray-400 rounded-lg text-center lg:w-[1200px] md:w-[700px] mb:w-[300px]'><h1 className='text-xl font-semibold pb-5 py-4'>Các Tour Đã Lưu</h1></div>
-          <div className='flex gap-4 py-4 container mx-auto'>
+          <div className='grid grid-cols-3 gap-4 py-4 container mx-auto'>
             {tourfavorite.map((item) => (
               <div key={item.tour_id} className="tour-item bg-white rounded-t-lg w-[330px] shadow-lg">
                 {/* <div className="tour-image">

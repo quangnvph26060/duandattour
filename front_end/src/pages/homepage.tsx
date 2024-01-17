@@ -115,8 +115,6 @@ const HomePage = () => {
   const [selectedDeparture, setSelectedDeparture] = useState('');
   const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
   const navigate = useNavigate();
-  const [imagesData, setImagesData] = useState([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [provinces, setProvinces] = useState([]);
   const [provinces2, setProvinces2] = useState([]);
   useEffect(() => {
@@ -136,6 +134,11 @@ const HomePage = () => {
       });
   }, []);
 
+  //Slider
+
+  const [imagesData, setImagesData] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
@@ -148,7 +151,15 @@ const HomePage = () => {
 
     fetchImagesData();
   }, []);
-  console.log('123', imagesData)
+  console.log('jahahah', imagesData);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [currentImageIndex, imagesData]);
 
   const handlePrevious = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imagesData.length) % imagesData.length);
@@ -157,6 +168,8 @@ const HomePage = () => {
   const handleNext = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesData.length);
   };
+
+  //
 
   const handleSearch = async () => {
     try {
@@ -519,7 +532,7 @@ const HomePage = () => {
                 >
                   {'<'}
                 </Button>
-                <a href="">
+                <Link to={imagesData[currentImageIndex].link_banner}>
                   <img
                     src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
                     alt=""
@@ -527,7 +540,7 @@ const HomePage = () => {
                     width="600px"
                     height="500px"
                   />
-                </a>
+                </Link>
                 <Button
                   type="primary"
                   onClick={handleNext}

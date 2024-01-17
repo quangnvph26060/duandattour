@@ -2,6 +2,7 @@ import { Button, Layout, Menu, theme } from "antd";
 import { Badge, Popover, List } from 'antd';
 import { useEffect, useState } from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import {
@@ -73,6 +74,8 @@ const LayoutAdmin = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     const confirmLogout = window.confirm("Bạn chắc chắn muốn đăng xuất?");
+
+
 
     if (!confirmLogout) {
       return;

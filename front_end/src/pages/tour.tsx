@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+<link rel="stylesheet" href="../index.css" />
 
 // import { IPour } from "../interface/home";
 import { Link, Route, useParams } from 'react-router-dom';
@@ -7,17 +8,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import star from "../img/star.png"
-import line from "../img/line.png"
-import anh5 from "../img/anh5.png"
-import ticket from "../img/ticket.png"
-import shopping from "../img/shopping.png"
-import anh6 from "../img/anh6.png"
-import anh7 from "../img/anh7.png"
-import anh8 from "../img/anh8.jpg"
-import anh14 from '../img/anh14.jpg'
-import anh15 from "../img/anh15.jpg"
-import { useNavigate } from 'react-router-dom';
 
 const rounded = { borderRadius: '25px' };
 
@@ -95,6 +85,9 @@ const TourPage: React.FC = () => {
 
   //SẢN PHẨM YÊU THÍCH
   //Thêm tour vào yêu thích
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const addToFavorites = (tourId) => {
     const token = localStorage.getItem('token');
 
@@ -107,17 +100,33 @@ const TourPage: React.FC = () => {
         // Xử lý kết quả thành công
         console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         // Xử lý lỗi
         console.error(error);
-        alert("Bạn chưa đăng nhập!");
+        showNotLoggedInMessage();
       });
   };
 
-  // const reloadTour = (e) => {
-  //   e.preventDefault();
-  //   window.location.reload();
-  // };
+  // Sử dụng biến isFavorite để xác định trạng thái hiển thị của icon trái tim
+
+
+  const showNotLoggedInMessage = () => {
+    // Hiển thị thông báo không đăng nhập
+    const notLoggedInMessage = document.createElement('div');
+    notLoggedInMessage.textContent = "Bạn chưa đăng nhập !";
+    notLoggedInMessage.classList.add(
+      'fixed', 'top-20', 'text-center', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2',
+      'p-12', 'w-[350px]', 'bg-red-400', 'text-white', 'rounded', 'shadow-lg', 'z-50', 'animate-fadeInOut'
+    );
+
+    // Thêm phần tử vào body hoặc một phần tử khác trong DOM
+    document.body.appendChild(notLoggedInMessage);
+
+    // Tự động ẩn thông báo sau một khoảng thời gian
+    setTimeout(() => {
+      notLoggedInMessage.remove();
+    }, 2000); // 3000 milliseconds (3 seconds)
+  };
 
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
@@ -169,7 +178,7 @@ const TourPage: React.FC = () => {
                         className='mega-menu-items flex items-center'
                         onClick={() => addToFavorites(items.id)}
                       >
-                        <i className="far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300">&#xf004;</i>
+                        <i id={`heart-icon-${items.id}`} className={`far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300`}>&#xf004;</i>
                       </Link>
                     </div>
                   </div>
