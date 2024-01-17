@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import logo from "./img/logo.jpg"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { format } from 'date-fns';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,6 +13,13 @@ import { data } from "autoprefixer";
 type Props = {};
 
 const Info_tour_bocking = () => {
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const img = {
     borderRadius: "10px",
     witdh: "100px",
@@ -24,8 +31,15 @@ const Info_tour_bocking = () => {
   //   // Add more data as needed
   // ];
   const [paymentResult, setPaymentResult] = useState(null);
+  const [alertShown, setAlertShown] = useState(false);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
+    // Kiểm tra nếu trạng thái đã được lưu trong localStorage
+    if (urlParams.get('vnp_ResponseCode') && !localStorage.getItem('paymentSuccess')) {
+      alert('Thanh toán VNPAY thành công');
+      setAlertShown(true);
+    }
     const paymentData = {
       vnp_Amount: urlParams.get('vnp_Amount'), // tiền 
       vnp_BankCode: urlParams.get('vnp_BankCode'), // ngân hàng 
@@ -33,18 +47,7 @@ const Info_tour_bocking = () => {
       vnp_ResponseCode: urlParams.get('vnp_ResponseCode'), // trạng thái 
       vnp_TxnRef: urlParams.get('vnp_TxnRef'),
     };
-    console.log(paymentData.vnp_Amount);
 
-    axios.post('http://localhost:8000/api/paymentresult', paymentData)
-      .then(response => {
-        setPaymentResult(response.data);
-
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    // Gọi API để lấy dữ liệu kết quả thanh toán sau khi component được render
-    // KHÔNG DÙNG GET NÀY NỮA http://localhost:8000/api/showResult 
     axios.get('http://localhost:8000/api/showResult', { params: paymentData })
       .then(response => {
         setPaymentResult(response.data);
@@ -54,12 +57,25 @@ const Info_tour_bocking = () => {
         console.error(error);
       });
 
+    axios.post('http://localhost:8000/api/paymentresult', paymentData)
+      .then(response => {
+        setPaymentResult(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }, []);
-////
-const {id} =  useParams<{ id: any }>();
+
+  useEffect(() => {
+    if (alertShown) {
+      console.log('Alert shown:', paymentResult);
+    }
+  }, [alertShown, paymentResult]);
+  ////
+  const { id } = useParams<{ id: any }>();
   const { data: Data } = useGetCheckbooktourQuery(id || "");
   const DataCheck = Data?.data || [];
-  // console.log('Daata:',DataCheck);
+  console.log('Daata:', DataCheck);
   const DataTour = DataCheck.tours
   // console.log(DataTour);
   const DataThanhtoan = DataCheck.thanh_toan
@@ -127,7 +143,8 @@ const {id} =  useParams<{ id: any }>();
                   Số booking
                 </p>
                 <p>
-                  231007399973 (Quý khách vui lòng nhớ số booking để thuận tiện
+                {DataThanhtoan && <p>{DataThanhtoan?.ma_giao_dich} </p>}
+                {paymentResult && <p>{paymentResult?.ma_giao_dich} </p>} (Quý khách vui lòng nhớ số booking để thuận tiện
                   cho các giao dịch sau này)
                 </p>
               </div>
@@ -135,49 +152,52 @@ const {id} =  useParams<{ id: any }>();
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Trị giá booking
                 </p>
-                <p>{DataThanhtoan?.tong_tien_tt}</p>
+                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
+                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Số tiền đã thanh toán
                 </p>
-                <p>{DataThanhtoan?.tong_tien_tt}₫</p>
+                {DataThanhtoan && <p>{formatCurrency(DataThanhtoan?.tong_tien_tt)} </p>}
+                {paymentResult && <p>{formatCurrency(paymentResult?.tong_tien_tt)} </p>}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Trạng thái
                 </p>
-                <p>{DataCheck?.trang_thai === 0 ? "chưa thanh toán" : DataCheck?.trang_thai}</p>
+                {paymentResult ? (
+                  <p>{paymentResult?.ma_phan_hoi === "00" ? "Đã thanh toán" : "Chưa thanh toán"}</p>
+                ) : (
+                  <p>{DataCheck && DataCheck?.trang_thai === 0 ? "Chưa thanh toán" : "Đã thanh toán"}</p>
+                )}
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Ngày đăng ký
                 </p>
+                {paymentResult && (
+                  <p>{(paymentResult?.updated_at)}</p>
+                )}
                 <p>{DataThanhtoan?.ngay_thanh_toan}</p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
-                  Hình thức thanh toán
+                  Hình thức thanh toán:
                 </p>
-                <p>{DataThanhtoan?.pttt}</p>
+                {paymentResult && <p>{paymentResult?.pttt === "transfer" ?"Thanh toán chuyển khoản":""} </p>}
+                <p>{DataThanhtoan?.pttt==="cash"?"Tiền mặt":""}</p>
               </div>
               <div className="flex gap-5 mt-5">
                 <p className="text-[16px] text-[#2D4271] font-bold">
                   Tình trạng
                 </p>
                 <p>
-                  Booking của quý khách đã được chúng tôi xác nhận thành công
+                  Booking của quý khách đang chờ chúng tôi phê duyệt, Quý khách đến quầy thanh toán để hoàn thành thụ tục
                 </p>
               </div>
-              <div className="flex gap-5 mt-5">
-                <p className="text-[16px] text-[#2D4271] font-bold">
-                  Thời hạn thanh toán
-                </p>
-                <p>
-                  07/10/23 17:59:12 (Theo giờ Việt Nam. Booking sẽ tự động hủy
-                  nếu quá thời hạn thanh toán trên)
-                </p>
-              </div>
+             
+            
             </div>
           </div>
         </div>

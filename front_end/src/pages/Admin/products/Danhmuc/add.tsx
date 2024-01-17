@@ -1,38 +1,46 @@
 import React from "react";
-import { Form, Button, Input, DatePicker, Select, Upload } from "antd";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Form, Button, Input, Upload, Checkbox, Space, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAddLoaiTourMutation } from "../../../../api/LoaiTourApi";
 import { ILoaiTour } from "../../../../interface/loaiTour";
-
-const { Option } = Select;
-
-type FieldType = {
-  id: number;
-  image:string;
-  ten_loai_tour: string;
-};
+import moment from "moment";
 
 const AdminLoai_tourADD: React.FC = () => {
   const [addLoaiTour] = useAddLoaiTourMutation();
   const navigate = useNavigate();
-
+  const success = () => {
+    message.success("Thêm loại tour thành công");
+  };
+  //khoang trang
+  const checkWhitespace = (rule, value, callback) => {
+    if (/\s/.test(value)) {
+      callback("Không được chứa khoảng trắng");
+    } else {
+      callback();
+    }
+  };
   const onFinish = (values: ILoaiTour) => {
     const formData = new FormData();
     formData.append("hinh", values.hinh.fileList[0].originFileObj);
-    formData.append("ten_loai_tour", values.ten_loai_tour); // Thêm các trường dữ liệu khác vào formData (nếu cần)
-  
+    formData.append("ten_loai_tour", values.ten_loai_tour);
+    formData.append("thoi_gian", moment().format()); // Thêm các trường dữ liệu khác vào formData (nếu cần)
+    formData.append("trang_thai", values.trang_thai);
+
     addLoaiTour(formData)
       .unwrap()
-      .then(() => navigate("/admin/tour/loai_tour"))
+
+      .then(() =>  {
+        navigate("/admin/tour/loai_tour")
+        success()})
       .catch((error) => {
         console.log(error);
         // Xử lý lỗi (nếu có)
       });
-    
-    console.log(values); 
+
+    console.log(values);
   };
+
   return (
     <div className="container">
       <header className="mb-4">
@@ -68,11 +76,24 @@ const AdminLoai_tourADD: React.FC = () => {
           rules={[
             { required: true, message: "Vui lòng nhập tên loại tour!" },
             { min: 3, message: "Tên tour ít nhất 3 ký tự" },
+            { validator: checkWhitespace } // Kiểm tra khoảng trắng
           ]}
         >
           <Input />
         </Form.Item>
-
+        <Form.Item
+          className="w-full"
+          label="Trạng thái"
+          name="trang_thai"
+          rules={[{ required: true, message: "Vui lòng chọn checkout!" }]}
+        >
+          <Checkbox.Group style={{ width: "100%" }} defaultValue={[1]}>
+            <Space direction="vertical">
+              <Checkbox value={1}>Kích hoạt</Checkbox>
+              <Checkbox value={0}>Vô hiệu hóa</Checkbox>
+            </Space>
+          </Checkbox.Group>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Thêm

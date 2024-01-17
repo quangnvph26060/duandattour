@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const rounded = {
     borderRadius: '25px',
 };
-const Giohanguser = () => {
+const Giohanguser1 = () => {
     const token = localStorage.getItem("token");
     const [usersId, setUserId] = useState("");
     const [data, setUserTours] = useState([]);
@@ -116,7 +116,7 @@ const Giohanguser = () => {
         const toursByLoaiTourData = {};
         data.forEach((user) => {
             if (user.trang_thai === 0) {
-                const loaiTour = user.tours.loai_tours.ten_loai_tour;
+                const loaiTour = user.tours?.loai_tours?.ten_loai_tour;
                 if (!toursByLoaiTourData[loaiTour]) {
                     toursByLoaiTourData[loaiTour] = [];
                 }
@@ -169,7 +169,7 @@ const Giohanguser = () => {
                             </div>
                             <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt</h3></a>
                             <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
-                            <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
+                            <a href="/favorite"><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
 
@@ -255,4 +255,4 @@ const Giohanguser = () => {
     )
 }
 
-export default Giohanguser
+export default Giohanguser1

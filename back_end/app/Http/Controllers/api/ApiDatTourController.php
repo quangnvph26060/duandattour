@@ -1,17 +1,23 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\api\ApiPaymentController;
+use App\Mail\DatHang;
 use App\Models\DatTour;
 use App\Models\HoaDon;
+use App\Models\NotificationModel;
 use App\Models\ThanhToan;
 use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ApiDatTourController extends Controller
 {
@@ -36,32 +42,34 @@ class ApiDatTourController extends Controller
 
     public function createDatTour(Request $request)
     {
-
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         $datTour = $request->all();
         // $datTour['ngay_dat'] = now(); // Gắn mặc định ngày đặt là ngày hiện tại
         $datTour['ngay_dat'] = Carbon::today(); // Lấy ngày tháng năm hiện tại
         $datTour['ngay_het_han'] = Carbon::today()->addDay(); // Thêm 1 ngày vào ngày hiện tại
-        // $createDatTour = DatTour::create($datTour);
-        // return response()->json(['createDatTour' => $createDatTour]);
         if ($request->has('so_luong_khach')) {
-            // Trường 'so_luong_khach' đã tồn tại trong yêu cầu HTTP
-            // Tiếp tục truy cập vào giá trị của trường 'so_luong_khach'
             $soLuongKhach = $request->input('so_luong_khach');
-            // Tiếp tục xử lý với giá trị $soLuongKhach
         } else {
-            // Trường 'so_luong_khach' không tồn tại trong yêu cầu HTTP
-            // Thực hiện xử lý mặc định ở đây (ví dụ: gán giá trị mặc định là 1)
             $soLuongKhach = 1;
         }
         $tourone = TourModel::find($datTour['id_tour']);
         if ($soLuongKhach <= $tourone->soluong) {
             $createDatTour = DatTour::create($datTour);
+            // dd($createDatTour->ten_khach_hang);
             $soluong = $tourone->soluong - $soLuongKhach;
             if ($createDatTour) {
                 $tourone->soluong = $soluong;
                 $tourone->save();
             }
+            // thông báo khi đặt hàng thành công gửi về admin
+            $notification = new NotificationModel();
+            $notification->name_user = $createDatTour->ten_khach_hang;
+            $notification->body = "Có đơn đặt hàng mới!!";
+            $notification->ngay_gio = Date(now());
+            $notification->loai_thong_bao = "Đặt tour";
+            $notification->id_tour = $datTour['id_tour'];
+            $notification->save();
+            Mail::to($datTour['email'])->send(new DatHang($createDatTour, $tourone));
             return response()->json(['createDatTour' => $createDatTour]);
         } else {
             return response()->json(['message' => 'Đặt tour thất bại vì quá số lượng'], 404);
@@ -103,12 +111,25 @@ class ApiDatTourController extends Controller
 
         return 'Xóa các tour hết hạn thành công';
     }
-
     public function getListBookingTour()
     {
-
         $bookings = DatTour::with('ThanhToan', 'tours.images')->get();
-        return response()->json(['data' => $bookings], 200);
+        $validBookings = [];
+        
+        foreach ($bookings as $booking) {
+            if ($booking->ThanhToan === null && $booking->ThanhToanDeltail === null) {
+                continue; // Bỏ qua bản ghi không hợp lệ
+            }
+            
+            if ($booking->ThanhToan === null) {
+                $booking->load('ThanhToanDeltail');
+                unset($booking->ThanhToan);
+            }
+            
+            $validBookings[] = $booking;
+        }
+        
+        return response()->json(['data' => $validBookings], 200);
     }
 
     public function getListBookingTourUnpaid()
@@ -199,5 +220,36 @@ class ApiDatTourController extends Controller
             }
         }
         // return response()->json(['message' => 'Đơn hàng đã thanh toán rồi'], 404);
+    }
+
+    public function updateConfirm ($idConfirm) {
+        $updateConfirm = DatTour::find($idConfirm);
+        // dd($updateConfirm->xac_nhan);
+        if($updateConfirm->xac_nhan==0){
+            $updateConfirm->xac_nhan=1;
+            $updateConfirm->save();
+            return response()->json(['message' => 'Xác nhận đơn hàng thành công!!'], 200);
+        }else{
+            return response()->json(['message' => 'Xác nhận đơn hàng không thành công!!'], 404);
+        }
+    }
+
+    public function updateStatusConfirm(Request $request, $id){
+        $datTour = DatTour::find($id);
+        if($datTour){
+            $datTour->update([
+                'trang_thai' => $request->input('trang_thai'),
+                'xac_nhan' => $request->input('xac_nhan') // Trường bạn muốn cập nhật là 'status'
+            ]);
+            return response()->json(['message' => 'update thành công!!'], 200);
+        }else{
+            return response()->json(['message' => 'update không thành công!!'], 404);
+        }
+    }
+    public function CountTour(Request $request)
+    {
+        $countTour = DatTour::where('ma_khach_hang', $request->input('id'))->where('trang_thai', 1)
+        ->where('xac_nhan', 1)->count();
+        return response()->json(['count' => $countTour]);
     }
 }

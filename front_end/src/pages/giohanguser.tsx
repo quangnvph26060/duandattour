@@ -99,7 +99,7 @@ const Giohanguser = () => {
         // Lọc và nhóm các tours đã đặt theo loại tour
         const toursByLoaiTourData = {};
         data.forEach((user) => {
-            const loaiTour = user.tours.loai_tours.ten_loai_tour;
+            const loaiTour = user.tours.loai_tours?.ten_loai_tour;
             if (!toursByLoaiTourData[loaiTour]) {
                 toursByLoaiTourData[loaiTour] = [];
             }
@@ -150,7 +150,7 @@ const Giohanguser = () => {
                             </div>
                             <a href="/giohanguser"><h3 className='px-5 py-1 font-medium hover:text-red-500'>Tour đã đặt </h3></a>
                             <a href=""><h3 className='px-5 py-1 font-medium hover:text-red-500'>Đánh giá của quý khách</h3></a>
-                            <a href=""><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
+                            <a href="/favorite"><h3 className='px-5 py-1 pb-10 font-medium hover:text-red-500'>Yêu thích đã lưu</h3></a>
                         </div>
                     </aside>
 

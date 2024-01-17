@@ -1,307 +1,194 @@
-
-type Props = {};
-
-// import { IProduct } from "@/interfaces/product";
-import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Button, Input, Popconfirm, Alert, Select } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { ITour } from "../../../../interface/tour";
 import { useGetTourQuery, useRemoveTourMutation } from "../../../../api/TourApi";
 import { useGetLoaiTourQuery } from "../../../../api/LoaiTourApi";
-import { useGetHuongDanVienQuery } from "../../../../api/HuongDanVienApi";
-import { Modal, Descriptions } from "antd";
-import { useState } from "react";
-import { Select } from 'antd';
+import axios from "axios";
+import "./tour.css";
 
-const AdminProduct = (props: Props) => {
-    
-    const { Option } = Select;
-    const { data: loaitourdata } = useGetLoaiTourQuery();
-    const { data: huongdanviendata } = useGetHuongDanVienQuery();
-    const { data: tourdata, error, isLoading } = useGetTourQuery();
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedTour, setSelectedTour] = useState<ITour | null>(null);
+const { Option } = Select;
 
-    const openModal = (record: ITour) => {
-        setSelectedTour(record);
-        setModalVisible(true);
-    };
+const AdminProduct = () => {
 
-    const closeModal = () => {
-        setSelectedTour(null);
-        setModalVisible(false);
-    };
-    const currentDate = new Date(); // Ngày hiện tại
-    const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
-        useRemoveTourMutation();
+  const [searchValue, setSearchValue] = useState("");
+  const [activeStatus, setActiveStatus] = useState(null);
+  const { data: loaitourdata } = useGetLoaiTourQuery();
+  const { data: tourdata, error, isLoading } = useGetTourQuery();
+  const currentDate = new Date(); // Ngày hiện tại
+  const [isSearching, setIsSearching] = useState(false);
+  const [removeTour, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveTourMutation();
+  const [filteredDataSource, setFilteredDataSource] = useState(null);
 
-    const confirm = (id: any) => {
-        removeTour(id);
-    };
+  useEffect(() => {
+    if (!isSearching) {
+      filterDataByStatus(activeStatus); // Lọc dữ liệu theo trạng thái khi activeStatus thay đổi
+    }
+  }, [tourdata, isSearching, activeStatus]);
 
-    const tourArray = tourdata?.data || [];
-    console.log(tourArray);
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
 
-    const loaitourArrary = loaitourdata?.data || [];
-    const huongdanvienArrary = huongdanviendata?.data || [];
-    const dataSource = tourArray.map((
-        { id, ten_tour, image_path, gia_nguoilon, gia_treem, mo_ta, soluong, diem_khoi_hanh,
-            diem_den, diem_di, lich_khoi_hanh, ngay_ket_thuc,
-            trang_thai, ma_loai_tour }: ITour): {
-                key: number; soluong: number; ten_tour: string;
-                image_path: string;
+  const handleSearch = () => {
+    if (searchValue === "") {
+      setIsSearching(false);
+      filterDataByStatus(activeStatus); // Lọc dữ liệu theo trạng thái khi không có tìm kiếm
+    } else {
+      const filteredData = tourdata?.data.filter((item) =>
+        item.ten_tour.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredDataSource(filteredData);
+      setIsSearching(true);
+    }
+  };
 
-                diem_khoi_hanh: string; diem_den: string;
-                gia_nguoilon: any; gia_treem: any; mo_ta: any; diem_di: string;
-                lich_khoi_hanh: Date; ngay_ket_thuc: string,
-                trang_thai: number; ma_loai_tour: number; ma_hdv: number;
-            } => ({
-                key: id,
-                soluong,
-                ten_tour,
-                image_path,
-                diem_khoi_hanh,
-                diem_den,
-                gia_nguoilon, gia_treem,
-                mo_ta,
-                diem_di,
-                lich_khoi_hanh,
-                ngay_ket_thuc,
-                trang_thai,
-                ma_loai_tour,
-            }));
+  const handleFilter = (status) => {
+    setActiveStatus(status);
+    filterDataByStatus(status); // Lọc dữ liệu theo trạng thái khi nút lọc được nhấp
+  };
+  const loaitourArrary = loaitourdata?.data || [];
+  const filterDataByStatus = (status) => {
+    if (status === "inactive") {
+      const inactiveData = tourdata?.data.filter((item) => {
+        const departureDate = new Date(item.lich_khoi_hanh);
+        const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-        
+        return formattedDate < ngayhientai;
+      });
+      setFilteredDataSource(inactiveData);
+    } else if (status === "active") {
+      const activeData = tourdata?.data.filter((item) => {
+        const departureDate = new Date(item.lich_khoi_hanh);
+        const formattedDate = departureDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        const ngayhientai = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        return formattedDate >= ngayhientai;
+      });
+      setFilteredDataSource(activeData);
+    } else {
+      setFilteredDataSource(tourdata?.data || []);
+    }
+  };
 
-    const columns = [
-        {
-            title: "ID",
-            dataIndex: "key",
-            key: "key",
-        },
-        {
-            title: "Tour du lịch",
-            dataIndex: "ten_tour",
-            key: "ten_tour",
-            render: (text: string, record: ITour) => (
-                <span
-                    style={{ cursor: "pointer", color: "blue" }}
-                    onClick={() => openModal(record)}
-                >
-                    {text}
-                </span>
-            ),
-        },
-        {
-            title: "Ảnh tour",
-            dataIndex: "image_path",
-            key: "image_path",
-            render: (image_path: string) => (
-                <img
-                    src={`http://localhost:8000/storage/${image_path}`}
-                    alt="img"
-                    style={{ width: '200px', cursor: 'pointer' }}
-                />
-            ),
-        },
+  return (
+    <div>
+      <div className="flex items-center justify-between  ">
+
+        <h2 className="font-bold text-3xl whitespace-nowrap mr-7">Quản lý tour</h2>
+        <div className="float-right"> {localStorage.getItem("role") === 'admin' ? (
+          <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
+            <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
+              <AiOutlinePlus />
+              <span>Tạo mới tour</span>
+            </Link>
+          </Button>
 
 
-     
-        {
-            title: "Giá Người lớn",
-            dataIndex: "gia_nguoilon",
-            key: "gia_nguoilon",
-        },
-        {
-            title: "Giá Trẻ em",
-            dataIndex: "gia_treem",
-            key: "gia_treem",
-        },
-        {
-            title: "Số Lượng Còn Nhận ",
-            dataIndex: "soluong",
-            key: "soluong",
-        },
-        {
-            title: 'Trạng Thái',
-            dataIndex: 'trang_thai',
-            key: 'trang_thai',
-            render: (trang_thai: any, record: { lich_khoi_hanh: string | number | Date; }) => {
-                const departureDate = new Date(record.lich_khoi_hanh); // Ngày khởi hành từ dữ liệu
+        ) : null}</div>
+      </div>
+      <br />
 
-                if (departureDate < currentDate) {
-                    return <span style={{}}>Đã Hết Hạn</span>;
-                } else {
-                    return <span>Vẫn Hoạt Động</span>;
+      <div className="flex items-center justify-end mb-4 float-left">
+        <div> <div className="table_tour">
+          <Button style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }} onClick={() => handleFilter("inactive")}>
+            Không hoạt động
+          </Button>
+          <Button style={{ backgroundColor: '#63B3ED', color: '#FFFFFF' }} onClick={() => handleFilter("active")}>
+            Hoạt động
+          </Button>
+        </div></div>
+        <Input
+          style={{ width: "250px" }}
+          placeholder="Tìm kiếm lịch trình"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+        <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
+          Tìm kiếm
+        </Button>
+      </div>
+      <Table
+        dataSource={filteredDataSource || tourdata?.data}
+        loading={isLoading || isRemoveLoading}
+        rowKey="ID"
+        bordered
+        pagination={{ pageSize: 10 }}
+      >
+        <Table.Column title="ID" dataIndex="id" key="id" />
+        <Table.Column title="Tên Tour" dataIndex="ten_tour" key="ten_tour" />
+        <Table.Column
+          title="Mã Loại Tour"
+          key="ma_loai_tour"
+          render={(text, record) => (
+            <span>
+              {loaitourArrary?.map((loaiTour: { id: number, ten_loai_tour: string }) => {
+                if (loaiTour.id === record.ma_loai_tour) {
+                  return loaiTour.ten_loai_tour;
                 }
-            },
-        },
+              })}
+            </span>
+          )}
+        />
+        <Table.Column
+          title="Ảnh"
+          dataIndex="image"
+          key="image"
+          render={(text, record) => (
+            <img
+              src={`http://localhost:8000/storage/${record.image_dd}`}
+              alt={`Image ${record.index}`}
+              style={{ width: '200px', cursor: 'pointer', marginRight: '5px' }}
+            />
+          )}
+        />
+        <Table.Column title="Số Hành khách" dataIndex="soluong" key="soluong" />
+        {/* <Table.Column
+          title="Ngày Tạo"
+          dataIndex="updated_at"
+          key="updated_at"
+          render={(text, record) => {
+            const updatedAtDate = new Date(record.updated_at);
+            const formattedDate = updatedAtDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-        {
-            title: "Khu Vực",
-            dataIndex: "ma_loai_tour",
-            key: "ma_loai_tour",
-            render: (ma_loai_tour: number) => {
-                const loaiTour = loaitourArrary.find((item: { id: number; }) => item.id === ma_loai_tour);
-                return loaiTour ? loaiTour.ten_loai_tour : "Không xác định";
+            return <span>{formattedDate}</span>;
+          }}
+        /> */}
+       <Table.Column title="Trạng thái" dataIndex="trang_thai" key="trang_thai" 
 
-            }
-        },
-        {
-            title: "Action",
-            key: 'action',
-            render: ({ key: id }: any) => {
-                return (
-                    <>
+render={(trang_thai) => {
+  return (
+    <span style={{ color: trang_thai === 0 ? "red" : "green" }}>
+        {trang_thai === 0 ? "Không hoạt động" : "Đang hoạt động"}
+    </span>
+  );
+}}
+/>
 
-                        {
-                            localStorage.getItem("role") == 'admin' ? <div className="flex space-x-2">
-                                <Popconfirm
-                                    title="Bạn có muốn xóa?"
-                                    onConfirm={() => confirm(id)}
-                                    okText="Yes"
-                                    cancelText="No"
-                                >
-                                    <Button type="primary" danger>
-                                        Xóa
-                                    </Button>
-                                </Popconfirm>
+        <Table.Column
+          title="Sửa"
+          key="edit"
+          render={(text, record) => (
+            localStorage.getItem("role") === 'admin' && (
+              <div className="flex space-x-2">
+                <button className="edit-button">
+                  <Link to={`/admin/tour/edit/${record.id}`}>
+                    <i className="fa fa-wrench"></i>
+                  </Link>
+                </button>
+                <button className="ct-button">
+                  <a href={`/tours/${record.id}`} target="_blank" rel="noopener noreferrer">
+                    <p className='font-bold py-2 px-2'>Xem trước</p>
+                  </a>
+                </button>
+              </div>
+            )
+          )}
+        />
 
-                                <Button type="primary" danger>
-                                    <Link to={`/admin/tour/edit/${id}`}>Sửa</Link>
-                                </Button>
-                            </div> : ""
-                        }
-                    </>
-                );
-            },
-        },
-    ];
-    const [visibleColumns, setVisibleColumns] = useState(columns.map(column => column.key));
-    const handleColumnToggle = (columnKey: string) => {
-        if (visibleColumns.includes(columnKey)) {
-            setVisibleColumns(visibleColumns.filter(key => key !== columnKey));
-        } else {
-            setVisibleColumns([...visibleColumns, columnKey]);
-        }
-    };
-
-    const visibleColumnsData = columns.filter(column => visibleColumns.includes(column.key));
-    const tourDetailsColumns = [
-        {
-            title: 'Điểm Đi',
-            dataIndex: 'diem_di',
-            key: 'diem_di',
-        },
-        {
-            title: 'Điểm Đến',
-            dataIndex: 'diem_den',
-            key: 'diem_den',
-        },
-        {
-            title: 'Ngày Khởi Hành',
-            dataIndex: 'lich_khoi_hanh',
-            key: 'lich_khoi_hanh',
-        },
-        {
-            title: 'Ngày Kết Thúc',
-            dataIndex: 'ngay_ket_thuc',
-            key: 'ngay_ket_thuc',
-        },
-        {
-            title: 'Giá Người Lớn',
-            dataIndex: 'gia_nguoilon',
-            key: 'gia_nguoilon',
-        },
-        {
-            title: 'Giá Trẻ Em',
-            dataIndex: 'gia_treem',
-            key: 'gia_treem',
-        },
-        {
-            title: 'Giá Khuyến Mãi',
-            dataIndex: 'gia_khuyen_mai',
-            key: 'gia_khuyen_mai',
-        },
-        {
-            title: 'Mô Tả',
-            dataIndex: 'mo_ta',
-            key: 'mo_ta',
-        },
-        // Thêm các cột khác tương ứng với thông tin tour
-    ];
-    const calculateTotalTours = (dataSource) => {
-        return dataSource.length;
-      };
-      const totalTours = calculateTotalTours(dataSource);
-    return (
-        <div>
-
-            <header className="mb-4 flex justify-between items-center">
-                <h2 className="font-bold text-3xl">Quản lý tour</h2>
-  
-                <Button type="primary" danger>
-                    <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
-                        <AiOutlinePlus />
-                        Tạo mới tour
-                    </Link>
-                </Button>
-            </header>
-            {/* {isRemoveSuccess && <Alert message="Success Text" type="success" />} */}
-            {isLoading ? <Skeleton /> : (
-                <>
-                    <div>
-                    <h3 className="text-lg text-orange-600">Tổng số :  {totalTours} tour</h3>
-                        <h3 className=" mt-2 text-lg">Hiển thị cột</h3>
-                        <Select
-                            mode="multiple"
-                            placeholder="Chọn cột hiển thị"
-                            // value={visibleColumns}
-                            onChange={setVisibleColumns}
-                            style={{ width: '100%' }}
-                        >
-                            {columns.map(column => (
-                                <Option key={column.key} value={column.key}>
-                                    {column.title}
-                                </Option>
-                            ))}
-                        </Select>
-                    </div>
-                    {isRemoveSuccess && <Alert message="Success Text" type="success" />}
-
-                    {isLoading ? <Skeleton /> : <Table dataSource={dataSource} pagination={{ pageSize: 10 }} columns={visibleColumnsData} />}
-                </>
-            )}
-            <Modal
-                visible={modalVisible}
-                onCancel={closeModal}
-                footer={null}
-                className="rounded-md"
-            >
-                {selectedTour && (
-                    <div className="p-4">
-                        <h2 className="text-xl font-bold mb-4">Thông tin Tour</h2>
-                        <table className="w-full table-auto border-collapse border rounded">
-                            <tbody>
-                                {tourDetailsColumns.map((column) => (
-                                    <tr key={column.key} className="border-b">
-                                        <td className="py-2 px-4 font-semibold">{column.title}</td>
-                                        <td className="py-2 px-4">
-                                            {column.dataIndex === 'images' ? (
-                                                <img src={selectedTour[column.dataIndex][0]} alt="Tour" className="w-full max-h-32 object-cover" />
-                                            ) : (
-                                                selectedTour[column.dataIndex]
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </Modal>
-        </div>
-    );
+      </Table>
+    </div>
+  );
 };
 
 export default AdminProduct;

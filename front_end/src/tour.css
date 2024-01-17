@@ -21,12 +21,6 @@
     justify-content: space-between;
 }
 
-.left:hover {
-
-    background-color: #f3ebeb;
-    /* Thay đổi màu nền khi di chuột qua */
-}
-
 .left h1 {
     font-weight: bold;
     font-size: 28px;
@@ -68,17 +62,11 @@
 
 .left button {
     background-color: #fff;
-    border: 1px solid #000;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease-in-out;
-}
-
-.left button:hover {
-    background-color: #e0e0e0;
-    /* Thay đổi màu nền khi di chuột qua */
 }
 
 
@@ -95,4 +83,9 @@
 
 .left .radio-wrapper input[type="radio"] {
     margin-right: 8px;
+}
+.buttonHover:hover {
+  background-color: #3b82f6; /* Change the color to your desired hover color */
+  color: #ffffff; /* Change the text color to your desired hover color */
+  cursor: pointer;
 }

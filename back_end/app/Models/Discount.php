@@ -16,6 +16,9 @@ class Discount extends Model
         'discount_code',
         'expiry_date',
         'percentage',
+        'minprice',
+        'trang_thai',
+       
     ];
 
     protected $casts = [

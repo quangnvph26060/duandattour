@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useGetDiaDiemQuery, useRemoveDiaDiemMutation } from "../../../../api/DiaDiemApi";
 import { IDiaDiem } from "../../../../interface/diadiem";
-import { ILoaiTour } from "../../../../interface/loaitour";
+
 import { useGetLoaiTourQuery} from "../../../../api/LoaiTourApi";
 import { useEffect } from "react";
 const AdminDiadiem = (props: Props) => {

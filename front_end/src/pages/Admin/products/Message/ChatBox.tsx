@@ -42,6 +42,7 @@ const ChatComponent = () => {
                 const logRoles = user.roles.map(item => {
                     // check user đang nhập có vai trò này không 
                     setIsAdmin(item.name === loggedInUserRole);
+                    debugger;
                 });
 
             });
@@ -64,15 +65,12 @@ const ChatComponent = () => {
         }
     };
     // // thêm tin nhắn
-
-
-
     const sendMessage = async () => {
 
         try {
             await axios.post('http://localhost:8000/api/messages', {
                 content: newMessage,
-                userid: parseInt(usersId), 
+                userid: parseInt(usersId),
                 receiver: receiverId
             });
             setNewMessage('');
@@ -83,8 +81,6 @@ const ChatComponent = () => {
     };
     const alertMessager = () => {
         const loggedInUserId = usersId;
-
-
         // Lọc tin nhắn chỉ giữ lại những tin nhắn giữa người dùng đang đăng nhập và người được chọn
         const filteredMessages = messages.filter(
             (message) =>
@@ -106,8 +102,10 @@ const ChatComponent = () => {
         );
     };
     // danh sách user đẻ nhắn tin
-    const optionsUser = () => {
+    const optionsUser = () => { 
+      
         if (isAdmin) {
+           
             return (
                 <div>
                     <div className="user-list">
@@ -118,8 +116,10 @@ const ChatComponent = () => {
                                     className="user-card"
                                     onClick={() => setReceiverId(user.id)}
                                 >
-                                    <img className="avatar" src="mark_avatar.jpg" alt="Mark Avatar" />
-                                    <h4>{user.name}</h4>
+                                    <div className='flex gap-2'>
+                                        <img className="avatar" src="mark_avatar.jpg" alt="Mark Avatar" />
+                                        <h4>{user.name}</h4>
+                                    </div>
                                 </li>
                             ))}
                     </div>

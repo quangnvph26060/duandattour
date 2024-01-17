@@ -8,6 +8,7 @@ use App\Models\LoaiTourModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 // {
 
@@ -76,35 +77,40 @@ class ApiLoaiTourController extends Controller
      */
     public function store(Request $request)
     {
-        $loaiTour = $request->all();
+        // Kiểm tra xem request có chứa thời gian không và chuyển đổi nó về định dạng mong muốn
+        $thoi_gian = Carbon::parse($request->thoi_gian)->format('Y-m-d');
+
+        // Tạo một mảng dữ liệu từ request
+        $loaiTourData = [
+            'ten_loai_tour' => $request->ten_loai_tour,
+            'trang_thai' => $request->trang_thai,
+            'thoi_gian' => $thoi_gian,
+        ];
+
+        // Kiểm tra xem có file hình ảnh trong request không và nếu có, lưu file và lấy đường dẫn
         if ($request->hasFile('hinh') && $request->file('hinh')->isValid()) {
             $imagePath = uploadFile('hinh', $request->file('hinh'));
+            $loaiTourData['image'] = $imagePath;
         } else {
             return response()->json(['error' => 'Invalid file or file upload failed'], 500);
         }
-        // Kiểm tra trước khi thêm
-        $existingRecord = DB::table('loai_tour')
-            ->where('ten_loai_tour', $loaiTour['ten_loai_tour'])
+
+        // Tìm bản ghi đã bị xóa với tên_loai_tour tương tự (nếu có)
+        $existingRecord = LoaiTourModel::where('ten_loai_tour', $loaiTourData['ten_loai_tour'])
             ->whereNotNull('deleted_at')
             ->first();
 
         if ($existingRecord) {
-            // Bản ghi đã tồn tại và đã bị xóa, bạn có thể khôi phục nó
-            DB::table('loai_tour')
-                ->where('id', $existingRecord->id)
-                ->update(['deleted_at' => null]);
-
+            // Nếu bản ghi đã tồn tại và đã bị xóa, khôi phục nó
+            $existingRecord->update(['deleted_at' => null]);
             return response()->json(['message' => 'Khôi phục bản ghi thành công']);
         } else {
-            // Bản ghi không tồn tại hoặc chưa bị xóa, bạn có thể tạo một bản ghi mới
-            return LoaiTourModel::create(
-                [
-                    'image' => $imagePath,
-                    'ten_loai_tour' => $request->ten_loai_tour
-                ]
-            );
+            // Nếu bản ghi không tồn tại hoặc chưa bị xóa, tạo một bản ghi mới
+            $newRecord = LoaiTourModel::create($loaiTourData);
+            return response()->json($newRecord, 201);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -127,35 +133,35 @@ class ApiLoaiTourController extends Controller
     public function update(Request $request, string $id)
     {
         $loaiTourModel = LoaiTourModel::find($id);
-    
+
         if (!$loaiTourModel) {
             return response()->json(['message' => 'Không tìm thấy đối tượng LoaiTourModel'], 404);
         }
-    
-        // Kiểm tra xem có tệp tin ảnh được gửi lên hay không
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            
-            // Xóa ảnh hiện tại nếu có
+
+        // Kiểm tra và lưu trữ đường dẫn hình ảnh (nếu có)
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('images', 'public');
+
+            // Xóa ảnh cũ nếu tồn tại
             if ($loaiTourModel->image) {
                 Storage::disk('public')->delete($loaiTourModel->image);
             }
-            
-            // Lưu trữ ảnh mới
-            $imagePath = $image->store('images', 'public');
-    
-            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+
+            // Cập nhật đường dẫn ảnh trong model
             $loaiTourModel->image = $imagePath;
         }
-        
-        // Cập nhật các trường dữ liệu khác
+
+        // Cập nhật các trường dữ liệu khác từ request
         $loaiTourModel->ten_loai_tour = $request->input('ten_loai_tour');
-        
-        // Lưu các thay đổi
+        $loaiTourModel->trang_thai = $request->input('trang_thai'); // Sửa tại đây
+        $loaiTourModel->thoi_gian = Carbon::parse($request->input('thoi_gian'))->format('Y-m-d');
+
+        // Lưu các thay đổi vào cơ sở dữ liệu
         $loaiTourModel->save();
-    
+
         return response()->json(['message' => 'Cập nhật thành công']);
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -171,26 +177,16 @@ class ApiLoaiTourController extends Controller
     public function getMenuPhanCap()
     {
         $loaiTours = LoaiTourModel::all();
-        
+    
         $menuPhanCap = $loaiTours->map(function ($loaiTour) {
             $diemDens = $loaiTour->tours->pluck('diem_den')->unique();
             $uniqueDiemDen = [];
             foreach ($diemDens as $value) {
-                $lowerValue = strtolower($value);
-                $found = false;
-    
-                foreach ($uniqueDiemDen as $uniqueValue) {
-    
-                    if (strtolower($uniqueValue) === $lowerValue) {
-                        $found = true;
-                        break;
-                    }
-                }
-    
-                if (!$found) {
-                    $uniqueDiemDen[] = $value;
-                }
+                $diemDenList = explode(',', $value);
+                $diemDenList = array_map('trim', $diemDenList);
+                $uniqueDiemDen = array_merge($uniqueDiemDen, $diemDenList);
             }
+            $uniqueDiemDen = array_unique($uniqueDiemDen);
     
             return [
                 'loaiTour' => $loaiTour->only(['id', 'ten_loai_tour']),

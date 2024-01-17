@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\ThanhToan;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class DatTour extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'dat_tours';
     protected $fillable = [
             'ten_khach_hang',
@@ -19,16 +21,24 @@ class DatTour extends Model
             'ngay_het_han',
             'so_luong_khach',
             'trang_thai',
+            'xac_nhan',
             'ma_khach_hang',
-            'id_tour'
+            'id_tour',
     ];
-  
+
     public function ThanhToan()
     {
         return $this->hasOne(ThanhToan::class, 'id_dat_tour');
     }
 
-    public function tours(){
-        return $this->belongsto(TourModel::class,'id_tour');
+    
+    public function ThanhToanDeltail()
+    {
+        return $this->hasOne(ThanhToanDetail::class, 'id_dat_tour');
+    }
+
+    public function tours()
+    {
+        return $this->belongsto(TourModel::class, 'id_tour');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use App\Models\UsersModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,7 +20,7 @@ class RegisterUser extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(UsersModel $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }

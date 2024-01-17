@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\UserResources;
 use Illuminate\Http\Request;
 use App\Models\UsersModel;
+
 use App\Models\User;
 use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +25,7 @@ class ApiAuthController extends Controller
     public function index()
     {
         //
-        $user = UsersModel::all();
+        $user = User::all();
         return response()->json([
             'code' => 200,
             'data' => $user
@@ -38,7 +40,7 @@ class ApiAuthController extends Controller
             return response()->json(['error' => 'Invalid file or file upload failed'], 500);
         }
 
-        $user = UsersModel::create([
+        $user = User::create([
             'name' => $request->name,
             'image' => $imagePath,
             'dia_chi' => $request->dia_chi,
@@ -47,10 +49,10 @@ class ApiAuthController extends Controller
             'cccd' => $request->cccd,
             'password' => Hash::make($request->password),
         ]);
-       
+
         // Gán vai trò cho tài khoản đăng ký
         $role = Role::where('name', 'khach_hang')->where('guard_name', 'web')->first();
-    $user->roles()->sync([$role->id]);
+        $user->roles()->sync([$role->id]);
         Mail::to($user->email)->send(new RegisterUser($user));
 
         return response()->json(['message' => 'Đăng ký tài khoản thành công!!']);
@@ -85,5 +87,48 @@ class ApiAuthController extends Controller
 
 
         return response()->json(['data' => $user], 200);
+    }
+    ///////
+    public function updateUser(Request $request)
+    {
+        $user = User::find($request->input('id'));
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('hinh', 'public');
+            $user->image = $imagePath;
+        }
+        $user->update([
+            'name' => $request->input('name'),
+            'dia_chi' => $request->input('dia_chi'),
+            'email' =>  $request->input('email'),
+            'sdt' => $request->input('sdt'),
+            'cccd' => $request->input('cccd'),
+        ]);
+    
+        return response()->json([
+            'message' => 'Thông tin người dùng đã được cập nhật.',
+            'data' => $user
+        ]);
+    }
+
+    public function reset(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Email không tồn tại'], 404);
+        }
+
+        $password = Str::random(10); // Mật khẩu ngẫu nhiên
+
+        $user->password = Hash::make($password);
+        $user->save();
+        // dd($password);
+        // Gửi email chứa mật khẩu đến người dùng
+        Mail::to($user->email)->send(new ResetPassword ($user, $password));
+
+        return response()->json(['message' => 'Mật khẩu đã được đặt lại và gửi đến email của người dùng'],200);
     }
 }

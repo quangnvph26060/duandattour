@@ -89,12 +89,13 @@ class ApiImagesController extends Controller
     {
         $image = ImageModel::findOrFail($id);
     
-        if ($request->hasFile('hinh')) {
+        if (!$request->hasFile('hinh') && !$request->file('hinh')) {
             $uploadedImage = $request->file('hinh');
             $imagePath = uploadFile('hinh', $uploadedImage);
             $image->image_path = $imagePath;
+        }else{
+            return response()->json(['message' => 'không thành công ' ]);
         }
-    
         $image->save();
     
         return response()->json(['message' => 'Ảnh đã được cập nhật thành công', 'image' => $image]);

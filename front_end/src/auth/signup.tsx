@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 import { useStateContext } from '../context/ContextProvider';
+import { Avatar } from 'antd';
 
 
 const Login = () => {
@@ -58,15 +59,23 @@ const Login = () => {
         password,
       });
       if (response.status === 200) {
+        console.log(response.data)
         const token = response.data.access_token;
         const role = response.data.role;
+      
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
         localStorage.setItem("id", response.data.data.id);
         // authContext.storeAuthData(token,role);
-      //  setUser(response.data.role);
+        //  setUser(response.data.role);
         alert("Đăng nhập thành công");
-        window.location.href = 'http://localhost:5173';
+        if(localStorage.getItem("role") === 'admin'|| localStorage.getItem("role") === 'nhan_vien'){
+ 
+          window.location.href = 'http://localhost:5173/admin';
+        }else{
+          window.location.href = 'http://localhost:5173/';
+        }
+        
 
 
       }
@@ -110,9 +119,10 @@ const Login = () => {
                 className="form-input mt-4"
               />
               <br />
-              <a href="#" className="text-blue-500 text-sm mt-3">
-                Quên mật khẩu?
-              </a>
+              <Link to={`/resetPassword`}> Quên mật khẩu? </Link>
+              {/* <a href="#" className="text-blue-500 text-sm mt-3">
+               
+              </a> */}
               <br />
               <button
                 type="submit"

@@ -127,8 +127,8 @@ const Dmkuser = () => {
                                     }}
                                 />
                                 <div className='p-2'>
-                                    <h1 className='font-medium p-1'>${usersId.name}</h1>
-                                    <p className='text-sm px-1 text-left'>${usersId.email}</p>
+                                    <h1 className='font-medium p-1'>{usersId.name}</h1>
+                                    <p className='text-sm px-1 text-left'>{usersId.email}</p>
                                 </div>
                             </div>
                             <hr className='mx-5 h-[2px] bg-slate-900' />

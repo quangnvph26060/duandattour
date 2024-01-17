@@ -1,9 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import logo from "../img/logo.jpg"
 import anh16 from "../img/anh16.png"
 import anh5 from "../img/anh5.png"
@@ -16,17 +11,49 @@ import anh10 from "../img/ảnh 10.jpg"
 import anh23 from "../img/anh23.png"
 import anh24 from "../img/anh24.png"
 
+import React, { useEffect } from "react";
+import { Table, Button, Popconfirm, Alert } from "antd";
+import { Link } from "react-router-dom";
+import { AiOutlinePlus } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { Ipostdm } from "../interface/postdm";
+import { Ipost } from "../interface/post"
+import { useGetpostdmQuery, useRemovepostdmMutation } from "../api/postdm";
+import { useGetpostQuery, useRemovepostMutation } from "../api/post";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import "../style.css";
+
 const rounded = {
   borderRadius: '25px',
 };
 
 const News = () => {
+  const { data: tourdata } = useGetpostQuery();
+  const [removePost, { isSuccess: isRemoveSuccess }] = useRemovepostMutation();
+  const navigate = useNavigate();
+
+
+
+  const tourArray = tourdata?.data || [];
+  const dataSource = tourArray.map(({ id,
+    ten_post,
+    image,
+    mo_ta,
+    ngay_dang, }: Ipost) => ({
+      key: id,
+      ten_post,
+      image,
+      mo_ta,
+      ngay_dang,
+    }));
   return (
     <div>
-   
+
 
       <div>
-        <article className='container mx-auto'>
+        <article className=' container mx-auto px-20 gap-11 pt-5'>
           <h1 className='text-center text-red-500 font-semibold text-3xl py-3'>Tin tức PolyTour</h1>
           <div className='flex gap-72 py-2 container justify-center'>
             <p className='font-medium'>Tin tức du lịch</p>
@@ -37,37 +64,37 @@ const News = () => {
 
           <div className='flex gap-5'>
             <div className='w-3/5'>
-              <img src={anh16} alt="anh16" className='w-auto rounded-xl' />
-              <p className='py-4 px-3 text-red-500 font-medium'>Tin tức dữ liệu</p>
-              <h2 className='px-3 font-semibold text-4xl'>Tận hưởng kỳ nghỉ trọn vẹn tại những khách sạn <br /> sang chảnh ở Đà Nẵng</h2>
-              <p className='text-sm px-3 py-4'>10/10/2023</p>
+              {dataSource.length > 0 && ( // Check if dataSource is not empty
+                <>
+                  <div>
+                    <Link to={`/post/${dataSource[0].key}`} className='w-auto rounded-xl'>
+                      <img src={`http://localhost:8000/storage/${dataSource[0].image}`} className='w-[900px] h-[550px] rounded-xl' />
+                    </Link>
+                  </div>
+                  <p className='py-4 px-3 text-red-500 font-medium'>Tin tức dữ liệu</p>
+                  <Link to={`/post/${dataSource[0].key}`} className='w-auto rounded-xl'>
+                    <h2 className='px-3 font-semibold text-4xl'>{dataSource[0].ten_post}</h2>
+                  </Link>
+                  <p className='text-sm px-3 py-4'>{dataSource[0].ngay_dang}</p>
+                </>
+              )}
             </div>
+
             <div className='w-2/5'>
-              <div className='flex gap-3'>
-                <img src={anh5} alt="anh17" className='w-64 rounded-lg' />
-                <div>
-                  <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
-                  <p className='font-medium py-4 text-lg'>5 điểm đến tuyệt vời cho các <br /> hoạt động ngoài trời khi du lịch <br /> Hàn Quốc</p>
-                  <p className='font-medium'>26/09/2023</p>
+              {dataSource.map(item => (
+                <div className='flex gap-3 pb-3' key={item.key}>
+                  <Link to={`/post/${item.key}`} className='image_bv'>
+                    <img src={`http://localhost:8000/storage/${item.image}`} alt={`Image ${item.key}`} className='w-[250px] h-[175px] rounded-lg' /></Link>
+                  <div>
+                    <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
+                    <Link to={`/post/${item.key}`} >
+                      <p className='font-medium py-4 text-lg'>{item.ten_post}</p></Link>
+                    <p className='font-medium'>{item.ngay_dang}</p>
+                  </div>
                 </div>
-              </div>
-              <div className='flex gap-3 py-11'>
-                <img src={anh18} alt="anh18" className='w-64 rounded-lg' />
-                <div>
-                  <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
-                  <p className='font-medium py-8 text-lg'>Những cung đường Đông - Tây Bắc đẹp nhất khi vào mùa thu</p>
-                  <p className='font-medium'>26/09/2023</p>
-                </div>
-              </div>
-              <div className='flex gap-3'>
-                <img src={anh6} alt="anh16" className='w-64 rounded-lg' />
-                <div>
-                  <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
-                  <p className='font-medium py-4 text-lg'>Du lịch Châu Âu mùa thu ghé thăm Zaanse Schans ngôi làng cối xay gió nổi tiếng nhất thế giới</p>
-                  <p className='font-medium'>26/09/2023</p>
-                </div>
-              </div>
+              ))}
             </div>
+
           </div>
           <div className='container'>
             <div className='container flex mb-3 px-5 justify-between align-items-center'>
@@ -103,8 +130,7 @@ const News = () => {
         </article>
       </div>
 
-      {/* footer */}
-      <footer className='text-center py-5'></footer>
+
     </div>
   )
 }

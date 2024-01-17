@@ -5,5 +5,6 @@ export interface IDiscount {
   discount_code: string;
   percentage: number;
   expiry_date: string;
-
+  minprice:number;
+  trang_thai:number,
 }
