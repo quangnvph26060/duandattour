@@ -29,7 +29,9 @@
   border-right: 6px solid transparent;
   border-top: 6px solid #ccc;
 }
-
+br{
+  margin-bottom: 5px;
+}
 select {
   width: 100%;
   padding: 5px;

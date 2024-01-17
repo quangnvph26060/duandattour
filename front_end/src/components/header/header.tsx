@@ -195,19 +195,24 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-     
-              <div className="search mt-2   tours-center">
-          <input style={{ width: '220px' }} className="border-yellow-300 border-[3px] px- py-2 rounded"
-            type="text"
-            placeholder="Search...."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>Search</button>
-          
-        </div>
+        <div className="search mt-2 tours-center">
+  <input
+    style={{ width: '220px' }}
+    className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+    type="text"
+    placeholder="Search...."
+    value={searchTerm}
+    onChange={handleSearchChange}
+  />
+  <button
+    className="bg-blue-300 hover:bg-blue-600 text-white py-2 px-2 rounded-lg ml-2 transition-colors duration-300"
+    onClick={handleSearch}
+  >
+    Search
+  </button>
+</div>
 
-          <div className="ml-2">
+          <div className="ml-2 mt-2 border-[3px]">
             {token ? (
               <Link to="/profile">
                 <img
