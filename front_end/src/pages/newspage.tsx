@@ -1,4 +1,3 @@
-
 import logo from "../img/logo.jpg"
 import anh16 from "../img/anh16.png"
 import anh5 from "../img/anh5.png"
@@ -10,8 +9,8 @@ import anh22 from "../img/anh22.jpg"
 import anh10 from "../img/ảnh 10.jpg"
 import anh23 from "../img/anh23.png"
 import anh24 from "../img/anh24.png"
-
-import React, { useEffect } from "react";
+import Slider from "react-slick";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -24,7 +23,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import "../style.css";
-
+import "../page.css";
 const rounded = {
   borderRadius: '25px',
 };
@@ -33,8 +32,15 @@ const News = () => {
   const { data: tourdata } = useGetpostQuery();
   const [removePost, { isSuccess: isRemoveSuccess }] = useRemovepostMutation();
   const navigate = useNavigate();
+  const maxToursToShow = 4;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const handlePrevious = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imagesData.length) % imagesData.length);
+  };
 
-
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesData.length);
+  };
 
   const tourArray = tourdata?.data || [];
   const dataSource = tourArray.map(({ id,
@@ -60,39 +66,123 @@ const News = () => {
             <p className='font-medium'>Cẩm nang du lịch</p>
             <p className='font-medium'>Kinh nghiệm du lịch</p>
           </div>
-          <h1 className='text-xl font-medium py-3'>Tin tức du lịch</h1>
+
 
           <div className='flex gap-5'>
             <div className='w-3/5'>
-              {dataSource.length > 0 && ( // Check if dataSource is not empty
+              <h1 className='text-xl font-medium py-3 '>TIN TỨC DU LỊCH</h1>
+
+              {dataSource.length > 0 && (
                 <>
-                  <div>
-                    <Link to={`/post/${dataSource[0].key}`} className='w-auto rounded-xl'>
-                      <img src={`http://localhost:8000/storage/${dataSource[0].image}`} className='w-[900px] h-[550px] rounded-xl' />
-                    </Link>
-                  </div>
-                  <p className='py-4 px-3 text-red-500 font-medium'>Tin tức dữ liệu</p>
-                  <Link to={`/post/${dataSource[0].key}`} className='w-auto rounded-xl'>
-                    <h2 className='px-3 font-semibold text-4xl'>{dataSource[0].ten_post}</h2>
-                  </Link>
-                  <p className='text-sm px-3 py-4'>{dataSource[0].ngay_dang}</p>
+                  <Slider
+                    className="main-image-slider"
+                    dots={true}
+                    infinite={true}
+                    speed={500}
+                    slidesToShow={1}
+                    slidesToScroll={1}
+                    arrows={false}
+                    autoplay={true}
+                    autoplaySpeed={3000}
+afterChange={(index) => setCurrentImageIndex(index)}
+                  >
+                    {dataSource.map((image) => (
+                      <div key={image.id}>
+                        <Link to={`/post/${image.key}`} className='w-auto rounded-xl'>
+                          <img
+                            src={`http://localhost:8000/storage/${image.image}`}
+                            className='w-[1100px] h-[550px] rounded-xl'
+                            alt={image.alt}
+                          />
+                        </Link>
+                        <div className="aslut">
+                          <Link to={`/post/${image.key}`}>
+                            <p className='font-medium py-4 text-lg postname lddssss'>
+                              {image.ten_post.split(' ').slice(0, 10).join(' ')}{image.ten_post.split(' ').length > 10 ? ' ...' : ''}
+                            </p>
+                          </Link>
+                          <p className='font-mediums'>{image.ngay_dang}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </Slider>
+
+                  <Slider
+                    className="additional-images-slider grid gap-4 grid-cols-1"
+                    dots={true}
+                    infinite={true}
+                    speed={500}
+                    slidesToShow={3}
+                    slidesToScroll={2}
+                    arrows={false}
+                    autoplay={true}
+                    autoplaySpeed={3000}
+                    initialSlide={currentImageIndex} // Set the initial slide to the current main image index
+                    responsive={[
+                      {
+                        breakpoint: 1024,
+                        settings: {
+                          slidesToShow: 2,
+                          slidesToScroll: 1,
+                        },
+                      },
+                      {
+                        breakpoint: 767,
+                        settings: {
+                          slidesToShow: 1,
+                          slidesToScroll: 1,
+                        },
+                      },
+                    ]}
+                  >
+                    {dataSource.map((image) => (
+                      <div
+                        key={image.id}
+                        className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center postnew"
+                      >
+                        <img
+                          className="mt-4 rounded-lg w-full h-20 object-cover"
+                          src={`http://localhost:8000/storage/${image.image}`}
+                        />
+                        <Link to={`/post/${image.key}`}>
+                          <p className='font-medium py-4 text-lg postname'>
+                            {image.ten_post.split(' ').slice(0, 10).join(' ')}{image.ten_post.split(' ').length > 10 ? ' ...' : ''}
+                          </p>
+                        </Link>
+<p className='font-mediums'>{image.ngay_dang}</p>
+                      </div>
+                    ))}
+                  </Slider>
                 </>
               )}
             </div>
 
+
+
             <div className='w-2/5'>
-              {dataSource.map(item => (
+              <h1 className='text-xl font-medium py-3 '>CẨM NANG DU LỊCH</h1>
+              {dataSource.slice(1, maxToursToShow + 1).map(item => (
                 <div className='flex gap-3 pb-3' key={item.key}>
                   <Link to={`/post/${item.key}`} className='image_bv'>
-                    <img src={`http://localhost:8000/storage/${item.image}`} alt={`Image ${item.key}`} className='w-[250px] h-[175px] rounded-lg' /></Link>
-                  <div>
-                    <p className='text-red-500 font-medium text-lg'>Tin Tức Dữ Liệu</p>
-                    <Link to={`/post/${item.key}`} >
-                      <p className='font-medium py-4 text-lg'>{item.ten_post}</p></Link>
-                    <p className='font-medium'>{item.ngay_dang}</p>
+                    <img src={`http://localhost:8000/storage/${item.image}`} alt={`Image ${item.key}`} className='w-[250px] h-[175px] rounded-lg' />
+                  </Link>
+                  <div style={{ width: '160%', textAlign: 'left' }}>
+                    {/* Find the corresponding category based on id_postdm */}
+                    {/* {postdmArrary
+                      .filter(option => option.id_postdm === item.id_postdm)
+                      .map(filteredOption => (
+                        <p key={filteredOption.id_postdm} className='text-red-500 font-medium text-lg'>
+                          {filteredOption.ten_dm}
+                        </p>
+                      ))} */}
+                    <Link to={`/post/${item.key}`}>
+                      <p className='font-medium py-4 text-lg namepost'>{item.ten_post}</p>
+                    </Link>
+                    <p className='font-mediums'>{item.ngay_dang}</p>
                   </div>
                 </div>
               ))}
+
             </div>
 
           </div>
@@ -122,7 +212,7 @@ const News = () => {
                 <p className='text-red-500 py-3 px-1 font-medium'>Kinh nghiệm du lịch</p>
               </div>
               <div>
-                <img src={anh24} alt="anh24" className='rounded-xl w-auto' />
+<img src={anh24} alt="anh24" className='rounded-xl w-auto' />
                 <p className='text-red-500 py-3 px-1 font-medium'>Kinh nghiệm du lịch</p>
               </div>
             </div>

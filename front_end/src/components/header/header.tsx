@@ -96,7 +96,7 @@ const HeaderWebsite = () => {
 
   const handleSearch = () => {
     // Xử lý tìm kiếm dữ liệu
-  
+
     // Đặt lại giá trị searchTerm thành null
     setSearchTerm("");
   };
@@ -115,7 +115,7 @@ const HeaderWebsite = () => {
   const combinedData = {};
   if (menuData) {
     menuData.forEach((item) => {
-      if (item && item.loaiTour) {
+if (item && item.loaiTour) {
         const loaiTourName = item.loaiTour.ten_loai_tour;
         const diemDens = item.diemDens;
         if (!combinedData[loaiTourName]) {
@@ -126,7 +126,7 @@ const HeaderWebsite = () => {
         combinedData[loaiTourName].push(...diemDens);
       }
     });
-    
+
   }
 
   return (
@@ -137,25 +137,25 @@ const HeaderWebsite = () => {
           <a href="/">
             {imagesData.length > 0 ? (
               <img
-              className="rounded-3xl w-[50px] h-[50px] mt-4"
-             
+                className="rounded-3xl w-[50px] h-[50px] mt-4"
+
                 src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
                 alt=""
-             
+
               />
             ) : (
               <span></span>
             )}
           </a>
 
-         
+
           <nav className="font-semibold p-4 pt-8 pl-18">
             <div className="max-w-7xl flex justify-between items-center mx-auto relative">
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
-                <Link to={""} className="menu-items">
-                  PolyTour
-                </Link>
+                  <Link to={""} className="menu-items">
+                    Trang chủ
+                  </Link>
                   {/* <a href="/" className="">
                    
                   </a> */}
@@ -163,7 +163,7 @@ const HeaderWebsite = () => {
 
                 <li className="group visible">
                   <Link to={"tour"} className="menu-items">
-                    Tour
+                    Du lịch
                   </Link>
                   {/* Menu phân cấp*/}
                   <div className="container mx-auto max-w-full w-full" style={{ zIndex: 10 }}>
@@ -186,13 +186,13 @@ const HeaderWebsite = () => {
                                     className="mega-menu-items"
                                   >
                                     {diemDen}
-                                  </Link>
+</Link>
                                 </li>
                               ))}
                             </ul>
                           </li>
                         ))}
-                       
+
                       </ul>
                     </div>
                   </div>
@@ -204,11 +204,7 @@ const HeaderWebsite = () => {
                     Tin tức
                   </a>
                 </li>
-                <li>
-                  <a href="" className="">
-                    Khuyến mãi
-                  </a>
-                </li>
+                
                 <li>
                   <a href="/contact" className="">
                     Liên hệ
@@ -224,23 +220,23 @@ const HeaderWebsite = () => {
               style={{ width: "220px" }}
               className="border-yellow-300 border-[3px] px- py-2 rounded"
               type="text"
-              placeholder="Search...."
+              placeholder="Bắt đầu tìm kiếm ...."
               value={searchTerm}
               onChange={handleSearchChange}
             />
-         <Link
-            to={`/tour/${searchTerm}`}
-            className="mega-menu-items"
-          >
-            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>
-              Search
-            </button>
-          </Link>
-            {token && (
-            <Link to={'/favorite'} className="px-3">
-               <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
+            <Link
+              to={`/tour/${searchTerm}`}
+              className="mega-menu-items"
+            >
+              <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>
+                Search
+              </button>
             </Link>
-          )}
+            {token && (
+              <Link to={'/favorite'} className="px-3">
+                <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
+              </Link>
+            )}
           </div>
 
           <div className="ml-2">
@@ -259,15 +255,15 @@ const HeaderWebsite = () => {
               </Link>
             ) : (
               <Link to="/signup">
-                <button className="bg-green-500 text-white py-1 px-3 rounded">
-                  <i className="fas fa-user"></i>
+                <button className="text-white py-1 px-3 rounded" style={{ border: "1px solid #b3aeae" }}>
+                  <i className="fas fa-user" style={{ color: "black" }}></i>
                 </button>
               </Link>
             )}
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

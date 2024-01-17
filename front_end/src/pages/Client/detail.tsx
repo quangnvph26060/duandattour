@@ -17,6 +17,7 @@ import {
 import logo from "./img/logo.jpg";
 import {
   useGetTourByIdQuery,
+  useGetTourQuery,
   useGetdetailTourByIdQuery,
 } from "../../api/TourApi";
 import "../css.css";
@@ -73,17 +74,29 @@ const DetailPage = (props: Props) => {
   const toggleContent = () => {
     setIsContentVisible(!isContentVisible);
   };
+  //Data
+  const {data:Allourdata} = useGetTourQuery()
+  //Id tour
+  const datatourArray2 = Allourdata?.data || []
   const { idTour } = useParams<{ idTour: any }>();
   const { data: Tourdata } = useGetdetailTourByIdQuery(idTour || "");
 
   const datatourArray = Tourdata?.data || [];
-  console.log(datatourArray);
+  const [toursWithSameType, setToursWithSameType] = useState<any[]>([]);
+  console.log(datatourArray2);
   const locationString = datatourArray?.ten_tour || "";
   const locations = locationString.split(" - ");
   const formattedString = locations.join(", ");
   const images = datatourArray?.image_path || [];
-  console.log(images);
+ const imgcate = datatourArray2?.image_dd || []
   // đanh giá
+  useEffect(() => {
+    if (Allourdata && Tourdata && Tourdata.data) {
+      const currentTour = Tourdata.data;
+      const tours = Allourdata.data.filter((tour: any) => tour.ma_loai_tour === currentTour.ma_loai_tour);
+      setToursWithSameType(tours);
+    }
+  }, [Allourdata, Tourdata]);
   const [selectedStars, setSelectedStars] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
@@ -134,9 +147,9 @@ const DetailPage = (props: Props) => {
 
 
   return (
-    <div className=" mb-[1900px]">
+    <div className="mb-[5000px]">
       <div className=" mx-auto box-border">
-        <div className="Menu  h-10 "></div>
+     
         {/* Header trên ội dung dưới*/}
         <div className="Detail  bg-repeat-x h-[1500px]">
           <div className=" ">
@@ -420,16 +433,16 @@ const DetailPage = (props: Props) => {
                     {showEvaluate && showEvaluate.length > 0 && (
                       <div className="mt-5">
                         {showEvaluate && showEvaluate.length > 0 && (
-                          <Slider {...sliderSettings}>
+                          <Slider className="h-[50px]" {...sliderSettings}>
                             {/* Loop through each evaluation in showEvaluate */}
                             {showEvaluate.map((evaluation) => (
                               <div className=" " key={evaluation.id}>
                                 <div className="flex items-center justify-center">
                                   <img
-                                    className="rounded-full"
+                                    className="rounded-full w-[50px], h-[50px]"
                                     src={`http://localhost:8000/storage/${evaluation.id_user.image}`}
-                                    alt="Customer Avatar"
-                                    style={{ width: "50px", height: "50px" }}
+                                
+                                
                                   />
 
                                 </div>
@@ -601,17 +614,24 @@ const DetailPage = (props: Props) => {
                 </div>
               </div>
             </div>
-            <div className="Cate bg-[#f9f9f9] pt-8">
-              <p className=" font-bold text-[#2D4271] text-[25px] text-center ">
+        
+        
+     
+            <div className="Cate mb-[50px] bg-[#f9f9f9] pt-8">
+              <p className=" font -bold text-[#2D4271] text-[25px] text-center ">
                 Có thể quý khách sẽ thích
               </p>
+            
               <div className="container-detail grid grid-cols-4 py-5 mx-auto">
-                <div className="bg-[#ffffff] rounded-lg px-2 item h-[500px] w-[310px] pt-2   ">
+              {toursWithSameType.map((item) => (
+                <div key={item.id} className="bg-[#ffffff] rounded-lg px-2 item h-[500px] w-[310px] pt-2   ">
+                  
                   <div className="img img-container">
+                    
                     <img
                       className="image"
                       style={img1}
-                      src="https://media.travel.com.vn/destination/tf_230620051651_690667_Bai%20Bien.jpg"
+                      src={`http://localhost:8000/storage/${item.image_dd}`}
                       alt=""
                     />
                     <div className="icon-overlay">
@@ -629,11 +649,11 @@ const DetailPage = (props: Props) => {
                       26/10/2023 - Giờ đi: 05:00
                     </div>
                     <p className="font-semibold text-base hover:text-blue-500 mb-1">
-                      Phan Thiết - Mũi Né - Hòn Rơm - Đồi Cát Bay{" "}
+                    {item.ten_tour}
                     </p>
-                    <p>Nơi khởi hành TP. Hồ Chí Minh</p>
+                    <p>{item.diem_di}</p>
                     <p className="mt-4 text-red-500 text-lg font-semibold">
-                      499,000 ₫
+                   {item.gia_nguoilon}
                     </p>
                     <div className="flex justify-between items-center">
                       <button
@@ -657,7 +677,9 @@ const DetailPage = (props: Props) => {
                     </div>
                   </div>
                 </div>
+                  ))}
               </div>
+               
             </div>
           </div>
         </div>

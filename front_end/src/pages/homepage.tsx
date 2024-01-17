@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useGetpostQuery, useRemovepostMutation } from "../api/post";
+import { Ipost } from "../interface/post";
+import { useGetLoaiTourQuery } from "../api/LoaiTourApi";
+import { useGetpostdmByIdQuery } from "../api/postdm";
 import { format, differenceInSeconds, addSeconds } from "date-fns";
 import "../page.css";
 import "../messenger.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
@@ -29,7 +33,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import MessageChatBox from "./Client/Message/Message";
 import { useStateContext } from "../context/ContextProvider";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 interface Tour {
   id: number;
@@ -45,27 +49,26 @@ interface Tour {
 }
 
 const imageContainerStyle = {
-  position: 'relative',
-  display: 'inline-block',
+  position: "relative",
+  display: "inline-block",
 };
 
 const buttonStyle = {
-  position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  fontSize: '1.5rem',
-  color: '#fff',
-  background: 'rgba(0, 0, 0, 0.5)',
-  border: 'none',
-  borderRadius: '4px',
-  padding: '10px',
-  cursor: 'pointer',
-  transition: 'background 0.3s',
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
+  fontSize: "1.5rem",
+  color: "#fff",
+  background: "rgba(0, 0, 0, 0.5)",
+  border: "none",
+  borderRadius: "4px",
+  padding: "10px",
+  cursor: "pointer",
+  transition: "background 0.3s",
 };
 
 const Countdown = ({ expiryDate }) => {
   const [remainingTime, setRemainingTime] = useState("");
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,7 +82,9 @@ const Countdown = ({ expiryDate }) => {
         const adjustedDistance = Math.floor(distance);
 
         const days = Math.floor(adjustedDistance / (24 * 60 * 60));
-        const hours = Math.floor((adjustedDistance % (24 * 60 * 60)) / (60 * 60));
+        const hours = Math.floor(
+          (adjustedDistance % (24 * 60 * 60)) / (60 * 60)
+        );
         const minutes = Math.floor((adjustedDistance % (60 * 60)) / 60);
         const seconds = Math.floor(adjustedDistance % 60);
 
@@ -106,19 +111,48 @@ const Countdown = ({ expiryDate }) => {
   return <div>{remainingTime}</div>;
 };
 
-
 const HomePage = () => {
+  const [removePost, { isSuccess: isRemoveSuccess }] = useRemovepostMutation();
+  const [dataSource, setDataSource] = useState([]);
+  const maxToursToShow = 4;
+
+  const { data: postdata } = useGetpostQuery();
+
   const [searchResults, setSearchResults] = useState<Tour[]>([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedDepartureDate, setSelectedDepartureDate] = useState('');
-  const [selectedDestination, setSelectedDestination] = useState('');
-  const [selectedDeparture, setSelectedDeparture] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDepartureDate, setSelectedDepartureDate] = useState("");
+  const [selectedDestination, setSelectedDestination] = useState("");
+  const [selectedDeparture, setSelectedDeparture] = useState("");
   const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
   const navigate = useNavigate();
   const [imagesData, setImagesData] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [provinces, setProvinces] = useState([]);
   const [provinces2, setProvinces2] = useState([]);
+  const { data: ltourdata } = useGetLoaiTourQuery();
+  const { id_postdm } = useParams<{ id_postdm: string }>();
+  const tourArrays = ltourdata?.data || [];
+
+  useEffect(() => {
+    if (postdata?.data) {
+      const modifiedData = postdata.data.map(
+        ({ id, ten_post, image, mo_ta, ngay_dang }: Ipost) => ({
+          key: id,
+          ten_post,
+          image,
+          mo_ta,
+          ngay_dang,
+          expand: false, // Initially set expand to false for all rows
+        })
+      );
+      setDataSource(modifiedData);
+    }
+  }, [postdata]);
+
+  // Log postdata if it exists
+  const { data: postdmdata } = useGetpostdmByIdQuery(id_postdm);
+  const postdmArrary = postdmdata?.data || [];
+
   useEffect(() => {
     fetch("https://provinces.open-api.vn/api/")
       .then((response) => {
@@ -139,19 +173,22 @@ const HomePage = () => {
   useEffect(() => {
     const fetchImagesData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/banner');
+        const response = await axios.get(
+          "http://localhost:8000/api/admin/banner"
+        );
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
-        console.error('Error fetching image data:', error);
+        console.error("Error fetching image data:", error);
       }
     };
 
     fetchImagesData();
   }, []);
-  console.log('123', imagesData)
 
   const handlePrevious = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imagesData.length) % imagesData.length);
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex - 1 + imagesData.length) % imagesData.length
+    );
   };
 
   const handleNext = () => {
@@ -169,7 +206,6 @@ const HomePage = () => {
       // window.location.href = url;
     }
   };
-  
 
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat("vi-VN", {
@@ -179,7 +215,7 @@ const HomePage = () => {
     return formatter.format(value);
   };
   const [messageHistory, setMessageHistory] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [isChatVisible, setIsChatVisible] = useState(false);
   const messageListRef = useRef(null);
   useEffect(() => {
@@ -188,66 +224,71 @@ const HomePage = () => {
     }
   }, [messageHistory]);
   const handleToggleChat = () => {
-    setIsChatVisible(prevState => !prevState);
+    setIsChatVisible((prevState) => !prevState);
   };
   const handleSendMessage = () => {
-    if (inputValue.trim() !== '') {
+    if (inputValue.trim() !== "") {
       const newMessage = {
         text: inputValue,
-        sender: 'user',
+        sender: "user",
         timestamp: new Date().getTime(),
       };
-      setMessageHistory(prevHistory => [...prevHistory, newMessage]);
-      setInputValue('');
+      setMessageHistory((prevHistory) => [...prevHistory, newMessage]);
+      setInputValue("");
       sendAutoReply(inputValue);
     }
   };
 
-  const handleKeyDown = event => {
-    if (event.key === 'Enter') {
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
       handleSendMessage();
     }
   };
   const addToFavorites = (tourId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
-    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/favorites",
+        { tour_id: tourId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
         // Xử lý kết quả thành công
         console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         // Xử lý lỗi
         console.error(error);
         alert("Bạn chưa đăng nhập!");
       });
   };
-  const sendAutoReply = userMessage => {
+  const sendAutoReply = (userMessage) => {
     let autoReply;
-    if (userMessage.includes('loại tour')) {
+    if (userMessage.includes("loại tour")) {
       autoReply =
-        'Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?';
+        "Chúng tôi cung cấp nhiều loại tour khác nhau như tour tham quan thành phố, tour du lịch tự nhiên, tour văn hóa... Bạn có muốn biết thêm về loại tour nào?";
     } else {
       autoReply =
-        'Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.';
+        "Cảm ơn vì tin nhắn của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.";
     }
     const newMessage = {
       text: autoReply,
-      sender: 'assistant',
+      sender: "assistant",
       timestamp: new Date().getTime(),
     };
-    setMessageHistory(prevHistory => [...prevHistory, newMessage]);
+    setMessageHistory((prevHistory) => [...prevHistory, newMessage]);
   };
 
-  const formatTimestamp = timestamp => {
+  const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
   };
   function calculateNumberOfDays(start, end) {
     const startDate = new Date(start);
@@ -259,12 +300,13 @@ const HomePage = () => {
     return numberOfDays;
   }
   const [tourKM, setTourKM] = useState([]);
-
+  const latestTours = tourKM
+    .slice()
+    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
   const getTourKM = () => {
     axios
       .get("http://127.0.0.1:8000/api/admin/tour")
       .then((response) => {
-        console.log(response.data.data);
         const tourKMData = response.data.data.map((tour) => {
           const maxExpiryDate = tour.max_expiry_date
             ? new Date(tour.max_expiry_date)
@@ -286,174 +328,23 @@ const HomePage = () => {
     getTourKM();
   }, []);
 
-  const sales = [
-    {
-      id: 1,
-      name: "Combo Vũng Tàu 3N2Đ: Vé máy bay khứ hồi + Khách sạn lusion 4 sao (Bao gồm Ăn sáng)",
-      image: sl,
-      price: 2000000,
-      details:
-        "Vũng Tàu 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách",
-      code: " Ngày đi : 15/12/2003",
-      start: "Nơi khởi hành: TP. Hồ Chí Minh",
-    },
-    {
-      id: 2,
-      name: "Combo Dà Nẵng 4N2Đ: Vé máy bay khứ hồi + Khách sạn Hồng Thanh Boutique 5 sao (Bao gồm ăn uống)",
-      image: cc,
-      price: 7000000,
-      details:
-        "Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách",
-      code: " Ngày đi : 15/12/2003",
-      start: "Nơi khởi hành: TP. Hồ Chí Minh",
-    },
-    {
-      id: 3,
-      name: "Combo Quy Nhơn 3N2Đ: Vé máy bay khứ hồi + Khách sạn LAmor Boutique 4 sao (Bao gồm Ăn sáng)",
-      image: bh,
-      price: 9000000,
-      details:
-        "Singapore 4 ngày 3 đêm (Một ngày tự do, Tặng vé vườn thực vật Flower Dome và Supertree Observation)- Đã giảm 1.000.000/ khách",
-      code: " Ngày đi : 15/12/2003",
-      start: "Nơi khởi hành: TP. Hồ Chí Minh",
-    },
-  ];
-  const names = [
-    {
-      id: 1,
-      image: bnr,
-    },
-    {
-      id: 1,
-
-      image: hq,
-    },
-    {
-      id: 1,
-
-      image: he,
-    },
-  ];
-  const images = [
-    {
-      id: 1,
-      name: "Product 1",
-      imagePath: qq,
-    },
-    {
-      id: 2,
-      name: "Product 1",
-      imagePath: ww,
-    },
-    {
-      id: 3,
-      name: "Product 1",
-      imagePath: ee,
-    },
-    {
-      id: 4,
-      name: "Product 1",
-      imagePath: rr,
-    },
-    {
-      id: 5,
-      name: "Product 1",
-      imagePath: tt,
-    },
-    {
-      id: 6,
-      name: "Product 1",
-      imagePath: yy,
-    },
-    {
-      id: 7,
-      name: "Product 1",
-      imagePath: ee,
-    },
-  ];
-  const destinations = [
-    {
-      id: 1,
-      name: "Vịnh Hạ Long",
-      image: sl,
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 2,
-      name: "Đảo Cát Bà",
-      image: bb,
-
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 1,
-      name: "Vịnh Hạ Long",
-      image: sl,
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 2,
-      name: "Đảo Cát Bà",
-      image: bb,
-
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 1,
-      name: "Vịnh Hạ Long",
-      image: sl,
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 2,
-      name: "Đảo Cát Bà",
-      image: bb,
-
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 1,
-      name: "Vịnh Hạ Long",
-      image: sl,
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-    {
-      id: 2,
-      name: "Đảo Cát Bà",
-      image: bb,
-
-      details: "Đã có hơn 1.493.499 yêu thích",
-    },
-  ];
-  const products = [
-    {
-      id: 1,
-      image: sl,
-    },
-    {
-      id: 2,
-      image: bb,
-    },
-    {
-      id: 3,
-      image: aa,
-    },
-  ];
   return (
     <div className="bg-white rounded-lg shadow block-all">
-     {/* <MessageChatBox/> */}
+      {/* <MessageChatBox/> */}
 
       <div
         className="mt-5 mb-5"
         style={{ maxWidth: "100%", overflow: "hidden" }}
       >
-        <Slider
+         <Slider
           className="product-list1 grid gap-4 grid-cols-1"
           dots={true}
           infinite={true}
           speed={500}
           slidesToShow={1}
-          slidesToScroll={1}
+          slidesToScroll={2}
+            arrows={false}
+            autoplay={true}
           responsive={[
             {
               breakpoint: 1024,
@@ -471,6 +362,7 @@ const HomePage = () => {
             },
           ]}
         >
+          
           <div className="relative inline-block">
             {imagesData.length > 0 && (
               <>
@@ -480,22 +372,25 @@ const HomePage = () => {
                   disabled={currentImageIndex === 0}
                   className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-black bg-opacity-50 text-white p-3 rounded w-12 h-12"
                 >
-                  {'<'}
+                  {"<"}
                 </Button>
-                <img
-                  src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
-                  alt=""
-                  className="rounded"
-                  width="600px"
-                  height="500px"
-                />
+                <a href="">
+                  <img
+                    src={`http://localhost:8000/storage/${imagesData[currentImageIndex].image_banner}`}
+
+                    alt=""
+                    className="rounded"
+                    width="600px"
+                    height="500px"
+                  />
+                </a>
                 <Button
                   type="primary"
                   onClick={handleNext}
                   disabled={currentImageIndex === imagesData.length - 1}
                   className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-black bg-opacity-50 text-white p-3 rounded w-12 h-12"
                 >
-                  {'>'}
+                  {">"}
                 </Button>
               </>
             )}
@@ -504,9 +399,16 @@ const HomePage = () => {
       </div>
       <div
         className="bg-white box-shadow rounded-lg  p-9 mx-auto hidden lg:block "
-        style={{ maxWidth: "1200px", position: "relative", left: 0, top: "-125px" }}
+        style={{
+          maxWidth: "1200px",
+          position: "relative",
+          left: 0,
+          top: "-125px",
+        }}
       >
-        <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">PolyTour Trong Nước</h1>
+        <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">
+          PolyTour Trong Nước
+        </h1>
         <div className="tour-form mt-2 flex items-center">
           <div className="flex items-center mr-4">
             <div className="flex hover:border-blue-500 icon-sheach items-center  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
@@ -517,19 +419,20 @@ const HomePage = () => {
               />
 
               <div className="flex flex-col ml-3">
-                <label htmlFor="departureDate" className="mr-2 text-[#2d4271] font-medium">
+                <label
+                  htmlFor="departureDate"
+                  className="mr-2 text-[#2d4271] font-medium"
+                >
                   Ngày đi:
                 </label>
                 <div className="relative">
                   <label
                     htmlFor="departureDate"
-                    className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
-                  </label>
+                    className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400"
+                  ></label>
                   <input
-
                     type="date"
                     id="departureDate"
-
                     value={selectedDepartureDate}
                     onChange={(e) => setSelectedDepartureDate(e.target.value)}
                   />
@@ -561,12 +464,19 @@ const HomePage = () => {
                 alt=""
                 width={"20px"}
               />
-        <div className="flex flex-col ml-3">
-                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
+              <div className="flex flex-col ml-3">
+                <label
+                  htmlFor="destination"
+                  className="mr-2 text-[#2d4271] font-medium"
+                >
                   Điểm đi:
                 </label>
                 <div class="select-wrapper">
-                  <select id="destination" value={selectedDeparture} onChange={(e) => setSelectedDeparture(e.target.value)}>
+                  <select
+                    id="destination"
+                    value={selectedDeparture}
+                    onChange={(e) => setSelectedDeparture(e.target.value)}
+                  >
                     <option value="">Chọn điểm đi</option>
                     {provinces.map((province) => (
                       <option key={province.code} value={province.name}>
@@ -579,7 +489,10 @@ const HomePage = () => {
             </div>
           </div>
           <div className="tuongduong">
-            <img src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png" alt="" />
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png"
+              alt=""
+            />
           </div>
 
           <div className="flex tours-center mr-4">
@@ -591,10 +504,17 @@ const HomePage = () => {
               />
 
               <div className="flex flex-col ml-3">
-                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
+                <label
+                  htmlFor="destination"
+                  className="mr-2 text-[#2d4271] font-medium"
+                >
                   Điểm đến:
                 </label>
-                <select id="destination" value={selectedDestination} onChange={(e) => setSelectedDestination(e.target.value)}>
+                <select
+                  id="destination"
+                  value={selectedDestination}
+                  onChange={(e) => setSelectedDestination(e.target.value)}
+                >
                   <option value="">Chọn điểm đi</option>
                   {provinces.map((province) => (
                     <option key={province.code} value={province.name}>
@@ -609,37 +529,39 @@ const HomePage = () => {
           console.log(selectedDestination);
           console.log(selectedDeparture); */}
           <Link
-              to={`/searchtour/${selectedDeparture || "defaultDeparture"}/${selectedDestination || "defaultDestination"}/${selectedDepartureDate ||   "defaultDepartureDate"}`}
-              className="mega-menu-items"
+            to={`/searchtour/${selectedDeparture || "defaultDeparture"}/${
+              selectedDestination || "defaultDestination"
+            }/${selectedDepartureDate || "defaultDepartureDate"}`}
+            className="mega-menu-items"
+          >
+            <button
+              className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full h-[72px]"
+              onClick={handleSearch}
             >
-              <button
-                className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full h-[72px]"
-                onClick={handleSearch}
-              >
-                Tìm kiếm
-              </button>
-            </Link>
-         
+              Tìm kiếm
+            </button>
+          </Link>
         </div>
       </div>
 
       <div className="lg:m-10 m-0">
         <div className="lg:m-10 m-0">
-          <h2 className="mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
-            CHƯƠNG TRÌNH ƯU ĐÃI!!!
+          <h2 className="mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 cn_dl cl-td">
+            ĐIỂM ĐẾN DU LỊCH!!!
           </h2>
           <div className="product-list1  gap-4 flex md:flex-row flex-col">
-            {products.map((product) => (
+            {tourArrays.map((product) => (
               <div
                 key={product.id}
                 className="bg-white p-4 rounded-lg shadow-md md:w-1/3 w-full"
               >
-                <img
-                  className="rounded-lg w-full h-40 object-cover mb-4"
-                  src={product.image}
-                  alt={product.name}
-                />
-
+                <Link to={`/tour/${product.id}`} key={product.id}>
+                  <img
+                    className="rounded-lg w-full h-40 object-cover mb-4"
+                    src={`http://localhost:8000/storage/${product.image}`}
+                    alt={product.name}
+                  />
+                </Link>
               </div>
             ))}
           </div>
@@ -648,8 +570,8 @@ const HomePage = () => {
 
       <div className="lg:m-10 m-0">
         <div className="lg:m-10 m-0">
-          <h2 className="mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
-            KHÁM PHÁ ƯU ĐÃI POLYTOUR!!!
+          <h2 className="mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 cn_dl cl-td">
+            KHÁM PHÁ SẢN PHẨM POLYTOUR!!!
           </h2>
           <Slider
             className="product-lista grid gap-4 grid-cols-1  "
@@ -678,15 +600,20 @@ const HomePage = () => {
               },
             ]}
           >
-            {images.map((image) => (
+            {latestTours.map((image1) => (
               <div
-                key={image.id}
+                key={image1.id}
                 className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center "
               >
-                <img
-                  className="mt-4 rounded-lg w-full h-50 object-cover"
-                  src={image.imagePath}
-                />
+                <Link to={`/tours/${image1.id}`}>
+                  <p className="font-bold py-2 px-2">
+                    {" "}
+                    <img
+                      className="mt-4 rounded-lg w-full h-50 object-cover"
+                      src={`http://localhost:8000/storage/${image1.image_dd}`}
+                    />
+                  </p>
+                </Link>
               </div>
             ))}
           </Slider>
@@ -695,32 +622,30 @@ const HomePage = () => {
       {/*  */}
 
       <div className="lg:m-10 m-0 ">
-        <h2 className="lg:m-10 mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
+        <h2 className="lg:m-10 mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 cn_dl  cl-td">
           ƯU ĐÃI TOUR GIỜ CHÓT!
         </h2>
-        <div className='grid grid-cols-3 gap-7 container mx-auto with-250px'>
-          {tourKM.slice(0, 3).map((items) => (
-            <div key={items.id} className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300">
-
-              <div className=' bg-white rounded-t-lg shadow-xl'>
-
+        <div className="grid grid-cols-4 gap-1 container mx-auto with-250px">
+          {tourKM.slice(0, 4).map((items) => (
+            <div
+              key={items.id}
+              className="relative hover:transform hover:-translate-y-2 hover:transition-transform hover:duration-300"
+            >
+              <div className=" bg-white rounded-t-lg shadow-xl">
                 <div className="relative">
-                  <div className="py-2 absolute top-0 left-1">
-
-                  </div>
+                  <div className="py-2 absolute top-0 left-1"></div>
                   <div className="relative">
                     <div className="py-2 absolute top-0 left-1">
                       <Link
-                        to={``}  // Update the 'to' prop to navigate to the favorite page
-                        className='mega-menu-items'
+                        to={``} // Update the 'to' prop to navigate to the favorite page
+                        className="mega-menu-items"
                         onClick={() => addToFavorites(items.id)} // Use items.id directly instead of hoveredItemId
-                      // Optionally, you can add additional logic for navigating to the favorite page if needed
+                        // Optionally, you can add additional logic for navigating to the favorite page if needed
                       >
                         {/* Thêm vào sản phẩm yêu thích */}
                         <i className="fa-regular fa-heart text-white"></i>
                       </Link>
                     </div>
-
                   </div>
                   {items.image_dd && (
                     <img
@@ -731,22 +656,44 @@ const HomePage = () => {
                   )}
                 </div>
 
-                <p className="px-2">{items.lich_khoi_hanh} - {calculateNumberOfDays(items.lich_khoi_hanh, items.ngay_ket_thuc)} ngày - Giờ đi: 05:20</p>
-                <Link to={`/tours/${items.id}`}><p className='font-bold py-2 px-2'>{items.ten_tour}</p></Link>
-                <p className='font-bold py-2 px-2'>Số lượng: {items.soluong} </p>
-                <div className='flex gap-2 py-2 px-4'>
-                  <p className='text-sm'>Nơi khởi hành: {items.diem_di}</p>
-                  <p className='font-medium text-sm'>{items.diem_khoi_hanh}</p>
+                <p className="px-2">
+                  {items.lich_khoi_hanh} -{" "}
+                  {calculateNumberOfDays(
+                    items.lich_khoi_hanh,
+                    items.ngay_ket_thuc
+                  )}{" "}
+                  ngày - Giờ đi: 05:20
+                </p>
+                <Link to={`/tours/${items.id}`}>
+                  <p className="font-bold py-2 px-2">{items.ten_tour}</p>
+                </Link>
+                <p className="font-bold py-2 px-2">
+                  Số lượng: {items.soluong}{" "}
+                </p>
+                <div className="flex gap-2 py-2 px-4">
+                  <p className="text-sm">Nơi khởi hành: {items.diem_di}</p>
+                  <p className="font-medium text-sm">{items.diem_khoi_hanh}</p>
                 </div>
-                <p className='text-base pt-1 px-4 text-blue-950 font-semibold'>Giá trẻ em: {formatCurrency(items.gia_treem)} </p>
-                <div className='grid grid-cols-2 justify-between px-4 p-1'>
-                  <p className=' font-bold '>Giá Người Lớn: {formatCurrency(items.gia_nguoilon)}</p>
-                  <div className='bg-yellow-300 mt-10 py-2 text-center font-semibold rounded-xl text-white shadow-xl'>10% Giảm</div>
+                <p className="text-base pt-1 px-4 text-blue-950 font-semibold">
+                  Giá trẻ em: {formatCurrency(items.gia_treem)}{" "}
+                </p>
+                <div className="grid grid-cols-2 justify-between px-4 p-1">
+                  <p className=" font-bold ">
+                    Giá Người Lớn: {formatCurrency(items.gia_nguoilon)}
+                  </p>
+                  <div className="bg-yellow-300 mt-10 py-2 text-center font-semibold rounded-xl text-white shadow-xl">
+                    10% Giảm
+                  </div>
                 </div>
                 <div className="px-3 py-4 grid grid-cols-2 gap-7">
-                  
-                  <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">Đặt Ngay</button>
-                  <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl"><a href="" className="text-blue-600">Xem chi tiết</a></button>
+                  <button className="bg-red-500 hover:bg-red-900 px-4 py-2 rounded-lg text-white shadow-xl">
+                    Đặt Ngay
+                  </button>
+                  <button className="border border-blue-600 px-5 py-2 rounded-lg hover:bg-slate-300 hover:text-white shadow-xl">
+                    <a href="" className="text-blue-600">
+                      Xem chi tiết
+                    </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -755,119 +702,158 @@ const HomePage = () => {
       </div>
       {/*  */}
       <div className="lg:m-10 m-0">
-        <h2 className="lg:m-10 mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 ">
-          VÉ TOUR ƯU ĐÃI ĐẶC BIỆT!
+        <h2 className="lg:m-10 mt-5 mb-5 home-page__title lg:text-[30px] text-lg p-4 lg:p-0 cn_dl ">
+          CẨM NANG DU LỊCH
         </h2>
         <div className=" ">
-          <div className="flex flex-wrap   overflow-x-auto ">
-            {sales.map((sale) => (
-              <div
-                key={sale.id}
-                className="lg:w-full md:w-1/2 bg-gray-100 p-4 mt-5 rounded-lg tours-center flex lg:flex-row flex-col  lg:mx-4 "
-              >
-                <div className="tour-uudai lg:w-1/4 w-full">
-                  <img
-                    className="rounded-lg w-60 h-80 object-cover"
-                    src={sale.image}
-                    alt={sale.name}
-                  />
-                </div>
+          <div className="flex gap-5">
+            <div className="w-3/5">
+              <h1 className="text-xl font-medium py-3 td-sba">
+                TIN TỨC NỔI BẬT
+              </h1>
 
-                <div className="ml-4 flex-grow lg:w-1/2 w-full pr-5 lg:border-r  border-gray-400">
-                  <button
-                    style={{ backgroundColor: "#2d4271" }}
-                    className="lg:block hidden text-center text-white py-2 mb-3 px-4 rounded "
+              {dataSource.length > 0 && (
+                <>
+                  <Slider
+                    className="main-image-slider"
+                    dots={true}
+                    infinite={true}
+                    speed={500}
+                    slidesToShow={1}
+                    slidesToScroll={1}
+                    arrows={false}
+                    autoplay={true}
+                    autoplaySpeed={3000}
+                   
                   >
-                    Vé máy bay + Khách sạn
-                  </button>
-                  <h3 className=" mt-4 lg:mt-0 text-lg lg:text-base font-bold  hover:text-blue-500 mb-2">
-                    {sale.name}
-                  </h3>
-                  <div className="mb-2">
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/128/2107/2107957.png"
-                      alt=""
-                      width={"16px"}
-                      height={"16px"}
-                    />
-                  </div>
+                    {dataSource.map((image2) => (
+                      <div key={image2.id}>
+                        <Link
+                          to={`/post/${image2.key}`}
+                          className="w-auto rounded-xl"
+                        >
+                          <img
+                            src={`http://localhost:8000/storage/${image2.image}`}
+                            className="w-[1100px] h-[600px] rounded-xl "
+                            alt={image2.alt}
+                          />
+                        </Link>
+                        <div className="aslut">
+                          <Link to={`/post/${image2.key}`}>
+                            <p className="font-medium py-4 text-lg postname lddssss">
+                              {image2.ten_post
+                                .split(" ")
+                                .slice(0, 10)
+                                .join(" ")}
+                              {image2.ten_post.split(" ").length > 10
+                                ? " ..."
+                                : ""}
+                            </p>
+                          </Link>
+                          <p className="font-mediums">{image2.ngay_dang}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </Slider>
 
-                  <p className="text-[#6c757d] text-[14px] mb-4">
-                    Vé máy bay khứ hồi Vietravel Airlines + Phòng KS + Ăn sáng{" "}
-                  </p>
-                  <div className="flex tours-center mb-4">
+                  <Slider
+                    className="additional-images-slider grid gap-4 grid-cols-1"
+                    dots={true}
+                    infinite={true}
+                    speed={500}
+                    slidesToShow={3}
+                    slidesToScroll={2}
+                    arrows={false}
+                    autoplay={true}
+                    autoplaySpeed={3000}
+                    initialSlide={currentImageIndex} // Set the initial slide to the current main image index
+                    responsive={[
+                      {
+                        breakpoint: 1024,
+                        settings: {
+                          slidesToShow: 2,
+                          slidesToScroll: 1,
+                        },
+                      },
+                      {
+                        breakpoint: 767,
+                        settings: {
+                          slidesToShow: 1,
+                          slidesToScroll: 1,
+                        },
+                      },
+                    ]}
+                  >
+                    {dataSource.map((image3) => (
+                      <div
+                        key={image3.id}
+                        className="bg-gray-100 p-4 rounded-lg flex flex-col tours-center postnew"
+                      >
+                        <img
+                          className="mt-4 rounded-lg w-full h-20 object-cover"
+                          src={`http://localhost:8000/storage/${image3.image}`}
+                        />
+                        <Link to={`/post/${image3.key}`}>
+                          <p className="font-medium py-4 text-lg postname">
+                            {image3.ten_post.split(" ").slice(0, 10).join(" ")}
+                            {image3.ten_post.split(" ").length > 10
+                              ? " ..."
+                              : ""}
+                          </p>
+                        </Link>
+                        <p className="font-mediums">{image3.ngay_dang}</p>
+                      </div>
+                    ))}
+                  </Slider>
+                </>
+              )}
+            </div>
+
+            <div className="w-2/5">
+              <h1 className="text-xl font-medium py-3 td-sba">
+                KINH NGHIỆM DU LỊCH
+              </h1>
+              {dataSource.slice(1, maxToursToShow + 1).map((item) => (
+                <div className="flex gap-3 pb-3" key={item.key}>
+                  <Link to={`/post/${item.key}`} className="image_bv">
                     <img
-                      src="https://cdn-icons-png.flaticon.com/128/3272/3272491.png"
-                      alt=""
-                      width={"40px"}
-                      height={"52px"}
+                      src={`http://localhost:8000/storage/${item.image}`}
+                      alt={`Image ${item.key}`}
+                      className="w-[250px] h-[175px] rounded-lg"
                     />
-                    <div className="font-bold pl-2 text-[#2d4271] ">
-                      Tuyệt vời
-                    </div>
-                  </div>
-                  <div className="flex tours-center ">
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/128/12348/12348181.png"
-                      alt=""
-                      width={"16px"}
-                      height={"16px"}
-                    />
-                    <p className="text-[14px] text-blue-400 ml-2">
-                      {sale.details}
-                    </p>
+                  </Link>
+                  <div style={{ width: "160%", textAlign: "left" }}>
+                    {/* Find the corresponding category based on id_postdm */}
+                    {postdmArrary
+                      .filter((option) => option.id_postdm === item.id_postdm)
+                      .map((filteredOption) => (
+                        <p
+                          key={filteredOption.id_postdm}
+                          className="text-red-500 font-medium text-lg"
+                        >
+                          {filteredOption.ten_dm}
+                        </p>
+                      ))}
+                    <Link to={`/post/${item.key}`}>
+                      <p className="font-medium py-4 text-lg namepost">
+                        {item.ten_post}
+                      </p>
+                    </Link>
+                    <p className="font-mediums">{item.ngay_dang}</p>
                   </div>
                 </div>
-                <div className="lg:w-1/4 w-full flex flex-col  pl-5 lg:tours-end">
-                  <p className="price-c mb-2">Giá chỉ từ : </p>
-                  <p className=" price-t mb-2 ">{formatCurrency(sale.price)}</p>
+              ))}
 
-                  <p className="mb-2">{sale.code}</p>
-                  <div className="flex justify-between tours-center mt-4 mb-2">
-                    <button className="mr-2 text-center bg-white text-blue-500 py-2 px-4 rounded hover:bg-red-500 hover:text-white">
-                      Ngày Khác
-                    </button>
-                    <div className="flex">
-                      <button className="text-center bg-red-500 text-white py-2 px-4 rounded hover:bg-white hover:text-blue-500">
-                        Đặt Ngay
-                      </button>
-                    </div>
-                  </div>
-                  <p className="text-base text-blue-500 mt-2 lg:block hidden">
-                    Đã bao gồm trong giá
-                  </p>
+              {dataSource.length > maxToursToShow && (
+                <div className="text-blue-500 cursor-pointer xemthem">
+                  <Link to="/view-more">Xem thêm</Link>
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/*  */}
-      {/* <div className="content">
-        <h2 className="mt-5 home-page__title mb-5">ĐIỂM ĐẾN CHO CẶP ĐÔI!</h2>
-        <div className="product-list hover-image grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4">
-          {destinations.map((destination) => (
-            <div
-              key={destination.id}
-              className="bg-gray-100 bg-opacity-75 p-4 rounded-lg flex flex-col "
-            >
-              <img
-                style={{ height: "160px" }}
-                className="mt-4 rounded-lg w-full h-40 object-cover"
-                src={destination.image}
-                alt={destination.name}
-              />
-              <div className="product-details mt-4 ">
-                <h3 className="text-[#2d4271] text-lg font-bold hover:text-blue-500">
-                  {destination.name}
-                </h3>
-                <p>{destination.details}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
       <div className="lg:m-10 m-0">
         <div>
           <p className="font-bold text-[30px] text-[#2d4271]">
@@ -942,7 +928,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
