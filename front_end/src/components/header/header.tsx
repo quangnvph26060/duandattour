@@ -1,6 +1,7 @@
 const rounded = {
   borderRadius: "25px",
 };
+import { FaSearch } from 'react-icons/fa';
 import axios from "axios";
 import { IPour } from "../../interface/home";
 import { Link, useNavigate } from "react-router-dom";
@@ -126,13 +127,13 @@ const HeaderWebsite = () => {
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
                   <a href="/" className="">
-                    PolyTour
+                    Trang chủ 
                   </a>
                 </li>
 
                 <li className="group visible">
                   <Link to={"tour"} className="menu-items">
-                    Tour
+                    Du lịch
                   </Link>
                   {/* Menu phân cấp*/}
 <div className="container mx-auto max-w-full w-full">
@@ -180,11 +181,7 @@ const HeaderWebsite = () => {
                     Tin tức
                   </a>
                 </li>
-                <li>
-                  <a href="" className="">
-                    Khuyến mãi
-                  </a>
-                </li>
+               
                 <li>
                   <a href="/contact" className="">
                     Liên hệ
@@ -196,23 +193,26 @@ const HeaderWebsite = () => {
         </div>
         <div className="search flex items-center">
         <div className="search mt-2 tours-center">
-  <input
-    style={{ width: '220px' }}
-    className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-    type="text"
-    placeholder="Search...."
-    value={searchTerm}
-    onChange={handleSearchChange}
-  />
-  <button
-    className="bg-blue-300 hover:bg-blue-600 text-white py-2 px-2 rounded-lg ml-2 transition-colors duration-300"
-    onClick={handleSearch}
-  >
-    Search
-  </button>
+  <div className="search-input-container">
+    <input
+      style={{ width: '220px' }}
+      className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      type="text"
+      placeholder="Bắt đầu tìm kiếm...."
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
+    <button
+      style={{ width: '40px',  position:"absolute" ,right:"60px" , }}
+      className="bg-400 text-white py-3 px-3 rounded-lg ml-2 transition-colors duration-300"
+      onClick={handleSearch}
+    >
+      <FaSearch className="mr-2 ee text-[20px]" style={{ color: '#444444',transform: 'scale(1.1)'}} />
+    </button>
+  </div>
 </div>
 
-          <div className="ml-2 mt-2 border-[3px]">
+          <div className="ml-2 mt-2  ">
             {token ? (
               <Link to="/profile">
                 <img
