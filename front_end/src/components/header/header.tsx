@@ -33,6 +33,23 @@ const HeaderWebsite = () => {
 
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
+  const [imagesData, setImagesData] = useState([]);
+
+  useEffect(() => {
+    const fetchImagesData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/admin/bannerlogo"
+        );
+        setImagesData(response.data); // Assuming the API response is an array of image data
+      } catch (error) {
+        console.error("Error fetching image data:", error);
+      }
+    };
+
+    fetchImagesData();
+  }, []);
+
   useEffect(() => {
     if (token) {
       // Gửi yêu cầu API để lấy thông tin người dùng từ token
@@ -53,6 +70,14 @@ const HeaderWebsite = () => {
   }, [token]);
   const { data: Data, error, isLoading } = useGetMenuQuery();
 
+  const parentCallback = () => {
+    console.log("parentCallback");
+  };
+
+  //
+
+  // const navigate = useNavigate();
+
   if (isLoading) {
     return <div>Đang tải dữ liệu...</div>;
   }
@@ -68,19 +93,19 @@ const HeaderWebsite = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-  
+
   const handleSearch = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
       setSearchResults(response.data.data);
       const filteredTours = response.data.data.filter((tour: Tour) =>
         tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-      );  
+      );
       setMatchedResults(filteredTours);
-  
+
       setFilteredTours(filteredTours);
       setSearched(true);
-      navigate('/tour', { state: { matchedResults: filteredTours } });
+      navigate("/tour", { state: { matchedResults: filteredTours } });
     } catch (error) {
       // setError("Error searching tours.");
     }
@@ -113,13 +138,23 @@ const HeaderWebsite = () => {
     });
     console.log(combinedData);
   }
+
   return (
     <div>
       {" "}
       <div className="menu flex items-center justify-between">
         <div className="flex">
           <a href="/">
-            <img style={rounded} src={logo} alt="logo" width="100px" />
+            {imagesData.length > 0 ? (
+              <img
+                style={rounded}
+                src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
+                alt=""
+                width="100px"
+              />
+            ) : (
+              <span></span>
+            )}
           </a>
 
           <nav className="font-semibold p-4 pt-8 pl-18">
@@ -127,7 +162,7 @@ const HeaderWebsite = () => {
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
                   <a href="/" className="">
-                    Trang chủ 
+                    Trang chủ
                   </a>
                 </li>
 
@@ -136,7 +171,7 @@ const HeaderWebsite = () => {
                     Du lịch
                   </Link>
                   {/* Menu phân cấp*/}
-<div className="container mx-auto max-w-full w-full">
+                  <div className="container mx-auto max-w-full w-full">
                     <div className="">
                       <ul className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
                         {" "}
@@ -181,7 +216,7 @@ const HeaderWebsite = () => {
                     Tin tức
                   </a>
                 </li>
-               
+              
                 <li>
                   <a href="/contact" className="">
                     Liên hệ
@@ -192,8 +227,8 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-        <div className="search mt-2 tours-center">
-  <div className="search-input-container">
+        <div className="search flex items-center">
+  <div className="search-container relative mr-2">
     <input
       style={{ width: '220px' }}
       className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -203,20 +238,24 @@ const HeaderWebsite = () => {
       onChange={handleSearchChange}
     />
     <button
-      style={{ width: '40px',  position:"absolute" ,right:"60px" , }}
-      className="bg-400 text-white py-3 px-3 rounded-lg ml-2 transition-colors duration-300"
+      className="search-icon absolute top-1/2 right-1 transform -translate-y-1/2 bg-400 text-white py-3 px-3 rounded-lg transition-colors duration-300"
       onClick={handleSearch}
     >
-      <FaSearch className="mr-2 ee text-[20px]" style={{ color: '#444444',transform: 'scale(1.1)'}} />
+      <FaSearch className="text-[20px]" style={{ color: '#444444', transform: 'scale(1.1)' }} />
     </button>
   </div>
+  {token && (
+    <Link to={'/favorite'} className="px-3">
+      <i className="far text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
+    </Link>
+  )}
 </div>
 
-          <div className="ml-2 mt-2  ">
+          <div className="ml-2">
             {token ? (
               <Link to="/profile">
                 <img
-             src={`http://localhost:8000/storage/${usersId.image}`}
+                  src={`http://localhost:8000/storage/${usersId.image}`}
                   alt="img"
                   style={{
                     width: "50px",

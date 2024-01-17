@@ -1,14 +1,36 @@
 const rounded = {
   borderRadius: "25px",
 };
+import { FaSearch } from 'react-icons/fa';
+import axios from "axios";
+import { IPour } from "../../interface/home";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import logo from "../img/logo.jpg";
 import { useGetMenuQuery } from "../../api/menu";
 import { data } from "autoprefixer";
 import "../../page.css";
-
+interface Tour {
+  id: number;
+  ten_tour: string;
+  diem_di: string;
+  diem_den: string;
+  lich_khoi_hanh: string;
+  ngay_ket_thuc: string;
+  diem_khoi_hanh: string;
+  gia_tour: number;
+  mo_ta: string;
+  soluong: number;
+}
 const HeaderWebsite = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tours, setTours] = useState<IPour[]>([]);
+  const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
+  const [searched, setSearched] = useState(false);
+  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState<Tour[]>([]);
+  const [matchedResults, setMatchedResults] = useState<Tour[]>([]);
+
   const token = localStorage.getItem("token");
   const [usersId, setUserId] = useState("");
   useEffect(() => {
@@ -43,17 +65,38 @@ const HeaderWebsite = () => {
   let loaiTour: string[] = [];
   let diemDens: string[] = [];
 
-  // if (menuData) {
-  //   // Lặp qua mảng data để trích xuất thông tin
-  //   menuData.forEach((item) => {
-  //     if (item && item.loaiTour) {
-  //       loaiTour.push(item.loaiTour.ten_loai_tour); // Thêm tên loại tour vào mảng
-  //       diemDens = [...diemDens, ...item.diemDens]; // Thêm tất cả địa điểm vào mảng
-  //     }
-  //   });
-  // }
-  // console.log(loaiTour);
-  // console.log(diemDens);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+  
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
+      setSearchResults(response.data.data);
+      const filteredTours = response.data.data.filter((tour: Tour) =>
+        tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
+      );  
+      setMatchedResults(filteredTours);
+  
+      setFilteredTours(filteredTours);
+      setSearched(true);
+      navigate('/tour', { state: { matchedResults: filteredTours } });
+    } catch (error) {
+      // setError("Error searching tours.");
+    }
+  };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setFilteredTours([]);
+    setSearched(false);
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const displayedTours = searched ? filteredTours : tours;
   const combinedData = {};
   if (menuData) {
     menuData.forEach((item) => {
@@ -84,13 +127,13 @@ const HeaderWebsite = () => {
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
                   <a href="/" className="">
-                    PolyTour
+                    Trang chủ 
                   </a>
                 </li>
 
                 <li className="group visible">
                   <Link to={"tour"} className="menu-items">
-                    Tour
+                    Du lịch
                   </Link>
                   {/* Menu phân cấp*/}
 <div className="container mx-auto max-w-full w-full">
@@ -138,11 +181,7 @@ const HeaderWebsite = () => {
                     Tin tức
                   </a>
                 </li>
-                <li>
-                  <a href="" className="">
-                    Khuyến mãi
-                  </a>
-                </li>
+               
                 <li>
                   <a href="/contact" className="">
                     Liên hệ
@@ -153,21 +192,31 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="border-yellow-300
-border-[3px] px-2 py-2  rounded"
-          />
-          <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2">
-            Search
-          </button>
+        <div className="search mt-2 tours-center">
+  <div className="search-input-container">
+    <input
+      style={{ width: '220px' }}
+      className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      type="text"
+      placeholder="Bắt đầu tìm kiếm...."
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
+    <button
+      style={{ width: '40px',  position:"absolute" ,right:"60px" , }}
+      className="bg-400 text-white py-3 px-3 rounded-lg ml-2 transition-colors duration-300"
+      onClick={handleSearch}
+    >
+      <FaSearch className="mr-2 ee text-[20px]" style={{ color: '#444444',transform: 'scale(1.1)'}} />
+    </button>
+  </div>
+</div>
 
-          <div className="ml-2">
+          <div className="ml-2 mt-2  ">
             {token ? (
               <Link to="/profile">
                 <img
-src={`http://localhost:8000/storage/${usersId.image}`}
+             src={`http://localhost:8000/storage/${usersId.image}`}
                   alt="img"
                   style={{
                     width: "50px",
