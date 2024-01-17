@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Table, Button, Skeleton, Popconfirm, Input } from "antd";
 import { Link } from "react-router-dom";
@@ -12,9 +13,9 @@ const Admin_Khachhang: React.FC<Props> = () => {
   const { data: userdata, error, isLoading } = useGetUserQuery();
   const [searchValue, setSearchValue] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState<IUser[]>([]);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
   const handleSearch = () => {
-    // Filter data based on search value
     const filteredData = userdata?.data.filter((user) =>
       user.name.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -33,6 +34,19 @@ const Admin_Khachhang: React.FC<Props> = () => {
       setFilteredDataSource(filteredData || []);
     }
   }, [isLoading, userdata, searchValue]);
+
+  const handleFilter = (role: string) => {
+    setSelectedRole(role);
+    const filteredData = userdata?.data.filter((user) =>
+      user.roles.some((userRole) => userRole.name === role)
+    );
+    setFilteredDataSource(filteredData || []);
+  };
+
+  const resetFilter = () => {
+    setSelectedRole(null);
+    setFilteredDataSource([]);
+  };
 
   const tourArray = filteredDataSource.length > 0 ? filteredDataSource : userdata?.data || [];
   const [userData, setUserData] = useState<IUser[]>([]);
@@ -130,7 +144,7 @@ const Admin_Khachhang: React.FC<Props> = () => {
             <Button type="primary" danger>
               <Link to={`/admin/customer_account/edit/${id}`}>Phân Vai Trò</Link>
             </Button>
-
+  
             <Button type="primary" danger>
               <Link to={`/admin/customer_account/permissions/${id}`}>Phân Quyền</Link>
             </Button>
@@ -139,23 +153,43 @@ const Admin_Khachhang: React.FC<Props> = () => {
       ),
     },
   ];
+  
 
   return (
     <div>
       <header className="mb-4 flex justify-between items-center">
         <h2 className="font-bold text-2xl">Quản lý tài khoản</h2>
       </header>
-      <div className="flex items-center justify-end mb-4">
-  <Input
-    style={{ width: "250px" }}
-    placeholder="Tìm kiếm lịch trình"
-    value={searchValue}
-    onChange={handleSearchChange}
-  />
-  <Button style={{ backgroundColor: "blue" , marginLeft:"5px"}} type="primary" onClick={handleSearch}>
-    Tìm kiếm
-  </Button>
-</div>
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <Button
+          style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }}
+            type={selectedRole === "nhan_vien" ? "primary" : "default"}
+            onClick={() => handleFilter("nhan_vien")}
+          >
+            Nhân Viên
+          </Button>
+          <Button
+          style={{ backgroundColor: '#63B3ED', color: '#FFFFFF' }}
+            type={selectedRole === "khach_hang" ? "primary" : "default"}
+            onClick={() => handleFilter("khach_hang")}
+          >
+            Khách Hàng
+          </Button>
+          
+        </div>
+        <div>
+          <Input
+            style={{ width: "250px" }}
+            placeholder="Tìm kiếm lịch trình"
+            value={searchValue}
+            onChange={handleSearchChange}
+          />
+          <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
+            Tìm kiếm
+          </Button>
+        </div>
+      </div>
       {isLoading ? <Skeleton /> : <Table dataSource={dataSource} columns={columns} />}
     </div>
   );
