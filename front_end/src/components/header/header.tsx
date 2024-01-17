@@ -1,15 +1,15 @@
 const rounded = {
   borderRadius: "25px",
 };
-import { FaSearch } from 'react-icons/fa';
 import axios from "axios";
 import { IPour } from "../../interface/home";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import logo from "../img/logo.jpg";
+
 import { useGetMenuQuery } from "../../api/menu";
-import { data } from "autoprefixer";
+
 import "../../page.css";
+import { FaSearch } from "react-icons/fa";
 interface Tour {
   id: number;
   ten_tour: string;
@@ -23,7 +23,7 @@ interface Tour {
   soluong: number;
 }
 const HeaderWebsite = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [tours, setTours] = useState<IPour[]>([]);
   const [filteredTours, setFilteredTours] = useState<IPour[]>([]);
   const [searched, setSearched] = useState(false);
@@ -39,7 +39,7 @@ const HeaderWebsite = () => {
     const fetchImagesData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/admin/bannerlogo"
+          "http://localhost:8000/api/admin/logo"
         );
         setImagesData(response.data); // Assuming the API response is an array of image data
       } catch (error) {
@@ -78,37 +78,28 @@ const HeaderWebsite = () => {
 
   // const navigate = useNavigate();
 
-  if (isLoading) {
-    return <div>Đang tải dữ liệu...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Đang tải dữ liệu...</div>;
+  // }
 
-  if (error) {
-    return <div>Có lỗi xảy ra: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div>Có lỗi xảy ra: {error.message}</div>;
+  // }
   const menuData = Data?.menuPhanCap || [];
 
   let loaiTour: string[] = [];
   let diemDens: string[] = [];
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/admin/tour/");
-      setSearchResults(response.data.data);
-      const filteredTours = response.data.data.filter((tour: Tour) =>
-        tour.ten_tour.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setMatchedResults(filteredTours);
 
-      setFilteredTours(filteredTours);
-      setSearched(true);
-      navigate("/tour", { state: { matchedResults: filteredTours } });
-    } catch (error) {
-      // setError("Error searching tours.");
-    }
+  const handleSearch = () => {
+    // Xử lý tìm kiếm dữ liệu
+  
+    // Đặt lại giá trị searchTerm thành null
+    setSearchTerm("");
   };
 
   const handleResetSearch = () => {
@@ -136,7 +127,7 @@ const HeaderWebsite = () => {
         combinedData[loaiTourName].push(...diemDens);
       }
     });
-    console.log(combinedData);
+    
   }
 
   return (
@@ -147,33 +138,38 @@ const HeaderWebsite = () => {
           <a href="/">
             {imagesData.length > 0 ? (
               <img
-                style={rounded}
+              className="rounded-3xl w-[50px] h-[50px] mt-4"
+             
                 src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
                 alt=""
-                width="100px"
+             
               />
             ) : (
               <span></span>
             )}
           </a>
 
+         
           <nav className="font-semibold p-4 pt-8 pl-18">
             <div className="max-w-7xl flex justify-between items-center mx-auto relative">
               <ul className="flex  text-[#2D4271] max-w-7xl gap-12">
                 <li>
-                  <a href="/" className="">
-                    Trang chủ
-                  </a>
+                <Link to={""} className="menu-items">
+                  PolyTour
+                </Link>
+                  {/* <a href="/" className="">
+                   
+                  </a> */}
                 </li>
 
                 <li className="group visible">
                   <Link to={"tour"} className="menu-items">
-                    Du lịch
+                    Tour
                   </Link>
                   {/* Menu phân cấp*/}
-                  <div className="container mx-auto max-w-full w-full">
+                  <div className="container mx-auto max-w-full w-full" style={{ zIndex: 10 }}>
                     <div className="">
-                      <ul className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
+                      <ul style={{ zIndex: 10 }} className=" flex flex-wrap bg-[aliceblue] fixed p-8 right-7 left-8 mt-20 rounded-xl border-blue-300 border opacity-0 invisible  group-hover:opacity-100 group-hover:visible group-hover:mt-5 transition-all duration-500">
                         {" "}
                         {/* Sử dụng flex-wrap để các loại tour hiển thị ngang */}
                         {Object.keys(combinedData).map((loaiTourName) => (
@@ -185,7 +181,7 @@ const HeaderWebsite = () => {
                             </a>
                             <ul className="">
                               {combinedData[loaiTourName].map((diemDen) => (
-                                <li className="py-3" key={diemDen}>
+                                <li className="py-1" key={diemDen}>
                                   <Link
                                     to={`/tour/${diemDen}`}
                                     className="mega-menu-items"
@@ -197,14 +193,7 @@ const HeaderWebsite = () => {
                             </ul>
                           </li>
                         ))}
-                        <li className="py-1 pr-4">
-                          <a
-                            href=""
-                            className="mega-menu-items underline decoration-3 text-blue-600"
-                          >
-                            Xem tất cả
-                          </a>
-                        </li>
+                       
                       </ul>
                     </div>
                   </div>
@@ -216,7 +205,11 @@ const HeaderWebsite = () => {
                     Tin tức
                   </a>
                 </li>
-              
+                <li>
+                  <a href="" className="">
+                    Khuyến mãi
+                  </a>
+                </li>
                 <li>
                   <a href="/contact" className="">
                     Liên hệ
@@ -227,8 +220,8 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-        <div className="search flex items-center">
-  <div className="search-container relative mr-2">
+        <div className="search mt-2 tours-center">
+  <div className="search-container relative">
     <input
       style={{ width: '220px' }}
       className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -237,19 +230,21 @@ const HeaderWebsite = () => {
       value={searchTerm}
       onChange={handleSearchChange}
     />
-    <button
-      className="search-icon absolute top-1/2 right-1 transform -translate-y-1/2 bg-400 text-white py-3 px-3 rounded-lg transition-colors duration-300"
-      onClick={handleSearch}
-    >
-      <FaSearch className="text-[20px]" style={{ color: '#444444', transform: 'scale(1.1)' }} />
-    </button>
+    <Link to={`/tour/${searchTerm}`} className="mega-menu-items">
+      <button
+        className="search-icon absolute top-1/2 right-2 transform -translate-y-1/2 bg-400 text-white py-3 px-3 rounded-lg transition-colors duration-300"
+        onClick={handleSearch}
+      >
+        <FaSearch className="text-[20px]" style={{ color: '#444444', transform: 'scale(1.1)' }} />
+      </button>
+    </Link>
   </div>
   {token && (
-    <Link to={'/favorite'} className="px-3">
+    <Link to="/favorite" className="px-3">
       <i className="far text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>
     </Link>
-  )}
-</div>
+          )}
+          </div>
 
           <div className="ml-2">
             {token ? (
