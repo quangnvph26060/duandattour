@@ -11,7 +11,7 @@ import {
 import { IDiscount } from "../../../../interface/discount";
 
 const AdminGiam_Gia = () => {
-  const { data: discountdata, error, isLoading } = useGetDiscountQuery();
+  const { data: discountdata, error, isLoading,refetch } = useGetDiscountQuery();
   const [removeProduct, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
     useRemoveDiscountMutation();
   const [filterActive, setFilterActive] = useState(null);
@@ -42,7 +42,13 @@ const AdminGiam_Gia = () => {
       trang_thai,
     })
   );
-
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    return formatter.format(value);
+  };
   const filteredDataSource = filterActive === null
     ? dataSource
     : dataSource.filter((item) => item.trang_thai === filterActive);
@@ -74,11 +80,13 @@ const AdminGiam_Gia = () => {
             }
         },
         {
-            title: "Điều kiện giảm giá",
-            dataIndex: "minprice",
-            key: "minprice",
-           
-        },
+          title: "Điều kiện giảm giá",
+          dataIndex: "minprice",
+          key: "minprice",
+          render: (minprice: number) => {
+            return formatCurrency(minprice);
+        }
+      },
         {
             title: "Loại Giảm giá",
             dataIndex: "discount_condition",

@@ -12,6 +12,7 @@ import {
   AiFillFund,
   AiOutlineMenu,
   AiFillSchedule,
+  AiFillFileWord,
 } from "react-icons/ai";
 import {
   MdCategory,
@@ -204,7 +205,7 @@ const LayoutAdmin = () => {
                 key="3"
                 title={
                   <Link to="/admin/tour/dat_tour">
-                    <span>Quản lý tour</span>
+                    <span>Quản lý đặt tour</span>
                   </Link>
                 }
               >
@@ -220,13 +221,15 @@ const LayoutAdmin = () => {
                 </Menu.Item>
               </Menu.SubMenu>
             </Menu.SubMenu>
+            {  localStorage.getItem("role") == 'admin' ?
             <Menu.SubMenu key="4" icon={<AiOutlineUser />} title="Tài khoản">
               <Menu.Item icon={<FaUser />} key="4-1">
-                <Link to="/admin/customer_account">Tài khoản </Link>
+                <Link to="/admin/customer_account">Quản lý tài khoản </Link>
               </Menu.Item>
             
             </Menu.SubMenu>
-            <Menu.SubMenu key="5" icon={<MdPermMedia />} title="Truyền thông ">
+             : ""}
+            <Menu.SubMenu key="5" icon={<AiFillFileWord />} title="Truyền thông ">
               <Menu.SubMenu icon={<FaNewspaper />} key="5-1" title="Bài viết">
                 <Menu.Item icon={<TfiWrite />} key="5-1-1">
                   <Link to="/admin/post/danhmuc_post">Danh mục bài viết</Link>
@@ -244,9 +247,7 @@ const LayoutAdmin = () => {
                   <Link to="/admin/logo">Logo </Link>
                 </Menu.Item>
             </Menu.SubMenu>
-            <Menu.Item>
-                <Link to={'/admin/banner_logo'}>Quản lý banner</Link>
-              </Menu.Item>
+        
             <Menu.Item icon={<FaPowerOff />} key="5-1-2">
               <button onClick={handleLogout}>Đăng xuất</button>
             </Menu.Item>
@@ -304,7 +305,7 @@ const LayoutAdmin = () => {
           </Header>
           <Content
             style={{
-              maxHeight: 2000,
+              maxHeight: 5000,
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,

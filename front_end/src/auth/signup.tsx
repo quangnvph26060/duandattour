@@ -62,20 +62,21 @@ const Login = () => {
         console.log(response.data)
         const token = response.data.access_token;
         const role = response.data.role;
-      
+        showSuccessMessage();
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
         localStorage.setItem("id", response.data.data.id);
         // authContext.storeAuthData(token,role);
         //  setUser(response.data.role);
-        alert("Đăng nhập thành công");
-        if(localStorage.getItem("role") === 'admin'|| localStorage.getItem("role") === 'nhan_vien'){
- 
+        // 
+
+        if (localStorage.getItem("role") === 'admin') {
+
           window.location.href = 'http://localhost:5173/admin';
-        }else{
+        } else {
           window.location.href = 'http://localhost:5173/';
         }
-        
+
 
 
       }
@@ -83,8 +84,73 @@ const Login = () => {
       console.log('Đã xảy ra lỗi', error);
 
       // Xử lý lỗi đăng nhập không thành công
-      alert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.");
+      // alert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.");
+      showErrorMessage()
     }
+  };
+
+  const showSuccessMessage = () => {
+    // Hiển thị thông báo thành công
+    const successMessage = document.createElement('div');
+    successMessage.classList.add(
+      'fixed', 'top-16', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2',
+      'p-12', 'bg-green-500', 'text-white', 'rounded', 'shadow-lg', 'z-50', 'animate-fadeInOut'
+    );
+
+    // Thêm biểu tượng loading
+    const loadingIcon = document.createElement('span');
+    loadingIcon.classList.add('mr-2', 'text-2xl', 'animate-spin', 'inline-block');
+    loadingIcon.innerHTML = '⏳'; // Unicode biểu tượng loading
+
+    // Thêm nội dung thông báo
+    successMessage.appendChild(loadingIcon);
+    successMessage.innerHTML += "Đang đăng nhập...";
+
+    // Thêm phần tử vào body hoặc một phần tử khác trong DOM
+    document.body.appendChild(successMessage);
+
+    // Tạo một Promise để giả lập việc đăng nhập thành công
+    const loginSuccessPromise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 4000); // Giả lập thời gian đăng nhập thành công (2 seconds)
+    });
+
+    // Xử lý khi đăng nhập thành công
+    loginSuccessPromise.then(() => {
+      // Thay thế biểu tượng loading bằng biểu tượng dấu tích
+      loadingIcon.innerHTML = '✅'; // Unicode biểu tượng dấu tích
+
+      // Tự động ẩn thông báo sau một khoảng thời gian
+      setTimeout(() => {
+        successMessage.remove();
+      }, 2000); // 2000 milliseconds (2 seconds)
+    });
+  };
+
+  const showErrorMessage = () => {
+    // Hiển thị thông báo báo lỗi
+    const ErrorMessage = document.createElement('div');
+    ErrorMessage.classList.add(
+      'fixed', 'top-20', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2',
+      'p-10', 'bg-red-500', 'text-white', 'rounded', 'shadow-lg', 'z-50', 'animate-fadeInOut'
+    );
+
+    // Thêm biểu tượng lỗi sử dụng Font Awesome
+    const errorIcon = document.createElement('span');
+    errorIcon.classList.add('mr-2', 'text-2xl');
+
+    // Thêm nội dung thông báo
+    ErrorMessage.appendChild(errorIcon);
+    ErrorMessage.innerHTML += "Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.";
+
+    // Thêm phần tử vào body hoặc một phần tử khác trong DOM
+    document.body.appendChild(ErrorMessage);
+
+    // Tự động ẩn thông báo sau một khoảng thời gian
+    setTimeout(() => {
+      ErrorMessage.remove();
+    }, 2000); // 3000 milliseconds (3 seconds)
   };
 
   return (

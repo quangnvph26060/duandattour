@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useGetMenuQuery } from "../../api/menu";
 
 import "../../page.css";
+import { FaSearch } from "react-icons/fa";
 interface Tour {
   id: number;
   ten_tour: string;
@@ -137,7 +138,7 @@ const HeaderWebsite = () => {
           <a href="/">
             {imagesData.length > 0 ? (
               <img
-              className="rounded-3xl w-[50px] h-[50px] mt-4"
+              className="rounded-3xl w-[85px] h-[70px] mt-4"
              
                 src={`http://localhost:8000/storage/${imagesData[0].image_logo}`}
                 alt=""
@@ -215,23 +216,22 @@ const HeaderWebsite = () => {
           </nav>
         </div>
         <div className="search flex items-center">
-          <div className="search mt-2   tours-center">
-            <input
-              style={{ width: "220px" }}
-              className="border-yellow-300 border-[3px] px- py-2 rounded"
-              type="text"
-              placeholder="Search...."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-         <Link
-            to={`/tour/${searchTerm}`}
-            className="mega-menu-items"
-          >
-            <button className="bg-blue-500 text-white py-2 px-3 rounded ml-2" onClick={handleSearch}>
-              Search
-            </button>
-          </Link>
+        <div className="search mt-2   tours-center">
+          <input
+      style={{ width: '220px' }}
+      className="border-yellow-300 border-[3px] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      type="text"
+      placeholder="Bắt đầu tìm kiếm...."
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
+             <button
+      style={{ width: '40px',  position:"absolute" ,right:"115px" , }}
+      className="bg-400 text-white py-3 px-3 rounded-lg ml-2 transition-colors duration-300"
+      onClick={handleSearch}
+    >
+      <FaSearch className="mr-2 ee text-[20px]" style={{ color: '#444444',transform: 'scale(1.1)'}} />
+    </button>
             {token && (
             <Link to={'/favorite'} className="px-3">
                <i className="far  text-2xl mr-2 text-blue-400 hover:text-red-500">&#xf004;</i>

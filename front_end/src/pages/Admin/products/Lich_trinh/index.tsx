@@ -69,6 +69,8 @@ const Admin_Lichtrinh = (props: Props) => {
   };
 
   const [selectedId, setSelectedId] = useState("");
+  console.log(selectedId);
+  
   const updateStatus = (id) => {
     setSelectedId(id);
     console.log(id);
@@ -184,7 +186,7 @@ const Admin_Lichtrinh = (props: Props) => {
         <h2 className="font-bold text-2xl">Quản lý lịch trình</h2>
         <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
           <Link to="/admin/tour/lich_trinh/add" className="flex items-center space-x-2">
-            <AiOutlinePlus />Tạo mới lịch trình
+            Tạo mới lịch trình
           </Link>
         </Button>
       </header>

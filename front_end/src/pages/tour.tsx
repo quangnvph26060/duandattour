@@ -168,33 +168,46 @@ const TourPage: React.FC = () => {
   //SẢN PHẨM YÊU THÍCH
   //Thêm tour vào yêu thích
   const addToFavorites = (tourId) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
-    axios
-      .post(
-        "http://127.0.0.1:8000/api/favorites",
-        { tour_id: tourId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
+    axios.post('http://127.0.0.1:8000/api/favorites', { tour_id: tourId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
         // Xử lý kết quả thành công
         console.log(response.data);
       })
       .catch((error) => {
         // Xử lý lỗi
         console.error(error);
-        alert("Bạn chưa đăng nhập!");
+        showNotLoggedInMessage();
       });
   };
 
-  // const reloadTour = (e) => {
-  //   e.preventDefault();
-  //   window.location.reload();
-  // };
+  // Sử dụng biến isFavorite để xác định trạng thái hiển thị của icon trái tim
+
+
+  const showNotLoggedInMessage = () => {
+    // Hiển thị thông báo không đăng nhập
+    const notLoggedInMessage = document.createElement('div');
+    notLoggedInMessage.textContent = "Bạn chưa đăng nhập !";
+    notLoggedInMessage.classList.add(
+      'fixed', 'top-20', 'text-center', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2',
+      'p-12', 'w-[350px]', 'bg-red-400', 'text-white', 'rounded', 'shadow-lg', 'z-50', 'animate-fadeInOut'
+    );
+
+    // Thêm phần tử vào body hoặc một phần tử khác trong DOM
+    document.body.appendChild(notLoggedInMessage);
+
+    // Tự động ẩn thông báo sau một khoảng thời gian
+    setTimeout(() => {
+      notLoggedInMessage.remove();
+    }, 2000); // 3000 milliseconds (3 seconds)
+  };
+
+  
 
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -306,9 +319,7 @@ const TourPage: React.FC = () => {
                           className="mega-menu-items flex items-center"
                           onClick={() => addToFavorites(items.id)}
                         >
-                          <i className="far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300">
-                            &#xf004;
-                          </i>
+                            <i id={`heart-icon-${items.id}`} className={`far text-2xl mr-2 text-white bg-transparent hover:text-red-500 transition duration-300`}>&#xf004;</i>
                         </Link>
                       </div>
                     </div>

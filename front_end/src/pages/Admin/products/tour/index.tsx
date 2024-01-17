@@ -76,37 +76,43 @@ const AdminProduct = () => {
       <div className="flex items-center justify-between  ">
 
         <h2 className="font-bold text-3xl whitespace-nowrap mr-7">Quản lý tour</h2>
-        <div className="float-right"> {localStorage.getItem("role") === 'admin' ? (
-          <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600">
-            <Link to="/admin/tour/add" className="flex text-lg items-center space-x-2">
-              <AiOutlinePlus />
-              <span>Tạo mới tour</span>
+        <div className="float-right"> 
+          <Button type="primary" className="bg-blue-500 p-5 flex w-[200px] justify-center items-center hover:bg-blue-600">
+            <Link to="/admin/tour/add" className=" text-lg flex items-center space-x-2">
+<p>Tạo mới tour</p>
             </Link>
           </Button>
 
 
-        ) : null}</div>
+        </div>
       </div>
       <br />
 
-      <div className="flex items-center justify-end mb-4 float-left">
-        <div> <div className="table_tour">
-          <Button style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }} onClick={() => handleFilter("inactive")}>
+      <div className="flex items-center justify-end mb-4 ">
+        <div className="table_tour flex justify-between">
+          <div className="flex">
+          <Input
+          style={{ width: "250px" }}
+          placeholder="Tìm kiếm lịch tour"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+           <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
+          Tìm kiếm
+        </Button>
+          </div>
+      <div className="flex">
+      <Button style={{ marginRight: '4px', backgroundColor: '#F6AD55', color: '#FFFFFF' }} onClick={() => handleFilter("inactive")}>
             Không hoạt động
           </Button>
           <Button style={{ backgroundColor: '#63B3ED', color: '#FFFFFF' }} onClick={() => handleFilter("active")}>
             Hoạt động
           </Button>
-        </div></div>
-        <Input
-          style={{ width: "250px" }}
-          placeholder="Tìm kiếm lịch trình"
-          value={searchValue}
-          onChange={handleSearchChange}
-        />
-        <Button style={{ backgroundColor: "blue", marginLeft: "5px" }} type="primary" onClick={handleSearch}>
-          Tìm kiếm
-        </Button>
+      </div>
+       
+        </div>
+      
+     
       </div>
       <Table
         dataSource={filteredDataSource || tourdata?.data}
@@ -169,20 +175,21 @@ render={(trang_thai) => {
           title="Sửa"
           key="edit"
           render={(text, record) => (
-            localStorage.getItem("role") === 'admin' && (
+        
               <div className="flex space-x-2">
                 <button className="edit-button">
                   <Link to={`/admin/tour/edit/${record.id}`}>
                     <i className="fa fa-wrench"></i>
                   </Link>
                 </button>
+                
                 <button className="ct-button">
                   <a href={`/tours/${record.id}`} target="_blank" rel="noopener noreferrer">
                     <p className='font-bold py-2 px-2'>Xem trước</p>
                   </a>
                 </button>
               </div>
-            )
+            
           )}
         />
 

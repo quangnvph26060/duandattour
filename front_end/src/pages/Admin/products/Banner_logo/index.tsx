@@ -63,7 +63,8 @@ const Banner_logo = () => {
     {
       title: 'Action',
       render: ({ key: id, index }) => (
-        <div className="flex space-x-2">
+        <div className="flex space-x-2"> 
+         {  localStorage.getItem("role") == 'admin' ?
           <Popconfirm
             title="Bạn có muốn xóa?"
             onConfirm={() => confirmDelete(id, index)}
@@ -79,7 +80,8 @@ const Banner_logo = () => {
               </Button>
             </div>
           </Popconfirm>
-          {/* Add other action buttons or links here */}
+          : ""}
+         
         </div>
       ),
     },
@@ -103,6 +105,7 @@ const Banner_logo = () => {
     <div>
       <h1 className="text-2xl px-5 font-bold">Quản lý Banner</h1>
       <div className="text-right px-5">
+      {  localStorage.getItem("role") == 'admin' ?
         <button
           className="px-5 py-2 bg-red-500 rounded-lg font-medium"
           type="button"
@@ -110,6 +113,7 @@ const Banner_logo = () => {
         >
           + Thêm mới Banner
         </button>
+        : ""}
       </div>
       <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />
     </div>

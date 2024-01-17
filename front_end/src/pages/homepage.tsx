@@ -169,21 +169,36 @@ const HomePage = () => {
         console.error(error);
       });
   }, []);
+ //Slider
 
-  useEffect(() => {
-    const fetchImagesData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/admin/banner"
-        );
-        setImagesData(response.data); // Assuming the API response is an array of image data
-      } catch (error) {
-        console.error("Error fetching image data:", error);
-      }
-    };
 
-    fetchImagesData();
-  }, []);
+
+ useEffect(() => {
+   const fetchImagesData = async () => {
+     try {
+       const response = await axios.get('http://localhost:8000/api/admin/banner');
+       setImagesData(response.data); // Assuming the API response is an array of image data
+     } catch (error) {
+       console.error('Error fetching image data:', error);
+     }
+   };
+
+   fetchImagesData();
+ }, []);
+ console.log('jahahah', imagesData);
+
+ useEffect(() => {
+   const intervalId = setInterval(() => {
+     handleNext();
+   }, 3000);
+
+   return () => clearInterval(intervalId);
+ }, [currentImageIndex, imagesData]);
+
+ 
+
+ 
+
 
   const handlePrevious = () => {
     setCurrentImageIndex(
@@ -400,100 +415,38 @@ const HomePage = () => {
       </div>
       <div
         className="bg-white box-shadow rounded-lg  p-9 mx-auto hidden lg:block "
-        style={{
-          maxWidth: "1200px",
-          position: "relative",
-          left: 0,
-          top: "-125px",
-        }}
+        style={{ maxWidth: "1100px", position: "relative", left: 0, top: "-110px"  }}
       >
-        <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">
-          PolyTour Trong Nước
-        </h1>
-        <div className="tour-form mt-2 flex items-center">
-          <div className="flex items-center mr-4">
-            <div className="flex hover:border-blue-500 icon-sheach items-center  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-              <img
-                src="https://cdn-icons-png.flaticon.com/128/61/61469.png"
-                alt=""
-                width={"20px"}
-              />
-
-              <div className="flex flex-col ml-3">
-                <label
-                  htmlFor="departureDate"
-                  className="mr-2 text-[#2d4271] font-medium"
-                >
-                  Ngày đi:
-                </label>
-                <div className="relative">
-                  <label
-                    htmlFor="departureDate"
-                    className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400"
-                  ></label>
-                  <input
-                    type="date"
-                    id="departureDate"
-                    value={selectedDepartureDate}
-                    onChange={(e) => setSelectedDepartureDate(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* <div className="flex items-center mr-4">
-            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
-              <img src="https://cdn-icons-png.flaticon.com/128/61/61469.png" alt="" width={"20px"} />
-
-              <div className="flex flex-col ml-3">
-                <label htmlFor="arrivalDate" className="mr-2 text-[#2d4271] font-medium">
-                  Số ngày
-                </label>
-                <select name="" id="" className="h-[26px] text-[#2d4271] font-bold">
-                  <option value="1">1 ngày</option>
-                  <option value="3">3 ngày</option>
-                  <option value="5">5 ngày</option>
-                  <option value="7">7 ngày</option>
-                </select>
-              </div>
-            </div>
-          </div> */}
-          <div className="flex items-center mr-4">
-            <div className="flex icon-sheach items-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+        <h1 className="font-medium text-2xl mb-10 text-blue-500 border-b border-blue-500 pb-4">PolyTour Trong Nước</h1>
+        <div className="tour-form mt-2 flex tours-center">
+          
+       
+          <div className="flex tours-center ml-6 mr-5">
+            <div className="flex icon-sheach tours-center hover:border-blue-500  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/447/447031.png"
                 alt=""
                 width={"20px"}
               />
-              <div className="flex flex-col ml-3">
-                <label
-                  htmlFor="destination"
-                  className="mr-2 text-[#2d4271] font-medium"
-                >
+              <div className="flex flex-col ml-3 w-[170px]">
+                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
                   Điểm đi:
                 </label>
                 <div class="select-wrapper">
-                  <select
-                    id="destination"
-                    value={selectedDeparture}
-                    onChange={(e) => setSelectedDeparture(e.target.value)}
-                  >
-                    <option value="">Chọn điểm đi</option>
-                    {provinces.map((province) => (
-                      <option key={province.code} value={province.name}>
-                        {province.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+  <select id="destination" value={selectedDeparture} onChange={(e) => setSelectedDeparture(e.target.value)}>
+    <option value="">Chọn điểm đi</option>
+    {provinces.map((province) => (
+      <option key={province.code} value={province.name}>
+        {province.name}
+      </option>
+    ))}
+  </select>
+</div>
               </div>
             </div>
           </div>
-          <div className="tuongduong">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png"
-              alt=""
-            />
+          <div  className="tuongduong mt-2">
+            <img src="https://cdn-icons-png.flaticon.com/128/5519/5519832.png" alt="" />
           </div>
 
           <div className="flex tours-center mr-4">
@@ -503,20 +456,13 @@ const HomePage = () => {
                 alt=""
                 width={"20px"}
               />
-
+ 
               <div className="flex flex-col ml-3">
-                <label
-                  htmlFor="destination"
-                  className="mr-2 text-[#2d4271] font-medium"
-                >
+                <label htmlFor="destination" className="mr-2 text-[#2d4271] font-medium">
                   Điểm đến:
                 </label>
-                <select
-                  id="destination"
-                  value={selectedDestination}
-                  onChange={(e) => setSelectedDestination(e.target.value)}
-                >
-                  <option value="">Chọn điểm đi</option>
+                <select id="destination" value={selectedDestination} onChange={(e) => setSelectedDestination(e.target.value)}>
+                  <option  value="">Chọn điểm đến</option>
                   {provinces.map((province) => (
                     <option key={province.code} value={province.name}>
                       {province.name}
@@ -526,22 +472,41 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          {/* console.log(selectedDepartureDate);
-          console.log(selectedDestination);
-          console.log(selectedDeparture); */}
-          <Link
-            to={`/searchtour/${selectedDeparture || "defaultDeparture"}/${
-              selectedDestination || "defaultDestination"
-            }/${selectedDepartureDate || "defaultDepartureDate"}`}
-            className="mega-menu-items"
+          <div className="flex tours-center ml-6 mr-7">
+            <div className="flex hover:border-blue-500 icon-sheach tours-center  px-4 py-2 border-[#ffc709] rounded-lg border-[4px] form-banner">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/61/61469.png"
+                alt=""
+                width={"20px"}
+              />
+
+              <div className="flex flex-col ml-5">
+      <label htmlFor="departureDate" className="mr-2 w-[150px] text-[#2d4271] font-medium">
+                  Ngày đi:
+                </label>
+                <div className="relative">
+                  <label
+                    htmlFor="departureDate"
+                    className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+                  </label>
+                  <input
+
+                    type="date"
+                    id="departureDate"
+
+                    value={selectedDepartureDate}
+                    onChange={(e) => setSelectedDepartureDate(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <button  
+            className="hover:bg-yellow-500 bg-[#fe9b00] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full  h-[72px]"
+            onClick={handleSearch}
           >
-            <button
-              className="hover:bg-blue-500 bg-[#ffc709] text-white py-3 px-5 rounded ml-2 max-w-[150px] w-full h-[72px]"
-              onClick={handleSearch}
-            >
-              Tìm kiếm
-            </button>
-          </Link>
+            Tìm kiếm
+          </button>
         </div>
       </div>
 

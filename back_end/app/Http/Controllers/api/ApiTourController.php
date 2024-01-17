@@ -170,6 +170,7 @@ class ApiTourController extends Controller
             'gia_nguoilon',
             'gia_treem',
             'mo_ta',
+            'trang_thai',
             'soluong',
             'ma_loai_tour',
         ]));

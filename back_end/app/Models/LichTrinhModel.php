@@ -12,7 +12,7 @@ class LichTrinhModel extends Model
     protected $table="lich_trinh";
     protected $fillable=[
         'noi_dung',
-        'thoi_gian',
+      
         'status',
         'id_tour'
     ];

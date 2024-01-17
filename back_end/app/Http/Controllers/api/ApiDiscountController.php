@@ -67,10 +67,23 @@ class ApiDiscountController extends Controller
     {
         $discount = Discount::find($id);
         if ($discount) {
-            return  response()->json($discount);
+            $expiryDate = $discount->expiry_date->format('Y-m-d');
+
+            $response = [
+                'id' => $discount->id,
+                'discount_name' => $discount->discount_name,
+                'discount_condition' => $discount->discount_condition,
+                'discount_code' => $discount->discount_code,
+                'percentage' => $discount->percentage,
+                'expiry_date' => $expiryDate,
+                'trang_thai' => $discount->trang_thai,
+                'minprice' => $discount->minprice,
+            ];
+            
+            return response()->json($response);
         } else {
-            return  response()->json([
-                'message' => 'Không tìm thấy thong tin'
+            return response()->json([
+                'message' => 'Không tìm thấy thông tin'
             ], 404);
         }
     }

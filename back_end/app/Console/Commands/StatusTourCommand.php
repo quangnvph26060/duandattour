@@ -27,11 +27,18 @@ class StatusTourCommand extends Command
      */
     public function handle()
     {
-        //
         $currentDate = Carbon::now()->toDateString();
+        
         DB::table('tour')
             ->whereDate('lich_khoi_hanh', '<', $currentDate)
-            ->orwhere('soluong','=',0)
-            ->update(['trang_thai'=>0]);
+            ->orWhere('soluong', '=', 0)
+            ->update(['trang_thai' => 0]);
+    
+        DB::table('tour')
+            ->where(function ($query) use ($currentDate) {
+                $query->whereDate('lich_khoi_hanh', '>=', $currentDate)
+                      ->where('soluong', '>', 0);
+            })
+            ->update(['trang_thai' => 1]);
     }
 }

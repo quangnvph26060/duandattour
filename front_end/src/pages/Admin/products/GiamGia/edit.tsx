@@ -3,14 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Input, Select } from "antd";
 import axios from "axios";
 import { IDiscount } from "../../../../interface/discount";
+import { useQueryClient } from 'react-query';
 
+import { useGetDiscountQuery } from "../../../../api/discountApi";
 const { Option } = Select;
 
 const AdminGiam_GiaEdit: React.FC = () => {
   const { iddiscount } = useParams<{ iddiscount: string }>();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
+ 
+  const queryClient = useQueryClient();
   useEffect(() => {
     // Lấy dữ liệu giảm giá theo iddiscount và thiết lập giá trị mặc định cho form
     axios
@@ -38,7 +41,10 @@ const AdminGiam_GiaEdit: React.FC = () => {
         values
       )
       .then(() => {
+        queryClient.refetchQueries('http://localhost:8000/api/admin/discount');
+
         navigate("/admin/tour/discount");
+      
       })
       .catch((error) => {
         console.error(error.response.data.message);
@@ -117,20 +123,20 @@ const AdminGiam_GiaEdit: React.FC = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className="btn-button-sub-pt">
-            <Button type="primary" htmlType="submit" className="submit-click">
+   
+        
+            <Button  type="primary" htmlType="submit" className="submit-click text-center ml-[480px] mt-5">
               Thêm
             </Button>
             <Button
               type="default"
-              className="ml-2"
+              className="ml-2 mt-5"
               onClick={() => navigate("/admin/tour/discount")}
             >
               Quay lại
             </Button>
-          </div>
-        </Form.Item>
+         
+  
       </Form>
     </div>
   );

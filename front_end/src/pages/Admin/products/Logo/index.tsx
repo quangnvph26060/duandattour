@@ -56,6 +56,7 @@ const Logo = () => {
       key: 'action',
       render: (text, record, index) => (
         <span>
+            {  localStorage.getItem("role") == 'admin' ?
           <Popconfirm
             title="Bạn có muốn xóa?"
             onConfirm={() => confirmDelete(record.id, index)}
@@ -65,10 +66,13 @@ const Logo = () => {
             <Button type="primary" danger>
               Xóa
             </Button>
-          </Popconfirm>
-          <Button type="primary" className="bg-blue-500" style={{ marginLeft: '8px' }}>
+            <Button type="primary" className="bg-blue-500" style={{ marginLeft: '8px' }}>
             <Link to={`/admin/logo/edit/${record.id}`}>Sửa</Link>
           </Button>
+          </Popconfirm>
+           :""}
+        
+         
         </span>
       ),
     },
@@ -78,6 +82,7 @@ const Logo = () => {
     <div>
       <h1 className="text-2xl py-4 px-3 font-medium">Quản lý Logo</h1>
       <div className="text-right px-5">
+      {  localStorage.getItem("role") == 'admin' ?
         <button
           className="px-5 py-2 bg-red-500 rounded-lg font-medium"
           type="button"
@@ -85,7 +90,9 @@ const Logo = () => {
         >
           + Thêm mới Logo
         </button>
+        : ""}
       </div>
+    
       <Table dataSource={imagesData} columns={columns} pagination={{ pageSize: 4 }} />
     </div>
   );

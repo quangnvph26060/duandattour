@@ -301,6 +301,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('lichtrinh')->group(function () {
         Route::get('/', [ApiLichTrinhController::class, 'index']);
+        Route::put('updateStatusSchedule/{id}', [ApiLichTrinhController::class, 'updateStatusSchedule']);
         Route::post('/', [ApiLichTrinhController::class, 'store']);
         Route::get('/{id}', [ApiLichTrinhController::class, 'show']);
         Route::put('/{id}', [ApiLichTrinhController::class, 'update']);

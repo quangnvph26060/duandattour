@@ -83,7 +83,7 @@ const AdminLoai_tour = (props) => {
             render: ({ key: id }) => {
                 return (
                     <>
-                        {localStorage.getItem('role') === 'admin' ? (
+                       
                             <div className="flex space-x-2">
                                 <Popconfirm
                                     title="Bạn có muốn xóa?"
@@ -92,16 +92,17 @@ const AdminLoai_tour = (props) => {
                                     className="text-black"
                                     cancelText="No"
                                 >
+                                      <Button type="primary" danger>
+                                    <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
+                                </Button>
+                                     {localStorage.getItem('role') === 'admin' ? (
                                     <Button type="primary" danger>
                                         Xóa
                                     </Button>
+                                        ) : null}
                                 </Popconfirm>
-
-                                <Button type="primary" danger>
-                                    <Link to={`/admin/tour/loai_tour/edit/${id}`}>Sửa</Link>
-                                </Button>
                             </div>
-                        ) : null}
+                    
                     </>
                 );
             },
@@ -113,14 +114,14 @@ const AdminLoai_tour = (props) => {
             <header className="mb-4 flex justify-between items-center">
                 <h2 className="font-bold text-2xl">Quản lý loại tour</h2>
 
-                {localStorage.getItem("role") === 'admin' ? (
+              
                     <Button type="primary" className="bg-blue-500 p-5 flex justify-center items-center hover:bg-blue-600" >
                         <Link to="/admin/tour/loai_tour/add" className="flex items-center space-x-2">
-                            <AiOutlinePlus />
+                  
                             Tạo mới loại tour
                         </Link>
                     </Button>
-                ) : null}
+        
             </header>
             <div className="flex items-center justify-end mb-4">
                 <Input

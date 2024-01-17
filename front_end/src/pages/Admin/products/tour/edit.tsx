@@ -37,8 +37,8 @@ const AdminTourEdit = () => {
         diem_di: Tour.data.diem_di,
         diem_den: Tour.data.diem_den,
         ma_loai_tour: Tour.data.ma_loai_tour,
-        ngay_ket_thuc: moment(Tour.data.ngay_ket_thuc, dateFormat),
-        lich_khoi_hanh: moment(Tour.data.lich_khoi_hanh, dateFormat),
+        ngay_ket_thuc:Tour.data.ngay_ket_thuc,
+        lich_khoi_hanh:Tour.data.lich_khoi_hanh,
         soluong: Tour.data.soluong,
         trang_thai: Tour.data.trang_thai === 1 ? 1 : 0,
         gia_nguoilon: Tour.data.gia_nguoilon,
@@ -226,7 +226,6 @@ const AdminTourEdit = () => {
                   ))}
                 </Select>
               </Form.Item>
-
               <Form.Item
                 className="w-full"
                 label="Lịch khởi hành"
@@ -235,9 +234,9 @@ const AdminTourEdit = () => {
                   { required: true, message: "Vui lòng nhập lịch khởi hành!" },
                 ]}
               >
-                <DatePicker
-                  style={{ width: "100%" }}
-                  disabledDate={disabledDate}
+                <Input
+                  type="date"
+
                 />
               </Form.Item>
 
@@ -249,9 +248,8 @@ const AdminTourEdit = () => {
                   { required: true, message: "Vui lòng nhập thời gian!" },
                 ]}
               >
-                <DatePicker
-                  style={{ width: "100%" }}
-                  disabledDate={disabledDate}
+                <Input
+
                 />
               </Form.Item>
             </div>
