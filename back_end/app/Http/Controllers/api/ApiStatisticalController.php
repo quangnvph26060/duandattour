@@ -7,6 +7,7 @@ use App\Models\DatTour;
 use App\Models\Evaluate;
 use App\Models\HoaDon;
 use App\Models\NewsModel;
+use App\Models\PostModel;
 use App\Models\ThanhToan;
 use App\Models\ThanhToanDetail;
 use App\Models\TourModel;
@@ -26,7 +27,7 @@ class ApiStatisticalController extends Controller
         $totalUser = User::whereHas('roles', function ($query) {
             $query->where('name', 'khach_hang');
         })->with('roles', 'roles.permissions')->count();
-        $totalNews = NewsModel::count();
+        $totalNews = PostModel::count();
         $currentDate = date('Y-m-d');
         $currentMonth = date('m');
         $currentYear = date('Y');

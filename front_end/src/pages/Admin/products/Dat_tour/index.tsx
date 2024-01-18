@@ -187,7 +187,7 @@ const ADmin_DatTour = (props: Props) => {
       id_tour,
       image_dd,
       so_luong_khach,
-      tong_tien_tt,
+      // tong_tien_tt,
       ten_tour,
       tours,
       thanh_toan,
@@ -203,7 +203,7 @@ const ADmin_DatTour = (props: Props) => {
       trang_thai,
       id_tour,
       so_luong_khach,
-      tong_tien_tt: ThanhToaninfor.tong_tien_tt,
+      // tong_tien_tt: ThanhToaninfor.tong_tien_tt,
       ten_khach_hang,
       ten_tour: Tourinfo.ten_tour,
       tours,
@@ -291,8 +291,10 @@ const ADmin_DatTour = (props: Props) => {
         <span>
           {record.thanh_toan && record.thanh_toan.tong_tien_tt ? (
             record.thanh_toan.tong_tien_tt
+          ) : record.thanh_toan_deltail && record.thanh_toan_deltail.tong_tien_tt ? (
+            record.thanh_toan_deltail.tong_tien_tt
           ) : (
-            record.thanh_toan_deltail && record.thanh_toan_deltail.tong_tien_tt
+            "Không có dữ liệu do đặt tour thất bại"
           )}
         </span>
       ),

@@ -115,15 +115,22 @@ class ApiDatTourController extends Controller
     public function getListBookingTour()
     {
         $bookings = DatTour::with('ThanhToan', 'tours.images')->get();
+        $validBookings = [];
         
         foreach ($bookings as $booking) {
+            if ($booking->ThanhToan === null && $booking->ThanhToanDeltail === null) {
+                continue; // Bỏ qua bản ghi không hợp lệ
+            }
+            
             if ($booking->ThanhToan === null) {
                 $booking->load('ThanhToanDeltail');
                 unset($booking->ThanhToan);
             }
+            
+            $validBookings[] = $booking;
         }
         
-        return response()->json(['data' => $bookings], 200);
+        return response()->json(['data' => $validBookings], 200);
     }
 
     public function getListBookingTourUnpaid()

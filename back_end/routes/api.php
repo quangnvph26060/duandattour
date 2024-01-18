@@ -297,6 +297,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/', [ApiLichTrinhController::class, 'store']);
         Route::get('/{id}', [ApiLichTrinhController::class, 'show']);
         Route::put('/{id}', [ApiLichTrinhController::class, 'update']);
+        Route::put('updateStatusSchedule/{id}', [ApiLichTrinhController::class, 'updateStatusSchedule']);
         Route::delete('/{id}', [ApiLichTrinhController::class, 'destroy']);
     });
     Route::prefix('tourphuongtien')->group(function () {
