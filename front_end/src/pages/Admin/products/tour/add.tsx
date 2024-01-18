@@ -17,7 +17,8 @@ import { ITour } from "../../../../interface/tour";
 import { useAddTourMutation } from "../../../../api/TourApi";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "../../../css.css";
+
+import './tour.css'
 import { Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 // import ImgCrop from 'antd-img-crop';
@@ -155,8 +156,9 @@ const AdminTourAdd: React.FC = () => {
       <div>
         {contextHolder}
         <Form
-          className="tour-form"
+          className="tour-form py-10"
           name="basic"
+        style={{}}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
 
@@ -409,8 +411,8 @@ const AdminTourAdd: React.FC = () => {
             </div>
           </div>
 
-          <Form.Item className="" wrapperCol={{ offset: 8, span: 16 }}>
-            <div className="btn-button-sub">
+          <Form.Item className="ml-[]" wrapperCol={{ offset: 8, span: 16 }}>
+           
               <Button className="bg-blue-500" type="primary" htmlType="submit">
                 Thêm
               </Button>
@@ -421,7 +423,7 @@ const AdminTourAdd: React.FC = () => {
               >
                 Quay lại
               </Button>
-            </div>
+          
           </Form.Item>
         </Form>
       </div>

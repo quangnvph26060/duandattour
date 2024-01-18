@@ -46,12 +46,7 @@ const initialFormData = {
 };
 
 const BookTour = () => {
-  const [errors, setErrors] = useState({
-    ten_khach_hang: '',
-    email: '',
-    sdt: '',
-    dia_chi: '',
-  });
+
   // check radio content , tiền mặt chuyển khoản
   const [isChecked, setIsChecked] = useState(true); // tiền mặt
 
@@ -272,36 +267,7 @@ const BookTour = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    if (name === 'ten_khach_hang' && value.trim() === '') {
-      setErrors({ ...errors, ten_khach_hang: 'Vui lòng nhập họ tên' });
-    } else {
-      setErrors({ ...errors, ten_khach_hang: '' });
-    }
-    if (name === 'email') {
-      if (value.trim() === '') {
-        setErrors({ ...errors, email: 'Vui lòng nhập email' });
-      } else if (!/\S+@\S+\.\S+/.test(value)) {
-        setErrors({ ...errors, email: 'Email không hợp lệ' });
-      } else {
-        setErrors({ ...errors, email: '' });
-      }
-    }
-  
-    if (name === 'sdt') {
-      if (value.trim() === '') {
-        setErrors({ ...errors, sdt: 'Vui lòng nhập số điện thoại' });
-      } else if (!/^\d{10,11}$/.test(value)) {
-        setErrors({ ...errors, sdt: 'Số điện thoại không hợp lệ' });
-      } else {
-        setErrors({ ...errors, sdt: '' });
-      }
-    }
-  
-    if (name === 'dia_chi' && value.trim() === '') {
-      setErrors({ ...errors, dia_chi: 'Vui lòng nhập địa chỉ' });
-    } else {
-      setErrors({ ...errors, dia_chi: '' });
-    }
+    
   };
 
   const [paymentResult, setPaymentResult] = useState(null);
@@ -524,18 +490,16 @@ const BookTour = () => {
                     id="ten_khach_hang"
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     name="ten_khach_hang"
-                    value={formData.ten_khach_hang}
+                
                     onChange={handleChange}
-                    defaultValue={token ? formData.ten_khach_hang : ""}
+                 
                   />
-                   {errors.ten_khach_hang && (
-          <p className="error-message">{errors.ten_khach_hang}</p>
-        )}
+                
                   <p className="text-[#2D4271] mb-1">Số điện thoại</p>
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     type="number"
-                    value={formData.sdt}
+                  
                     name="sdt"
                     id="sdt"
                     onChange={handleChange}
@@ -546,7 +510,7 @@ const BookTour = () => {
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     type="text"
-                    value={formData.email}
+                  
                     name="email"
                     id="email"
                     onChange={handleChange}
@@ -555,7 +519,7 @@ const BookTour = () => {
                   <input
                     className="h-[35px] w-[350px] border border-gray-300 rounded-md"
                     type="text"
-                    value={formData.dia_chi}
+
                     name="dia_chi"
                     id="dia_chi"
                     onChange={handleChange}

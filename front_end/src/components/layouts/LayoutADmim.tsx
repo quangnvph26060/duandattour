@@ -305,7 +305,7 @@ const LayoutAdmin = () => {
           </Header>
           <Content
             style={{
-              maxHeight: 5000,
+              maxHeight: 10000,
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
